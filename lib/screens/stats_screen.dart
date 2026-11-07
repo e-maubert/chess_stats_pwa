@@ -1,0 +1,83 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../models/chess_stats.dart';
+import '../services/chess_api_service.dart';
+import '../l10n/translations.dart';
+import '../widgets/stats_display.dart';
+
+class StatsScreen extends StatefulWidget {
+  final ChessStats stats;
+
+  const StatsScreen({Key? key, required this.stats}) : super(key: key);
+
+  @override
+  State<StatsScreen> createState() => _StatsScreenState();
+}
+
+class _StatsScreenState extends State<StatsScreen> {
+  late Future<ChessStats> _statsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _statsFuture = Future.value(widget.stats);
+  }
+
+  Future<void> _refreshStats() async {
+    setState(() {
+      _statsFuture = ChessApiService().getPlayerStats(widget.stats.username);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final translations = Provider.of<Translations>(context);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(translations.appTitle),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: _refreshStats,
+            tooltip: translations.refresh,
+          ),
+        ],
+      ),
+      body: FutureBuilder<ChessStats>(
+        future: _statsFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    translations.errorFetchingStats,
+                    style: Theme.of(context).textTheme.titleMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 16),
+                  ElevatedButton(
+                    onPressed: _refreshStats,
+                    child: Text(translations.retry),
+                  ),
+                ],
+              ),
+            );
+          }
+
+          if (!snapshot.hasData) {
+            return const SizedBox.shrink();
+          }
+
+          return StatsDisplay(stats: snapshot.data!);
+        },
+      ),
+    );
+  }
+} 

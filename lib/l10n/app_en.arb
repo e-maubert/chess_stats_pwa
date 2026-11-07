@@ -1,0 +1,186 @@
+{
+  "appTitle": "Chess Stats PWA",
+  "enterUsername": "Enter Chess.com username",
+  "username": "Username",
+  "search": "Search",
+  "pleaseEnterUsername": "Please enter a username",
+  "playerStats": "Statistics for {username}",
+  "@playerStats": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "refresh": "Refresh",
+  "forceRefresh": "Force refresh",
+  "retry": "Retry",
+  "errorLoadingStats": "Error loading statistics: {error}",
+  "@errorLoadingStats": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "errorForceRefresh": "Error during force refresh: {error}",
+  "@errorForceRefresh": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "globalStats": "Global Statistics",
+  "gamesPlayed": "Games Played",
+  "wins": "Wins",
+  "losses": "Losses",
+  "draws": "Draws",
+  "winRate": "Win Rate",
+  "colorStats": "Statistics by Color",
+  "withWhite": "With White",
+  "withBlack": "With Black",
+  "topOpenings": "Top 5 Openings",
+  "countryStats": "Statistics by Country",
+  "played": "Games Played: {count}",
+  "@played": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "winRatePercent": "{rate}%",
+  "@winRatePercent": {
+    "placeholders": {
+      "rate": {
+        "type": "double",
+        "format": "decimalPercentPattern",
+        "optionalParameters": {
+          "decimalDigits": 1
+        }
+      }
+    }
+  },
+  "winCount": "{wins} ({rate}%)",
+  "@winCount": {
+    "placeholders": {
+      "wins": {
+        "type": "int"
+      },
+      "rate": {
+        "type": "double",
+        "format": "decimalPercentPattern",
+        "optionalParameters": {
+          "decimalDigits": 1
+        }
+      }
+    }
+  },
+  "lossCount": "{losses} ({rate}%)",
+  "@lossCount": {
+    "placeholders": {
+      "losses": {
+        "type": "int"
+      },
+      "rate": {
+        "type": "double",
+        "format": "decimalPercentPattern",
+        "optionalParameters": {
+          "decimalDigits": 1
+        }
+      }
+    }
+  },
+  "drawCount": "{draws} ({rate}%)",
+  "@drawCount": {
+    "placeholders": {
+      "draws": {
+        "type": "int"
+      },
+      "rate": {
+        "type": "double",
+        "format": "decimalPercentPattern",
+        "optionalParameters": {
+          "decimalDigits": 1
+        }
+      }
+    }
+  },
+  "countryStatsLink": "See statistics by opponent country",
+  "countryStatsPeriod": "Games of the current month",
+  "countryRankColumn": "#",
+  "countryColumn": "Country",
+  "opponentsColumn": "Opponents",
+  "timeClassAll": "All games",
+  "timeClassBullet": "Bullet",
+  "timeClassBlitz": "Blitz",
+  "timeClassRapid": "Rapid",
+  "noCountryData": "No games for this time control",
+  "countryResultRates": "W {win} · D {draw} · L {loss}",
+  "@countryResultRates": {
+    "placeholders": {
+      "win": {
+        "type": "String"
+      },
+      "draw": {
+        "type": "String"
+      },
+      "loss": {
+        "type": "String"
+      }
+    }
+  },
+  "lossBreakdown": "Losses by type",
+  "lossByTimeout": "On time",
+  "lossByCheckmate": "By checkmate",
+  "lossByResignation": "By resignation",
+  "lossOther": "Other",
+  "noLossData": "No losses for this time control",
+  "lossCauseValue": "{count} ({percent})",
+  "@lossCauseValue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "countryUnknown": "Unknown country",
+  "countryKZ": "Kazakhstan",
+  "countryUS": "United States",
+  "countryFR": "France",
+  "countryBR": "Brazil",
+  "countryDE": "Germany",
+  "countryIN": "India",
+  "countryAR": "Argentina",
+  "countryCO": "Colombia",
+  "countryDZ": "Algeria",
+  "countryID": "Indonesia",
+  "countryUZ": "Uzbekistan",
+  "countryJO": "Jordan",
+  "countryEG": "Egypt",
+  "countryMD": "Moldova",
+  "countryTN": "Tunisia",
+  "countryNP": "Nepal",
+  "countryGB": "United Kingdom",
+  "countryCH": "Switzerland",
+  "countryDK": "Denmark",
+  "countryMX": "Mexico",
+  "countryBE": "Belgium",
+  "countrySY": "Syria",
+  "countrySA": "Saudi Arabia",
+  "countryHR": "Croatia",
+  "countrySZ": "Eswatini",
+  "countryPT": "Portugal",
+  "countryXW": "Wales",
+  "countryPH": "Philippines",
+  "countryUA": "Ukraine",
+  "countryPL": "Poland",
+  "countryPE": "Peru",
+  "countryXX": "International",
+  "countryNL": "Netherlands",
+  "countryTH": "Thailand"
+} 

@@ -1,0 +1,21 @@
+# Fichiers générés par Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+build/
+
+# Fichiers divers
+*.log
+*.swp
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.iml
+
+# Réglages locaux de Claude Code (propres à chaque poste)
+.claude/settings.local.json
