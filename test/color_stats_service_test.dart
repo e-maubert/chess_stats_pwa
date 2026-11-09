@@ -9,6 +9,7 @@ CountryGame g(String color, String timeClass, String result) => CountryGame(
       timeClass: timeClass,
       result: result,
       playerColor: color,
+      opening: 'Italian-Game',
     );
 
 void main() {
