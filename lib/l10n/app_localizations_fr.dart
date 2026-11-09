@@ -157,6 +157,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get noCountryData => 'Aucune partie pour cette cadence';
 
   @override
+  String get openingOthers => 'Autres';
+
+  @override
   String countryResultRates(String win, String draw, String loss) {
     return 'V $win · N $draw · D $loss';
   }
