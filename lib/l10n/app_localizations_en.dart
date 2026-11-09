@@ -156,6 +156,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noCountryData => 'No games for this time control';
 
   @override
+  String get openingOthers => 'Others';
+
+  @override
   String countryResultRates(String win, String draw, String loss) {
     return 'W $win · D $draw · L $loss';
   }

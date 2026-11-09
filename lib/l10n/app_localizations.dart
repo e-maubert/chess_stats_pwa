@@ -320,6 +320,12 @@ abstract class AppLocalizations {
   /// **'No games for this time control'**
   String get noCountryData;
 
+  /// No description provided for @openingOthers.
+  ///
+  /// In en, this message translates to:
+  /// **'Others'**
+  String get openingOthers;
+
   /// No description provided for @countryResultRates.
   ///
   /// In en, this message translates to:
