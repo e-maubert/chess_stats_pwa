@@ -67,4 +67,6 @@ Colonnes : **À faire → En cours → En relecture → Livré**.
 
 Les instructions détaillées sont dans `.claude/agents/`. Les décisions du client se trouvent dans les commentaires des cartes : les lire avant de développer.
 
+Git : jamais de commit direct sur `main` (= prod). Une branche par carte ou par changement (`fix/…` bug, `feat/…` évolution, `chore/…` maintenance), fusionnée dans `main` uniquement à la demande de l'utilisateur. Aucun `git push` sans demande.
+
 Étiquettes : rouge = bug, bleue = évolution (l'outil Trello ne peut ni créer ni renommer d'étiquette).
