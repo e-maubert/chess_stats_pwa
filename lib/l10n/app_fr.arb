@@ -117,7 +117,7 @@
   "timeClassBlitz": "Blitz",
   "timeClassRapid": "Rapide",
   "noCountryData": "Aucune partie pour cette cadence",
-  "openingOthers": "Autres",
+  "openingColumn": "Ouverture",
   "countryResultRates": "V {win} · N {draw} · D {loss}",
   "@countryResultRates": {
     "placeholders": {

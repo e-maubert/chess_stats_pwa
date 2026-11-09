@@ -6,12 +6,13 @@ import '../models/country_game.dart';
 import '../models/opening_family_stats.dart';
 import '../services/opening_stats_service.dart';
 import '../viewmodels/opening_stats_viewmodel.dart';
-import 'result_summary.dart';
+import 'result_bar.dart';
 import 'time_class_filter.dart';
 
-/// Page principale : victoires / nulles / défaites par famille d'ouvertures,
-/// séparées en blancs / noirs (top 5 + « Autres » chacun), en barres comme
-/// sur la page des pays, filtrables par cadence.
+/// Page principale : un tableau des ouvertures jouées avec les blancs et un
+/// avec les noirs, sur le modèle du tableau des pays : rang, ouverture,
+/// parties jouées, barre victoires / nulles / défaites. Filtrable par cadence
+/// et triable par parties jouées ou par taux de victoires / nulles / défaites.
 class OpeningStatsCard extends StatelessWidget {
   final List<CountryGame> games;
 
@@ -46,9 +47,9 @@ class OpeningStatsCard extends StatelessWidget {
                 onSelected: viewModel.setTimeClass,
               ),
               const SizedBox(height: 16),
-              ..._colorBlock(context, translations.whiteStats, viewModel.white, l10n),
-              const SizedBox(height: 8),
-              ..._colorBlock(context, translations.blackStats, viewModel.black, l10n),
+              ..._colorBlock(context, translations.whiteStats, viewModel, viewModel.white, l10n),
+              const SizedBox(height: 24),
+              ..._colorBlock(context, translations.blackStats, viewModel, viewModel.black, l10n),
             ],
           );
         },
@@ -56,10 +57,11 @@ class OpeningStatsCard extends StatelessWidget {
     );
   }
 
-  /// Sous-bloc d'une couleur : titre, puis top des ouvertures et « Autres ».
+  /// Sous-bloc d'une couleur : titre, puis tableau (ou message si vide).
   List<Widget> _colorBlock(
     BuildContext context,
     String title,
+    OpeningStatsViewModel viewModel,
     List<OpeningFamilyStats> families,
     AppLocalizations l10n,
   ) {
@@ -70,21 +72,100 @@ class OpeningStatsCard extends StatelessWidget {
               fontWeight: FontWeight.bold,
             ),
       ),
-      const SizedBox(height: 12),
+      const SizedBox(height: 8),
       if (families.isEmpty)
         Padding(
-          padding: const EdgeInsets.only(bottom: 16),
+          padding: const EdgeInsets.symmetric(vertical: 16),
           child: Text(l10n.noCountryData, style: Theme.of(context).textTheme.bodyMedium),
+        )
+      else
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: _buildTable(context, viewModel, families, l10n),
         ),
-      for (final family in families) ...[
-        ResultSummary(
-          label: family.name == OpeningStatsService.others ? l10n.openingOthers : family.name,
-          wins: family.wins,
-          draws: family.draws,
-          losses: family.losses,
-        ),
-        const SizedBox(height: 16),
-      ],
     ];
+  }
+
+  /// En-tête cliquable : trie les tableaux selon [key], avec une flèche
+  /// indiquant le sens du tri quand la colonne est active.
+  Widget _sortHeader(OpeningStatsViewModel viewModel, OpeningSortKey key, String label) {
+    final active = viewModel.sortKey == key;
+    return InkWell(
+      onTap: () => viewModel.sortBy(key),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(label, style: TextStyle(fontWeight: active ? FontWeight.bold : FontWeight.normal)),
+            if (active)
+              Icon(viewModel.descending ? Icons.arrow_downward : Icons.arrow_upward, size: 14),
+          ],
+        ),
+      ),
+    );
+  }
+
+  String _percent(double rate) => '${(rate * 100).toStringAsFixed(0)}%';
+
+  Widget _buildTable(
+    BuildContext context,
+    OpeningStatsViewModel viewModel,
+    List<OpeningFamilyStats> families,
+    AppLocalizations l10n,
+  ) {
+    return DataTable(
+      columnSpacing: 16,
+      horizontalMargin: 8,
+      headingRowHeight: 48,
+      dataRowMinHeight: 56,
+      dataRowMaxHeight: 64,
+      columns: [
+        DataColumn(label: Text(l10n.countryRankColumn)),
+        DataColumn(label: Text(l10n.openingColumn)),
+        DataColumn(
+          numeric: true,
+          label: _sortHeader(viewModel, OpeningSortKey.gamesPlayed, l10n.gamesPlayed),
+        ),
+        DataColumn(
+          label: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _sortHeader(viewModel, OpeningSortKey.winRate, l10n.wins),
+              _sortHeader(viewModel, OpeningSortKey.drawRate, l10n.draws),
+              _sortHeader(viewModel, OpeningSortKey.lossRate, l10n.losses),
+            ],
+          ),
+        ),
+      ],
+      rows: [
+        for (var i = 0; i < families.length; i++)
+          DataRow(cells: [
+            DataCell(Text('${i + 1}')),
+            DataCell(Text(families[i].name, softWrap: false)),
+            DataCell(Text('${families[i].totalGames}')),
+            DataCell(Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                ResultBar(
+                  wins: families[i].wins,
+                  draws: families[i].draws,
+                  losses: families[i].losses,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  l10n.countryResultRates(
+                    _percent(families[i].winRate),
+                    _percent(families[i].drawRate),
+                    _percent(families[i].lossRate),
+                  ),
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
+            )),
+          ]),
+      ],
+    );
   }
 }

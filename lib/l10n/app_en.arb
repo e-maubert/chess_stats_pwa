@@ -117,7 +117,7 @@
   "timeClassBlitz": "Blitz",
   "timeClassRapid": "Rapid",
   "noCountryData": "No games for this time control",
-  "openingOthers": "Others",
+  "openingColumn": "Opening",
   "countryResultRates": "W {win} · D {draw} · L {loss}",
   "@countryResultRates": {
     "placeholders": {
