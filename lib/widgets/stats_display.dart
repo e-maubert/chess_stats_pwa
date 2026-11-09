@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/chess_stats.dart';
 import '../l10n/translations.dart';
+import 'color_stats_card.dart';
 import 'country_stats_link.dart';
 import 'loss_breakdown_card.dart';
 
@@ -19,23 +20,7 @@ class StatsDisplay extends StatelessWidget {
       children: [
         CountryStatsLink(stats: stats),
         const SizedBox(height: 24),
-        _buildSection(
-          context,
-          translations.colorStats,
-          [
-            _buildStatRow(context, translations.whiteStats, ''),
-            _buildStatRow(context, translations.wins, stats.whiteStats.wins.toString()),
-            _buildStatRow(context, translations.losses, stats.whiteStats.losses.toString()),
-            _buildStatRow(context, translations.draws, stats.whiteStats.draws.toString()),
-            _buildStatRow(context, translations.winRate, '${(stats.whiteStats.winRate * 100).toStringAsFixed(1)}%'),
-            const SizedBox(height: 16),
-            _buildStatRow(context, translations.blackStats, ''),
-            _buildStatRow(context, translations.wins, stats.blackStats.wins.toString()),
-            _buildStatRow(context, translations.losses, stats.blackStats.losses.toString()),
-            _buildStatRow(context, translations.draws, stats.blackStats.draws.toString()),
-            _buildStatRow(context, translations.winRate, '${(stats.blackStats.winRate * 100).toStringAsFixed(1)}%'),
-          ],
-        ),
+        ColorStatsCard(games: stats.countryGames),
         const SizedBox(height: 24),
         LossBreakdownCard(games: stats.countryGames),
         const SizedBox(height: 24),

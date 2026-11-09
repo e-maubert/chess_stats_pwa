@@ -4,7 +4,7 @@ import 'package:chess_stats_pwa/viewmodels/country_stats_viewmodel.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 CountryGame g(String country, String opponent, String timeClass, String result) =>
-    CountryGame(country: country, opponent: opponent, timeClass: timeClass, result: result);
+    CountryGame(country: country, opponent: opponent, timeClass: timeClass, result: result, playerColor: 'white');
 
 void main() {
   final games = [

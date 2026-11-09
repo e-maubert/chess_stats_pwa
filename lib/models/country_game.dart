@@ -11,6 +11,9 @@ class CountryGame {
   /// 'win', 'loss' ou 'draw'.
   final String result;
 
+  /// Couleur jouée par le joueur : 'white' ou 'black'.
+  final String playerColor;
+
   /// Cause de la défaite ('timeout', 'checkmated', 'resigned', 'other'),
   /// null si la partie n'est pas une défaite. Voir LossStatsService.
   final String? lossCause;
@@ -20,6 +23,7 @@ class CountryGame {
     required this.opponent,
     required this.timeClass,
     required this.result,
+    required this.playerColor,
     this.lossCause,
   });
 
@@ -29,6 +33,7 @@ class CountryGame {
       'opponent': opponent,
       'timeClass': timeClass,
       'result': result,
+      'playerColor': playerColor,
       'lossCause': lossCause,
     };
   }
@@ -39,6 +44,7 @@ class CountryGame {
       opponent: json['opponent'] as String,
       timeClass: json['timeClass'] as String,
       result: json['result'] as String,
+      playerColor: json['playerColor'] as String,
       lossCause: json['lossCause'] as String?,
     );
   }

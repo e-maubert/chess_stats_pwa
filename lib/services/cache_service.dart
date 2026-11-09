@@ -6,7 +6,7 @@ class CacheService {
   // v2 : ajout de `countryGames` (stats par pays filtrables par cadence) ;
   // les entrées en cache de l'ancien format ne contiennent pas ces données.
   // v3 : ajout de `lossCause` dans `countryGames` (répartition des défaites).
-  static const String _statsPrefix = 'chess_stats_v3_';
+  static const String _statsPrefix = 'chess_stats_v4_';
   static const Duration _cacheDuration = Duration(hours: 1);
 
   Future<void> cacheStats(String username, ChessStats stats) async {
