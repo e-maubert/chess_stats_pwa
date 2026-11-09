@@ -145,6 +145,7 @@ class ChessApiService {
         timeClass: game['time_class']?.toString() ?? '',
         result: result,
         playerColor: isWhite ? 'white' : 'black',
+        opening: openingName,
         lossCause: result == 'loss'
             ? LossStatsService.lossCause(game[isWhite ? 'white' : 'black']['result']?.toString())
             : null,

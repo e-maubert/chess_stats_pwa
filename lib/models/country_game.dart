@@ -14,6 +14,10 @@ class CountryGame {
   /// Couleur jouée par le joueur : 'white' ou 'black'.
   final String playerColor;
 
+  /// Nom de l'ouverture (ex. 'Sicilian-Defense-Najdorf'), 'Unknown-Opening'
+  /// si inconnue. Regroupée par famille via OpeningFamily.getFamilyName.
+  final String opening;
+
   /// Cause de la défaite ('timeout', 'checkmated', 'resigned', 'other'),
   /// null si la partie n'est pas une défaite. Voir LossStatsService.
   final String? lossCause;
@@ -24,6 +28,7 @@ class CountryGame {
     required this.timeClass,
     required this.result,
     required this.playerColor,
+    required this.opening,
     this.lossCause,
   });
 
@@ -34,6 +39,7 @@ class CountryGame {
       'timeClass': timeClass,
       'result': result,
       'playerColor': playerColor,
+      'opening': opening,
       'lossCause': lossCause,
     };
   }
@@ -45,6 +51,7 @@ class CountryGame {
       timeClass: json['timeClass'] as String,
       result: json['result'] as String,
       playerColor: json['playerColor'] as String,
+      opening: json['opening'] as String,
       lossCause: json['lossCause'] as String?,
     );
   }

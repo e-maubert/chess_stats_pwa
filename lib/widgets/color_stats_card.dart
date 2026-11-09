@@ -5,7 +5,8 @@ import '../l10n/translations.dart';
 import '../models/color_stats.dart';
 import '../models/country_game.dart';
 import '../viewmodels/color_stats_viewmodel.dart';
-import 'result_bar.dart';
+import 'result_summary.dart';
+import 'time_class_filter.dart';
 
 /// Page principale : victoires / nulles / défaites avec les blancs et avec
 /// les noirs, en barres comme sur la page des pays, filtrables par cadence.
@@ -39,11 +40,15 @@ class ColorStatsCard extends StatelessWidget {
               const SizedBox(height: 4),
               Text(l10n.countryStatsPeriod, style: Theme.of(context).textTheme.bodyMedium),
               const SizedBox(height: 12),
-              _buildTimeClassFilter(viewModel, l10n),
+              TimeClassFilter(
+                timeClasses: ColorStatsViewModel.timeClasses,
+                selected: viewModel.timeClass,
+                onSelected: viewModel.setTimeClass,
+              ),
               const SizedBox(height: 16),
-              _buildColorRow(context, translations.whiteStats, stats.white, l10n),
+              _summary(translations.whiteStats, stats.white),
               const SizedBox(height: 16),
-              _buildColorRow(context, translations.blackStats, stats.black, l10n),
+              _summary(translations.blackStats, stats.black),
             ],
           );
         },
@@ -51,75 +56,10 @@ class ColorStatsCard extends StatelessWidget {
     );
   }
 
-  String _percent(double rate) => '${(rate * 100).toStringAsFixed(0)}%';
-
-  String _timeClassLabel(String? timeClass, AppLocalizations l10n) {
-    switch (timeClass) {
-      case 'bullet':
-        return l10n.timeClassBullet;
-      case 'blitz':
-        return l10n.timeClassBlitz;
-      case 'rapid':
-        return l10n.timeClassRapid;
-      default:
-        return l10n.timeClassAll;
-    }
-  }
-
-  Widget _buildTimeClassFilter(ColorStatsViewModel viewModel, AppLocalizations l10n) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: ColorStatsViewModel.timeClasses
-          .map((timeClass) => ChoiceChip(
-                label: Text(_timeClassLabel(timeClass, l10n)),
-                selected: viewModel.timeClass == timeClass,
-                onSelected: (_) => viewModel.setTimeClass(timeClass),
-              ))
-          .toList(),
-    );
-  }
-
-  /// Une couleur : libellé + nombre de parties, barre victoires / nulles /
-  /// défaites et pourcentages.
-  Widget _buildColorRow(
-    BuildContext context,
-    String label,
-    ColorStats colorStats,
-    AppLocalizations l10n,
-  ) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(label, style: Theme.of(context).textTheme.titleSmall),
-            Text(
-              l10n.played(colorStats.totalGames),
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
-          ],
-        ),
-        const SizedBox(height: 6),
-        if (colorStats.totalGames > 0) ...[
-          ResultBar(
-            wins: colorStats.wins,
-            draws: colorStats.draws,
-            losses: colorStats.losses,
-            width: double.infinity,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            l10n.countryResultRates(
-              _percent(colorStats.winRate),
-              _percent(colorStats.drawRate),
-              _percent(colorStats.lossRate),
-            ),
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ],
-      ],
-    );
-  }
+  Widget _summary(String label, ColorStats colorStats) => ResultSummary(
+        label: label,
+        wins: colorStats.wins,
+        draws: colorStats.draws,
+        losses: colorStats.losses,
+      );
 }

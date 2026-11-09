@@ -9,6 +9,7 @@ CountryGame g(String timeClass, String result, [String? lossCause]) => CountryGa
       timeClass: timeClass,
       result: result,
       playerColor: 'white',
+      opening: 'Italian-Game',
       lossCause: lossCause,
     );
 
