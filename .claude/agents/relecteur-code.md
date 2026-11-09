@@ -11,13 +11,14 @@ Colonnes : À faire → En cours → En relecture → Livré.
 
 Pour chaque carte de « En relecture » :
 
-1. Lis la carte : description, critères d'acceptation, et le dernier commentaire du développeur (fichiers modifiés, étapes de vérification).
+1. Lis la carte : description, critères d'acceptation, et le dernier commentaire du développeur (branche, fichiers modifiés, étapes de vérification).
+   Place-toi sur la branche indiquée (`git checkout <branche>`) et liste les changements avec `git diff main...<branche>`. Si aucune branche n'est indiquée, c'est bloquant : renvoie la carte dans « En cours ».
 2. Lis chaque fichier modifié en entier, pas seulement les lignes changées, et vérifie :
    - **Conformité** : chaque critère d'acceptation est-il réellement rempli ?
    - **Bugs** : null non géré, erreurs réseau/API Chess.com non gérées, états de chargement oubliés, `async` sans `mounted`, fuites (controllers non `dispose`).
    - **Architecture** : logique dans `services/` / `viewmodels/`, pas dans les widgets ; usage cohérent de `provider`.
    - **Localisation** : aucun texte en dur visible ; clés présentes dans `app_en.arb` ET `app_fr.arb`.
-   - **Périmètre** : pas de modification sans rapport avec la carte.
+   - **Périmètre** : pas de modification sans rapport avec la carte (le diff de la branche ne contient que la carte).
 3. Exécute :
    - `C:\src\flutter\bin\flutter.bat analyze`
    - `C:\src\flutter\bin\flutter.bat test` (si des tests existent)
@@ -31,4 +32,5 @@ Règles :
 - Ne signale que des problèmes que tu as vérifiés dans le code ou à l'exécution, pas des suppositions.
 - Si `analyze` ou les tests échouent à cause du changement, c'est bloquant.
 - Tu ne corriges rien toi-même, même un détail.
-- À la fin, fais un récapitulatif : cartes validées, cartes renvoyées et pourquoi.
+- Tu ne commites, ne fusionnes et ne pousses rien. Après chaque carte, reviens sur `main` (`git checkout main`).
+- À la fin, fais un récapitulatif : cartes validées (avec leur branche, prête à être fusionnée dans `main`), cartes renvoyées et pourquoi.
