@@ -118,6 +118,10 @@
   "timeClassRapid": "Rapid",
   "noCountryData": "No games for this time control",
   "openingColumn": "Opening",
+  "ratingEvolution": "Rating progress",
+  "ratingCurrent": "Current rating",
+  "ratingSinceMonthStart": "since the first game of the month",
+  "noRatingData": "No rated games for this time control",
   "countryResultRates": "W {win} · D {draw} · L {loss}",
   "@countryResultRates": {
     "placeholders": {

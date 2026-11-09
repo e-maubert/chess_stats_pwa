@@ -118,6 +118,10 @@
   "timeClassRapid": "Rapide",
   "noCountryData": "Aucune partie pour cette cadence",
   "openingColumn": "Ouverture",
+  "ratingEvolution": "Évolution du classement",
+  "ratingCurrent": "Classement actuel",
+  "ratingSinceMonthStart": "depuis la 1re partie du mois",
+  "noRatingData": "Aucune partie classée pour cette cadence",
   "countryResultRates": "V {win} · N {draw} · D {loss}",
   "@countryResultRates": {
     "placeholders": {

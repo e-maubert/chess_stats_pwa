@@ -22,6 +22,17 @@ class CountryGame {
   /// null si la partie n'est pas une défaite. Voir LossStatsService.
   final String? lossCause;
 
+  /// Classement du joueur après la partie (champ `rating` de chess.com),
+  /// null si absent.
+  final int? rating;
+
+  /// Fin de la partie (champ `end_time`), null si absente.
+  final DateTime? endTime;
+
+  /// Partie classée (champ `rated`) : seules celles-ci font varier le
+  /// classement.
+  final bool rated;
+
   const CountryGame({
     required this.country,
     required this.opponent,
@@ -30,6 +41,9 @@ class CountryGame {
     required this.playerColor,
     required this.opening,
     this.lossCause,
+    this.rating,
+    this.endTime,
+    this.rated = true,
   });
 
   Map<String, dynamic> toJson() {
@@ -41,6 +55,9 @@ class CountryGame {
       'playerColor': playerColor,
       'opening': opening,
       'lossCause': lossCause,
+      'rating': rating,
+      'endTime': endTime?.millisecondsSinceEpoch,
+      'rated': rated,
     };
   }
 
@@ -53,6 +70,11 @@ class CountryGame {
       playerColor: json['playerColor'] as String,
       opening: json['opening'] as String,
       lossCause: json['lossCause'] as String?,
+      rating: json['rating'] as int?,
+      endTime: json['endTime'] == null
+          ? null
+          : DateTime.fromMillisecondsSinceEpoch(json['endTime'] as int),
+      rated: json['rated'] as bool? ?? true,
     );
   }
 }

@@ -326,6 +326,30 @@ abstract class AppLocalizations {
   /// **'Opening'**
   String get openingColumn;
 
+  /// No description provided for @ratingEvolution.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating progress'**
+  String get ratingEvolution;
+
+  /// No description provided for @ratingCurrent.
+  ///
+  /// In en, this message translates to:
+  /// **'Current rating'**
+  String get ratingCurrent;
+
+  /// No description provided for @ratingSinceMonthStart.
+  ///
+  /// In en, this message translates to:
+  /// **'since the first game of the month'**
+  String get ratingSinceMonthStart;
+
+  /// No description provided for @noRatingData.
+  ///
+  /// In en, this message translates to:
+  /// **'No rated games for this time control'**
+  String get noRatingData;
+
   /// No description provided for @countryResultRates.
   ///
   /// In en, this message translates to:

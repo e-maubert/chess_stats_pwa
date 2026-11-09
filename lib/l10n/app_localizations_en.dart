@@ -159,6 +159,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get openingColumn => 'Opening';
 
   @override
+  String get ratingEvolution => 'Rating progress';
+
+  @override
+  String get ratingCurrent => 'Current rating';
+
+  @override
+  String get ratingSinceMonthStart => 'since the first game of the month';
+
+  @override
+  String get noRatingData => 'No rated games for this time control';
+
+  @override
   String countryResultRates(String win, String draw, String loss) {
     return 'W $win · D $draw · L $loss';
   }
