@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import '../models/chess_stats.dart';
 import '../views/country_stats_page.dart';
 
