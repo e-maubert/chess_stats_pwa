@@ -157,7 +157,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get noCountryData => 'Aucune partie pour cette cadence';
 
   @override
-  String get openingOthers => 'Autres';
+  String get openingColumn => 'Ouverture';
 
   @override
   String countryResultRates(String win, String draw, String loss) {

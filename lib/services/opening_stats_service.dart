@@ -2,11 +2,10 @@ import '../models/country_game.dart';
 import '../models/opening_family.dart';
 import '../models/opening_family_stats.dart';
 
-class OpeningStatsService {
-  /// Nom de la ligne qui regroupe les ouvertures hors du top (libellé
-  /// traduit à l'affichage).
-  static const String others = '__others__';
+/// Colonnes de tri du tableau des ouvertures.
+enum OpeningSortKey { gamesPlayed, winRate, drawRate, lossRate }
 
+class OpeningStatsService {
   /// Victoires / nulles / défaites par famille d'ouvertures, de la plus jouée
   /// à la moins jouée (à égalité : ordre alphabétique).
   /// [timeClass] null = toutes les cadences ; [playerColor] ('white' ou
@@ -54,23 +53,34 @@ class OpeningStatsService {
       });
   }
 
-  /// Garde les [limit] premières familles (déjà triées) et regroupe les
-  /// suivantes dans une ligne [others], toujours en dernier. Pas de ligne
-  /// [others] s'il n'y a rien à regrouper.
-  static List<OpeningFamilyStats> topWithOthers(
-    List<OpeningFamilyStats> families, {
-    int limit = 5,
+  /// Trie les familles selon [key]. À égalité : la plus jouée d'abord, puis
+  /// ordre alphabétique (quel que soit le sens du tri).
+  static List<OpeningFamilyStats> sort(
+    List<OpeningFamilyStats> families,
+    OpeningSortKey key, {
+    bool descending = true,
   }) {
-    if (families.length <= limit) return families;
-    final rest = families.skip(limit);
-    return [
-      ...families.take(limit),
-      OpeningFamilyStats(
-        name: others,
-        wins: rest.fold(0, (sum, f) => sum + f.wins),
-        draws: rest.fold(0, (sum, f) => sum + f.draws),
-        losses: rest.fold(0, (sum, f) => sum + f.losses),
-      ),
-    ];
+    double value(OpeningFamilyStats f) {
+      switch (key) {
+        case OpeningSortKey.gamesPlayed:
+          return f.totalGames.toDouble();
+        case OpeningSortKey.winRate:
+          return f.winRate;
+        case OpeningSortKey.drawRate:
+          return f.drawRate;
+        case OpeningSortKey.lossRate:
+          return f.lossRate;
+      }
+    }
+
+    return List<OpeningFamilyStats>.of(families)
+      ..sort((a, b) {
+        var cmp = value(a).compareTo(value(b));
+        if (descending) cmp = -cmp;
+        if (cmp != 0) return cmp;
+        cmp = b.totalGames.compareTo(a.totalGames);
+        if (cmp != 0) return cmp;
+        return a.name.compareTo(b.name);
+      });
   }
 }

@@ -63,28 +63,29 @@ void main() {
     });
   });
 
-  group('topWithOthers', () {
-    final sorted = [
-      f('A', 5, 0, 0),
-      f('B', 4, 0, 0),
-      f('C', 3, 0, 0),
-      f('D', 1, 1, 0),
-      f('E', 0, 1, 1),
+  group('sort', () {
+    final families = [
+      f('A', 6, 0, 4), // 10 parties : 60 % V, 40 % D
+      f('B', 1, 0, 0), // 1 partie : 100 % V
+      f('C', 0, 1, 2), // 3 parties : 33 % N, 67 % D
+      f('D', 0, 0, 1), // 1 partie : 100 % D
+      f('E', 0, 0, 3), // 3 parties : 100 % D
     ];
+    List<String> names(List<OpeningFamilyStats> list) => list.map((f) => f.name).toList();
 
-    test('regroupe au-delà de la limite dans « Autres », en dernier', () {
-      final result = OpeningStatsService.topWithOthers(sorted, limit: 2);
-      expect(result.map((f) => f.name), ['A', 'B', OpeningStatsService.others]);
-      final others = result.last;
-      expect(others.wins, 4);
-      expect(others.draws, 2);
-      expect(others.losses, 1);
-      expect(others.totalGames, 7);
+    test('par parties jouées, décroissant puis croissant', () {
+      expect(names(OpeningStatsService.sort(families, OpeningSortKey.gamesPlayed)),
+          ['A', 'C', 'E', 'B', 'D']);
+      expect(
+          names(OpeningStatsService.sort(families, OpeningSortKey.gamesPlayed, descending: false)),
+          ['B', 'D', 'C', 'E', 'A']);
     });
 
-    test('pas de ligne « Autres » quand tout tient dans la limite', () {
-      expect(OpeningStatsService.topWithOthers(sorted, limit: 5), sorted);
-      expect(OpeningStatsService.topWithOthers([], limit: 5), isEmpty);
+    test('par taux ; à égalité la plus jouée passe devant', () {
+      expect(names(OpeningStatsService.sort(families, OpeningSortKey.lossRate)),
+          ['E', 'D', 'C', 'A', 'B']);
+      expect(names(OpeningStatsService.sort(families, OpeningSortKey.winRate)).take(2), ['B', 'A']);
+      expect(names(OpeningStatsService.sort(families, OpeningSortKey.drawRate)).first, 'C');
     });
   });
 
@@ -102,13 +103,17 @@ void main() {
     expect(notified, 1);
   });
 
-  test('le viewmodel limite à 5 ouvertures + « Autres » par couleur', () {
-    final many = [
-      for (final name in ['A-a', 'B-b', 'C-c', 'D-d', 'E-e', 'F-f', 'G-g']) g(name, 'blitz', 'win'),
-    ];
-    final white = OpeningStatsViewModel(many).white;
-    expect(white.length, OpeningStatsViewModel.topCount + 1);
-    expect(white.last.name, OpeningStatsService.others);
-    expect(white.last.totalGames, 2);
+  test('le viewmodel trie les deux tableaux ; re-clic inverse le sens', () {
+    final viewModel = OpeningStatsViewModel(games);
+    expect(viewModel.sortKey, OpeningSortKey.gamesPlayed);
+
+    viewModel.sortBy(OpeningSortKey.lossRate);
+    expect(viewModel.descending, isTrue);
+    expect(viewModel.black.first.name, 'Sicilian-Defense'); // 100 % D
+    expect(viewModel.white.last.name, 'Reti-Opening'); // 0 % D
+
+    viewModel.sortBy(OpeningSortKey.lossRate);
+    expect(viewModel.descending, isFalse);
+    expect(viewModel.black.first.name, 'French-Defense');
   });
 }
