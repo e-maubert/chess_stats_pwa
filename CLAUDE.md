@@ -18,9 +18,7 @@ C:\src\flutter\bin\flutter.bat test
 
 ## État connu de `flutter analyze`
 
-Il reste 1 erreur préexistante, dans du **code mort** que `main.dart` n'atteint pas : `lib/views/stats_page.dart` (`topOpenings` inexistant ; seul `lib/views/search_page.dart` l'importe, et rien n'importe `search_page.dart`).
-
-Ne pas la compter comme une régression. Une modification ne doit **pas en ajouter** d'autres.
+Aucun problème (« No issues found! »). Une modification ne doit **pas en ajouter**.
 
 ## Architecture
 
@@ -31,7 +29,7 @@ Point d'entrée : `lib/main.dart` → `screens/home_screen.dart` (recherche) →
 | `models/` | Données (`ChessStats`, `CountryGame` = une partie avec pays, cadence, résultat, cause de défaite…) |
 | `services/` | Appels à l'API chess.com, cache, calculs/agrégations (`country_stats_service`, `loss_stats_service`) |
 | `viewmodels/` | État d'écran (filtres de cadence, tri) en `ChangeNotifier` |
-| `screens/`, `views/`, `widgets/` | Affichage uniquement, aucune logique métier |
+| `screens/`, `widgets/` | Affichage uniquement, aucune logique métier |
 
 - État géré avec `provider` (`ChangeNotifierProvider` + `Consumer`).
 - Graphiques avec `fl_chart`.
