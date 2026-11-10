@@ -1,7 +1,7 @@
 # Chess Stats PWA
 
 Application web (PWA) Flutter qui affiche les statistiques d'un joueur chess.com pour le **mois en cours** : par couleur, par ouverture, par pays des adversaires, et répartition des défaites par cause.
-Pour l'instant, l'interface est uniquement en **français**.
+L'interface est en **français** ou en **anglais**, selon la langue du navigateur.
 
 ## Commandes
 
@@ -18,11 +18,9 @@ C:\src\flutter\bin\flutter.bat test
 
 ## État connu de `flutter analyze`
 
-Il reste 2 erreurs préexistantes, dans du **code mort** que `main.dart` n'atteint pas :
-- `lib/l10n/translations_delegate.dart` (importé nulle part) ;
-- `lib/views/stats_page.dart` et `lib/views/search_page.dart` (`topOpenings` inexistant ; rien n'importe `search_page.dart`).
+Il reste 1 erreur préexistante, dans du **code mort** que `main.dart` n'atteint pas : `lib/views/stats_page.dart` (`topOpenings` inexistant ; seul `lib/views/search_page.dart` l'importe, et rien n'importe `search_page.dart`).
 
-Ne pas les compter comme des régressions. Une modification ne doit **pas en ajouter** d'autres.
+Ne pas la compter comme une régression. Une modification ne doit **pas en ajouter** d'autres.
 
 ## Architecture
 
@@ -42,13 +40,14 @@ Point d'entrée : `lib/main.dart` → `screens/home_screen.dart` (recherche) →
 
 ## Localisation
 
-Deux systèmes coexistent :
-- **`lib/l10n/translations.dart`** (classe `Translations`, locale fixée à `fr`) : utilisé par les écrans historiques.
-- **Fichiers `.arb`** (`lib/l10n/app_en.arb`, `lib/l10n/app_fr.arb`, classe générée `AppLocalizations`) : utilisés par les fonctionnalités récentes. Leur locale est forcée sur celle de `Translations` dans `main.dart`, pour que toute l'app reste dans la même langue quel que soit le navigateur.
+Un seul système : fichiers **`.arb`** (`lib/l10n/app_en.arb`, `lib/l10n/app_fr.arb`) et classe générée `AppLocalizations` (`AppLocalizations.of(context)!`).
+- La langue suit celle du navigateur ; une langue non prise en charge retombe sur l'anglais (première de `preferred-supported-locales` dans `l10n.yaml`). `main.dart` n'impose aucune `locale`.
+- Après une modification des `.arb`, régénérer : `C:\src\flutter\bin\flutter.bat gen-l10n` (les fichiers générés sont versionnés).
+- Ajouter une langue : créer `lib/l10n/app_<code>.arb` avec toutes les clés de `app_en.arb`, puis régénérer.
 
 Règles :
 - Aucun texte visible en dur dans le code.
-- Toute nouvelle clé va dans `app_en.arb` **et** dans `app_fr.arb`.
+- Toute nouvelle clé va dans `app_en.arb` **et** dans `app_fr.arb` (et dans chaque autre langue ajoutée).
 
 ## Tests
 

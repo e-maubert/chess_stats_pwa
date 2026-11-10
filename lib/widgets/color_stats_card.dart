@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import '../l10n/translations.dart';
 import '../models/color_stats.dart';
 import '../models/country_game.dart';
 import '../viewmodels/color_stats_viewmodel.dart';
@@ -18,7 +17,6 @@ class ColorStatsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final translations = Provider.of<Translations>(context);
 
     return ChangeNotifierProvider(
       // Nouvelle liste (ex. après « Actualiser ») => nouveau viewmodel.
@@ -32,7 +30,7 @@ class ColorStatsCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                translations.colorStats,
+                l10n.colorStats,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -46,9 +44,9 @@ class ColorStatsCard extends StatelessWidget {
                 onSelected: viewModel.setTimeClass,
               ),
               const SizedBox(height: 16),
-              _summary(translations.whiteStats, stats.white),
+              _summary(l10n.withWhite, stats.white),
               const SizedBox(height: 16),
-              _summary(translations.blackStats, stats.black),
+              _summary(l10n.withBlack, stats.black),
             ],
           );
         },

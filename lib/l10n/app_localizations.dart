@@ -101,13 +101,13 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'Chess Stats PWA'**
+  /// **'Chess Stats'**
   String get appTitle;
 
   /// No description provided for @enterUsername.
   ///
   /// In en, this message translates to:
-  /// **'Enter Chess.com username'**
+  /// **'Enter your Chess.com username'**
   String get enterUsername;
 
   /// No description provided for @username.
@@ -151,6 +151,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Retry'**
   String get retry;
+
+  /// No description provided for @errorFetchingStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Error fetching statistics'**
+  String get errorFetchingStats;
+
+  /// No description provided for @playedOpenings.
+  ///
+  /// In en, this message translates to:
+  /// **'Played openings'**
+  String get playedOpenings;
 
   /// No description provided for @errorLoadingStats.
   ///

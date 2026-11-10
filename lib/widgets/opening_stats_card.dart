@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import '../l10n/translations.dart';
 import '../models/country_game.dart';
 import '../models/opening_family_stats.dart';
 import '../services/opening_stats_service.dart';
@@ -21,7 +20,6 @@ class OpeningStatsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final translations = Provider.of<Translations>(context);
 
     return ChangeNotifierProvider(
       // Nouvelle liste (ex. après « Actualiser ») => nouveau viewmodel.
@@ -33,7 +31,7 @@ class OpeningStatsCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                translations.playedOpenings,
+                l10n.playedOpenings,
                 style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -47,9 +45,9 @@ class OpeningStatsCard extends StatelessWidget {
                 onSelected: viewModel.setTimeClass,
               ),
               const SizedBox(height: 16),
-              ..._colorBlock(context, translations.whiteStats, viewModel, viewModel.white, l10n),
+              ..._colorBlock(context, l10n.withWhite, viewModel, viewModel.white, l10n),
               const SizedBox(height: 24),
-              ..._colorBlock(context, translations.blackStats, viewModel, viewModel.black, l10n),
+              ..._colorBlock(context, l10n.withBlack, viewModel, viewModel.black, l10n),
             ],
           );
         },
