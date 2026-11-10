@@ -153,6 +153,25 @@
       }
     }
   },
+  "timeManagement": "Time management in losses",
+  "timeGapAverage": "Average clock gap with the opponent at the end of the game",
+  "timeBehind": "Behind on the clock",
+  "timeBalanced": "Even on the clock",
+  "timeAhead": "Ahead on the clock",
+  "timeThresholdNote": "Significant gap: more than 10% of the initial time",
+  "resignationsUnderPressure": "Resignations under time pressure",
+  "resignationsUnderPressureNote": "Behind on the clock, with less than 10% of the initial time",
+  "resignationsUnderPressureValue": "{count} of {total}",
+  "@resignationsUnderPressureValue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "countryUnknown": "Unknown country",
   "countryKZ": "Kazakhstan",
   "countryUS": "United States",

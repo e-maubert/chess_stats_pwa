@@ -398,6 +398,60 @@ abstract class AppLocalizations {
   /// **'{count} ({percent})'**
   String lossCauseValue(int count, String percent);
 
+  /// No description provided for @timeManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Time management in losses'**
+  String get timeManagement;
+
+  /// No description provided for @timeGapAverage.
+  ///
+  /// In en, this message translates to:
+  /// **'Average clock gap with the opponent at the end of the game'**
+  String get timeGapAverage;
+
+  /// No description provided for @timeBehind.
+  ///
+  /// In en, this message translates to:
+  /// **'Behind on the clock'**
+  String get timeBehind;
+
+  /// No description provided for @timeBalanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Even on the clock'**
+  String get timeBalanced;
+
+  /// No description provided for @timeAhead.
+  ///
+  /// In en, this message translates to:
+  /// **'Ahead on the clock'**
+  String get timeAhead;
+
+  /// No description provided for @timeThresholdNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Significant gap: more than 10% of the initial time'**
+  String get timeThresholdNote;
+
+  /// No description provided for @resignationsUnderPressure.
+  ///
+  /// In en, this message translates to:
+  /// **'Resignations under time pressure'**
+  String get resignationsUnderPressure;
+
+  /// No description provided for @resignationsUnderPressureNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Behind on the clock, with less than 10% of the initial time'**
+  String get resignationsUnderPressureNote;
+
+  /// No description provided for @resignationsUnderPressureValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} of {total}'**
+  String resignationsUnderPressureValue(int count, int total);
+
   /// No description provided for @countryUnknown.
   ///
   /// In en, this message translates to:

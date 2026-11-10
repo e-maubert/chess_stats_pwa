@@ -200,6 +200,38 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get timeManagement => 'Gestion du temps sur les défaites';
+
+  @override
+  String get timeGapAverage =>
+      'Écart de temps moyen avec l\'adversaire en fin de partie';
+
+  @override
+  String get timeBehind => 'En retard au temps';
+
+  @override
+  String get timeBalanced => 'Temps équilibré';
+
+  @override
+  String get timeAhead => 'En avance au temps';
+
+  @override
+  String get timeThresholdNote =>
+      'Écart important : plus de 10 % du temps initial';
+
+  @override
+  String get resignationsUnderPressure => 'Abandons sous pression du temps';
+
+  @override
+  String get resignationsUnderPressureNote =>
+      'En retard au temps, avec moins de 10 % du temps initial';
+
+  @override
+  String resignationsUnderPressureValue(int count, int total) {
+    return '$count sur $total';
+  }
+
+  @override
   String get countryUnknown => 'Pays inconnu';
 
   @override

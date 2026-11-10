@@ -153,6 +153,25 @@
       }
     }
   },
+  "timeManagement": "Gestion du temps sur les défaites",
+  "timeGapAverage": "Écart de temps moyen avec l'adversaire en fin de partie",
+  "timeBehind": "En retard au temps",
+  "timeBalanced": "Temps équilibré",
+  "timeAhead": "En avance au temps",
+  "timeThresholdNote": "Écart important : plus de 10 % du temps initial",
+  "resignationsUnderPressure": "Abandons sous pression du temps",
+  "resignationsUnderPressureNote": "En retard au temps, avec moins de 10 % du temps initial",
+  "resignationsUnderPressureValue": "{count} sur {total}",
+  "@resignationsUnderPressureValue": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
   "countryUnknown": "Pays inconnu",
   "countryKZ": "Kazakhstan",
   "countryUS": "États-Unis",
