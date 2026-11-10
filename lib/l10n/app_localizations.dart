@@ -104,6 +104,12 @@ abstract class AppLocalizations {
   /// **'Chess Stats'**
   String get appTitle;
 
+  /// No description provided for @appLogo.
+  ///
+  /// In en, this message translates to:
+  /// **'Chess Stats logo'**
+  String get appLogo;
+
   /// No description provided for @enterUsername.
   ///
   /// In en, this message translates to:

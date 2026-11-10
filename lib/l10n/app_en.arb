@@ -1,5 +1,6 @@
 {
   "appTitle": "Chess Stats",
+  "appLogo": "Chess Stats logo",
   "enterUsername": "Enter your Chess.com username",
   "search": "Search",
   "refresh": "Refresh",

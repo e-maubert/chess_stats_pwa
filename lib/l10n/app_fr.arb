@@ -1,5 +1,6 @@
 {
   "appTitle": "Statistiques d'échecs",
+  "appLogo": "Logo Statistiques d'échecs",
   "enterUsername": "Entrez votre nom d'utilisateur Chess.com",
   "search": "Rechercher",
   "refresh": "Actualiser",
