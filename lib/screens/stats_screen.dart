@@ -41,7 +41,12 @@ class _StatsScreenState extends State<StatsScreen> {
           children: [
             const AppLogo(size: 32, decorative: true),
             const SizedBox(width: 10),
-            Text(l10n.appTitle),
+            Flexible(
+              child: Text(
+                l10n.statsTitle(widget.stats.username),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ],
         ),
         actions: [

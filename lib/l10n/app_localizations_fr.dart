@@ -9,10 +9,15 @@ class AppLocalizationsFr extends AppLocalizations {
   AppLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
-  String get appTitle => 'Statistiques d\'échecs';
+  String get appTitle => 'Chess Stats';
 
   @override
-  String get appLogo => 'Logo Statistiques d\'échecs';
+  String get appLogo => 'Logo Chess Stats';
+
+  @override
+  String statsTitle(String username) {
+    return 'Chess Stats : $username';
+  }
 
   @override
   String get enterUsername => 'Entrez votre nom d\'utilisateur Chess.com';

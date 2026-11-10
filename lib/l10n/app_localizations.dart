@@ -110,6 +110,12 @@ abstract class AppLocalizations {
   /// **'Chess Stats logo'**
   String get appLogo;
 
+  /// Titre de la page de statistiques, avec le pseudo du joueur
+  ///
+  /// In en, this message translates to:
+  /// **'Chess Stats: {username}'**
+  String statsTitle(String username);
+
   /// No description provided for @enterUsername.
   ///
   /// In en, this message translates to:

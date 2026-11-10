@@ -1,6 +1,13 @@
 {
   "appTitle": "Chess Stats",
   "appLogo": "Chess Stats logo",
+  "statsTitle": "Chess Stats: {username}",
+  "@statsTitle": {
+    "description": "Titre de la page de statistiques, avec le pseudo du joueur",
+    "placeholders": {
+      "username": {"type": "String"}
+    }
+  },
   "enterUsername": "Enter your Chess.com username",
   "search": "Search",
   "refresh": "Refresh",
