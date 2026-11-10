@@ -1,5 +1,6 @@
 import 'package:chess_stats_pwa/main.dart';
 import 'package:chess_stats_pwa/services/theme_preference_service.dart';
+import 'package:chess_stats_pwa/theme/app_theme.dart';
 import 'package:chess_stats_pwa/viewmodels/theme_viewmodel.dart';
 import 'package:chess_stats_pwa/widgets/theme_toggle_button.dart';
 import 'package:flutter/material.dart';
@@ -56,6 +57,12 @@ void main() {
       await tester.pumpAndSettle();
       expect(brightnessOf(tester), Brightness.dark);
       expect(find.byIcon(Icons.light_mode), findsOneWidget);
+      // Fond gris neutre #191919, pas le noir bleuté par défaut.
+      final scaffold = tester.widget<Scaffold>(find.byType(Scaffold));
+      final background = scaffold.backgroundColor ??
+          Theme.of(tester.element(find.byType(Scaffold))).scaffoldBackgroundColor;
+      expect(background, AppTheme.darkBackground);
+      expect(AppTheme.darkBackground, const Color(0xFF191919));
     });
 
     testWidgets('le bouton bascule le thème', (tester) async {
