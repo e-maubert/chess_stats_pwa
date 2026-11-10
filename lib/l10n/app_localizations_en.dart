@@ -12,6 +12,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get appTitle => 'Chess Stats';
 
   @override
+  String get appLogo => 'Chess Stats logo';
+
+  @override
   String get enterUsername => 'Enter your Chess.com username';
 
   @override

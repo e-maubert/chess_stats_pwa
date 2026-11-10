@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/chess_api_service.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
+import '../widgets/app_logo.dart';
 import '../widgets/theme_toggle_button.dart';
 import 'stats_screen.dart';
 
@@ -66,6 +67,8 @@ class HomeScreenState extends State<HomeScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const AppLogo(size: 120),
+            const SizedBox(height: 24),
             Text(
               l10n.enterUsername,
               style: Theme.of(context).textTheme.titleLarge,

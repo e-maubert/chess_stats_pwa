@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/chess_stats.dart';
 import '../services/chess_api_service.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
+import '../widgets/app_logo.dart';
 import '../widgets/stats_display.dart';
 import '../widgets/theme_toggle_button.dart';
 
@@ -35,7 +36,14 @@ class _StatsScreenState extends State<StatsScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.appTitle),
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const AppLogo(size: 32, decorative: true),
+            const SizedBox(width: 10),
+            Text(l10n.appTitle),
+          ],
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
