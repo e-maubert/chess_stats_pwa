@@ -398,6 +398,42 @@ abstract class AppLocalizations {
   /// **'{count} ({percent})'**
   String lossCauseValue(int count, String percent);
 
+  /// No description provided for @timeManagement.
+  ///
+  /// In en, this message translates to:
+  /// **'Time management in losses'**
+  String get timeManagement;
+
+  /// No description provided for @timeGapAverage.
+  ///
+  /// In en, this message translates to:
+  /// **'When you lose, this is your average clock gap with the opponent at the end of the game:'**
+  String get timeGapAverage;
+
+  /// No description provided for @timeBehind.
+  ///
+  /// In en, this message translates to:
+  /// **'Behind on the clock'**
+  String get timeBehind;
+
+  /// No description provided for @timeBalanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Even on the clock'**
+  String get timeBalanced;
+
+  /// No description provided for @timeAhead.
+  ///
+  /// In en, this message translates to:
+  /// **'Ahead on the clock'**
+  String get timeAhead;
+
+  /// No description provided for @timeThresholdNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Significant gap: more than 10% of the initial time'**
+  String get timeThresholdNote;
+
   /// No description provided for @countryUnknown.
   ///
   /// In en, this message translates to:

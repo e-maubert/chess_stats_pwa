@@ -199,6 +199,26 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get timeManagement => 'Time management in losses';
+
+  @override
+  String get timeGapAverage =>
+      'When you lose, this is your average clock gap with the opponent at the end of the game:';
+
+  @override
+  String get timeBehind => 'Behind on the clock';
+
+  @override
+  String get timeBalanced => 'Even on the clock';
+
+  @override
+  String get timeAhead => 'Ahead on the clock';
+
+  @override
+  String get timeThresholdNote =>
+      'Significant gap: more than 10% of the initial time';
+
+  @override
   String get countryUnknown => 'Unknown country';
 
   @override

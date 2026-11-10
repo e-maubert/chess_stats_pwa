@@ -7,6 +7,7 @@ import '../models/color_stats.dart';
 import '../models/country_game.dart';
 import 'cache_service.dart';
 import 'loss_stats_service.dart';
+import 'time_management_service.dart';
 
 class ChessApiService {
   static const String baseUrl = 'https://api.chess.com/pub/player';
@@ -139,6 +140,14 @@ class ChessApiService {
 
       // Update country stats
       final country = await _updateCountryStats(countryStats, opponentUsername, result);
+      final lossCause = result == 'loss'
+          ? LossStatsService.lossCause(game[isWhite ? 'white' : 'black']['result']?.toString())
+          : null;
+      final baseTime = TimeManagementService.baseTime(game['time_control']?.toString());
+      final clocks = TimeManagementService.lastClocks(game['pgn'] as String? ?? '');
+      // Pendule absente pour une couleur qui n'a pas joué : temps initial.
+      final whiteClock = clocks.white ?? baseTime?.toDouble();
+      final blackClock = clocks.black ?? baseTime?.toDouble();
       countryGames.add(CountryGame(
         country: country,
         opponent: opponentUsername,
@@ -146,14 +155,19 @@ class ChessApiService {
         result: result,
         playerColor: isWhite ? 'white' : 'black',
         opening: openingName,
-        lossCause: result == 'loss'
-            ? LossStatsService.lossCause(game[isWhite ? 'white' : 'black']['result']?.toString())
-            : null,
+        lossCause: lossCause,
         rating: (game[isWhite ? 'white' : 'black']['rating'] as num?)?.toInt(),
         endTime: game['end_time'] is num
             ? DateTime.fromMillisecondsSinceEpoch((game['end_time'] as num).toInt() * 1000)
             : null,
         rated: game['rated'] as bool? ?? true,
+        // Perdue au temps : notre pendule est à 0 (le PGN garde la valeur
+        // après notre dernier coup).
+        playerClock: lossCause == LossStatsService.timeout
+            ? 0
+            : (isWhite ? whiteClock : blackClock),
+        opponentClock: isWhite ? blackClock : whiteClock,
+        baseTime: baseTime,
       ));
     }
 

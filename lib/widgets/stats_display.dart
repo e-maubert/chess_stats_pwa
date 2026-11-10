@@ -5,6 +5,7 @@ import 'country_stats_card.dart';
 import 'loss_breakdown_card.dart';
 import 'opening_stats_card.dart';
 import 'rating_history_card.dart';
+import 'time_management_card.dart';
 
 class StatsDisplay extends StatelessWidget {
   final ChessStats stats;
@@ -21,6 +22,8 @@ class StatsDisplay extends StatelessWidget {
         RatingHistoryCard(games: stats.countryGames),
         const SizedBox(height: 24),
         LossBreakdownCard(games: stats.countryGames),
+        const SizedBox(height: 24),
+        TimeManagementCard(games: stats.countryGames),
         const SizedBox(height: 24),
         OpeningStatsCard(games: stats.countryGames),
         const SizedBox(height: 24),

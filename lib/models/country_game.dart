@@ -33,6 +33,15 @@ class CountryGame {
   /// classement.
   final bool rated;
 
+  /// Temps restant en fin de partie (secondes), lu dans le PGN : le nôtre
+  /// (0 si perdue au temps) et celui de l'adversaire. null si inconnu.
+  final double? playerClock;
+  final double? opponentClock;
+
+  /// Temps initial de la cadence en secondes (« 180+2 » => 180), null pour
+  /// les parties par correspondance.
+  final int? baseTime;
+
   const CountryGame({
     required this.country,
     required this.opponent,
@@ -44,6 +53,9 @@ class CountryGame {
     this.rating,
     this.endTime,
     this.rated = true,
+    this.playerClock,
+    this.opponentClock,
+    this.baseTime,
   });
 
   Map<String, dynamic> toJson() {
@@ -58,6 +70,9 @@ class CountryGame {
       'rating': rating,
       'endTime': endTime?.millisecondsSinceEpoch,
       'rated': rated,
+      'playerClock': playerClock,
+      'opponentClock': opponentClock,
+      'baseTime': baseTime,
     };
   }
 
@@ -75,6 +90,9 @@ class CountryGame {
           ? null
           : DateTime.fromMillisecondsSinceEpoch(json['endTime'] as int),
       rated: json['rated'] as bool? ?? true,
+      playerClock: (json['playerClock'] as num?)?.toDouble(),
+      opponentClock: (json['opponentClock'] as num?)?.toDouble(),
+      baseTime: json['baseTime'] as int?,
     );
   }
 }

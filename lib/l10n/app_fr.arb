@@ -153,6 +153,12 @@
       }
     }
   },
+  "timeManagement": "Gestion du temps sur les défaites",
+  "timeGapAverage": "Lorsque vous perdez, voici votre écart de temps moyen avec l'adversaire en fin de partie :",
+  "timeBehind": "En retard au temps",
+  "timeBalanced": "Temps équilibré",
+  "timeAhead": "En avance au temps",
+  "timeThresholdNote": "Écart important : plus de 10 % du temps initial",
   "countryUnknown": "Pays inconnu",
   "countryKZ": "Kazakhstan",
   "countryUS": "États-Unis",
