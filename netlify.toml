@@ -1,0 +1,23 @@
+# Hébergement de la version de test sur Netlify.
+# Netlify n'a pas Flutter : on compile en local, puis on envoie build/web
+# (voir « Mise en ligne » dans CLAUDE.md).
+
+[build]
+  publish = "build/web"
+
+# Toujours revalider la page et le code de l'appli, pour que les testeurs
+# aient la dernière version sans vider leur cache.
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/manifest.json"
+  [headers.values]
+    Cache-Control = "no-cache"

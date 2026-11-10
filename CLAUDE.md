@@ -53,6 +53,21 @@ Règles :
 
 Dans `test/`. Mettre la logique testable (agrégations, tri, filtres) dans `services/` ou `viewmodels/` et la couvrir par un test.
 
+## Mise en ligne (version de test, Netlify)
+
+Netlify n'a pas Flutter : on compile en local et on envoie le dossier `build/web` (config : `netlify.toml`).
+Uniquement à la demande de l'utilisateur, depuis `main`.
+
+```
+rm -rf build/web
+C:\src\flutter\bin\flutter.bat build web --release
+npx netlify-cli deploy --prod --dir build/web
+```
+
+- Toujours supprimer `build/web` avant de compiler : un build incrémental peut oublier des fichiers de `web/` (ex. `manifest.json`).
+- `npx netlify-cli login` une première fois (connexion au compte Netlify de l'utilisateur, dans le navigateur), puis `npx netlify-cli link` pour relier le dossier au site.
+- Logo et icônes : sources dans `design/`, PNG régénérés par `tool/generate_icons.ps1`.
+
 ## Workflow des agents (Trello)
 
 Tableau « Retours client – Chess Stats » : https://trello.com/b/xJvUOeeJ/retours-client-chess-stats
