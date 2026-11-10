@@ -1,6 +1,6 @@
 {
-  "appTitle": "Chess Stats PWA",
-  "enterUsername": "Enter Chess.com username",
+  "appTitle": "Chess Stats",
+  "enterUsername": "Enter your Chess.com username",
   "username": "Username",
   "search": "Search",
   "pleaseEnterUsername": "Please enter a username",
@@ -15,6 +15,8 @@
   "refresh": "Refresh",
   "forceRefresh": "Force refresh",
   "retry": "Retry",
+  "errorFetchingStats": "Error fetching statistics",
+  "playedOpenings": "Played openings",
   "errorLoadingStats": "Error loading statistics: {error}",
   "@errorLoadingStats": {
     "placeholders": {

@@ -1,6 +1,6 @@
 {
-  "appTitle": "Chess Stats PWA",
-  "enterUsername": "Entrez le nom d'utilisateur Chess.com",
+  "appTitle": "Statistiques d'échecs",
+  "enterUsername": "Entrez votre nom d'utilisateur Chess.com",
   "username": "Nom d'utilisateur",
   "search": "Rechercher",
   "pleaseEnterUsername": "Veuillez entrer un nom d'utilisateur",
@@ -12,9 +12,11 @@
       }
     }
   },
-  "refresh": "Rafraîchir",
+  "refresh": "Actualiser",
   "forceRefresh": "Forcer le rafraîchissement",
   "retry": "Réessayer",
+  "errorFetchingStats": "Erreur lors de la récupération des statistiques",
+  "playedOpenings": "Ouvertures jouées",
   "errorLoadingStats": "Erreur lors du chargement des statistiques: {error}",
   "@errorLoadingStats": {
     "placeholders": {

@@ -9,10 +9,10 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Chess Stats PWA';
+  String get appTitle => 'Chess Stats';
 
   @override
-  String get enterUsername => 'Enter Chess.com username';
+  String get enterUsername => 'Enter your Chess.com username';
 
   @override
   String get username => 'Username';
@@ -36,6 +36,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get retry => 'Retry';
+
+  @override
+  String get errorFetchingStats => 'Error fetching statistics';
+
+  @override
+  String get playedOpenings => 'Played openings';
 
   @override
   String errorLoadingStats(String error) {

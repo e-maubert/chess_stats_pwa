@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../services/chess_api_service.dart';
-import '../l10n/translations.dart';
+import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import 'stats_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -41,7 +40,7 @@ class HomeScreenState extends State<HomeScreen> {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(Provider.of<Translations>(context).errorFetchingStats),
+          content: Text(AppLocalizations.of(context)!.errorFetchingStats),
           backgroundColor: Colors.red,
         ),
       );
@@ -54,11 +53,11 @@ class HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final translations = Provider.of<Translations>(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(translations.appTitle),
+        title: Text(l10n.appTitle),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -66,7 +65,7 @@ class HomeScreenState extends State<HomeScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              translations.enterUsername,
+              l10n.enterUsername,
               style: Theme.of(context).textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
@@ -74,7 +73,7 @@ class HomeScreenState extends State<HomeScreen> {
             TextField(
               controller: _usernameController,
               decoration: InputDecoration(
-                hintText: translations.enterUsername,
+                hintText: l10n.enterUsername,
                 border: const OutlineInputBorder(),
               ),
               onSubmitted: (_) => _searchUser(),
@@ -88,7 +87,7 @@ class HomeScreenState extends State<HomeScreen> {
                       height: 20,
                       child: CircularProgressIndicator(strokeWidth: 2),
                     )
-                  : Text(translations.search),
+                  : Text(l10n.search),
             ),
           ],
         ),

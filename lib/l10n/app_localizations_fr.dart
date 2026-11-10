@@ -9,10 +9,10 @@ class AppLocalizationsFr extends AppLocalizations {
   AppLocalizationsFr([String locale = 'fr']) : super(locale);
 
   @override
-  String get appTitle => 'Chess Stats PWA';
+  String get appTitle => 'Statistiques d\'échecs';
 
   @override
-  String get enterUsername => 'Entrez le nom d\'utilisateur Chess.com';
+  String get enterUsername => 'Entrez votre nom d\'utilisateur Chess.com';
 
   @override
   String get username => 'Nom d\'utilisateur';
@@ -29,13 +29,20 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get refresh => 'Rafraîchir';
+  String get refresh => 'Actualiser';
 
   @override
   String get forceRefresh => 'Forcer le rafraîchissement';
 
   @override
   String get retry => 'Réessayer';
+
+  @override
+  String get errorFetchingStats =>
+      'Erreur lors de la récupération des statistiques';
+
+  @override
+  String get playedOpenings => 'Ouvertures jouées';
 
   @override
   String errorLoadingStats(String error) {

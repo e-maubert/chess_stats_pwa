@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../models/chess_stats.dart';
 import '../services/chess_api_service.dart';
-import '../l10n/translations.dart';
+import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import '../widgets/stats_display.dart';
 
 class StatsScreen extends StatefulWidget {
@@ -31,16 +30,16 @@ class _StatsScreenState extends State<StatsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final translations = Provider.of<Translations>(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(translations.appTitle),
+        title: Text(l10n.appTitle),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: _refreshStats,
-            tooltip: translations.refresh,
+            tooltip: l10n.refresh,
           ),
         ],
       ),
@@ -57,14 +56,14 @@ class _StatsScreenState extends State<StatsScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    translations.errorFetchingStats,
+                    l10n.errorFetchingStats,
                     style: Theme.of(context).textTheme.titleMedium,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: _refreshStats,
-                    child: Text(translations.retry),
+                    child: Text(l10n.retry),
                   ),
                 ],
               ),

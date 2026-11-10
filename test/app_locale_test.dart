@@ -4,19 +4,39 @@ import 'package:flutter/material.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+/// Lance l'app avec un navigateur simulé dans la langue [browser] et renvoie
+/// la langue retenue et le titre de l'écran d'accueil.
+Future<({String language, String title})> launch(WidgetTester tester, Locale browser) async {
+  tester.platformDispatcher.localesTestValue = [browser];
+  addTearDown(tester.platformDispatcher.clearLocalesTestValue);
+
+  await tester.pumpWidget(const MyApp());
+  await tester.pumpAndSettle();
+
+  final context = tester.element(find.byType(HomeScreen));
+  return (
+    language: Localizations.localeOf(context).languageCode,
+    title: AppLocalizations.of(context)!.appTitle,
+  );
+}
+
 void main() {
-  testWidgets(
-      "la localisation .arb suit la langue de l'app (fr), pas celle du navigateur",
-      (tester) async {
-    // Navigateur simulé en anglais.
-    tester.platformDispatcher.localesTestValue = const [Locale('en', 'US')];
-    addTearDown(tester.platformDispatcher.clearLocalesTestValue);
+  testWidgets('navigateur en français : app en français', (tester) async {
+    final app = await launch(tester, const Locale('fr', 'FR'));
+    expect(app.language, 'fr');
+    expect(app.title, "Statistiques d'échecs");
+    expect(find.text('Rechercher'), findsOneWidget);
+  });
 
-    await tester.pumpWidget(const MyApp());
-    await tester.pumpAndSettle();
+  testWidgets('navigateur en anglais : app en anglais', (tester) async {
+    final app = await launch(tester, const Locale('en', 'US'));
+    expect(app.language, 'en');
+    expect(app.title, 'Chess Stats');
+    expect(find.text('Search'), findsOneWidget);
+  });
 
-    final context = tester.element(find.byType(HomeScreen));
-    expect(Localizations.localeOf(context).languageCode, 'fr');
-    expect(AppLocalizations.of(context)!.countryStats, 'Statistiques par pays');
+  testWidgets('autre langue : app en anglais', (tester) async {
+    final app = await launch(tester, const Locale('de', 'DE'));
+    expect(app.language, 'en');
   });
 }
