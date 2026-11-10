@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/chess_api_service.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
+import '../widgets/theme_toggle_button.dart';
 import 'stats_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -58,6 +59,7 @@ class HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.appTitle),
+        actions: const [ThemeToggleButton()],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

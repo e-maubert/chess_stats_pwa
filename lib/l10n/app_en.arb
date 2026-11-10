@@ -4,6 +4,8 @@
   "search": "Search",
   "refresh": "Refresh",
   "retry": "Retry",
+  "switchToDarkMode": "Switch to dark mode",
+  "switchToLightMode": "Switch to light mode",
   "errorFetchingStats": "Error fetching statistics",
   "playedOpenings": "Played openings",
   "gamesPlayed": "Games Played",

@@ -30,9 +30,11 @@ Point d'entrée : `lib/main.dart` → `screens/home_screen.dart` (recherche) →
 | `services/` | Appels à l'API chess.com, cache, calculs/agrégations (`country_stats_service`, `loss_stats_service`) |
 | `viewmodels/` | État d'écran (filtres de cadence, tri) en `ChangeNotifier` |
 | `screens/`, `widgets/` | Affichage uniquement, aucune logique métier |
+| `theme/` | Thèmes clair et sombre (`AppTheme`) et couleurs de texte adaptées au thème |
 
 - État géré avec `provider` (`ChangeNotifierProvider` + `Consumer`).
 - Graphiques avec `fl_chart`.
+- Thème : clair ou sombre selon le système, ou selon le choix fait avec le bouton soleil / lune de la barre du haut (mémorisé, `services/theme_preference_service.dart`). Toute nouvelle carte doit rester lisible dans les deux thèmes : couleurs du `ColorScheme`, ou `AppTheme.positiveText` / `negativeText` / `warningText` pour les textes colorés, pas de teinte foncée en dur.
 - Cache : `services/cache_service.dart`, `SharedPreferences`, durée 1 h, clé préfixée `chess_stats_v7_`. **Si la forme des données en cache change, incrémenter la version de la clé**, sinon d'anciennes entrées incomplètes seront relues.
 - Résultats chess.com : `win`, `checkmated`, `resigned`, `timeout`, `abandoned`, nulles diverses… `checkmated` est une défaite ; `resigned` et `abandoned` sont regroupés en « Par abandon ».
 
