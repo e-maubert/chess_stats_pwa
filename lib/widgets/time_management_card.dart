@@ -14,9 +14,11 @@ class TimeManagementCard extends StatelessWidget {
 
   const TimeManagementCard({super.key, required this.games});
 
-  static const Color _behindColor = Colors.orange;
+  // Sur une défaite, aucun écart n'est « bon » : en retard = rouge,
+  // en avance (on a peut-être joué trop vite) = ambre, équilibré = gris.
+  static const Color _behindColor = Colors.red;
   static const Color _balancedColor = Colors.grey;
-  static const Color _aheadColor = Colors.blueGrey;
+  static const Color _aheadColor = Colors.amber;
 
   @override
   Widget build(BuildContext context) {
@@ -61,8 +63,6 @@ class TimeManagementCard extends StatelessWidget {
                 _legendRow(context, l10n.timeBalanced, stats.balanced, stats.balancedRate, _balancedColor, l10n),
                 _legendRow(context, l10n.timeAhead, stats.ahead, stats.aheadRate, _aheadColor, l10n),
                 Text(l10n.timeThresholdNote, style: textTheme.bodySmall),
-                const SizedBox(height: 16),
-                _resignations(context, stats, l10n),
               ],
             ],
           );
@@ -71,16 +71,16 @@ class TimeManagementCard extends StatelessWidget {
     );
   }
 
-  /// Écart moyen en gros : rouge si on finit avec moins de temps que
-  /// l'adversaire, vert sinon.
+  /// Écart moyen en gros, coloré avec le même seuil de 10 % que la barre :
+  /// rouge en retard, ambre en avance, gris si équilibré. Teintes foncées
+  /// pour rester lisibles sur fond clair.
   Widget _averageGap(BuildContext context, TimeManagementStats stats, AppLocalizations l10n) {
     final textTheme = Theme.of(context).textTheme;
-    final gap = stats.averageGap.round();
-    final color = gap < 0
-        ? Colors.red.shade700
-        : gap > 0
-            ? Colors.green.shade700
-            : Theme.of(context).colorScheme.onSurfaceVariant;
+    final color = switch (stats.averageCategory) {
+      TimeGap.behind => Colors.red.shade700,
+      TimeGap.ahead => Colors.amber.shade800,
+      TimeGap.balanced => Theme.of(context).colorScheme.onSurfaceVariant,
+    };
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -147,28 +147,6 @@ class TimeManagementCard extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  Widget _resignations(BuildContext context, TimeManagementStats stats, AppLocalizations l10n) {
-    final textTheme = Theme.of(context).textTheme;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          l10n.resignationsUnderPressure,
-          style: textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          l10n.resignationsUnderPressureValue(
-            stats.resignationsUnderPressure,
-            stats.resignations,
-          ),
-          style: textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
-        ),
-        Text(l10n.resignationsUnderPressureNote, style: textTheme.bodySmall),
-      ],
     );
   }
 }

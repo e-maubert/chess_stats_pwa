@@ -60,8 +60,8 @@ void main() {
   group('aggregate', () {
     // Blitz 3 min : seuil de 10 % = 18 s.
     final games = [
-      g('loss', 5, 60, lossCause: 'resigned'), // -55 s, 5 s restants : sous pression
-      g('loss', 40, 70, lossCause: 'resigned'), // -30 s mais 40 s restants : non
+      g('loss', 5, 60, lossCause: 'resigned'), // -55 s : en retard
+      g('loss', 40, 70, lossCause: 'resigned'), // -30 s : en retard
       g('loss', 0, 30, lossCause: 'timeout'), // -30 s : en retard
       g('loss', 50, 60, lossCause: 'checkmated'), // -10 s : équilibré
       g('loss', 100, 20, lossCause: 'resigned'), // +80 s : en avance
@@ -81,17 +81,30 @@ void main() {
       expect(stats.behindRate, closeTo(0.6, 1e-9));
     });
 
-    test('abandons sous pression : en retard et moins de 10 % du temps', () {
-      final stats = TimeManagementService.aggregate(games, timeClass: 'blitz');
-      expect(stats.resignations, 3);
-      expect(stats.resignationsUnderPressure, 1);
-    });
-
     test('toutes cadences : seuil propre à chaque partie', () {
       final stats = TimeManagementService.aggregate(games);
       expect(stats.losses, 6);
-      expect(stats.resignations, 4);
-      expect(stats.resignationsUnderPressure, 2);
+      // Bullet 1 min, -18 s : en retard (seuil 6 s).
+      expect(stats.behind, 4);
+      // Seuil moyen : (5 × 18 + 6) / 6.
+      expect(stats.averageLimit, closeTo((5 * 18 + 6) / 6, 1e-9));
+    });
+
+    test('écart moyen classé avec le seuil moyen', () {
+      // Blitz : moyenne -9 s, seuil 18 s => équilibré.
+      expect(TimeManagementService.aggregate(games, timeClass: 'blitz').averageCategory,
+          TimeGap.balanced);
+      // Bullet : -18 s, seuil 6 s => en retard.
+      expect(TimeManagementService.aggregate(games, timeClass: 'bullet').averageCategory,
+          TimeGap.behind);
+      final ahead = TimeManagementService.aggregate([g('loss', 100, 20)]);
+      expect(ahead.averageCategory, TimeGap.ahead);
+    });
+
+    test('classify : bornes du seuil incluses dans « équilibré »', () {
+      expect(TimeManagementService.classify(-18, 18), TimeGap.balanced);
+      expect(TimeManagementService.classify(-18.1, 18), TimeGap.behind);
+      expect(TimeManagementService.classify(18.1, 18), TimeGap.ahead);
     });
 
     test('aucune défaite : moyenne et taux à 0', () {

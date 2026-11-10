@@ -407,7 +407,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeGapAverage.
   ///
   /// In en, this message translates to:
-  /// **'Average clock gap with the opponent at the end of the game'**
+  /// **'When you lose, this is your average clock gap with the opponent at the end of the game'**
   String get timeGapAverage;
 
   /// No description provided for @timeBehind.
@@ -433,24 +433,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Significant gap: more than 10% of the initial time'**
   String get timeThresholdNote;
-
-  /// No description provided for @resignationsUnderPressure.
-  ///
-  /// In en, this message translates to:
-  /// **'Resignations under time pressure'**
-  String get resignationsUnderPressure;
-
-  /// No description provided for @resignationsUnderPressureNote.
-  ///
-  /// In en, this message translates to:
-  /// **'Behind on the clock, with less than 10% of the initial time'**
-  String get resignationsUnderPressureNote;
-
-  /// No description provided for @resignationsUnderPressureValue.
-  ///
-  /// In en, this message translates to:
-  /// **'{count} of {total}'**
-  String resignationsUnderPressureValue(int count, int total);
 
   /// No description provided for @countryUnknown.
   ///

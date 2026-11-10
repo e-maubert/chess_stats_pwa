@@ -203,7 +203,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get timeGapAverage =>
-      'Average clock gap with the opponent at the end of the game';
+      'When you lose, this is your average clock gap with the opponent at the end of the game';
 
   @override
   String get timeBehind => 'Behind on the clock';
@@ -217,18 +217,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get timeThresholdNote =>
       'Significant gap: more than 10% of the initial time';
-
-  @override
-  String get resignationsUnderPressure => 'Resignations under time pressure';
-
-  @override
-  String get resignationsUnderPressureNote =>
-      'Behind on the clock, with less than 10% of the initial time';
-
-  @override
-  String resignationsUnderPressureValue(int count, int total) {
-    return '$count of $total';
-  }
 
   @override
   String get countryUnknown => 'Unknown country';

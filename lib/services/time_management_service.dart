@@ -1,5 +1,7 @@
 import '../models/country_game.dart';
-import 'loss_stats_service.dart';
+
+/// Position de la pendule par rapport à l'adversaire en fin de partie.
+enum TimeGap { behind, balanced, ahead }
 
 /// Gestion du temps sur les parties perdues : écart de pendule avec
 /// l'adversaire en fin de partie.
@@ -16,10 +18,9 @@ class TimeManagementStats {
   /// Écart moyen (notre temps − temps adverse) en secondes, 0 sans défaite.
   final double averageGap;
 
-  /// Abandons, dont ceux sous pression du temps (en retard et moins de
-  /// 10 % du temps initial).
-  final int resignations;
-  final int resignationsUnderPressure;
+  /// Moyenne des seuils (10 % du temps initial de chaque partie), pour
+  /// classer l'écart moyen avec la même règle que chaque partie.
+  final double averageLimit;
 
   const TimeManagementStats({
     required this.losses,
@@ -27,14 +28,16 @@ class TimeManagementStats {
     required this.balanced,
     required this.ahead,
     required this.averageGap,
-    required this.resignations,
-    required this.resignationsUnderPressure,
+    required this.averageLimit,
   });
 
   double _rate(int count) => losses == 0 ? 0 : count / losses;
   double get behindRate => _rate(behind);
   double get balancedRate => _rate(balanced);
   double get aheadRate => _rate(ahead);
+
+  /// Classement de l'écart moyen : en retard, équilibré ou en avance.
+  TimeGap get averageCategory => TimeManagementService.classify(averageGap, averageLimit);
 }
 
 class TimeManagementService {
@@ -71,6 +74,13 @@ class TimeManagementService {
     return base == null || base <= 0 ? null : base;
   }
 
+  /// Écart [gap] en retard / équilibré / en avance selon le seuil [limit].
+  static TimeGap classify(double gap, double limit) {
+    if (gap < -limit) return TimeGap.behind;
+    if (gap > limit) return TimeGap.ahead;
+    return TimeGap.balanced;
+  }
+
   /// Écart signé au format m:ss, arrondi à la seconde : « +1:05 »,
   /// « -0:42 », « 0:00 ».
   static String formatGap(double seconds) {
@@ -84,8 +94,7 @@ class TimeManagementService {
   /// pendules et le temps initial sont connus.
   static TimeManagementStats aggregate(List<CountryGame> games, {String? timeClass}) {
     var losses = 0, behind = 0, balanced = 0, ahead = 0;
-    var resignations = 0, underPressure = 0;
-    var totalGap = 0.0;
+    var totalGap = 0.0, totalLimit = 0.0;
 
     for (final game in games) {
       if (game.result != 'loss') continue;
@@ -99,17 +108,14 @@ class TimeManagementService {
       final gap = mine - theirs;
       losses++;
       totalGap += gap;
-      if (gap < -limit) {
-        behind++;
-      } else if (gap > limit) {
-        ahead++;
-      } else {
-        balanced++;
-      }
-
-      if (game.lossCause == LossStatsService.resigned) {
-        resignations++;
-        if (gap < -limit && mine < limit) underPressure++;
+      totalLimit += limit;
+      switch (classify(gap, limit)) {
+        case TimeGap.behind:
+          behind++;
+        case TimeGap.balanced:
+          balanced++;
+        case TimeGap.ahead:
+          ahead++;
       }
     }
 
@@ -119,8 +125,7 @@ class TimeManagementService {
       balanced: balanced,
       ahead: ahead,
       averageGap: losses == 0 ? 0 : totalGap / losses,
-      resignations: resignations,
-      resignationsUnderPressure: underPressure,
+      averageLimit: losses == 0 ? 0 : totalLimit / losses,
     );
   }
 }
