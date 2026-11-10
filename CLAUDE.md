@@ -58,14 +58,18 @@ Dans `test/`. Mettre la logique testable (agrégations, tri, filtres) dans `serv
 Netlify n'a pas Flutter : on compile en local et on envoie le dossier `build/web` (config : `netlify.toml`).
 Uniquement à la demande de l'utilisateur, depuis `main`.
 
+Site : https://chess-stats-test.netlify.app (le dossier y est relié par `.netlify/state.json`, non versionné).
+
 ```
 rm -rf build/web
 C:\src\flutter\bin\flutter.bat build web --release
-npx netlify-cli deploy --prod --dir build/web
+export PATH="/c/Users/etien/AppData/Roaming/nvm/v22.23.4:$PATH"   # Bash
+npx --yes netlify-cli@27.17.0 deploy --prod --dir build/web
 ```
 
 - Toujours supprimer `build/web` avant de compiler : un build incrémental peut oublier des fichiers de `web/` (ex. `manifest.json`).
-- `npx netlify-cli login` une première fois (connexion au compte Netlify de l'utilisateur, dans le navigateur), puis `npx netlify-cli link` pour relier le dossier au site.
+- `netlify-cli` exige Node ≥ 22.13. Le Node par défaut du poste est le 16 (à ne pas changer avec `nvm use`) : préfixer le `PATH` par le Node 22 installé via nvm, seulement pour la commande.
+- Si l'outil n'est plus connecté : `npx netlify-cli login` (connexion dans le navigateur, faite par l'utilisateur). Équipe Netlify : slug `etienne-maubert`.
 - Logo et icônes : sources dans `design/`, PNG régénérés par `tool/generate_icons.ps1`.
 
 ## Workflow des agents (Trello)
