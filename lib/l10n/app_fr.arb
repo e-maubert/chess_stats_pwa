@@ -4,6 +4,8 @@
   "search": "Rechercher",
   "refresh": "Actualiser",
   "retry": "Réessayer",
+  "switchToDarkMode": "Passer en mode sombre",
+  "switchToLightMode": "Passer en mode clair",
   "errorFetchingStats": "Erreur lors de la récupération des statistiques",
   "playedOpenings": "Ouvertures jouées",
   "gamesPlayed": "Parties jouées",

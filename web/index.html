@@ -22,6 +22,13 @@
   <title>Chess Stats</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
   <link rel="stylesheet" href="assets/css/loading.css" />
+  <!-- Fond pendant le chargement, assorti au thème du système (évite un
+       flash blanc avant l'app en mode sombre). -->
+  <meta name="color-scheme" content="light dark">
+  <style>
+    body { margin: 0; background: #f9f9ff; }
+    @media (prefers-color-scheme: dark) { body { background: #191919; } }
+  </style>
 </head>
 <body>
   <div id="loading" class="loading">

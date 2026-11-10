@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../models/country_game.dart';
 import '../services/rating_history_service.dart';
+import '../theme/app_theme.dart';
 import '../viewmodels/rating_history_viewmodel.dart';
 import 'time_class_filter.dart';
 
@@ -85,9 +86,9 @@ class RatingHistoryCard extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final change = viewModel.change;
     final changeColor = change > 0
-        ? Colors.green.shade700
+        ? AppTheme.positiveText(context)
         : change < 0
-            ? Colors.red.shade700
+            ? AppTheme.negativeText(context)
             : Theme.of(context).colorScheme.onSurfaceVariant;
     final changeText = change > 0 ? '+$change' : '$change';
 

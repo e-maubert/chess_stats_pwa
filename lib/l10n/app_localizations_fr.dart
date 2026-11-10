@@ -24,6 +24,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get retry => 'Réessayer';
 
   @override
+  String get switchToDarkMode => 'Passer en mode sombre';
+
+  @override
+  String get switchToLightMode => 'Passer en mode clair';
+
+  @override
   String get errorFetchingStats =>
       'Erreur lors de la récupération des statistiques';
 

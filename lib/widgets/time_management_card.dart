@@ -3,6 +3,7 @@ import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import '../models/country_game.dart';
 import '../services/time_management_service.dart';
+import '../theme/app_theme.dart';
 import '../viewmodels/time_management_viewmodel.dart';
 import 'time_class_filter.dart';
 
@@ -72,13 +73,13 @@ class TimeManagementCard extends StatelessWidget {
   }
 
   /// Écart moyen en gros, coloré avec le même seuil de 10 % que la barre :
-  /// rouge en retard, ambre en avance, gris si équilibré. Teintes foncées
-  /// pour rester lisibles sur fond clair.
+  /// rouge en retard, ambre en avance, gris si équilibré (teintes adaptées
+  /// au thème clair / sombre, voir AppTheme).
   Widget _averageGap(BuildContext context, TimeManagementStats stats, AppLocalizations l10n) {
     final textTheme = Theme.of(context).textTheme;
     final color = switch (stats.averageCategory) {
-      TimeGap.behind => Colors.red.shade700,
-      TimeGap.ahead => Colors.amber.shade800,
+      TimeGap.behind => AppTheme.negativeText(context),
+      TimeGap.ahead => AppTheme.warningText(context),
       TimeGap.balanced => Theme.of(context).colorScheme.onSurfaceVariant,
     };
 

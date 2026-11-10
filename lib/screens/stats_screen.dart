@@ -3,6 +3,7 @@ import '../models/chess_stats.dart';
 import '../services/chess_api_service.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import '../widgets/stats_display.dart';
+import '../widgets/theme_toggle_button.dart';
 
 class StatsScreen extends StatefulWidget {
   final ChessStats stats;
@@ -41,6 +42,7 @@ class _StatsScreenState extends State<StatsScreen> {
             onPressed: _refreshStats,
             tooltip: l10n.refresh,
           ),
+          const ThemeToggleButton(),
         ],
       ),
       body: FutureBuilder<ChessStats>(
