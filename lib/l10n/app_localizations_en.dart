@@ -203,7 +203,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get timeGapAverage =>
-      'When you lose, this is your average clock gap with the opponent at the end of the game';
+      'When you lose, this is your average clock gap with the opponent at the end of the game:';
 
   @override
   String get timeBehind => 'Behind on the clock';

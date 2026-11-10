@@ -407,7 +407,7 @@ abstract class AppLocalizations {
   /// No description provided for @timeGapAverage.
   ///
   /// In en, this message translates to:
-  /// **'When you lose, this is your average clock gap with the opponent at the end of the game'**
+  /// **'When you lose, this is your average clock gap with the opponent at the end of the game:'**
   String get timeGapAverage;
 
   /// No description provided for @timeBehind.

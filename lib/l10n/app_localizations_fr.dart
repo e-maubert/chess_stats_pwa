@@ -204,7 +204,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get timeGapAverage =>
-      'Lorsque vous perdez, voici votre écart de temps moyen avec l\'adversaire en fin de partie';
+      'Lorsque vous perdez, voici votre écart de temps moyen avec l\'adversaire en fin de partie :';
 
   @override
   String get timeBehind => 'En retard au temps';

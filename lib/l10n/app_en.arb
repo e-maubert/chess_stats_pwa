@@ -154,7 +154,7 @@
     }
   },
   "timeManagement": "Time management in losses",
-  "timeGapAverage": "When you lose, this is your average clock gap with the opponent at the end of the game",
+  "timeGapAverage": "When you lose, this is your average clock gap with the opponent at the end of the game:",
   "timeBehind": "Behind on the clock",
   "timeBalanced": "Even on the clock",
   "timeAhead": "Ahead on the clock",

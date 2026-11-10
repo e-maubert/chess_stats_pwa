@@ -82,15 +82,18 @@ class TimeManagementCard extends StatelessWidget {
       TimeGap.balanced => Theme.of(context).colorScheme.onSurfaceVariant,
     };
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          TimeManagementService.formatGap(stats.averageGap),
-          style: textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.bold, color: color),
-        ),
-        Text(l10n.timeGapAverage, style: textTheme.bodyMedium),
-      ],
+    // Libellé puis valeur dans le même paragraphe : la valeur suit le texte
+    // qui l'explique et passe à la ligne avec lui sur écran étroit.
+    return Text.rich(
+      TextSpan(
+        children: [
+          TextSpan(text: '${l10n.timeGapAverage} ', style: textTheme.bodyLarge),
+          TextSpan(
+            text: TimeManagementService.formatGap(stats.averageGap),
+            style: textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold, color: color),
+          ),
+        ],
+      ),
     );
   }
 
