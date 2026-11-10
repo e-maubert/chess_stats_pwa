@@ -110,41 +110,17 @@ abstract class AppLocalizations {
   /// **'Enter your Chess.com username'**
   String get enterUsername;
 
-  /// No description provided for @username.
-  ///
-  /// In en, this message translates to:
-  /// **'Username'**
-  String get username;
-
   /// No description provided for @search.
   ///
   /// In en, this message translates to:
   /// **'Search'**
   String get search;
 
-  /// No description provided for @pleaseEnterUsername.
-  ///
-  /// In en, this message translates to:
-  /// **'Please enter a username'**
-  String get pleaseEnterUsername;
-
-  /// No description provided for @playerStats.
-  ///
-  /// In en, this message translates to:
-  /// **'Statistics for {username}'**
-  String playerStats(String username);
-
   /// No description provided for @refresh.
   ///
   /// In en, this message translates to:
   /// **'Refresh'**
   String get refresh;
-
-  /// No description provided for @forceRefresh.
-  ///
-  /// In en, this message translates to:
-  /// **'Force refresh'**
-  String get forceRefresh;
 
   /// No description provided for @retry.
   ///
@@ -163,24 +139,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Played openings'**
   String get playedOpenings;
-
-  /// No description provided for @errorLoadingStats.
-  ///
-  /// In en, this message translates to:
-  /// **'Error loading statistics: {error}'**
-  String errorLoadingStats(String error);
-
-  /// No description provided for @errorForceRefresh.
-  ///
-  /// In en, this message translates to:
-  /// **'Error during force refresh: {error}'**
-  String errorForceRefresh(String error);
-
-  /// No description provided for @globalStats.
-  ///
-  /// In en, this message translates to:
-  /// **'Global Statistics'**
-  String get globalStats;
 
   /// No description provided for @gamesPlayed.
   ///
@@ -206,12 +164,6 @@ abstract class AppLocalizations {
   /// **'Draws'**
   String get draws;
 
-  /// No description provided for @winRate.
-  ///
-  /// In en, this message translates to:
-  /// **'Win Rate'**
-  String get winRate;
-
   /// No description provided for @colorStats.
   ///
   /// In en, this message translates to:
@@ -230,12 +182,6 @@ abstract class AppLocalizations {
   /// **'With Black'**
   String get withBlack;
 
-  /// No description provided for @topOpenings.
-  ///
-  /// In en, this message translates to:
-  /// **'Top 5 Openings'**
-  String get topOpenings;
-
   /// No description provided for @countryStats.
   ///
   /// In en, this message translates to:
@@ -247,36 +193,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Games Played: {count}'**
   String played(int count);
-
-  /// No description provided for @winRatePercent.
-  ///
-  /// In en, this message translates to:
-  /// **'{rate}%'**
-  String winRatePercent(double rate);
-
-  /// No description provided for @winCount.
-  ///
-  /// In en, this message translates to:
-  /// **'{wins} ({rate}%)'**
-  String winCount(int wins, double rate);
-
-  /// No description provided for @lossCount.
-  ///
-  /// In en, this message translates to:
-  /// **'{losses} ({rate}%)'**
-  String lossCount(int losses, double rate);
-
-  /// No description provided for @drawCount.
-  ///
-  /// In en, this message translates to:
-  /// **'{draws} ({rate}%)'**
-  String drawCount(int draws, double rate);
-
-  /// No description provided for @countryStatsLink.
-  ///
-  /// In en, this message translates to:
-  /// **'See statistics by opponent country'**
-  String get countryStatsLink;
 
   /// No description provided for @countryStatsPeriod.
   ///

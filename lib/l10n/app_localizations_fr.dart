@@ -15,24 +15,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get enterUsername => 'Entrez votre nom d\'utilisateur Chess.com';
 
   @override
-  String get username => 'Nom d\'utilisateur';
-
-  @override
   String get search => 'Rechercher';
 
   @override
-  String get pleaseEnterUsername => 'Veuillez entrer un nom d\'utilisateur';
-
-  @override
-  String playerStats(String username) {
-    return 'Statistiques de $username';
-  }
-
-  @override
   String get refresh => 'Actualiser';
-
-  @override
-  String get forceRefresh => 'Forcer le rafraîchissement';
 
   @override
   String get retry => 'Réessayer';
@@ -43,19 +29,6 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get playedOpenings => 'Ouvertures jouées';
-
-  @override
-  String errorLoadingStats(String error) {
-    return 'Erreur lors du chargement des statistiques: $error';
-  }
-
-  @override
-  String errorForceRefresh(String error) {
-    return 'Erreur lors du rafraîchissement forcé: $error';
-  }
-
-  @override
-  String get globalStats => 'Statistiques globales';
 
   @override
   String get gamesPlayed => 'Parties jouées';
@@ -70,9 +43,6 @@ class AppLocalizationsFr extends AppLocalizations {
   String get draws => 'Matchs nuls';
 
   @override
-  String get winRate => 'Taux de victoire';
-
-  @override
   String get colorStats => 'Statistiques par couleur';
 
   @override
@@ -82,59 +52,12 @@ class AppLocalizationsFr extends AppLocalizations {
   String get withBlack => 'Avec les noirs';
 
   @override
-  String get topOpenings => 'Top 5 des ouvertures';
-
-  @override
   String get countryStats => 'Statistiques par pays';
 
   @override
   String played(int count) {
     return 'Parties jouées: $count';
   }
-
-  @override
-  String winRatePercent(double rate) {
-    final intl.NumberFormat rateNumberFormat =
-        intl.NumberFormat.decimalPercentPattern(
-            locale: localeName, decimalDigits: 1);
-    final String rateString = rateNumberFormat.format(rate);
-
-    return '$rateString%';
-  }
-
-  @override
-  String winCount(int wins, double rate) {
-    final intl.NumberFormat rateNumberFormat =
-        intl.NumberFormat.decimalPercentPattern(
-            locale: localeName, decimalDigits: 1);
-    final String rateString = rateNumberFormat.format(rate);
-
-    return '$wins ($rateString%)';
-  }
-
-  @override
-  String lossCount(int losses, double rate) {
-    final intl.NumberFormat rateNumberFormat =
-        intl.NumberFormat.decimalPercentPattern(
-            locale: localeName, decimalDigits: 1);
-    final String rateString = rateNumberFormat.format(rate);
-
-    return '$losses ($rateString%)';
-  }
-
-  @override
-  String drawCount(int draws, double rate) {
-    final intl.NumberFormat rateNumberFormat =
-        intl.NumberFormat.decimalPercentPattern(
-            locale: localeName, decimalDigits: 1);
-    final String rateString = rateNumberFormat.format(rate);
-
-    return '$draws ($rateString%)';
-  }
-
-  @override
-  String get countryStatsLink =>
-      'Voir les statistiques par pays des adversaires';
 
   @override
   String get countryStatsPeriod => 'Parties du mois en cours';

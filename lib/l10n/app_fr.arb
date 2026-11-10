@@ -1,48 +1,18 @@
 {
   "appTitle": "Statistiques d'échecs",
   "enterUsername": "Entrez votre nom d'utilisateur Chess.com",
-  "username": "Nom d'utilisateur",
   "search": "Rechercher",
-  "pleaseEnterUsername": "Veuillez entrer un nom d'utilisateur",
-  "playerStats": "Statistiques de {username}",
-  "@playerStats": {
-    "placeholders": {
-      "username": {
-        "type": "String"
-      }
-    }
-  },
   "refresh": "Actualiser",
-  "forceRefresh": "Forcer le rafraîchissement",
   "retry": "Réessayer",
   "errorFetchingStats": "Erreur lors de la récupération des statistiques",
   "playedOpenings": "Ouvertures jouées",
-  "errorLoadingStats": "Erreur lors du chargement des statistiques: {error}",
-  "@errorLoadingStats": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "errorForceRefresh": "Erreur lors du rafraîchissement forcé: {error}",
-  "@errorForceRefresh": {
-    "placeholders": {
-      "error": {
-        "type": "String"
-      }
-    }
-  },
-  "globalStats": "Statistiques globales",
   "gamesPlayed": "Parties jouées",
   "wins": "Victoires",
   "losses": "Défaites",
   "draws": "Matchs nuls",
-  "winRate": "Taux de victoire",
   "colorStats": "Statistiques par couleur",
   "withWhite": "Avec les blancs",
   "withBlack": "Avec les noirs",
-  "topOpenings": "Top 5 des ouvertures",
   "countryStats": "Statistiques par pays",
   "played": "Parties jouées: {count}",
   "@played": {
@@ -52,64 +22,6 @@
       }
     }
   },
-  "winRatePercent": "{rate}%",
-  "@winRatePercent": {
-    "placeholders": {
-      "rate": {
-        "type": "double",
-        "format": "decimalPercentPattern",
-        "optionalParameters": {
-          "decimalDigits": 1
-        }
-      }
-    }
-  },
-  "winCount": "{wins} ({rate}%)",
-  "@winCount": {
-    "placeholders": {
-      "wins": {
-        "type": "int"
-      },
-      "rate": {
-        "type": "double",
-        "format": "decimalPercentPattern",
-        "optionalParameters": {
-          "decimalDigits": 1
-        }
-      }
-    }
-  },
-  "lossCount": "{losses} ({rate}%)",
-  "@lossCount": {
-    "placeholders": {
-      "losses": {
-        "type": "int"
-      },
-      "rate": {
-        "type": "double",
-        "format": "decimalPercentPattern",
-        "optionalParameters": {
-          "decimalDigits": 1
-        }
-      }
-    }
-  },
-  "drawCount": "{draws} ({rate}%)",
-  "@drawCount": {
-    "placeholders": {
-      "draws": {
-        "type": "int"
-      },
-      "rate": {
-        "type": "double",
-        "format": "decimalPercentPattern",
-        "optionalParameters": {
-          "decimalDigits": 1
-        }
-      }
-    }
-  },
-  "countryStatsLink": "Voir les statistiques par pays des adversaires",
   "countryStatsPeriod": "Parties du mois en cours",
   "countryRankColumn": "#",
   "countryColumn": "Pays",
@@ -196,4 +108,4 @@
   "countryXX": "International",
   "countryNL": "Pays-Bas",
   "countryTH": "Thaïlande"
-} 
+}

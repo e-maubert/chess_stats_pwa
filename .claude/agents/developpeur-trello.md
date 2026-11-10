@@ -18,7 +18,7 @@ Pour chaque carte de « À faire » (en commençant par celle du haut), puis pou
    - nouvelle carte : `git checkout main`, puis `git checkout -b <type>/<slug>`, avec `fix/` pour une carte bug (rouge) et `feat/` pour une évolution (bleue), et un slug court en minuscules tiré du titre (ex. `fix/taux-victoire-noirs`) ;
    - carte renvoyée par le relecteur : reprends la branche indiquée dans ton commentaire précédent (`git checkout <branche>`).
 4. Lis le code concerné avant de modifier quoi que ce soit, et respecte les conventions existantes :
-   - logique métier dans `services/` et `viewmodels/`, affichage dans `views/`, `screens/`, `widgets/` ;
+   - logique métier dans `services/` et `viewmodels/`, affichage dans `screens/`, `widgets/` ;
    - tout texte visible passe par la localisation : ajoute les clés dans `lib/l10n/app_en.arb` ET `lib/l10n/app_fr.arb`.
 5. Implémente le changement le plus simple qui remplit les critères d'acceptation. Ne touche pas à ce qui n'est pas demandé.
 6. Vérifie :
