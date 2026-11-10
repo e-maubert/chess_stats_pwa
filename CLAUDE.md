@@ -37,7 +37,7 @@ Point d'entrée : `lib/main.dart` → `screens/home_screen.dart` (recherche) →
 
 - État géré avec `provider` (`ChangeNotifierProvider` + `Consumer`).
 - Graphiques avec `fl_chart`.
-- Cache : `services/cache_service.dart`, `SharedPreferences`, durée 1 h, clé préfixée `chess_stats_v5_`. **Si la forme des données en cache change, incrémenter la version de la clé**, sinon d'anciennes entrées incomplètes seront relues.
+- Cache : `services/cache_service.dart`, `SharedPreferences`, durée 1 h, clé préfixée `chess_stats_v6_`. **Si la forme des données en cache change, incrémenter la version de la clé**, sinon d'anciennes entrées incomplètes seront relues.
 - Résultats chess.com : `win`, `checkmated`, `resigned`, `timeout`, `abandoned`, nulles diverses… `checkmated` est une défaite ; `resigned` et `abandoned` sont regroupés en « Par abandon ».
 
 ## Localisation

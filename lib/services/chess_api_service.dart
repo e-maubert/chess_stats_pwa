@@ -149,6 +149,11 @@ class ChessApiService {
         lossCause: result == 'loss'
             ? LossStatsService.lossCause(game[isWhite ? 'white' : 'black']['result']?.toString())
             : null,
+        rating: (game[isWhite ? 'white' : 'black']['rating'] as num?)?.toInt(),
+        endTime: game['end_time'] is num
+            ? DateTime.fromMillisecondsSinceEpoch((game['end_time'] as num).toInt() * 1000)
+            : null,
+        rated: game['rated'] as bool? ?? true,
       ));
     }
 

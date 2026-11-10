@@ -160,6 +160,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get openingColumn => 'Ouverture';
 
   @override
+  String get ratingEvolution => 'Évolution du classement';
+
+  @override
+  String get ratingCurrent => 'Classement actuel';
+
+  @override
+  String get ratingSinceMonthStart => 'depuis la 1re partie du mois';
+
+  @override
+  String get noRatingData => 'Aucune partie classée pour cette cadence';
+
+  @override
   String countryResultRates(String win, String draw, String loss) {
     return 'V $win · N $draw · D $loss';
   }
