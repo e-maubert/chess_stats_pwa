@@ -4,90 +4,36 @@ import 'country_stats_service.dart';
 
 class CountryNameService {
   /// Nom localisé d'un pays à partir de son code chess.com (ex. 'FR').
-  /// Repli : le code lui-même si aucune traduction n'existe.
+  /// Tous les codes ISO 3166-1 et les codes spéciaux chess.com (X…) sont
+  /// traduits par la clé `countryName` des .arb ; repli : le code lui-même.
   static String getCountryName(BuildContext context, String code) {
-    final l10n = AppLocalizations.of(context)!;
-    if (code == CountryStatsService.unknownCountry) return l10n.countryUnknown;
-
-    switch (code.toUpperCase()) {
-      case 'KZ':
-        return l10n.countryKZ;
-      case 'US':
-        return l10n.countryUS;
-      case 'FR':
-        return l10n.countryFR;
-      case 'BR':
-        return l10n.countryBR;
-      case 'DE':
-        return l10n.countryDE;
-      case 'IN':
-        return l10n.countryIN;
-      case 'AR':
-        return l10n.countryAR;
-      case 'CO':
-        return l10n.countryCO;
-      case 'DZ':
-        return l10n.countryDZ;
-      case 'ID':
-        return l10n.countryID;
-      case 'UZ':
-        return l10n.countryUZ;
-      case 'JO':
-        return l10n.countryJO;
-      case 'EG':
-        return l10n.countryEG;
-      case 'MD':
-        return l10n.countryMD;
-      case 'TN':
-        return l10n.countryTN;
-      case 'NP':
-        return l10n.countryNP;
-      case 'GB':
-        return l10n.countryGB;
-      case 'CH':
-        return l10n.countryCH;
-      case 'DK':
-        return l10n.countryDK;
-      case 'MX':
-        return l10n.countryMX;
-      case 'BE':
-        return l10n.countryBE;
-      case 'SY':
-        return l10n.countrySY;
-      case 'SA':
-        return l10n.countrySA;
-      case 'HR':
-        return l10n.countryHR;
-      case 'SZ':
-        return l10n.countrySZ;
-      case 'PT':
-        return l10n.countryPT;
-      case 'XW':
-        return l10n.countryXW;
-      case 'PH':
-        return l10n.countryPH;
-      case 'UA':
-        return l10n.countryUA;
-      case 'PL':
-        return l10n.countryPL;
-      case 'PE':
-        return l10n.countryPE;
-      case 'XX':
-        return l10n.countryXX;
-      case 'NL':
-        return l10n.countryNL;
-      case 'TH':
-        return l10n.countryTH;
-      default:
-        return code.toUpperCase();
-    }
+    return countryName(AppLocalizations.of(context)!, code);
   }
 
-  /// Drapeau emoji d'un code pays ISO à deux lettres. Les codes spéciaux de
-  /// chess.com (commençant par X : International, Pays de Galles...) et les
-  /// pays inconnus reçoivent un drapeau neutre.
+  /// Comme [getCountryName], à partir des traductions déjà chargées.
+  static String countryName(AppLocalizations l10n, String code) {
+    if (code == CountryStatsService.unknownCountry) return l10n.countryUnknown;
+    return l10n.countryName(code.toUpperCase());
+  }
+
+  /// Drapeaux des codes spéciaux chess.com qui en ont un : séquences emoji
+  /// de l'Angleterre, de l'Écosse et du Pays de Galles, indicateurs du Kosovo
+  /// et de la Palestine.
+  static const Map<String, String> _specialFlags = {
+    'XE': '\u{1F3F4}\u{E0067}\u{E0062}\u{E0065}\u{E006E}\u{E0067}\u{E007F}',
+    'XS': '\u{1F3F4}\u{E0067}\u{E0062}\u{E0073}\u{E0063}\u{E0074}\u{E007F}',
+    'XW': '\u{1F3F4}\u{E0067}\u{E0062}\u{E0077}\u{E006C}\u{E0073}\u{E007F}',
+    'XK': '\u{1F1FD}\u{1F1F0}',
+    'XP': '\u{1F1F5}\u{1F1F8}',
+  };
+
+  /// Drapeau emoji d'un code pays ISO à deux lettres. Les autres codes
+  /// spéciaux de chess.com (International, Catalogne...) et les pays
+  /// inconnus reçoivent un drapeau neutre.
   static String getFlag(String code) {
     final upper = code.toUpperCase();
+    final special = _specialFlags[upper];
+    if (special != null) return special;
     if (!RegExp(r'^[A-Z]{2}$').hasMatch(upper) || upper.startsWith('X')) {
       return '\u{1F3F3}';
     }
