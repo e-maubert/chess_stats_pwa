@@ -1,6 +1,12 @@
 {
-  "appTitle": "Statistiques d'échecs",
-  "appLogo": "Logo Statistiques d'échecs",
+  "appTitle": "Chess Stats",
+  "appLogo": "Logo Chess Stats",
+  "statsTitle": "Chess Stats : {username}",
+  "@statsTitle": {
+    "placeholders": {
+      "username": {"type": "String"}
+    }
+  },
   "enterUsername": "Entrez votre nom d'utilisateur Chess.com",
   "search": "Rechercher",
   "refresh": "Actualiser",
