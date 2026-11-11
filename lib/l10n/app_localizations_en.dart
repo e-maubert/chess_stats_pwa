@@ -435,4 +435,63 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get countryMapHint =>
+      'Tap a country to see how many games you played against it. Pinch or use the buttons to zoom.';
+
+  @override
+  String countryMapGames(String country, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count games',
+      one: '1 game',
+      zero: '0 games',
+    );
+    return '$country: $_temp0';
+  }
+
+  @override
+  String get countryMapLegend => 'Games played';
+
+  @override
+  String get countryMapZoomIn => 'Zoom in';
+
+  @override
+  String get countryMapZoomOut => 'Zoom out';
+
+  @override
+  String get countryMapReset => 'Reset view';
+
+  @override
+  String countryMapNotShown(String countries) {
+    return 'Not shown on the map: $countries';
+  }
+
+  @override
+  String countryMapNotShownItem(String country, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count games',
+      one: '1 game',
+      zero: '0 games',
+    );
+    return '$country ($_temp0)';
+  }
+
+  @override
+  String countryMapTopRank(String rank) {
+    String _temp0 = intl.Intl.selectLogic(
+      rank,
+      {
+        '1': 'Most played country',
+        '2': '2nd most played country',
+        '3': '3rd most played country',
+        'other': 'No. $rank most played country',
+      },
+    );
+    return '$_temp0';
+  }
 }

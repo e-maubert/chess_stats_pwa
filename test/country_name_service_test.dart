@@ -47,4 +47,15 @@ void main() {
     expect(CountryNameService.getFlag('XX'), '\u{1F3F3}');
     expect(CountryNameService.getFlag('Unknown'), '\u{1F3F3}');
   });
+
+  test('bulle de la carte : 0, 1 et plusieurs parties', () {
+    // En français, 0 relève du singulier : sans cas « =0 », la bulle d'un
+    // pays non joué affichait « 1 partie ».
+    expect(fr.countryMapGames('France', 0), 'France : 0 partie');
+    expect(fr.countryMapGames('France', 1), 'France : 1 partie');
+    expect(fr.countryMapGames('France', 12), 'France : 12 parties');
+    expect(en.countryMapGames('France', 0), 'France: 0 games');
+    expect(en.countryMapGames('France', 1), 'France: 1 game');
+    expect(fr.countryMapNotShownItem('International', 0), 'International (0 partie)');
+  });
 }

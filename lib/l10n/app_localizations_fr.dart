@@ -436,4 +436,61 @@ class AppLocalizationsFr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get countryMapHint =>
+      'Touchez un pays pour voir le nombre de parties jouées contre lui. Pincez ou utilisez les boutons pour zoomer.';
+
+  @override
+  String countryMapGames(String country, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count parties',
+      one: '1 partie',
+      zero: '0 partie',
+    );
+    return '$country : $_temp0';
+  }
+
+  @override
+  String get countryMapLegend => 'Parties jouées';
+
+  @override
+  String get countryMapZoomIn => 'Zoomer';
+
+  @override
+  String get countryMapZoomOut => 'Dézoomer';
+
+  @override
+  String get countryMapReset => 'Revenir à la vue d’ensemble';
+
+  @override
+  String countryMapNotShown(String countries) {
+    return 'Hors carte : $countries';
+  }
+
+  @override
+  String countryMapNotShownItem(String country, int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count parties',
+      one: '1 partie',
+      zero: '0 partie',
+    );
+    return '$country ($_temp0)';
+  }
+
+  @override
+  String countryMapTopRank(String rank) {
+    String _temp0 = intl.Intl.selectLogic(
+      rank,
+      {
+        '1': 'Pays le plus rencontré',
+        'other': '${rank}e pays le plus rencontré',
+      },
+    );
+    return '$_temp0';
+  }
 }

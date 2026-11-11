@@ -4,7 +4,9 @@
   "statsTitle": "Chess Stats : {username}",
   "@statsTitle": {
     "placeholders": {
-      "username": {"type": "String"}
+      "username": {
+        "type": "String"
+      }
     }
   },
   "enterUsername": "Entrez votre nom d'utilisateur Chess.com",
@@ -88,6 +90,53 @@
     "description": "Nom du pays à partir de son code chess.com (ISO 3166-1 ou code spécial X…).",
     "placeholders": {
       "code": {
+        "type": "String"
+      }
+    }
+  },
+  "countryMapHint": "Touchez un pays pour voir le nombre de parties jouées contre lui. Pincez ou utilisez les boutons pour zoomer.",
+  "countryMapGames": "{country} : {count, plural, =0{0 partie} =1{1 partie} other{{count} parties}}",
+  "@countryMapGames": {
+    "description": "Bulle d’un pays de la carte : nom et nombre de parties.",
+    "placeholders": {
+      "country": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "countryMapLegend": "Parties jouées",
+  "countryMapZoomIn": "Zoomer",
+  "countryMapZoomOut": "Dézoomer",
+  "countryMapReset": "Revenir à la vue d’ensemble",
+  "countryMapNotShown": "Hors carte : {countries}",
+  "@countryMapNotShown": {
+    "description": "Pays joués qui ne figurent pas sur la carte (International, pays inconnu…).",
+    "placeholders": {
+      "countries": {
+        "type": "String"
+      }
+    }
+  },
+  "countryMapNotShownItem": "{country} ({count, plural, =0{0 partie} =1{1 partie} other{{count} parties}})",
+  "@countryMapNotShownItem": {
+    "description": "Un pays hors carte avec son nombre de parties, ex. International (3 parties).",
+    "placeholders": {
+      "country": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "countryMapTopRank": "{rank, select, 1{Pays le plus rencontré} other{{rank}e pays le plus rencontré}}",
+  "@countryMapTopRank": {
+    "description": "Infobulle du marqueur posé sur les 3 pays les plus rencontrés (rang 1 à 3).",
+    "placeholders": {
+      "rank": {
         "type": "String"
       }
     }
