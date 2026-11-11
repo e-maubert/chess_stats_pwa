@@ -6,10 +6,12 @@ import '../models/country_stats.dart';
 import '../services/country_name_service.dart';
 import '../services/country_stats_service.dart';
 import '../viewmodels/country_stats_viewmodel.dart';
+import 'country_map.dart';
 import 'result_bar.dart';
 import 'time_class_filter.dart';
 
-/// Statistiques par pays des adversaires (mois en cours) : tableau rang,
+/// Statistiques par pays des adversaires (mois en cours) : carte du monde
+/// colorée selon le nombre de parties, puis tableau rang,
 /// pays, parties jouées, adversaires, barre victoires / nulles / défaites.
 /// Filtrable par cadence et triable par parties jouées ou par taux.
 class CountryStatsCard extends StatelessWidget {
@@ -51,11 +53,14 @@ class CountryStatsCard extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 32),
                   child: Center(child: Text(l10n.noCountryData)),
                 )
-              else
+              else ...[
+                CountryMap(countries: countries),
+                const SizedBox(height: 16),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: _buildTable(context, viewModel, countries, l10n),
                 ),
+              ],
             ],
           );
         },

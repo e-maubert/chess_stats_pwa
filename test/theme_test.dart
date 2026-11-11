@@ -88,4 +88,19 @@ void main() {
       expect(brightnessOf(tester), Brightness.light);
     });
   });
+
+  group('couleurs de la carte des pays', () {
+    test('plus il y a de parties, plus le bleu est foncé (intense)', () {
+      var previous = double.infinity;
+      for (var i = 0; i <= 10; i++) {
+        final luminance = AppTheme.mapCountryColor(i / 10).computeLuminance();
+        expect(luminance, lessThan(previous));
+        previous = luminance;
+      }
+    });
+
+    test('teinte médiane = bleu du logo', () {
+      expect(AppTheme.mapCountryColor(0.5), AppTheme.logoBlue);
+    });
+  });
 }

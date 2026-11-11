@@ -5,7 +5,9 @@
   "@statsTitle": {
     "description": "Titre de la page de statistiques, avec le pseudo du joueur",
     "placeholders": {
-      "username": {"type": "String"}
+      "username": {
+        "type": "String"
+      }
     }
   },
   "enterUsername": "Enter your Chess.com username",
@@ -89,6 +91,53 @@
     "description": "Nom du pays à partir de son code chess.com (ISO 3166-1 ou code spécial X…).",
     "placeholders": {
       "code": {
+        "type": "String"
+      }
+    }
+  },
+  "countryMapHint": "Tap a country to see how many games you played against it. Pinch or use the buttons to zoom.",
+  "countryMapGames": "{country}: {count, plural, =0{0 games} =1{1 game} other{{count} games}}",
+  "@countryMapGames": {
+    "description": "Bulle d’un pays de la carte : nom et nombre de parties.",
+    "placeholders": {
+      "country": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "countryMapLegend": "Games played",
+  "countryMapZoomIn": "Zoom in",
+  "countryMapZoomOut": "Zoom out",
+  "countryMapReset": "Reset view",
+  "countryMapNotShown": "Not shown on the map: {countries}",
+  "@countryMapNotShown": {
+    "description": "Pays joués qui ne figurent pas sur la carte (International, pays inconnu…).",
+    "placeholders": {
+      "countries": {
+        "type": "String"
+      }
+    }
+  },
+  "countryMapNotShownItem": "{country} ({count, plural, =0{0 games} =1{1 game} other{{count} games}})",
+  "@countryMapNotShownItem": {
+    "description": "Un pays hors carte avec son nombre de parties, ex. International (3 parties).",
+    "placeholders": {
+      "country": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "countryMapTopRank": "{rank, select, 1{Most played country} 2{2nd most played country} 3{3rd most played country} other{No. {rank} most played country}}",
+  "@countryMapTopRank": {
+    "description": "Infobulle du marqueur posé sur les 3 pays les plus rencontrés (rang 1 à 3).",
+    "placeholders": {
+      "rank": {
         "type": "String"
       }
     }
