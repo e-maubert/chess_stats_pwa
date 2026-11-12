@@ -5,8 +5,10 @@ import '../models/country_game.dart';
 import '../models/country_stats.dart';
 import '../services/country_name_service.dart';
 import '../services/country_stats_service.dart';
+import '../services/pagination_service.dart';
 import '../viewmodels/country_stats_viewmodel.dart';
 import 'country_map.dart';
+import 'pagination_controls.dart';
 import 'result_bar.dart';
 import 'time_class_filter.dart';
 
@@ -58,7 +60,18 @@ class CountryStatsCard extends StatelessWidget {
                 const SizedBox(height: 16),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  child: _buildTable(context, viewModel, countries, l10n),
+                  child: _buildTable(
+                    context,
+                    viewModel,
+                    viewModel.pageCountries,
+                    PaginationService.firstRank(viewModel.page, countries.length),
+                    l10n,
+                  ),
+                ),
+                PaginationControls(
+                  page: viewModel.page,
+                  totalItems: countries.length,
+                  onPageChanged: viewModel.setPage,
                 ),
               ],
             ],
@@ -94,6 +107,7 @@ class CountryStatsCard extends StatelessWidget {
     BuildContext context,
     CountryStatsViewModel viewModel,
     List<CountryStats> countries,
+    int firstRank,
     AppLocalizations l10n,
   ) {
     return DataTable(
@@ -124,7 +138,7 @@ class CountryStatsCard extends StatelessWidget {
       rows: [
         for (var i = 0; i < countries.length; i++)
           DataRow(cells: [
-            DataCell(Text('${i + 1}')),
+            DataCell(Text('${firstRank + i}')),
             DataCell(Row(
               mainAxisSize: MainAxisSize.min,
               children: [

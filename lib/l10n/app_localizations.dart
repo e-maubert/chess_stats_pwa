@@ -452,6 +452,24 @@ abstract class AppLocalizations {
   /// **'{rank, select, 1{Most played country} 2{2nd most played country} 3{3rd most played country} other{No. {rank} most played country}}'**
   String countryMapTopRank(String rank);
 
+  /// Sous un tableau paginé : lignes affichées et total, ex. 11–20 of 37.
+  ///
+  /// In en, this message translates to:
+  /// **'{first}–{last} of {total}'**
+  String paginationRange(int first, int last, int total);
+
+  /// No description provided for @previousPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous page'**
+  String get previousPage;
+
+  /// No description provided for @nextPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Next page'**
+  String get nextPage;
+
   /// Pied de page : numéro de version de l'application.
   ///
   /// In en, this message translates to:
@@ -479,7 +497,7 @@ abstract class AppLocalizations {
   /// Nouveautés de la version 1.1.0, une par ligne.
   ///
   /// In en, this message translates to:
-  /// **'Desktop display: statistics on two columns on large screens\nPage title centered on every page\nFooter with the version number and what\'s new'**
+  /// **'Desktop display: statistics on two columns on large screens\nPage title centered on every page\nPlayed openings and opponents\' countries: paginated tables, 10 rows per page\nFooter with the version number and what\'s new'**
   String get changelogV110;
 
   /// Nouveautés de la version 1.0.0, une par ligne.

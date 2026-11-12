@@ -141,6 +141,22 @@
       }
     }
   },
+  "paginationRange": "{first}–{last} sur {total}",
+  "@paginationRange": {
+    "placeholders": {
+      "first": {
+        "type": "int"
+      },
+      "last": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "previousPage": "Page précédente",
+  "nextPage": "Page suivante",
   "appVersion": "Version {version}",
   "@appVersion": {
     "placeholders": {
@@ -162,7 +178,7 @@
       }
     }
   },
-  "changelogV110": "Affichage sur ordinateur : statistiques sur deux colonnes sur grand écran\nTitre centré sur toutes les pages\nPied de page avec le numéro de version et les nouveautés",
+  "changelogV110": "Affichage sur ordinateur : statistiques sur deux colonnes sur grand écran\nTitre centré sur toutes les pages\nOuvertures jouées et pays rencontrés : tableaux paginés, 10 lignes par page\nPied de page avec le numéro de version et les nouveautés",
   "@changelogV110": {
     "description": "Nouveautés de la version 1.1.0, une par ligne."
   },
