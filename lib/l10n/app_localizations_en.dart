@@ -494,4 +494,28 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String appVersion(String version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get whatsNew => 'What\'s new';
+
+  @override
+  String get close => 'Close';
+
+  @override
+  String changelogVersionTitle(String version, String date) {
+    return 'Version $version – $date';
+  }
+
+  @override
+  String get changelogV110 =>
+      'Desktop display: statistics on two columns on large screens\nPage title centered on every page\nFooter with the version number and what\'s new';
+
+  @override
+  String get changelogV100 =>
+      'Current month statistics: by color, by opening, rating history, time management, loss causes\nStatistics by opponents\' country, with a world map\nLight / dark mode\nApp in English and French';
 }

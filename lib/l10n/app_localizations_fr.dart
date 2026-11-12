@@ -493,4 +493,28 @@ class AppLocalizationsFr extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String appVersion(String version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get whatsNew => 'Nouveautés';
+
+  @override
+  String get close => 'Fermer';
+
+  @override
+  String changelogVersionTitle(String version, String date) {
+    return 'Version $version – $date';
+  }
+
+  @override
+  String get changelogV110 =>
+      'Affichage sur ordinateur : statistiques sur deux colonnes sur grand écran\nTitre centré sur toutes les pages\nPied de page avec le numéro de version et les nouveautés';
+
+  @override
+  String get changelogV100 =>
+      'Statistiques du mois en cours : par couleur, par ouverture, évolution du classement, gestion du temps, causes des défaites\nStatistiques par pays des adversaires, avec carte du monde\nMode clair / sombre\nApplication en français et en anglais';
 }

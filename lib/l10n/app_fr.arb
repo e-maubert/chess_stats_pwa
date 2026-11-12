@@ -140,5 +140,34 @@
         "type": "String"
       }
     }
+  },
+  "appVersion": "Version {version}",
+  "@appVersion": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      }
+    }
+  },
+  "whatsNew": "Nouveautés",
+  "close": "Fermer",
+  "changelogVersionTitle": "Version {version} – {date}",
+  "@changelogVersionTitle": {
+    "placeholders": {
+      "version": {
+        "type": "String"
+      },
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "changelogV110": "Affichage sur ordinateur : statistiques sur deux colonnes sur grand écran\nTitre centré sur toutes les pages\nPied de page avec le numéro de version et les nouveautés",
+  "@changelogV110": {
+    "description": "Nouveautés de la version 1.1.0, une par ligne."
+  },
+  "changelogV100": "Statistiques du mois en cours : par couleur, par ouverture, évolution du classement, gestion du temps, causes des défaites\nStatistiques par pays des adversaires, avec carte du monde\nMode clair / sombre\nApplication en français et en anglais",
+  "@changelogV100": {
+    "description": "Nouveautés de la version 1.0.0, une par ligne."
   }
 }
