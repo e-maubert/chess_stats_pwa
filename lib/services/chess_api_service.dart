@@ -6,22 +6,15 @@ import '../models/country_stats.dart';
 import '../models/color_stats.dart';
 import '../models/country_game.dart';
 import 'cache_service.dart';
+import 'country_stats_service.dart';
 import 'loss_stats_service.dart';
+import 'player_country_service.dart';
 import 'time_management_service.dart';
 
 class ChessApiService {
   static const String baseUrl = 'https://api.chess.com/pub/player';
   final _cacheService = CacheService();
-
-  Future<String> _getPlayerCountry(String username) async {
-    final response = await http.get(Uri.parse('$baseUrl/$username'));
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      final countryUrl = data['country'] as String;
-      return countryUrl.split('/').last; // Récupère le code pays (ex: 'FR', 'US', etc.)
-    }
-    return 'Unknown';
-  }
+  final _playerCountryService = PlayerCountryService();
 
   Future<ChessStats> getPlayerStats(String username) async {
     // Essayer de récupérer les données du cache
@@ -56,13 +49,7 @@ class ChessApiService {
     await _cacheService.clearCache(username);
   }
 
-  Future<String> _updateCountryStats(
-    Map<String, CountryStats> stats, 
-    String opponentUsername, 
-    String result
-  ) async {
-    final country = await _getPlayerCountry(opponentUsername);
-    
+  void _updateCountryStats(Map<String, CountryStats> stats, String country, String result) {
     if (!stats.containsKey(country)) {
       stats[country] = CountryStats(
         name: country,
@@ -86,7 +73,11 @@ class ChessApiService {
         countryStat.gamesDrawn++;
         break;
     }
-    return country;
+  }
+
+  static String _opponent(dynamic game, String username) {
+    final isWhite = game['white']['username'].toString().toLowerCase() == username;
+    return game[isWhite ? 'black' : 'white']['username'].toString();
   }
 
   Future<ChessStats> _processGameData(List<dynamic> games, String username) async {
@@ -102,10 +93,15 @@ class ChessApiService {
     int blackLosses = 0;
     int blackDraws = 0;
 
+    // Pays de tous les adversaires d'un coup : un appel par adversaire
+    // (pas par partie), en parallèle, avec cache local.
+    final countries = await _playerCountryService.countries([for (final game in games) _opponent(game, username)]);
+
     for (var game in games) {
       final isWhite = game['white']['username'].toString().toLowerCase() == username;
       final result = _getGameResult(game, isWhite);
-      final opponentUsername = game[isWhite ? 'black' : 'white']['username'].toString();
+      final opponentUsername = _opponent(game, username);
+      final country = countries[opponentUsername.toLowerCase()] ?? CountryStatsService.unknownCountry;
       
       // Update color-specific stats
       if (isWhite) {
@@ -139,7 +135,7 @@ class ChessApiService {
       _updateOpeningStats(openingStats, openingName, result, isWhite ? 'white' : 'black');
 
       // Update country stats
-      final country = await _updateCountryStats(countryStats, opponentUsername, result);
+      _updateCountryStats(countryStats, country, result);
       final lossCause = result == 'loss'
           ? LossStatsService.lossCause(game[isWhite ? 'white' : 'black']['result']?.toString())
           : null;
@@ -252,7 +248,7 @@ class ChessApiService {
 
   String _getOpeningName(String eco) {
     // Table de conversion des codes ECO en noms d'ouvertures
-    final Map<String, String> ecoToName = {
+    const ecoToName = <String, String>{
       'A00': 'Anderssen-Opening',
       'A01': 'Nimzowitsch-Larsen-Attack',
       'A02': 'Birds-Opening',

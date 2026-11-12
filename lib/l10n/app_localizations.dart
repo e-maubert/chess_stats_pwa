@@ -603,6 +603,12 @@ abstract class AppLocalizations {
   /// **'Version {version} – {date}'**
   String changelogVersionTitle(String version, String date);
 
+  /// Nouveautés de la version 1.2.1, une par ligne.
+  ///
+  /// In en, this message translates to:
+  /// **'Faster loading: each opponent\'s country is requested only once, several at a time, and remembered for a month in your browser'**
+  String get changelogV121;
+
   /// Nouveautés de la version 1.2.0, une par ligne.
   ///
   /// In en, this message translates to:
