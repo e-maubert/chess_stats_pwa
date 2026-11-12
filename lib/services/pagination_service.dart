@@ -1,7 +1,7 @@
 /// Découpage d'une liste en pages (tableaux des ouvertures et des pays).
 class PaginationService {
   /// Nombre de lignes par page.
-  static const int pageSize = 10;
+  static const int pageSize = 5;
 
   /// Nombre de pages (au moins 1, même pour une liste vide).
   static int pageCount(int totalItems, {int size = pageSize}) => totalItems <= 0 ? 1 : (totalItems + size - 1) ~/ size;

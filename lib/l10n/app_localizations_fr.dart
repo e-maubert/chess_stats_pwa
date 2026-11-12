@@ -523,7 +523,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get changelogV110 =>
-      'Affichage sur ordinateur : statistiques sur deux colonnes sur grand écran\nTitre centré sur toutes les pages\nOuvertures jouées et pays rencontrés : tableaux paginés, 10 lignes par page\nPied de page avec le numéro de version et les nouveautés';
+      'Affichage sur ordinateur : statistiques sur deux colonnes sur grand écran\nTitre centré sur toutes les pages\nOuvertures jouées et pays rencontrés : tableaux paginés, 5 lignes par page\nPied de page avec le numéro de version et les nouveautés';
 
   @override
   String get changelogV100 =>

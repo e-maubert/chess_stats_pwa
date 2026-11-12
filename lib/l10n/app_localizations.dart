@@ -497,7 +497,7 @@ abstract class AppLocalizations {
   /// Nouveautés de la version 1.1.0, une par ligne.
   ///
   /// In en, this message translates to:
-  /// **'Desktop display: statistics on two columns on large screens\nPage title centered on every page\nPlayed openings and opponents\' countries: paginated tables, 10 rows per page\nFooter with the version number and what\'s new'**
+  /// **'Desktop display: statistics on two columns on large screens\nPage title centered on every page\nPlayed openings and opponents\' countries: paginated tables, 5 rows per page\nFooter with the version number and what\'s new'**
   String get changelogV110;
 
   /// Nouveautés de la version 1.0.0, une par ligne.
