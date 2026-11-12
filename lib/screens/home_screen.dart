@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../services/chess_api_service.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
+import '../services/layout_service.dart';
+import '../widgets/app_footer.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/theme_toggle_button.dart';
 import 'stats_screen.dart';
@@ -62,41 +64,62 @@ class HomeScreenState extends State<HomeScreen> {
         title: Text(l10n.appTitle),
         actions: const [ThemeToggleButton()],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const AppLogo(size: 120),
-            const SizedBox(height: 24),
-            Text(
-              l10n.enterUsername,
-              style: Theme.of(context).textTheme.titleLarge,
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 24),
-            TextField(
-              controller: _usernameController,
-              decoration: InputDecoration(
-                hintText: l10n.enterUsername,
-                border: const OutlineInputBorder(),
+      body: Column(
+        children: [
+          Expanded(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(16.0),
+                child: ConstrainedBox(
+                  // Sur ordinateur, champ et bouton gardent une largeur
+                  // raisonnable au lieu de s'étirer sur tout l'écran.
+                  constraints: const BoxConstraints(maxWidth: LayoutService.maxSearchWidth),
+                  child: _buildSearchForm(context, l10n),
+                ),
               ),
-              onSubmitted: (_) => _searchUser(),
             ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _isLoading ? null : _searchUser,
-              child: _isLoading
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    )
-                  : Text(l10n.search),
-            ),
-          ],
-        ),
+          ),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: AppFooter(),
+          ),
+        ],
       ),
     );
   }
-} 
+
+  Widget _buildSearchForm(BuildContext context, AppLocalizations l10n) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const AppLogo(size: 120),
+        const SizedBox(height: 24),
+        Text(
+          l10n.enterUsername,
+          style: Theme.of(context).textTheme.titleLarge,
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 24),
+        TextField(
+          controller: _usernameController,
+          decoration: InputDecoration(
+            hintText: l10n.enterUsername,
+            border: const OutlineInputBorder(),
+          ),
+          onSubmitted: (_) => _searchUser(),
+        ),
+        const SizedBox(height: 16),
+        ElevatedButton(
+          onPressed: _isLoading ? null : _searchUser,
+          child: _isLoading
+              ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : Text(l10n.search),
+        ),
+      ],
+    );
+  }
+}

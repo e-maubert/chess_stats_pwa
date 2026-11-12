@@ -451,6 +451,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{rank, select, 1{Most played country} 2{2nd most played country} 3{3rd most played country} other{No. {rank} most played country}}'**
   String countryMapTopRank(String rank);
+
+  /// Pied de page : numéro de version de l'application.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version}'**
+  String appVersion(String version);
+
+  /// Lien du pied de page et titre du journal des versions.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s new'**
+  String get whatsNew;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// Titre d'une version dans le journal, ex. Version 1.1.0 – November 12, 2026.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version} – {date}'**
+  String changelogVersionTitle(String version, String date);
+
+  /// Nouveautés de la version 1.1.0, une par ligne.
+  ///
+  /// In en, this message translates to:
+  /// **'Desktop display: statistics on two columns on large screens\nPage title centered on every page\nFooter with the version number and what\'s new'**
+  String get changelogV110;
+
+  /// Nouveautés de la version 1.0.0, une par ligne.
+  ///
+  /// In en, this message translates to:
+  /// **'Current month statistics: by color, by opening, rating history, time management, loss causes\nStatistics by opponents\' country, with a world map\nLight / dark mode\nApp in English and French'**
+  String get changelogV100;
 }
 
 class _AppLocalizationsDelegate

@@ -4,8 +4,13 @@ import 'package:flutter/material.dart';
 class AppTheme {
   static const Color _seed = Colors.blue;
 
+  /// Titre de la barre du haut centré sur toutes les pages et toutes les
+  /// plateformes (par défaut, Flutter ne le centre que sur iOS / macOS).
+  static const AppBarTheme _appBarTheme = AppBarTheme(centerTitle: true);
+
   static final ThemeData light = ThemeData(
     colorScheme: ColorScheme.fromSeed(seedColor: _seed),
+    appBarTheme: _appBarTheme,
     useMaterial3: true,
   );
 
@@ -31,6 +36,7 @@ class AppTheme {
       outline: const Color(0xFF8F8F8F),
       outlineVariant: const Color(0xFF444444),
     ),
+    appBarTheme: _appBarTheme,
     useMaterial3: true,
   );
 
