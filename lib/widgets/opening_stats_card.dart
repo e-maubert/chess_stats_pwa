@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 import '../models/country_game.dart';
 import '../models/opening_family_stats.dart';
 import '../services/opening_stats_service.dart';
+import '../services/pagination_service.dart';
 import '../viewmodels/opening_stats_viewmodel.dart';
+import 'pagination_controls.dart';
 import 'result_bar.dart';
 import 'time_class_filter.dart';
 
@@ -45,9 +47,9 @@ class OpeningStatsCard extends StatelessWidget {
                 onSelected: viewModel.setTimeClass,
               ),
               const SizedBox(height: 16),
-              ..._colorBlock(context, l10n.withWhite, viewModel, viewModel.white, l10n),
+              ..._colorBlock(context, l10n.withWhite, viewModel, OpeningStatsViewModel.colorWhite, l10n),
               const SizedBox(height: 24),
-              ..._colorBlock(context, l10n.withBlack, viewModel, viewModel.black, l10n),
+              ..._colorBlock(context, l10n.withBlack, viewModel, OpeningStatsViewModel.colorBlack, l10n),
             ],
           );
         },
@@ -55,14 +57,18 @@ class OpeningStatsCard extends StatelessWidget {
     );
   }
 
-  /// Sous-bloc d'une couleur : titre, puis tableau (ou message si vide).
+  /// Sous-bloc d'une couleur : titre, puis tableau paginé (ou message si
+  /// vide).
   List<Widget> _colorBlock(
     BuildContext context,
     String title,
     OpeningStatsViewModel viewModel,
-    List<OpeningFamilyStats> families,
+    String color,
     AppLocalizations l10n,
   ) {
+    final total = viewModel.families(color).length;
+    final page = viewModel.page(color);
+    final families = viewModel.pageFamilies(color);
     return [
       Text(
         title,
@@ -76,11 +82,17 @@ class OpeningStatsCard extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: Text(l10n.noCountryData, style: Theme.of(context).textTheme.bodyMedium),
         )
-      else
+      else ...[
         SingleChildScrollView(
           scrollDirection: Axis.horizontal,
-          child: _buildTable(context, viewModel, families, l10n),
+          child: _buildTable(context, viewModel, families, PaginationService.firstRank(page, total), l10n),
         ),
+        PaginationControls(
+          page: page,
+          totalItems: total,
+          onPageChanged: (page) => viewModel.setPage(color, page),
+        ),
+      ],
     ];
   }
 
@@ -110,6 +122,7 @@ class OpeningStatsCard extends StatelessWidget {
     BuildContext context,
     OpeningStatsViewModel viewModel,
     List<OpeningFamilyStats> families,
+    int firstRank,
     AppLocalizations l10n,
   ) {
     return DataTable(
@@ -139,7 +152,7 @@ class OpeningStatsCard extends StatelessWidget {
       rows: [
         for (var i = 0; i < families.length; i++)
           DataRow(cells: [
-            DataCell(Text('${i + 1}')),
+            DataCell(Text('${firstRank + i}')),
             DataCell(Text(families[i].name, softWrap: false)),
             DataCell(Text('${families[i].totalGames}')),
             DataCell(Column(

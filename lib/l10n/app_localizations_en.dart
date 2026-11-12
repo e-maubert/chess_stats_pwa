@@ -496,6 +496,17 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String paginationRange(int first, int last, int total) {
+    return '$first–$last of $total';
+  }
+
+  @override
+  String get previousPage => 'Previous page';
+
+  @override
+  String get nextPage => 'Next page';
+
+  @override
   String appVersion(String version) {
     return 'Version $version';
   }
@@ -513,7 +524,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get changelogV110 =>
-      'Desktop display: statistics on two columns on large screens\nPage title centered on every page\nFooter with the version number and what\'s new';
+      'Desktop display: statistics on two columns on large screens\nPage title centered on every page\nPlayed openings and opponents\' countries: paginated tables, 5 rows per page\nFooter with the version number and what\'s new';
 
   @override
   String get changelogV100 =>
