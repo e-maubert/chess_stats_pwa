@@ -96,8 +96,22 @@ class WorldMap {
   }
 }
 
+/// Résultats contre un pays de la carte.
+class MapCountryResult {
+  final int games;
+  final int wins;
+  final int draws;
+  final int losses;
+
+  const MapCountryResult({required this.games, required this.wins, required this.draws, required this.losses});
+
+  /// Performance, comme un score de tournoi : (victoires + ½ nulles) /
+  /// parties, entre 0 et 1. 0,5 = équilibre.
+  double get score => games > 0 ? (wins + draws / 2) / games : 0;
+}
+
 /// Calculs de la carte des pays : regroupement des codes chess.com par pays
-/// dessiné, et intensité de couleur.
+/// dessiné, intensité de couleur, performance.
 class WorldMapService {
   /// Codes spéciaux chess.com rattachés au pays de la carte qui les contient.
   /// International ('XX') et pays inconnu n'ont pas de place sur la carte.
@@ -124,14 +138,66 @@ class WorldMapService {
   }
 
   /// Nombre de parties par pays de la carte.
-  static Map<String, int> gamesByMapCountry(List<CountryStats> countries) {
-    final games = <String, int>{};
+  static Map<String, int> gamesByMapCountry(List<CountryStats> countries) =>
+      resultsByMapCountry(countries).map((code, result) => MapEntry(code, result.games));
+
+  /// Résultats (victoires, nulles, défaites) par pays de la carte : les
+  /// codes rattachés à un même pays (ex. Angleterre et Écosse → GB) sont
+  /// additionnés.
+  static Map<String, MapCountryResult> resultsByMapCountry(List<CountryStats> countries) {
+    final results = <String, MapCountryResult>{};
     for (final country in countries) {
       final code = mapCode(country.name);
       if (code == null || country.gamesPlayed == 0) continue;
-      games[code] = (games[code] ?? 0) + country.gamesPlayed;
+      final previous = results[code];
+      results[code] = MapCountryResult(
+        games: (previous?.games ?? 0) + country.gamesPlayed,
+        wins: (previous?.wins ?? 0) + country.gamesWon,
+        draws: (previous?.draws ?? 0) + country.gamesDrawn,
+        losses: (previous?.losses ?? 0) + country.gamesLost,
+      );
     }
-    return games;
+    return results;
+  }
+
+  /// Nombre minimum de parties contre un pays pour juger la performance :
+  /// 2 tant que le mois compte au plus [smallMonthMaxGames] parties, 3
+  /// au-delà. Avec une seule partie, 0 % ou 100 % ne veulent rien dire.
+  static int minGamesForPerformance(int totalGames) => totalGames <= smallMonthMaxGames ? 2 : 3;
+
+  static const int smallMonthMaxGames = 40;
+
+  /// Points forts (performance au-dessus de 50 %, la meilleure d'abord) et
+  /// points faibles (en dessous de 50 %, la plus faible d'abord), parmi les
+  /// pays d'au moins [minGames] parties. Au plus [count] de chaque côté ;
+  /// un pays à 50 % n'est ni l'un ni l'autre, et aucun pays ne peut être
+  /// les deux. À performance égale, le pays le plus joué passe devant,
+  /// puis l'ordre alphabétique des codes.
+  static ({List<String> strengths, List<String> weaknesses}) strengthsAndWeaknesses(
+    Map<String, MapCountryResult> results,
+    int minGames, {
+    int count = 3,
+  }) {
+    final judged = results.entries.where((e) => e.value.games >= minGames).toList();
+    int byGamesThenCode(MapEntry<String, MapCountryResult> a, MapEntry<String, MapCountryResult> b) {
+      final cmp = b.value.games.compareTo(a.value.games);
+      return cmp != 0 ? cmp : a.key.compareTo(b.key);
+    }
+
+    final strengths = judged.where((e) => e.value.score > 0.5).toList()
+      ..sort((a, b) {
+        final cmp = b.value.score.compareTo(a.value.score);
+        return cmp != 0 ? cmp : byGamesThenCode(a, b);
+      });
+    final weaknesses = judged.where((e) => e.value.score < 0.5).toList()
+      ..sort((a, b) {
+        final cmp = a.value.score.compareTo(b.value.score);
+        return cmp != 0 ? cmp : byGamesThenCode(a, b);
+      });
+    return (
+      strengths: strengths.take(count).map((e) => e.key).toList(),
+      weaknesses: weaknesses.take(count).map((e) => e.key).toList(),
+    );
   }
 
   /// Les [count] pays les plus joués, du premier au dernier. À égalité,

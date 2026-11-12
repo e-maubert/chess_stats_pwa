@@ -87,6 +87,38 @@ class AppTheme {
       ? Theme.of(context).colorScheme.onSurface
       : const Color(0xFF999999);
 
+  // Carte « Performance » : rouge foncé (0 %) → jaune (50 %, équilibre) →
+  // vert foncé (100 %), d'après la palette RdYlGn de ColorBrewer. La clarté
+  // varie avec la teinte : plus on s'éloigne de 50 %, plus c'est foncé, ce
+  // qui reste lisible quand le rouge et le vert se confondent (daltonisme).
+  // Mêmes teintes dans les deux thèmes, comme le bleu de l'autre carte.
+  static const List<Color> _performanceStops = [
+    Color(0xFFA50026), // 0 %
+    Color(0xFFF46D43), // 25 %
+    Color(0xFFFEE08B), // 50 %
+    Color(0xFF66BD63), // 75 %
+    Color(0xFF006837), // 100 %
+  ];
+
+  /// Couleur d'un pays selon sa performance [score], entre 0 et 1.
+  static Color performanceColor(double score) {
+    final position = score.clamp(0.0, 1.0) * (_performanceStops.length - 1);
+    final index = position.floor().clamp(0, _performanceStops.length - 2);
+    return Color.lerp(_performanceStops[index], _performanceStops[index + 1], position - index)!;
+  }
+
+  /// Pays joués mais trop peu pour juger la performance : gris distinct de
+  /// celui des pays jamais rencontrés (plus foncé en clair, plus clair en
+  /// sombre).
+  static Color mapNotEnoughGames(BuildContext context) =>
+      _isDark(context) ? const Color(0xFF8C8C8C) : const Color(0xFFAFAFAF);
+
+  /// Marqueurs des points forts (flèche vers le haut) et des points faibles
+  /// (flèche vers le bas) : teintes soutenues pour que l'icône et le
+  /// chiffre blancs restent lisibles.
+  static const Color strengthMarker = Color(0xFF1B7A3A);
+  static const Color weaknessMarker = Color(0xFFB3261E);
+
   /// Marqueurs des 3 pays les plus rencontrés : or, argent, bronze. Teintes
   /// soutenues pour que l'icône et le chiffre blancs restent lisibles.
   static const List<Color> podiumColors = [

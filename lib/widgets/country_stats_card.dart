@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import '../models/country_game.dart';
+import '../models/country_map_mode.dart';
 import '../models/country_stats.dart';
 import '../services/country_name_service.dart';
 import '../services/country_stats_service.dart';
@@ -56,7 +57,27 @@ class CountryStatsCard extends StatelessWidget {
                   child: Center(child: Text(l10n.noCountryData)),
                 )
               else ...[
-                CountryMap(countries: countries),
+                // Choix de la carte, collé à celle-ci : il ne change que la
+                // carte, pas le tableau (contrairement à la cadence).
+                SegmentedButton<CountryMapMode>(
+                  showSelectedIcon: false,
+                  segments: [
+                    ButtonSegment(
+                      value: CountryMapMode.gamesPlayed,
+                      icon: const Icon(Icons.public),
+                      label: Text(l10n.countryMapModeGames),
+                    ),
+                    ButtonSegment(
+                      value: CountryMapMode.performance,
+                      icon: const Icon(Icons.trending_up),
+                      label: Text(l10n.countryMapModePerformance),
+                    ),
+                  ],
+                  selected: {viewModel.mapMode},
+                  onSelectionChanged: (selection) => viewModel.setMapMode(selection.first),
+                ),
+                const SizedBox(height: 8),
+                CountryMap(countries: countries, mode: viewModel.mapMode),
                 const SizedBox(height: 16),
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -93,8 +114,7 @@ class CountryStatsCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(label, style: TextStyle(fontWeight: active ? FontWeight.bold : FontWeight.normal)),
-            if (active)
-              Icon(viewModel.descending ? Icons.arrow_downward : Icons.arrow_upward, size: 14),
+            if (active) Icon(viewModel.descending ? Icons.arrow_downward : Icons.arrow_upward, size: 14),
           ],
         ),
       ),

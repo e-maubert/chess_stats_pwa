@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import '../models/country_game.dart';
+import '../models/country_map_mode.dart';
 import '../models/country_stats.dart';
 import '../services/country_stats_service.dart';
 import '../services/pagination_service.dart';
@@ -13,8 +14,19 @@ class CountryStatsViewModel extends ChangeNotifier {
   CountrySortKey _sortKey = CountrySortKey.gamesPlayed;
   bool _descending = true;
   int _page = 0;
+  CountryMapMode _mapMode = CountryMapMode.gamesPlayed;
 
   CountryStatsViewModel(List<CountryGame> games) : _games = games;
+
+  /// Carte affichée : parties jouées ou performance. Ne change ni le
+  /// tableau ni sa page.
+  CountryMapMode get mapMode => _mapMode;
+
+  void setMapMode(CountryMapMode mode) {
+    if (_mapMode == mode) return;
+    _mapMode = mode;
+    notifyListeners();
+  }
 
   String? get timeClass => _timeClass;
   CountrySortKey get sortKey => _sortKey;

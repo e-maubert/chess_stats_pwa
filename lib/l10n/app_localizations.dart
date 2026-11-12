@@ -452,6 +452,103 @@ abstract class AppLocalizations {
   /// **'{rank, select, 1{Most played country} 2{2nd most played country} 3{3rd most played country} other{No. {rank} most played country}}'**
   String countryMapTopRank(String rank);
 
+  /// Bouton de choix de la carte : nombre de parties par pays.
+  ///
+  /// In en, this message translates to:
+  /// **'Games played'**
+  String get countryMapModeGames;
+
+  /// Bouton de choix de la carte : performance par pays, (victoires + ½ nulles) / parties.
+  ///
+  /// In en, this message translates to:
+  /// **'Performance'**
+  String get countryMapModePerformance;
+
+  /// No description provided for @countryMapPerformanceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap a country to see your performance against it. Pinch or use the buttons to zoom.'**
+  String get countryMapPerformanceHint;
+
+  /// No description provided for @countryMapPerformanceLegend.
+  ///
+  /// In en, this message translates to:
+  /// **'Performance'**
+  String get countryMapPerformanceLegend;
+
+  /// No description provided for @countryMapPercent.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}%'**
+  String countryMapPercent(int percent);
+
+  /// Bulle d'un pays sur la carte Performance.
+  ///
+  /// In en, this message translates to:
+  /// **'{country}: {percent}% performance · {games, plural, =1{1 game} other{{games} games}} (W {wins} · D {draws} · L {losses})'**
+  String countryMapPerformance(
+      String country, int percent, int games, int wins, int draws, int losses);
+
+  /// Bulle d'un pays trop peu joué sur la carte Performance.
+  ///
+  /// In en, this message translates to:
+  /// **'{country}: {games, plural, =0{0 games} =1{1 game} other{{games} games}}, not enough to rate the performance'**
+  String countryMapNotEnoughGames(String country, int games);
+
+  /// No description provided for @countryMapNotEnoughLegend.
+  ///
+  /// In en, this message translates to:
+  /// **'Fewer than {minGames} games: not enough to rate'**
+  String countryMapNotEnoughLegend(int minGames);
+
+  /// No description provided for @countryMapNoneJudged.
+  ///
+  /// In en, this message translates to:
+  /// **'No country has enough games yet to rate the performance ({minGames} minimum).'**
+  String countryMapNoneJudged(int minGames);
+
+  /// No description provided for @countryMapStrengths.
+  ///
+  /// In en, this message translates to:
+  /// **'Strengths: '**
+  String get countryMapStrengths;
+
+  /// No description provided for @countryMapWeaknesses.
+  ///
+  /// In en, this message translates to:
+  /// **'Weaknesses: '**
+  String get countryMapWeaknesses;
+
+  /// No description provided for @countryMapNoStrength.
+  ///
+  /// In en, this message translates to:
+  /// **'none this month'**
+  String get countryMapNoStrength;
+
+  /// No description provided for @countryMapNoWeakness.
+  ///
+  /// In en, this message translates to:
+  /// **'none this month'**
+  String get countryMapNoWeakness;
+
+  /// No description provided for @countryMapSummaryItem.
+  ///
+  /// In en, this message translates to:
+  /// **'{country} {percent}%'**
+  String countryMapSummaryItem(String country, int percent);
+
+  /// Infobulle du marqueur d'un point fort (rang 1 à 3).
+  ///
+  /// In en, this message translates to:
+  /// **'{rank, select, 1{Best performance} 2{2nd best performance} 3{3rd best performance} other{No. {rank} best performance}}'**
+  String countryMapStrengthRank(String rank);
+
+  /// Infobulle du marqueur d'un point faible (rang 1 à 3).
+  ///
+  /// In en, this message translates to:
+  /// **'{rank, select, 1{Weakest performance} 2{2nd weakest performance} 3{3rd weakest performance} other{No. {rank} weakest performance}}'**
+  String countryMapWeaknessRank(String rank);
+
   /// Sous un tableau paginé : lignes affichées et total, ex. 11–20 of 37.
   ///
   /// In en, this message translates to:
@@ -493,6 +590,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Version {version} – {date}'**
   String changelogVersionTitle(String version, String date);
+
+  /// Nouveautés de la version 1.2.0, une par ligne.
+  ///
+  /// In en, this message translates to:
+  /// **'Countries map: new \"Performance\" map, from red (losses) to green (wins) through yellow (even)\nCountries with too few games in grey: 2 games minimum, 3 above 40 games in the month\nStrengths and weaknesses: markers on the map and a summary under the legend'**
+  String get changelogV120;
 
   /// Nouveautés de la version 1.1.0, une par ligne.
   ///

@@ -2,19 +2,26 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
+import '../models/country_map_mode.dart';
 import '../models/country_stats.dart';
 import '../services/country_name_service.dart';
 import '../services/world_map_service.dart';
 import '../theme/app_theme.dart';
 
-/// Carte du monde des pays rencontrés : plus on a joué contre un pays, plus
-/// son bleu est intense. Un clic sur un pays affiche une bulle avec le
-/// nombre de parties. Zoom au pincement ou avec les boutons.
+/// Carte du monde des pays rencontrés, selon [mode] :
+/// - parties jouées : plus on a joué contre un pays, plus son bleu est
+///   intense ; marqueurs sur les 3 pays les plus rencontrés ;
+/// - performance : du rouge (défaites) au vert (victoires) en passant par le
+///   jaune (équilibre), gris pour les pays trop peu joués ; marqueurs sur
+///   les points forts et les points faibles, résumés sous la légende.
+/// Un clic sur un pays affiche une bulle avec ses chiffres. Zoom au
+/// pincement ou avec les boutons.
 class CountryMap extends StatefulWidget {
   /// Statistiques par pays déjà filtrées par cadence.
   final List<CountryStats> countries;
+  final CountryMapMode mode;
 
-  const CountryMap({super.key, required this.countries});
+  const CountryMap({super.key, required this.countries, this.mode = CountryMapMode.gamesPlayed});
 
   @override
   State<CountryMap> createState() => _CountryMapState();
@@ -97,8 +104,49 @@ class _CountryMapState extends State<CountryMap> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final games = WorldMapService.gamesByMapCountry(widget.countries);
+    final results = WorldMapService.resultsByMapCountry(widget.countries);
+    final games = results.map((code, result) => MapEntry(code, result.games));
     final maxGames = games.values.fold(0, (a, b) => a > b ? a : b);
+    final performance = widget.mode == CountryMapMode.performance;
+    final totalGames = widget.countries.fold(0, (sum, c) => sum + c.gamesPlayed);
+    final minGames = WorldMapService.minGamesForPerformance(totalGames);
+    final ranking = WorldMapService.strengthsAndWeaknesses(results, minGames);
+    final layer = _Layer(
+      fills: {
+        for (final e in results.entries)
+          e.key: !performance
+              ? AppTheme.mapCountryColor(WorldMapService.intensity(e.value.games, maxGames))
+              : e.value.games >= minGames
+                  ? AppTheme.performanceColor(e.value.score)
+                  : AppTheme.mapNotEnoughGames(context),
+      },
+      markers: performance
+          ? [
+              for (final (i, code) in ranking.strengths.indexed)
+                _MarkerSpec(
+                    code, i + 1, AppTheme.strengthMarker, Icons.arrow_upward, l10n.countryMapStrengthRank('${i + 1}')),
+              for (final (i, code) in ranking.weaknesses.indexed)
+                _MarkerSpec(code, i + 1, AppTheme.weaknessMarker, Icons.arrow_downward,
+                    l10n.countryMapWeaknessRank('${i + 1}')),
+            ]
+          : [
+              for (final (i, code) in WorldMapService.topCountries(games).indexed)
+                _MarkerSpec(
+                    code, i + 1, AppTheme.podiumColors[i], Icons.leaderboard, l10n.countryMapTopRank('${i + 1}')),
+            ],
+      bubbleText: (code) {
+        final name = CountryNameService.countryName(l10n, code);
+        final result = results[code];
+        if (!performance || result == null) return l10n.countryMapGames(name, result?.games ?? 0);
+        if (result.games < minGames) return l10n.countryMapNotEnoughGames(name, result.games);
+        return l10n.countryMapPerformance(
+            name, _percent(result.score), result.games, result.wins, result.draws, result.losses);
+      },
+    );
+    String summary(List<String> codes) => codes
+        .map((code) =>
+            l10n.countryMapSummaryItem(CountryNameService.countryName(l10n, code), _percent(results[code]!.score)))
+        .join(', ');
     final notShown = [
       for (final c in widget.countries)
         if (WorldMapService.mapCode(c.name) == null)
@@ -115,19 +163,69 @@ class _CountryMapState extends State<CountryMap> {
           if (snapshot.hasError) return const SizedBox.shrink();
           return const SizedBox(height: 200, child: Center(child: CircularProgressIndicator()));
         }
+        final small = Theme.of(context).textTheme.bodySmall;
+        final judged = results.values.any((r) => r.games >= minGames);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(l10n.countryMapHint, style: Theme.of(context).textTheme.bodySmall),
+            Text(performance ? l10n.countryMapPerformanceHint : l10n.countryMapHint, style: small),
             const SizedBox(height: 8),
             LayoutBuilder(builder: (context, constraints) {
               final width = constraints.maxWidth;
               final scale = width / map.size.width;
               final viewport = Size(width, map.size.height * scale);
-              return _buildViewer(context, l10n, map, games, maxGames, scale, viewport);
+              return _buildViewer(context, l10n, map, layer, scale, viewport);
             }),
             const SizedBox(height: 8),
-            _Legend(maxGames: maxGames, label: l10n.countryMapLegend),
+            if (!performance)
+              _Legend(
+                label: l10n.countryMapLegend,
+                start: '1',
+                end: '$maxGames',
+                colors: [for (var i = 0; i <= 4; i++) AppTheme.mapCountryColor(i / 4)],
+                visible: maxGames > 0,
+              )
+            else if (results.isNotEmpty) ...[
+              _Legend(
+                label: l10n.countryMapPerformanceLegend,
+                start: l10n.countryMapPercent(0),
+                end: l10n.countryMapPercent(100),
+                colors: [for (var i = 0; i <= 4; i++) AppTheme.performanceColor(i / 4)],
+              ),
+              const SizedBox(height: 4),
+              Row(
+                children: [
+                  Container(
+                    width: 14,
+                    height: 10,
+                    decoration: BoxDecoration(
+                      color: AppTheme.mapNotEnoughGames(context),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  Expanded(child: Text(l10n.countryMapNotEnoughLegend(minGames), style: small)),
+                ],
+              ),
+              const SizedBox(height: 8),
+              if (!judged)
+                Text(l10n.countryMapNoneJudged(minGames), style: small)
+              else ...[
+                _SummaryLine(
+                  icon: Icons.arrow_upward,
+                  color: AppTheme.strengthMarker,
+                  label: l10n.countryMapStrengths,
+                  text: ranking.strengths.isEmpty ? l10n.countryMapNoStrength : summary(ranking.strengths),
+                ),
+                const SizedBox(height: 4),
+                _SummaryLine(
+                  icon: Icons.arrow_downward,
+                  color: AppTheme.weaknessMarker,
+                  label: l10n.countryMapWeaknesses,
+                  text: ranking.weaknesses.isEmpty ? l10n.countryMapNoWeakness : summary(ranking.weaknesses),
+                ),
+              ],
+            ],
             if (notShown.isNotEmpty) ...[
               const SizedBox(height: 4),
               Text(
@@ -145,8 +243,7 @@ class _CountryMapState extends State<CountryMap> {
     BuildContext context,
     AppLocalizations l10n,
     WorldMap map,
-    Map<String, int> games,
-    int maxGames,
+    _Layer layer,
     double scale,
     Size viewport,
   ) {
@@ -179,12 +276,7 @@ class _CountryMapState extends State<CountryMap> {
                         map: map,
                         scale: scale,
                         zoom: _controller,
-                        fills: {
-                          for (final e in games.entries)
-                            e.key: AppTheme.mapCountryColor(
-                              WorldMapService.intensity(e.value, maxGames),
-                            ),
-                        },
+                        fills: layer.fills,
                         emptyColor: AppTheme.mapEmptyCountry(context),
                         borderColor: AppTheme.mapBackground(context),
                         selected: _selected,
@@ -195,22 +287,26 @@ class _CountryMapState extends State<CountryMap> {
                 ),
               ),
             ),
-            // Marqueurs des 3 pays les plus rencontrés, qui suivent le zoom.
-            // Un clic dessus ouvre la bulle du pays, comme un clic sur le pays.
+            // Marqueurs (pays les plus rencontrés, ou points forts et faibles),
+            // qui suivent le zoom. Un clic dessus ouvre la bulle du pays,
+            // comme un clic sur le pays. Dessinés du dernier au premier pour
+            // que le n°1 passe au-dessus en cas de chevauchement.
             AnimatedBuilder(
               animation: _controller,
               builder: (context, _) {
-                final top = WorldMapService.topCountries(games);
+                final markers = layer.markers;
                 return Stack(
                   children: [
-                    for (var i = top.length - 1; i >= 0; i--)
-                      if (map.labels[top[i]] case final label?)
+                    for (final marker in markers.reversed)
+                      if (map.labels[marker.code] case final label?)
                         _RankMarker(
                           anchor: MatrixUtils.transformPoint(_controller.value, label * scale),
-                          rank: i + 1,
-                          tooltip: l10n.countryMapTopRank('${i + 1}'),
+                          rank: marker.rank,
+                          color: marker.color,
+                          icon: marker.icon,
+                          tooltip: marker.tooltip,
                           onTap: () => setState(() {
-                            _selected = top[i];
+                            _selected = marker.code;
                             _tapPosition = label * scale;
                           }),
                         ),
@@ -225,10 +321,7 @@ class _CountryMapState extends State<CountryMap> {
                   anchor: MatrixUtils.transformPoint(_controller.value, _tapPosition!),
                   viewport: viewport,
                   flag: CountryNameService.getFlag(_selected!),
-                  text: l10n.countryMapGames(
-                    CountryNameService.countryName(l10n, _selected!),
-                    games[_selected] ?? 0,
-                  ),
+                  text: layer.bubbleText(_selected!),
                 ),
               ),
             Positioned(
@@ -368,18 +461,85 @@ class _Bubble extends StatelessWidget {
   }
 }
 
-/// Marqueur d'un des pays les plus rencontrés : icône de classement
-/// (colonnes) et rang, dans une étiquette dont la pointe désigne le pays.
+/// Ce que montre la carte dans le mode choisi : couleur de chaque pays,
+/// marqueurs et texte de la bulle d'un pays.
+class _Layer {
+  final Map<String, Color> fills;
+  final List<_MarkerSpec> markers;
+  final String Function(String code) bubbleText;
+
+  const _Layer({required this.fills, required this.markers, required this.bubbleText});
+}
+
+class _MarkerSpec {
+  final String code;
+  final int rank;
+  final Color color;
+  final IconData icon;
+  final String tooltip;
+
+  const _MarkerSpec(this.code, this.rank, this.color, this.icon, this.tooltip);
+}
+
+/// Pourcentage arrondi d'un score entre 0 et 1.
+int _percent(double score) => (score * 100).round();
+
+/// Ligne du résumé sous la légende : « ↑ Points forts : Ukraine 92 %, … ».
+class _SummaryLine extends StatelessWidget {
+  final IconData icon;
+  final Color color;
+  final String label;
+  final String text;
+
+  const _SummaryLine({required this.icon, required this.color, required this.label, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    final small = Theme.of(context).textTheme.bodySmall;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(1),
+          decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(4)),
+          child: Icon(icon, size: 12, color: Colors.white),
+        ),
+        const SizedBox(width: 6),
+        Expanded(
+          child: Text.rich(
+            TextSpan(children: [
+              TextSpan(text: label, style: const TextStyle(fontWeight: FontWeight.bold)),
+              TextSpan(text: text),
+            ]),
+            style: small,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Marqueur d'un pays : icône (classement, flèche vers le haut ou vers le
+/// bas) et rang, dans une étiquette dont la pointe désigne le pays.
 class _RankMarker extends StatelessWidget {
   static const double _width = 52;
   static const double _height = 34; // étiquette 28 + pointe 6
 
   final Offset anchor;
   final int rank;
+  final Color color;
+  final IconData icon;
   final String tooltip;
   final VoidCallback onTap;
 
-  const _RankMarker({required this.anchor, required this.rank, required this.tooltip, required this.onTap});
+  const _RankMarker({
+    required this.anchor,
+    required this.rank,
+    required this.color,
+    required this.icon,
+    required this.tooltip,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -393,15 +553,15 @@ class _RankMarker extends StatelessWidget {
         child: GestureDetector(
           onTap: onTap,
           child: CustomPaint(
-            // Or, argent, bronze : mêmes teintes dans les deux thèmes, contenu
-            // et liseré blancs.
-            painter: _PinPainter(color: AppTheme.podiumColors[rank - 1], border: Colors.white),
+            // Teintes soutenues, mêmes dans les deux thèmes, contenu et
+            // liseré blancs.
+            painter: _PinPainter(color: color, border: Colors.white),
             child: Padding(
               padding: const EdgeInsets.only(bottom: 6),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.leaderboard, size: 16, color: Colors.white),
+                  Icon(icon, size: 16, color: Colors.white),
                   const SizedBox(width: 3),
                   Text(
                     '$rank',
@@ -491,36 +651,44 @@ class _ZoomButtons extends StatelessWidget {
   }
 }
 
-/// Dégradé du pays le moins joué (1 partie) au plus joué.
+/// Dégradé de la légende : du pays le moins joué (1 partie) au plus joué,
+/// ou de 0 % à 100 % de performance.
 class _Legend extends StatelessWidget {
-  final int maxGames;
   final String label;
+  final String start;
+  final String end;
+  final List<Color> colors;
+  final bool visible;
 
-  const _Legend({required this.maxGames, required this.label});
+  const _Legend({
+    required this.label,
+    required this.start,
+    required this.end,
+    required this.colors,
+    this.visible = true,
+  });
 
   @override
   Widget build(BuildContext context) {
-    if (maxGames == 0) return const SizedBox.shrink();
+    if (!visible) return const SizedBox.shrink();
     final small = Theme.of(context).textTheme.bodySmall;
     return Row(
       children: [
         Text(label, style: small),
         const SizedBox(width: 8),
-        Text('1', style: small),
+        Text(start, style: small),
         const SizedBox(width: 4),
         Expanded(
           child: Container(
             height: 10,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
-              gradient: LinearGradient(colors: [
-                for (var i = 0; i <= 4; i++) AppTheme.mapCountryColor(i / 4),
-              ]),
+              gradient: LinearGradient(colors: colors),
             ),
           ),
         ),
         const SizedBox(width: 4),
-        Text('$maxGames', style: small),
+        Text(end, style: small),
       ],
     );
   }
