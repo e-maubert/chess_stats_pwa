@@ -95,13 +95,10 @@
     }
   },
   "countryMapHint": "Touchez un pays pour voir le nombre de parties jouées contre lui. Pincez ou utilisez les boutons pour zoomer.",
-  "countryMapGames": "{country} : {count, plural, =0{0 partie} =1{1 partie} other{{count} parties}}",
+  "countryMapGames": "{count, plural, =0{0 partie} =1{1 partie} other{{count} parties}}",
   "@countryMapGames": {
-    "description": "Bulle d’un pays de la carte : nom et nombre de parties.",
+    "description": "Bulle d’un pays de la carte, 2e ligne : nombre de parties.",
     "placeholders": {
-      "country": {
-        "type": "String"
-      },
       "count": {
         "type": "int"
       }
@@ -135,6 +132,109 @@
   "countryMapTopRank": "{rank, select, 1{Pays le plus rencontré} other{{rank}e pays le plus rencontré}}",
   "@countryMapTopRank": {
     "description": "Infobulle du marqueur posé sur les 3 pays les plus rencontrés (rang 1 à 3).",
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "countryMapModeGames": "Parties jouées",
+  "countryMapModePerformance": "Performance",
+  "countryMapPerformanceHint": "Touchez un pays pour voir votre performance contre lui. Pincez ou utilisez les boutons pour zoomer.",
+  "countryMapPerformanceLegend": "Performance",
+  "countryMapPercent": "{percent} %",
+  "@countryMapPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "countryMapPerformanceTitle": "{country} · {percent} %",
+  "@countryMapPerformanceTitle": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "countryMapPerformanceDetail": "{games, plural, =1{1 partie} other{{games} parties}} · V {wins} · N {draws} · D {losses}",
+  "@countryMapPerformanceDetail": {
+    "placeholders": {
+      "games": {
+        "type": "int"
+      },
+      "wins": {
+        "type": "int"
+      },
+      "draws": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
+    }
+  },
+  "countryMapNotEnoughDetail": "{games, plural, =0{0 partie} =1{1 partie} other{{games} parties}} · pas assez pour juger",
+  "@countryMapNotEnoughDetail": {
+    "placeholders": {
+      "games": {
+        "type": "int"
+      }
+    }
+  },
+  "countryMapGroup": "{countries} : touchez pour zoomer",
+  "@countryMapGroup": {
+    "placeholders": {
+      "countries": {
+        "type": "String"
+      }
+    }
+  },
+  "countryMapNotEnoughLegend": "Moins de {minGames} parties : pas assez pour juger",
+  "@countryMapNotEnoughLegend": {
+    "placeholders": {
+      "minGames": {
+        "type": "int"
+      }
+    }
+  },
+  "countryMapNoneJudged": "Aucun pays n'a encore assez de parties pour juger la performance ({minGames} minimum).",
+  "@countryMapNoneJudged": {
+    "placeholders": {
+      "minGames": {
+        "type": "int"
+      }
+    }
+  },
+  "countryMapStrengths": "Points forts : ",
+  "countryMapWeaknesses": "Points faibles : ",
+  "countryMapNoStrength": "aucun ce mois-ci",
+  "countryMapNoWeakness": "aucun ce mois-ci",
+  "countryMapSummaryItem": "{country} {percent} %",
+  "@countryMapSummaryItem": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "countryMapStrengthRank": "{rank, select, 1{Meilleure performance} other{{rank}e meilleure performance}}",
+  "@countryMapStrengthRank": {
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "countryMapWeaknessRank": "{rank, select, 1{Performance la plus faible} other{{rank}e performance la plus faible}}",
+  "@countryMapWeaknessRank": {
     "placeholders": {
       "rank": {
         "type": "String"
@@ -178,7 +278,11 @@
       }
     }
   },
-  "changelogV110": "Affichage sur ordinateur : statistiques sur deux colonnes sur grand écran\nTitre centré sur toutes les pages\nOuvertures jouées et pays rencontrés : tableaux paginés, 5 lignes par page\nPied de page avec le numéro de version et les nouveautés",
+  "changelogV120": "Carte des pays : nouvelle carte « Performance », du rouge (défaites) au vert (victoires) en passant par le jaune (équilibre)\nPays trop peu joués en gris : 2 parties minimum, 3 au-delà de 40 parties dans le mois\nPoints forts et points faibles : marqueurs sur la carte et résumé sous la légende",
+  "@changelogV120": {
+    "description": "Nouveautés de la version 1.2.0, une par ligne."
+  },
+  "changelogV110":"Affichage sur ordinateur : statistiques sur deux colonnes sur grand écran\nTitre centré sur toutes les pages\nOuvertures jouées et pays rencontrés : tableaux paginés, 5 lignes par page\nPied de page avec le numéro de version et les nouveautés",
   "@changelogV110": {
     "description": "Nouveautés de la version 1.1.0, une par ligne."
   },

@@ -441,7 +441,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Tap a country to see how many games you played against it. Pinch or use the buttons to zoom.';
 
   @override
-  String countryMapGames(String country, int count) {
+  String countryMapGames(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -449,7 +449,7 @@ class AppLocalizationsEn extends AppLocalizations {
       one: '1 game',
       zero: '0 games',
     );
-    return '$country: $_temp0';
+    return '$_temp0';
   }
 
   @override
@@ -496,6 +496,113 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get countryMapModeGames => 'Games played';
+
+  @override
+  String get countryMapModePerformance => 'Performance';
+
+  @override
+  String get countryMapPerformanceHint =>
+      'Tap a country to see your performance against it. Pinch or use the buttons to zoom.';
+
+  @override
+  String get countryMapPerformanceLegend => 'Performance';
+
+  @override
+  String countryMapPercent(int percent) {
+    return '$percent%';
+  }
+
+  @override
+  String countryMapPerformanceTitle(String country, int percent) {
+    return '$country · $percent%';
+  }
+
+  @override
+  String countryMapPerformanceDetail(
+      int games, int wins, int draws, int losses) {
+    String _temp0 = intl.Intl.pluralLogic(
+      games,
+      locale: localeName,
+      other: '$games games',
+      one: '1 game',
+    );
+    return '$_temp0 · W $wins · D $draws · L $losses';
+  }
+
+  @override
+  String countryMapNotEnoughDetail(int games) {
+    String _temp0 = intl.Intl.pluralLogic(
+      games,
+      locale: localeName,
+      other: '$games games',
+      one: '1 game',
+      zero: '0 games',
+    );
+    return '$_temp0 · not enough to rate';
+  }
+
+  @override
+  String countryMapGroup(String countries) {
+    return '$countries: tap to zoom in';
+  }
+
+  @override
+  String countryMapNotEnoughLegend(int minGames) {
+    return 'Fewer than $minGames games: not enough to rate';
+  }
+
+  @override
+  String countryMapNoneJudged(int minGames) {
+    return 'No country has enough games yet to rate the performance ($minGames minimum).';
+  }
+
+  @override
+  String get countryMapStrengths => 'Strengths: ';
+
+  @override
+  String get countryMapWeaknesses => 'Weaknesses: ';
+
+  @override
+  String get countryMapNoStrength => 'none this month';
+
+  @override
+  String get countryMapNoWeakness => 'none this month';
+
+  @override
+  String countryMapSummaryItem(String country, int percent) {
+    return '$country $percent%';
+  }
+
+  @override
+  String countryMapStrengthRank(String rank) {
+    String _temp0 = intl.Intl.selectLogic(
+      rank,
+      {
+        '1': 'Best performance',
+        '2': '2nd best performance',
+        '3': '3rd best performance',
+        'other': 'No. $rank best performance',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String countryMapWeaknessRank(String rank) {
+    String _temp0 = intl.Intl.selectLogic(
+      rank,
+      {
+        '1': 'Weakest performance',
+        '2': '2nd weakest performance',
+        '3': '3rd weakest performance',
+        'other': 'No. $rank weakest performance',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
   String paginationRange(int first, int last, int total) {
     return '$first–$last of $total';
   }
@@ -521,6 +628,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String changelogVersionTitle(String version, String date) {
     return 'Version $version – $date';
   }
+
+  @override
+  String get changelogV120 =>
+      'Countries map: new \"Performance\" map, from red (losses) to green (wins) through yellow (even)\nCountries with too few games in grey: 2 games minimum, 3 above 40 games in the month\nStrengths and weaknesses: markers on the map and a summary under the legend';
 
   @override
   String get changelogV110 =>

@@ -51,11 +51,13 @@ void main() {
   test('bulle de la carte : 0, 1 et plusieurs parties', () {
     // En français, 0 relève du singulier : sans cas « =0 », la bulle d'un
     // pays non joué affichait « 1 partie ».
-    expect(fr.countryMapGames('France', 0), 'France : 0 partie');
-    expect(fr.countryMapGames('France', 1), 'France : 1 partie');
-    expect(fr.countryMapGames('France', 12), 'France : 12 parties');
-    expect(en.countryMapGames('France', 0), 'France: 0 games');
-    expect(en.countryMapGames('France', 1), 'France: 1 game');
+    expect(fr.countryMapGames(0), '0 partie');
+    expect(fr.countryMapGames(1), '1 partie');
+    expect(fr.countryMapGames(12), '12 parties');
+    expect(en.countryMapGames(0), '0 games');
+    expect(en.countryMapGames(1), '1 game');
+    expect(fr.countryMapNotEnoughDetail(0), '0 partie · pas assez pour juger');
+    expect(fr.countryMapPerformanceDetail(1, 1, 0, 0), '1 partie · V 1 · N 0 · D 0');
     expect(fr.countryMapNotShownItem('International', 0), 'International (0 partie)');
   });
 }

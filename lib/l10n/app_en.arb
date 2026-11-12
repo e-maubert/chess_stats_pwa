@@ -96,13 +96,10 @@
     }
   },
   "countryMapHint": "Tap a country to see how many games you played against it. Pinch or use the buttons to zoom.",
-  "countryMapGames": "{country}: {count, plural, =0{0 games} =1{1 game} other{{count} games}}",
+  "countryMapGames": "{count, plural, =0{0 games} =1{1 game} other{{count} games}}",
   "@countryMapGames": {
-    "description": "Bulle d’un pays de la carte : nom et nombre de parties.",
+    "description": "Bulle d’un pays de la carte, 2e ligne : nombre de parties.",
     "placeholders": {
-      "country": {
-        "type": "String"
-      },
       "count": {
         "type": "int"
       }
@@ -136,6 +133,121 @@
   "countryMapTopRank": "{rank, select, 1{Most played country} 2{2nd most played country} 3{3rd most played country} other{No. {rank} most played country}}",
   "@countryMapTopRank": {
     "description": "Infobulle du marqueur posé sur les 3 pays les plus rencontrés (rang 1 à 3).",
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "countryMapModeGames": "Games played",
+  "@countryMapModeGames": {
+    "description": "Bouton de choix de la carte : nombre de parties par pays."
+  },
+  "countryMapModePerformance": "Performance",
+  "@countryMapModePerformance": {
+    "description": "Bouton de choix de la carte : performance par pays, (victoires + ½ nulles) / parties."
+  },
+  "countryMapPerformanceHint": "Tap a country to see your performance against it. Pinch or use the buttons to zoom.",
+  "countryMapPerformanceLegend": "Performance",
+  "countryMapPercent": "{percent}%",
+  "@countryMapPercent": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "countryMapPerformanceTitle": "{country} · {percent}%",
+  "@countryMapPerformanceTitle": {
+    "description": "Bulle d'un pays sur la carte Performance, 1re ligne (en gras).",
+    "placeholders": {
+      "country": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "countryMapPerformanceDetail": "{games, plural, =1{1 game} other{{games} games}} · W {wins} · D {draws} · L {losses}",
+  "@countryMapPerformanceDetail": {
+    "description": "Bulle d'un pays sur la carte Performance, 2e ligne (chiffres en gras).",
+    "placeholders": {
+      "games": {
+        "type": "int"
+      },
+      "wins": {
+        "type": "int"
+      },
+      "draws": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
+    }
+  },
+  "countryMapNotEnoughDetail": "{games, plural, =0{0 games} =1{1 game} other{{games} games}} · not enough to rate",
+  "@countryMapNotEnoughDetail": {
+    "description": "Bulle d'un pays trop peu joué sur la carte Performance, 2e ligne.",
+    "placeholders": {
+      "games": {
+        "type": "int"
+      }
+    }
+  },
+  "countryMapGroup": "{countries}: tap to zoom in",
+  "@countryMapGroup": {
+    "description": "Infobulle d'un marqueur regroupant plusieurs pays proches.",
+    "placeholders": {
+      "countries": {
+        "type": "String"
+      }
+    }
+  },
+  "countryMapNotEnoughLegend": "Fewer than {minGames} games: not enough to rate",
+  "@countryMapNotEnoughLegend": {
+    "placeholders": {
+      "minGames": {
+        "type": "int"
+      }
+    }
+  },
+  "countryMapNoneJudged": "No country has enough games yet to rate the performance ({minGames} minimum).",
+  "@countryMapNoneJudged": {
+    "placeholders": {
+      "minGames": {
+        "type": "int"
+      }
+    }
+  },
+  "countryMapStrengths": "Strengths: ",
+  "countryMapWeaknesses": "Weaknesses: ",
+  "countryMapNoStrength": "none this month",
+  "countryMapNoWeakness": "none this month",
+  "countryMapSummaryItem": "{country} {percent}%",
+  "@countryMapSummaryItem": {
+    "placeholders": {
+      "country": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "int"
+      }
+    }
+  },
+  "countryMapStrengthRank": "{rank, select, 1{Best performance} 2{2nd best performance} 3{3rd best performance} other{No. {rank} best performance}}",
+  "@countryMapStrengthRank": {
+    "description": "Infobulle du marqueur d'un point fort (rang 1 à 3).",
+    "placeholders": {
+      "rank": {
+        "type": "String"
+      }
+    }
+  },
+  "countryMapWeaknessRank": "{rank, select, 1{Weakest performance} 2{2nd weakest performance} 3{3rd weakest performance} other{No. {rank} weakest performance}}",
+  "@countryMapWeaknessRank": {
+    "description": "Infobulle du marqueur d'un point faible (rang 1 à 3).",
     "placeholders": {
       "rank": {
         "type": "String"
@@ -185,7 +297,11 @@
       }
     }
   },
-  "changelogV110": "Desktop display: statistics on two columns on large screens\nPage title centered on every page\nPlayed openings and opponents' countries: paginated tables, 5 rows per page\nFooter with the version number and what's new",
+  "changelogV120": "Countries map: new \"Performance\" map, from red (losses) to green (wins) through yellow (even)\nCountries with too few games in grey: 2 games minimum, 3 above 40 games in the month\nStrengths and weaknesses: markers on the map and a summary under the legend",
+  "@changelogV120": {
+    "description": "Nouveautés de la version 1.2.0, une par ligne."
+  },
+  "changelogV110":"Desktop display: statistics on two columns on large screens\nPage title centered on every page\nPlayed openings and opponents' countries: paginated tables, 5 rows per page\nFooter with the version number and what's new",
   "@changelogV110": {
     "description": "Nouveautés de la version 1.1.0, une par ligne."
   },
