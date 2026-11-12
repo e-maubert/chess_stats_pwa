@@ -5,6 +5,7 @@ import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import '../models/country_map_mode.dart';
 import '../models/country_stats.dart';
 import '../services/country_name_service.dart';
+import '../services/marker_cluster_service.dart';
 import '../services/world_map_service.dart';
 import '../theme/app_theme.dart';
 
@@ -75,15 +76,17 @@ class _CountryMapState extends State<CountryMap> {
     });
   }
 
-  /// Zoom par les boutons, centré sur le milieu de la vue.
-  void _zoom(double factor, Size viewport) {
+  /// Zoom par les boutons, centré sur le milieu de la vue, ou sur [focal]
+  /// (point de la vue qui reste immobile) pour séparer un groupe de
+  /// marqueurs.
+  void _zoom(double factor, Size viewport, {Offset? focal}) {
     final current = _controller.value.getMaxScaleOnAxis();
     final target = (current * factor).clamp(1.0, _maxScale);
     if (target == 1.0) {
       _controller.value = Matrix4.identity();
       return;
     }
-    final center = viewport.center(Offset.zero);
+    final center = focal ?? viewport.center(Offset.zero);
     final f = target / current;
     _controller.value = Matrix4.translationValues(center.dx * (1 - f), center.dy * (1 - f), 0)
       ..multiply(Matrix4.diagonal3Values(f, f, 1))
@@ -123,24 +126,26 @@ class _CountryMapState extends State<CountryMap> {
       markers: performance
           ? [
               for (final (i, code) in ranking.strengths.indexed)
-                _MarkerSpec(
-                    code, i + 1, AppTheme.strengthMarker, Icons.arrow_upward, l10n.countryMapStrengthRank('${i + 1}')),
+                _MarkerSpec(_MarkerKind.strength, code, i + 1, AppTheme.strengthMarker, Icons.arrow_upward,
+                    l10n.countryMapStrengthRank('${i + 1}')),
               for (final (i, code) in ranking.weaknesses.indexed)
-                _MarkerSpec(code, i + 1, AppTheme.weaknessMarker, Icons.arrow_downward,
+                _MarkerSpec(_MarkerKind.weakness, code, i + 1, AppTheme.weaknessMarker, Icons.arrow_downward,
                     l10n.countryMapWeaknessRank('${i + 1}')),
             ]
           : [
               for (final (i, code) in WorldMapService.topCountries(games).indexed)
-                _MarkerSpec(
-                    code, i + 1, AppTheme.podiumColors[i], Icons.leaderboard, l10n.countryMapTopRank('${i + 1}')),
+                _MarkerSpec(_MarkerKind.mostPlayed, code, i + 1, AppTheme.podiumColors[i], Icons.leaderboard,
+                    l10n.countryMapTopRank('${i + 1}')),
             ],
       bubbleText: (code) {
         final name = CountryNameService.countryName(l10n, code);
         final result = results[code];
-        if (!performance || result == null) return l10n.countryMapGames(name, result?.games ?? 0);
-        if (result.games < minGames) return l10n.countryMapNotEnoughGames(name, result.games);
-        return l10n.countryMapPerformance(
-            name, _percent(result.score), result.games, result.wins, result.draws, result.losses);
+        if (!performance || result == null) return (name, l10n.countryMapGames(result?.games ?? 0));
+        if (result.games < minGames) return (name, l10n.countryMapNotEnoughDetail(result.games));
+        return (
+          l10n.countryMapPerformanceTitle(name, _percent(result.score)),
+          l10n.countryMapPerformanceDetail(result.games, result.wins, result.draws, result.losses),
+        );
       },
     );
     String summary(List<String> codes) => codes
@@ -288,41 +293,32 @@ class _CountryMapState extends State<CountryMap> {
               ),
             ),
             // Marqueurs (pays les plus rencontrés, ou points forts et faibles),
-            // qui suivent le zoom. Un clic dessus ouvre la bulle du pays,
-            // comme un clic sur le pays. Dessinés du dernier au premier pour
-            // que le n°1 passe au-dessus en cas de chevauchement.
+            // qui suivent le zoom. Ceux d'un même type qui se chevauchent à
+            // l'écran sont regroupés ; le regroupement est recalculé à chaque
+            // zoom. Un clic sur un marqueur seul ouvre la bulle du pays, sur
+            // un groupe il zoome pour le séparer.
             AnimatedBuilder(
               animation: _controller,
-              builder: (context, _) {
-                final markers = layer.markers;
-                return Stack(
-                  children: [
-                    for (final marker in markers.reversed)
-                      if (map.labels[marker.code] case final label?)
-                        _RankMarker(
-                          anchor: MatrixUtils.transformPoint(_controller.value, label * scale),
-                          rank: marker.rank,
-                          color: marker.color,
-                          icon: marker.icon,
-                          tooltip: marker.tooltip,
-                          onTap: () => setState(() {
-                            _selected = marker.code;
-                            _tapPosition = label * scale;
-                          }),
-                        ),
-                  ],
-                );
-              },
+              builder: (context, _) => Stack(
+                children: [
+                  for (final kind in _MarkerKind.values.reversed)
+                    ..._buildMarkers(l10n, map, layer.markers.where((m) => m.kind == kind).toList(), scale, viewport),
+                ],
+              ),
             ),
             if (_selected != null && _tapPosition != null)
               AnimatedBuilder(
                 animation: _controller,
-                builder: (context, _) => _Bubble(
-                  anchor: MatrixUtils.transformPoint(_controller.value, _tapPosition!),
-                  viewport: viewport,
-                  flag: CountryNameService.getFlag(_selected!),
-                  text: layer.bubbleText(_selected!),
-                ),
+                builder: (context, _) {
+                  final (title, detail) = layer.bubbleText(_selected!);
+                  return _Bubble(
+                    anchor: MatrixUtils.transformPoint(_controller.value, _tapPosition!),
+                    viewport: viewport,
+                    flag: CountryNameService.getFlag(_selected!),
+                    title: title,
+                    detail: detail,
+                  );
+                },
               ),
             Positioned(
               right: 4,
@@ -338,6 +334,51 @@ class _CountryMapState extends State<CountryMap> {
         ),
       ),
     );
+  }
+
+  /// Marqueurs d'un même type, regroupés quand ils se chevauchent. Dessinés
+  /// du dernier groupe au premier pour que le n°1 passe au-dessus.
+  List<Widget> _buildMarkers(
+    AppLocalizations l10n,
+    WorldMap map,
+    List<_MarkerSpec> markers,
+    double scale,
+    Size viewport,
+  ) {
+    final placed = [
+      for (final marker in markers)
+        if (map.labels[marker.code] case final label?) (marker: marker, label: label * scale),
+    ];
+    final positions = [for (final p in placed) MatrixUtils.transformPoint(_controller.value, p.label)];
+    final groups = MarkerClusterService.cluster(positions, const Size(_RankMarker.groupWidth, _RankMarker.height));
+    return [
+      for (final group in groups.reversed)
+        if (group.length == 1)
+          _RankMarker(
+            anchor: positions[group.single],
+            ranks: [placed[group.single].marker.rank],
+            color: placed[group.single].marker.color,
+            icon: placed[group.single].marker.icon,
+            below: placed[group.single].marker.kind == _MarkerKind.weakness,
+            tooltip: placed[group.single].marker.tooltip,
+            onTap: () => setState(() {
+              _selected = placed[group.single].marker.code;
+              _tapPosition = placed[group.single].label;
+            }),
+          )
+        else
+          _RankMarker(
+            anchor: MarkerClusterService.center(positions, group),
+            ranks: [for (final i in group) placed[i].marker.rank],
+            color: placed[group.first].marker.color,
+            icon: placed[group.first].marker.icon,
+            below: placed[group.first].marker.kind == _MarkerKind.weakness,
+            tooltip: l10n.countryMapGroup(
+              [for (final i in group) CountryNameService.countryName(l10n, placed[i].marker.code)].join(', '),
+            ),
+            onTap: () => _zoom(2.5, viewport, focal: MarkerClusterService.center(positions, group)),
+          ),
+    ];
   }
 }
 
@@ -410,15 +451,35 @@ class _Bubble extends StatelessWidget {
   final Offset anchor;
   final Size viewport;
   final String flag;
-  final String text;
+  final String title;
+  final String detail;
 
-  const _Bubble({required this.anchor, required this.viewport, required this.flag, required this.text});
+  const _Bubble({
+    required this.anchor,
+    required this.viewport,
+    required this.flag,
+    required this.title,
+    required this.detail,
+  });
+
+  /// [text] avec ses nombres en gras (« 3 parties · V 1 · N 0 · D 2 »).
+  static List<TextSpan> _boldNumbers(String text) {
+    final spans = <TextSpan>[];
+    var start = 0;
+    for (final match in RegExp(r'\d+').allMatches(text)) {
+      if (match.start > start) spans.add(TextSpan(text: text.substring(start, match.start)));
+      spans.add(TextSpan(text: match[0], style: const TextStyle(fontWeight: FontWeight.bold)));
+      start = match.end;
+    }
+    if (start < text.length) spans.add(TextSpan(text: text.substring(start)));
+    return spans;
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     const maxWidth = 260.0;
-    const height = 36.0;
+    const height = 52.0; // deux lignes
     final left = (anchor.dx - maxWidth / 2).clamp(4.0, (viewport.width - maxWidth - 4).clamp(4.0, double.infinity));
     final above = anchor.dy - height - 8;
     final top = above >= 4 ? above : anchor.dy + 12;
@@ -446,9 +507,22 @@ class _Bubble extends StatelessWidget {
                   ),
                   const SizedBox(width: 6),
                   Flexible(
-                    child: Text(
-                      text,
-                      style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onInverseSurface),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.onInverseSurface,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text.rich(
+                          TextSpan(children: _boldNumbers(detail)),
+                          style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onInverseSurface),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -466,19 +540,25 @@ class _Bubble extends StatelessWidget {
 class _Layer {
   final Map<String, Color> fills;
   final List<_MarkerSpec> markers;
-  final String Function(String code) bubbleText;
+
+  /// Bulle d'un pays : titre (en gras) et détail (chiffres en gras).
+  final (String, String) Function(String code) bubbleText;
 
   const _Layer({required this.fills, required this.markers, required this.bubbleText});
 }
 
+/// Types de marqueurs : seuls ceux d'un même type sont regroupés.
+enum _MarkerKind { mostPlayed, strength, weakness }
+
 class _MarkerSpec {
+  final _MarkerKind kind;
   final String code;
   final int rank;
   final Color color;
   final IconData icon;
   final String tooltip;
 
-  const _MarkerSpec(this.code, this.rank, this.color, this.icon, this.tooltip);
+  const _MarkerSpec(this.kind, this.code, this.rank, this.color, this.icon, this.tooltip);
 }
 
 /// Pourcentage arrondi d'un score entre 0 et 1.
@@ -522,32 +602,44 @@ class _SummaryLine extends StatelessWidget {
 /// Marqueur d'un pays : icône (classement, flèche vers le haut ou vers le
 /// bas) et rang, dans une étiquette dont la pointe désigne le pays.
 class _RankMarker extends StatelessWidget {
-  static const double _width = 52;
-  static const double _height = 34; // étiquette 28 + pointe 6
+  static const double height = 34; // étiquette 28 + pointe 6
+
+  /// Largeur retenue pour décider que deux marqueurs se chevauchent.
+  static const double groupWidth = 60;
 
   final Offset anchor;
-  final int rank;
+
+  /// Rangs affichés : un seul pour un pays, plusieurs pour un groupe
+  /// (« 1·2·3 »).
+  final List<int> ranks;
   final Color color;
   final IconData icon;
+
+  /// Sous le pays, pointe vers le haut (points faibles), au lieu d'au-dessus
+  /// : les deux types de marqueurs se recouvrent moins.
+  final bool below;
   final String tooltip;
   final VoidCallback onTap;
 
   const _RankMarker({
     required this.anchor,
-    required this.rank,
+    required this.ranks,
     required this.color,
     required this.icon,
     required this.tooltip,
     required this.onTap,
+    this.below = false,
   });
+
+  double get _width => 40.0 + 12 * ranks.length;
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
       left: anchor.dx - _width / 2,
-      top: anchor.dy - _height,
+      top: below ? anchor.dy : anchor.dy - height,
       width: _width,
-      height: _height,
+      height: height,
       child: Tooltip(
         message: tooltip,
         child: GestureDetector(
@@ -555,16 +647,16 @@ class _RankMarker extends StatelessWidget {
           child: CustomPaint(
             // Teintes soutenues, mêmes dans les deux thèmes, contenu et
             // liseré blancs.
-            painter: _PinPainter(color: color, border: Colors.white),
+            painter: _PinPainter(color: color, border: Colors.white, tipUp: below),
             child: Padding(
-              padding: const EdgeInsets.only(bottom: 6),
+              padding: below ? const EdgeInsets.only(top: 6) : const EdgeInsets.only(bottom: 6),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(icon, size: 16, color: Colors.white),
                   const SizedBox(width: 3),
                   Text(
-                    '$rank',
+                    ranks.join('·'),
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -581,22 +673,28 @@ class _RankMarker extends StatelessWidget {
   }
 }
 
-/// Fond du marqueur : rectangle arrondi et pointe vers le bas.
+/// Fond du marqueur : rectangle arrondi et pointe vers le bas (marqueur
+/// au-dessus du pays) ou vers le haut ([tipUp], marqueur en dessous).
 class _PinPainter extends CustomPainter {
   final Color color;
   final Color border;
+  final bool tipUp;
 
-  _PinPainter({required this.color, required this.border});
+  _PinPainter({required this.color, required this.border, this.tipUp = false});
 
   @override
   void paint(Canvas canvas, Size size) {
     const tip = 6.0;
-    final body = RRect.fromRectAndRadius(Rect.fromLTWH(0, 0, size.width, size.height - tip), const Radius.circular(8));
+    final bodyTop = tipUp ? tip : 0.0;
+    final base = tipUp ? tip : size.height - tip;
+    final point = tipUp ? 0.0 : size.height;
+    final body =
+        RRect.fromRectAndRadius(Rect.fromLTWH(0, bodyTop, size.width, size.height - tip), const Radius.circular(8));
     final path = Path()
       ..addRRect(body)
-      ..moveTo(size.width / 2 - tip, size.height - tip)
-      ..lineTo(size.width / 2, size.height)
-      ..lineTo(size.width / 2 + tip, size.height - tip)
+      ..moveTo(size.width / 2 - tip, base)
+      ..lineTo(size.width / 2, point)
+      ..lineTo(size.width / 2 + tip, base)
       ..close();
     final outline = Path.combine(PathOperation.union, path, Path());
     canvas.drawShadow(outline, Colors.black, 2, false);
@@ -611,7 +709,7 @@ class _PinPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_PinPainter old) => old.color != color || old.border != border;
+  bool shouldRepaint(_PinPainter old) => old.color != color || old.border != border || old.tipUp != tipUp;
 }
 
 class _ZoomButtons extends StatelessWidget {

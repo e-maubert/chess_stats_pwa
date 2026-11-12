@@ -404,11 +404,11 @@ abstract class AppLocalizations {
   /// **'Tap a country to see how many games you played against it. Pinch or use the buttons to zoom.'**
   String get countryMapHint;
 
-  /// Bulle d’un pays de la carte : nom et nombre de parties.
+  /// Bulle d’un pays de la carte, 2e ligne : nombre de parties.
   ///
   /// In en, this message translates to:
-  /// **'{country}: {count, plural, =0{0 games} =1{1 game} other{{count} games}}'**
-  String countryMapGames(String country, int count);
+  /// **'{count, plural, =0{0 games} =1{1 game} other{{count} games}}'**
+  String countryMapGames(int count);
 
   /// No description provided for @countryMapLegend.
   ///
@@ -482,18 +482,30 @@ abstract class AppLocalizations {
   /// **'{percent}%'**
   String countryMapPercent(int percent);
 
-  /// Bulle d'un pays sur la carte Performance.
+  /// Bulle d'un pays sur la carte Performance, 1re ligne (en gras).
   ///
   /// In en, this message translates to:
-  /// **'{country}: {percent}% performance · {games, plural, =1{1 game} other{{games} games}} (W {wins} · D {draws} · L {losses})'**
-  String countryMapPerformance(
-      String country, int percent, int games, int wins, int draws, int losses);
+  /// **'{country} · {percent}%'**
+  String countryMapPerformanceTitle(String country, int percent);
 
-  /// Bulle d'un pays trop peu joué sur la carte Performance.
+  /// Bulle d'un pays sur la carte Performance, 2e ligne (chiffres en gras).
   ///
   /// In en, this message translates to:
-  /// **'{country}: {games, plural, =0{0 games} =1{1 game} other{{games} games}}, not enough to rate the performance'**
-  String countryMapNotEnoughGames(String country, int games);
+  /// **'{games, plural, =1{1 game} other{{games} games}} · W {wins} · D {draws} · L {losses}'**
+  String countryMapPerformanceDetail(
+      int games, int wins, int draws, int losses);
+
+  /// Bulle d'un pays trop peu joué sur la carte Performance, 2e ligne.
+  ///
+  /// In en, this message translates to:
+  /// **'{games, plural, =0{0 games} =1{1 game} other{{games} games}} · not enough to rate'**
+  String countryMapNotEnoughDetail(int games);
+
+  /// Infobulle d'un marqueur regroupant plusieurs pays proches.
+  ///
+  /// In en, this message translates to:
+  /// **'{countries}: tap to zoom in'**
+  String countryMapGroup(String countries);
 
   /// No description provided for @countryMapNotEnoughLegend.
   ///

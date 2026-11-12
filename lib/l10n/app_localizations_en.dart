@@ -441,7 +441,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Tap a country to see how many games you played against it. Pinch or use the buttons to zoom.';
 
   @override
-  String countryMapGames(String country, int count) {
+  String countryMapGames(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
       locale: localeName,
@@ -449,7 +449,7 @@ class AppLocalizationsEn extends AppLocalizations {
       one: '1 game',
       zero: '0 games',
     );
-    return '$country: $_temp0';
+    return '$_temp0';
   }
 
   @override
@@ -514,19 +514,24 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String countryMapPerformance(
-      String country, int percent, int games, int wins, int draws, int losses) {
+  String countryMapPerformanceTitle(String country, int percent) {
+    return '$country · $percent%';
+  }
+
+  @override
+  String countryMapPerformanceDetail(
+      int games, int wins, int draws, int losses) {
     String _temp0 = intl.Intl.pluralLogic(
       games,
       locale: localeName,
       other: '$games games',
       one: '1 game',
     );
-    return '$country: $percent% performance · $_temp0 (W $wins · D $draws · L $losses)';
+    return '$_temp0 · W $wins · D $draws · L $losses';
   }
 
   @override
-  String countryMapNotEnoughGames(String country, int games) {
+  String countryMapNotEnoughDetail(int games) {
     String _temp0 = intl.Intl.pluralLogic(
       games,
       locale: localeName,
@@ -534,7 +539,12 @@ class AppLocalizationsEn extends AppLocalizations {
       one: '1 game',
       zero: '0 games',
     );
-    return '$country: $_temp0, not enough to rate the performance';
+    return '$_temp0 · not enough to rate';
+  }
+
+  @override
+  String countryMapGroup(String countries) {
+    return '$countries: tap to zoom in';
   }
 
   @override

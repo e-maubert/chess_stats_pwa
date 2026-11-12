@@ -95,13 +95,10 @@
     }
   },
   "countryMapHint": "Touchez un pays pour voir le nombre de parties jouées contre lui. Pincez ou utilisez les boutons pour zoomer.",
-  "countryMapGames": "{country} : {count, plural, =0{0 partie} =1{1 partie} other{{count} parties}}",
+  "countryMapGames": "{count, plural, =0{0 partie} =1{1 partie} other{{count} parties}}",
   "@countryMapGames": {
-    "description": "Bulle d’un pays de la carte : nom et nombre de parties.",
+    "description": "Bulle d’un pays de la carte, 2e ligne : nombre de parties.",
     "placeholders": {
-      "country": {
-        "type": "String"
-      },
       "count": {
         "type": "int"
       }
@@ -153,15 +150,20 @@
       }
     }
   },
-  "countryMapPerformance": "{country} : performance {percent} % · {games, plural, =1{1 partie} other{{games} parties}} (V {wins} · N {draws} · D {losses})",
-  "@countryMapPerformance": {
+  "countryMapPerformanceTitle": "{country} · {percent} %",
+  "@countryMapPerformanceTitle": {
     "placeholders": {
       "country": {
         "type": "String"
       },
       "percent": {
         "type": "int"
-      },
+      }
+    }
+  },
+  "countryMapPerformanceDetail": "{games, plural, =1{1 partie} other{{games} parties}} · V {wins} · N {draws} · D {losses}",
+  "@countryMapPerformanceDetail": {
+    "placeholders": {
       "games": {
         "type": "int"
       },
@@ -176,14 +178,19 @@
       }
     }
   },
-  "countryMapNotEnoughGames": "{country} : {games, plural, =0{0 partie} =1{1 partie} other{{games} parties}}, pas assez pour juger la performance",
-  "@countryMapNotEnoughGames": {
+  "countryMapNotEnoughDetail": "{games, plural, =0{0 partie} =1{1 partie} other{{games} parties}} · pas assez pour juger",
+  "@countryMapNotEnoughDetail": {
     "placeholders": {
-      "country": {
-        "type": "String"
-      },
       "games": {
         "type": "int"
+      }
+    }
+  },
+  "countryMapGroup": "{countries} : touchez pour zoomer",
+  "@countryMapGroup": {
+    "placeholders": {
+      "countries": {
+        "type": "String"
       }
     }
   },
