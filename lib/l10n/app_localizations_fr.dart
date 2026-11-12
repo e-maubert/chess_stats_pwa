@@ -625,6 +625,10 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get changelogV121 =>
+      'Chargement plus rapide : le pays de chaque adversaire n\'est demandé qu\'une fois, plusieurs à la fois, et mémorisé un mois dans le navigateur';
+
+  @override
   String get changelogV120 =>
       'Carte des pays : nouvelle carte « Performance », du rouge (défaites) au vert (victoires) en passant par le jaune (équilibre)\nPays trop peu joués en gris : 2 parties minimum, 3 au-delà de 40 parties dans le mois\nPoints forts et points faibles : marqueurs sur la carte et résumé sous la légende';
 

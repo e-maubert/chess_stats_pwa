@@ -630,6 +630,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get changelogV121 =>
+      'Faster loading: each opponent\'s country is requested only once, several at a time, and remembered for a month in your browser';
+
+  @override
   String get changelogV120 =>
       'Countries map: new \"Performance\" map, from red (losses) to green (wins) through yellow (even)\nCountries with too few games in grey: 2 games minimum, 3 above 40 games in the month\nStrengths and weaknesses: markers on the map and a summary under the legend';
 
