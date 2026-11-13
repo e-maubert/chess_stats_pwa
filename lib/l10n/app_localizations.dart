@@ -603,6 +603,12 @@ abstract class AppLocalizations {
   /// **'Version {version} – {date}'**
   String changelogVersionTitle(String version, String date);
 
+  /// Nouveautés de la version 1.3.0, une par ligne.
+  ///
+  /// In en, this message translates to:
+  /// **'New \"Playing hours\" card: a 24-hour dial of this month\'s games by start time, in your local time\n\"Activity\" mode: number of games per hour, in shades of blue\n\"Performance\" mode: score per hour, from red to green through yellow (at least 5 games per hour)\nBest and weakest time slots: one click shows them on the dial\nTap an hour to see its details in a bubble'**
+  String get changelogV130;
+
   /// Nouveautés de la version 1.2.1, une par ligne.
   ///
   /// In en, this message translates to:
@@ -626,6 +632,115 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Current month statistics: by color, by opening, rating history, time management, loss causes\nStatistics by opponents\' country, with a world map\nLight / dark mode\nApp in English and French'**
   String get changelogV100;
+
+  /// No description provided for @playingHours.
+  ///
+  /// In en, this message translates to:
+  /// **'Playing hours'**
+  String get playingHours;
+
+  /// No description provided for @playingHoursModeActivity.
+  ///
+  /// In en, this message translates to:
+  /// **'Activity'**
+  String get playingHoursModeActivity;
+
+  /// No description provided for @playingHoursModePerformance.
+  ///
+  /// In en, this message translates to:
+  /// **'Performance'**
+  String get playingHoursModePerformance;
+
+  /// No description provided for @playingHoursHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Each slice is one hour, by the time the game started (your local time). Tap an hour to see the details.'**
+  String get playingHoursHint;
+
+  /// Heure autour du cadran, ex. 15 h.
+  ///
+  /// In en, this message translates to:
+  /// **'{hour}:00'**
+  String playingHoursHourLabel(int hour);
+
+  /// Tranche d'une heure, ex. 15 h – 16 h.
+  ///
+  /// In en, this message translates to:
+  /// **'{start}:00–{end}:00'**
+  String playingHoursRange(int start, int end);
+
+  /// Détail de l'heure touchée : tranche, puis chiffres.
+  ///
+  /// In en, this message translates to:
+  /// **'{range} · {detail}'**
+  String playingHoursDetail(String range, String detail);
+
+  /// No description provided for @playingHoursPerformanceDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent}% · {games, plural, =1{1 game} other{{games} games}} · W {wins} · D {draws} · L {losses}'**
+  String playingHoursPerformanceDetail(
+      int percent, int games, int wins, int draws, int losses);
+
+  /// No description provided for @playingHoursNotEnoughDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'{games, plural, =0{0 games} =1{1 game} other{{games} games}}, not enough to rate ({minGames} minimum)'**
+  String playingHoursNotEnoughDetail(int games, int minGames);
+
+  /// No description provided for @playingHoursBandVeryLow.
+  ///
+  /// In en, this message translates to:
+  /// **'Below 40%'**
+  String get playingHoursBandVeryLow;
+
+  /// No description provided for @playingHoursBandLow.
+  ///
+  /// In en, this message translates to:
+  /// **'40–46%'**
+  String get playingHoursBandLow;
+
+  /// No description provided for @playingHoursBandEven.
+  ///
+  /// In en, this message translates to:
+  /// **'46–54%'**
+  String get playingHoursBandEven;
+
+  /// No description provided for @playingHoursBandHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'54–60%'**
+  String get playingHoursBandHigh;
+
+  /// No description provided for @playingHoursBandVeryHigh.
+  ///
+  /// In en, this message translates to:
+  /// **'Above 60%'**
+  String get playingHoursBandVeryHigh;
+
+  /// No description provided for @playingHoursBest.
+  ///
+  /// In en, this message translates to:
+  /// **'Best time slot:'**
+  String get playingHoursBest;
+
+  /// No description provided for @playingHoursWorst.
+  ///
+  /// In en, this message translates to:
+  /// **'Weakest time slot:'**
+  String get playingHoursWorst;
+
+  /// Meilleur ou moins bon créneau, ex. 14 h – 15 h (62 %, 34 parties).
+  ///
+  /// In en, this message translates to:
+  /// **'{range} ({percent}%, {games, plural, =1{1 game} other{{games} games}})'**
+  String playingHoursSlot(String range, int percent, int games);
+
+  /// No description provided for @playingHoursNoneJudged.
+  ///
+  /// In en, this message translates to:
+  /// **'No hour has enough games yet to rate your performance ({minGames} minimum).'**
+  String playingHoursNoneJudged(int minGames);
 }
 
 class _AppLocalizationsDelegate

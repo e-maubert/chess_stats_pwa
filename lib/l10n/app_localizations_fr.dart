@@ -625,6 +625,10 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get changelogV130 =>
+      'Nouvelle carte « Heures de jeu » : cadran de 24 h des parties du mois selon leur heure de début, à l\'heure locale\nMode « Activité » : nombre de parties par heure, en dégradé de bleu\nMode « Performance » : score par heure, du rouge au vert en passant par le jaune (5 parties minimum par heure)\nMeilleur et moins bon créneau : un clic les montre sur le cadran\nToucher une heure affiche son détail dans une bulle';
+
+  @override
   String get changelogV121 =>
       'Chargement plus rapide : le pays de chaque adversaire n\'est demandé qu\'une fois, plusieurs à la fois, et mémorisé un mois dans le navigateur';
 
@@ -639,4 +643,93 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get changelogV100 =>
       'Statistiques du mois en cours : par couleur, par ouverture, évolution du classement, gestion du temps, causes des défaites\nStatistiques par pays des adversaires, avec carte du monde\nMode clair / sombre\nApplication en français et en anglais';
+
+  @override
+  String get playingHours => 'Heures de jeu';
+
+  @override
+  String get playingHoursModeActivity => 'Activité';
+
+  @override
+  String get playingHoursModePerformance => 'Performance';
+
+  @override
+  String get playingHoursHint =>
+      'Une tranche par heure, selon l’heure de début des parties (heure locale). Touchez une heure pour voir le détail.';
+
+  @override
+  String playingHoursHourLabel(int hour) {
+    return '$hour h';
+  }
+
+  @override
+  String playingHoursRange(int start, int end) {
+    return '$start h – $end h';
+  }
+
+  @override
+  String playingHoursDetail(String range, String detail) {
+    return '$range · $detail';
+  }
+
+  @override
+  String playingHoursPerformanceDetail(
+      int percent, int games, int wins, int draws, int losses) {
+    String _temp0 = intl.Intl.pluralLogic(
+      games,
+      locale: localeName,
+      other: '$games parties',
+      one: '1 partie',
+    );
+    return '$percent % · $_temp0 · V $wins · N $draws · D $losses';
+  }
+
+  @override
+  String playingHoursNotEnoughDetail(int games, int minGames) {
+    String _temp0 = intl.Intl.pluralLogic(
+      games,
+      locale: localeName,
+      other: '$games parties',
+      one: '1 partie',
+      zero: '0 partie',
+    );
+    return '$_temp0, pas assez pour juger ($minGames minimum)';
+  }
+
+  @override
+  String get playingHoursBandVeryLow => 'Moins de 40 %';
+
+  @override
+  String get playingHoursBandLow => '40 à 46 %';
+
+  @override
+  String get playingHoursBandEven => '46 à 54 %';
+
+  @override
+  String get playingHoursBandHigh => '54 à 60 %';
+
+  @override
+  String get playingHoursBandVeryHigh => 'Plus de 60 %';
+
+  @override
+  String get playingHoursBest => 'Meilleur créneau :';
+
+  @override
+  String get playingHoursWorst => 'Moins bon créneau :';
+
+  @override
+  String playingHoursSlot(String range, int percent, int games) {
+    String _temp0 = intl.Intl.pluralLogic(
+      games,
+      locale: localeName,
+      other: '$games parties',
+      one: '1 partie',
+    );
+    return '$range ($percent %, $_temp0)';
+  }
+
+  @override
+  String playingHoursNoneJudged(int minGames) {
+    return 'Aucune heure n’a encore assez de parties pour juger la performance ($minGames minimum).';
+  }
 }

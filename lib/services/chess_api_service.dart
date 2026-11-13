@@ -9,6 +9,7 @@ import 'cache_service.dart';
 import 'country_stats_service.dart';
 import 'loss_stats_service.dart';
 import 'player_country_service.dart';
+import 'playing_hours_service.dart';
 import 'time_management_service.dart';
 
 class ChessApiService {
@@ -156,6 +157,7 @@ class ChessApiService {
         endTime: game['end_time'] is num
             ? DateTime.fromMillisecondsSinceEpoch((game['end_time'] as num).toInt() * 1000)
             : null,
+        startTime: PlayingHoursService.startTimeFromPgn(game['pgn'] as String? ?? ''),
         rated: game['rated'] as bool? ?? true,
         // Perdue au temps : notre pendule est à 0 (le PGN garde la valeur
         // après notre dernier coup).
