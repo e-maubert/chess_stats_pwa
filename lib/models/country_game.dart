@@ -29,6 +29,10 @@ class CountryGame {
   /// Fin de la partie (champ `end_time`), null si absente.
   final DateTime? endTime;
 
+  /// Début de la partie, lu dans le PGN (`[UTCDate]` + `[UTCTime]`, en UTC),
+  /// null si absent. Voir PlayingHoursService.
+  final DateTime? startTime;
+
   /// Partie classée (champ `rated`) : seules celles-ci font varier le
   /// classement.
   final bool rated;
@@ -52,6 +56,7 @@ class CountryGame {
     this.lossCause,
     this.rating,
     this.endTime,
+    this.startTime,
     this.rated = true,
     this.playerClock,
     this.opponentClock,
@@ -69,6 +74,7 @@ class CountryGame {
       'lossCause': lossCause,
       'rating': rating,
       'endTime': endTime?.millisecondsSinceEpoch,
+      'startTime': startTime?.millisecondsSinceEpoch,
       'rated': rated,
       'playerClock': playerClock,
       'opponentClock': opponentClock,
@@ -89,6 +95,9 @@ class CountryGame {
       endTime: json['endTime'] == null
           ? null
           : DateTime.fromMillisecondsSinceEpoch(json['endTime'] as int),
+      startTime: json['startTime'] == null
+          ? null
+          : DateTime.fromMillisecondsSinceEpoch(json['startTime'] as int, isUtc: true),
       rated: json['rated'] as bool? ?? true,
       playerClock: (json['playerClock'] as num?)?.toDouble(),
       opponentClock: (json['opponentClock'] as num?)?.toDouble(),

@@ -278,7 +278,11 @@
       }
     }
   },
-  "changelogV121": "Chargement plus rapide : le pays de chaque adversaire n'est demandé qu'une fois, plusieurs à la fois, et mémorisé un mois dans le navigateur",
+  "changelogV130": "Nouvelle carte « Heures de jeu » : cadran de 24 h des parties du mois selon leur heure de début, à l'heure locale\nMode « Activité » : nombre de parties par heure, en dégradé de bleu\nMode « Performance » : score par heure, du rouge au vert en passant par le jaune (5 parties minimum par heure)\nMeilleur et moins bon créneau : un clic les montre sur le cadran\nToucher une heure affiche son détail dans une bulle",
+  "@changelogV130": {
+    "description": "Nouveautés de la version 1.3.0, une par ligne."
+  },
+  "changelogV121":"Chargement plus rapide : le pays de chaque adversaire n'est demandé qu'une fois, plusieurs à la fois, et mémorisé un mois dans le navigateur",
   "@changelogV121": {
     "description": "Nouveautés de la version 1.2.1, une par ligne."
   },
@@ -293,5 +297,103 @@
   "changelogV100": "Statistiques du mois en cours : par couleur, par ouverture, évolution du classement, gestion du temps, causes des défaites\nStatistiques par pays des adversaires, avec carte du monde\nMode clair / sombre\nApplication en français et en anglais",
   "@changelogV100": {
     "description": "Nouveautés de la version 1.0.0, une par ligne."
+  },
+  "playingHours": "Heures de jeu",
+  "playingHoursModeActivity": "Activité",
+  "playingHoursModePerformance": "Performance",
+  "playingHoursHint": "Une tranche par heure, selon l’heure de début des parties (heure locale). Touchez une heure pour voir le détail.",
+  "playingHoursHourLabel": "{hour} h",
+  "@playingHoursHourLabel": {
+    "description": "Heure autour du cadran, ex. 15 h.",
+    "placeholders": {
+      "hour": {
+        "type": "int"
+      }
+    }
+  },
+  "playingHoursRange": "{start} h – {end} h",
+  "@playingHoursRange": {
+    "description": "Tranche d'une heure, ex. 15 h – 16 h.",
+    "placeholders": {
+      "start": {
+        "type": "int"
+      },
+      "end": {
+        "type": "int"
+      }
+    }
+  },
+  "playingHoursDetail": "{range} · {detail}",
+  "@playingHoursDetail": {
+    "description": "Détail de l'heure touchée : tranche, puis chiffres.",
+    "placeholders": {
+      "range": {
+        "type": "String"
+      },
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "playingHoursPerformanceDetail": "{percent} % · {games, plural, =1{1 partie} other{{games} parties}} · V {wins} · N {draws} · D {losses}",
+  "@playingHoursPerformanceDetail": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      },
+      "games": {
+        "type": "int"
+      },
+      "wins": {
+        "type": "int"
+      },
+      "draws": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
+    }
+  },
+  "playingHoursNotEnoughDetail": "{games, plural, =0{0 partie} =1{1 partie} other{{games} parties}}, pas assez pour juger ({minGames} minimum)",
+  "@playingHoursNotEnoughDetail": {
+    "placeholders": {
+      "games": {
+        "type": "int"
+      },
+      "minGames": {
+        "type": "int"
+      }
+    }
+  },
+  "playingHoursBandVeryLow": "Moins de 40 %",
+  "playingHoursBandLow": "40 à 46 %",
+  "playingHoursBandEven": "46 à 54 %",
+  "playingHoursBandHigh": "54 à 60 %",
+  "playingHoursBandVeryHigh": "Plus de 60 %",
+  "playingHoursBest": "Meilleur créneau :",
+  "playingHoursWorst": "Moins bon créneau :",
+  "playingHoursSlot": "{range} ({percent} %, {games, plural, =1{1 partie} other{{games} parties}})",
+  "@playingHoursSlot": {
+    "description": "Meilleur ou moins bon créneau, ex. 14 h – 15 h (62 %, 34 parties).",
+    "placeholders": {
+      "range": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "int"
+      },
+      "games": {
+        "type": "int"
+      }
+    }
+  },
+  "playingHoursNoneJudged": "Aucune heure n’a encore assez de parties pour juger la performance ({minGames} minimum).",
+  "@playingHoursNoneJudged": {
+    "placeholders": {
+      "minGames": {
+        "type": "int"
+      }
+    }
   }
 }

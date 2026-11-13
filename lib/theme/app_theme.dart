@@ -107,6 +107,11 @@ class AppTheme {
     return Color.lerp(_performanceStops[index], _performanceStops[index + 1], position - index)!;
   }
 
+  /// Couleur d'une classe de performance du cadran des heures de jeu,
+  /// [index] de 0 (la plus faible) à 4 (la meilleure) : mêmes teintes que la
+  /// carte Performance, jaune pour l'équilibre.
+  static Color performanceBandColor(int index) => _performanceStops[index];
+
   /// Pays joués mais trop peu pour juger la performance : gris distinct de
   /// celui des pays jamais rencontrés (plus foncé en clair, plus clair en
   /// sombre).

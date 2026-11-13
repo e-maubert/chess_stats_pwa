@@ -297,7 +297,11 @@
       }
     }
   },
-  "changelogV121": "Faster loading: each opponent's country is requested only once, several at a time, and remembered for a month in your browser",
+  "changelogV130": "New \"Playing hours\" card: a 24-hour dial of this month's games by start time, in your local time\n\"Activity\" mode: number of games per hour, in shades of blue\n\"Performance\" mode: score per hour, from red to green through yellow (at least 5 games per hour)\nBest and weakest time slots: one click shows them on the dial\nTap an hour to see its details in a bubble",
+  "@changelogV130": {
+    "description": "Nouveautés de la version 1.3.0, une par ligne."
+  },
+  "changelogV121":"Faster loading: each opponent's country is requested only once, several at a time, and remembered for a month in your browser",
   "@changelogV121": {
     "description": "Nouveautés de la version 1.2.1, une par ligne."
   },
@@ -312,5 +316,103 @@
   "changelogV100": "Current month statistics: by color, by opening, rating history, time management, loss causes\nStatistics by opponents' country, with a world map\nLight / dark mode\nApp in English and French",
   "@changelogV100": {
     "description": "Nouveautés de la version 1.0.0, une par ligne."
+  },
+  "playingHours": "Playing hours",
+  "playingHoursModeActivity": "Activity",
+  "playingHoursModePerformance": "Performance",
+  "playingHoursHint": "Each slice is one hour, by the time the game started (your local time). Tap an hour to see the details.",
+  "playingHoursHourLabel": "{hour}:00",
+  "@playingHoursHourLabel": {
+    "description": "Heure autour du cadran, ex. 15 h.",
+    "placeholders": {
+      "hour": {
+        "type": "int"
+      }
+    }
+  },
+  "playingHoursRange": "{start}:00–{end}:00",
+  "@playingHoursRange": {
+    "description": "Tranche d'une heure, ex. 15 h – 16 h.",
+    "placeholders": {
+      "start": {
+        "type": "int"
+      },
+      "end": {
+        "type": "int"
+      }
+    }
+  },
+  "playingHoursDetail": "{range} · {detail}",
+  "@playingHoursDetail": {
+    "description": "Détail de l'heure touchée : tranche, puis chiffres.",
+    "placeholders": {
+      "range": {
+        "type": "String"
+      },
+      "detail": {
+        "type": "String"
+      }
+    }
+  },
+  "playingHoursPerformanceDetail": "{percent}% · {games, plural, =1{1 game} other{{games} games}} · W {wins} · D {draws} · L {losses}",
+  "@playingHoursPerformanceDetail": {
+    "placeholders": {
+      "percent": {
+        "type": "int"
+      },
+      "games": {
+        "type": "int"
+      },
+      "wins": {
+        "type": "int"
+      },
+      "draws": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
+    }
+  },
+  "playingHoursNotEnoughDetail": "{games, plural, =0{0 games} =1{1 game} other{{games} games}}, not enough to rate ({minGames} minimum)",
+  "@playingHoursNotEnoughDetail": {
+    "placeholders": {
+      "games": {
+        "type": "int"
+      },
+      "minGames": {
+        "type": "int"
+      }
+    }
+  },
+  "playingHoursBandVeryLow": "Below 40%",
+  "playingHoursBandLow": "40–46%",
+  "playingHoursBandEven": "46–54%",
+  "playingHoursBandHigh": "54–60%",
+  "playingHoursBandVeryHigh": "Above 60%",
+  "playingHoursBest": "Best time slot:",
+  "playingHoursWorst": "Weakest time slot:",
+  "playingHoursSlot": "{range} ({percent}%, {games, plural, =1{1 game} other{{games} games}})",
+  "@playingHoursSlot": {
+    "description": "Meilleur ou moins bon créneau, ex. 14 h – 15 h (62 %, 34 parties).",
+    "placeholders": {
+      "range": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "int"
+      },
+      "games": {
+        "type": "int"
+      }
+    }
+  },
+  "playingHoursNoneJudged": "No hour has enough games yet to rate your performance ({minGames} minimum).",
+  "@playingHoursNoneJudged": {
+    "placeholders": {
+      "minGames": {
+        "type": "int"
+      }
+    }
   }
 }
