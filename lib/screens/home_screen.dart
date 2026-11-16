@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../services/chess_api_service.dart';
+import 'package:provider/provider.dart';
+import '../services/game_repository.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import '../services/layout_service.dart';
 import '../widgets/app_footer.dart';
@@ -31,13 +32,21 @@ class HomeScreenState extends State<HomeScreen> {
     setState(() => _isLoading = true);
 
     try {
-      final stats = await ChessApiService().getPlayerStats(username);
+      // Parties déjà stockées : affichées tout de suite, mises à jour
+      // ensuite par l'écran des stats. Sinon, premier téléchargement ici.
+      final repository = context.read<GameRepository>();
+      final stored = await repository.storedGames(username);
+      final games = stored ?? await repository.updateGames(username);
       if (!mounted) return;
 
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => StatsScreen(stats: stats),
+          builder: (context) => StatsScreen(
+            username: username,
+            initialGames: games,
+            upToDate: stored == null,
+          ),
         ),
       );
     } catch (e) {
