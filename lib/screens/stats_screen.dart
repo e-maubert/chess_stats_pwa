@@ -23,10 +23,6 @@ class StatsScreen extends StatelessWidget {
 
   const StatsScreen({Key? key, required this.username, this.initialGames, this.upToDate = false}) : super(key: key);
 
-  /// Hauteur de l'en-tête sous la barre du haut : sélecteur de période,
-  /// dates et barre de mise à jour.
-  static const double _periodHeaderHeight = 80;
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -41,18 +37,40 @@ class StatsScreen extends StatelessWidget {
       child: Consumer<PlayerGamesViewModel>(
         builder: (context, viewModel, child) => Scaffold(
           appBar: AppBar(
-            title: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const AppLogo(size: 32, decorative: true),
-                const SizedBox(width: 10),
-                Flexible(
-                  child: Text(
-                    l10n.statsTitle(username),
-                    overflow: TextOverflow.ellipsis,
+            // Nom de l'app en petit, puis le pseudo dessous : il a toute la
+            // largeur pour lui et ne se fait plus rogner sur mobile.
+            title: Semantics(
+              label: l10n.statsTitle(username),
+              excludeSemantics: true,
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const AppLogo(size: 32, decorative: true),
+                  const SizedBox(width: 10),
+                  Flexible(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          l10n.appTitle,
+                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              ),
+                        ),
+                        Text(
+                          username,
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                fontWeight: FontWeight.bold,
+                              ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             actions: [
               IconButton(
@@ -65,12 +83,11 @@ class StatsScreen extends StatelessWidget {
             // Choix de la période, puis barre fine pendant la mise à jour en
             // arrière-plan des parties déjà affichées.
             bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(_periodHeaderHeight),
+              preferredSize: const Size.fromHeight(PeriodSelector.height + 2),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   PeriodSelector(now: context.read<GameRepository>().now),
-                  const SizedBox(height: 6),
                   SizedBox(
                     height: 2,
                     child: viewModel.isUpdating && viewModel.games != null
