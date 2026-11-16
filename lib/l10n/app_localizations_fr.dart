@@ -32,6 +32,17 @@ class AppLocalizationsFr extends AppLocalizations {
   String get retry => 'Réessayer';
 
   @override
+  String get periodOneMonth => '1 mois';
+
+  @override
+  String get periodThreeMonths => '3 mois';
+
+  @override
+  String periodRange(String start, String end) {
+    return 'du $start au $end';
+  }
+
+  @override
   String get switchToDarkMode => 'Passer en mode sombre';
 
   @override
@@ -74,7 +85,7 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get countryStatsPeriod => 'Parties du mois en cours';
+  String get countryStatsPeriod => 'Parties de la période choisie';
 
   @override
   String get countryRankColumn => '#';
@@ -110,7 +121,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get ratingCurrent => 'Classement actuel';
 
   @override
-  String get ratingSinceMonthStart => 'depuis la 1re partie du mois';
+  String get ratingSincePeriodStart => 'depuis la 1re partie de la période';
 
   @override
   String get noRatingData => 'Aucune partie classée pour cette cadence';
@@ -563,10 +574,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get countryMapWeaknesses => 'Points faibles : ';
 
   @override
-  String get countryMapNoStrength => 'aucun ce mois-ci';
+  String get countryMapNoStrength => 'aucun sur la période';
 
   @override
-  String get countryMapNoWeakness => 'aucun ce mois-ci';
+  String get countryMapNoWeakness => 'aucun sur la période';
 
   @override
   String countryMapSummaryItem(String country, int percent) {

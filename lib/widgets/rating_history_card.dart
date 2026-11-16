@@ -11,7 +11,7 @@ import '../theme/app_theme.dart';
 import '../viewmodels/rating_history_viewmodel.dart';
 import 'time_class_filter.dart';
 
-/// Page principale : courbe du classement sur le mois pour une cadence,
+/// Page principale : courbe du classement sur la période pour une cadence,
 /// avec le classement actuel et sa variation à droite du graphique.
 class RatingHistoryCard extends StatelessWidget {
   final List<CountryGame> games;
@@ -81,7 +81,7 @@ class RatingHistoryCard extends StatelessWidget {
     );
   }
 
-  /// Classement actuel en gros, variation du mois en vert / rouge à côté.
+  /// Classement actuel en gros, variation sur la période en vert / rouge à côté.
   Widget _summary(BuildContext context, RatingHistoryViewModel viewModel, AppLocalizations l10n) {
     final textTheme = Theme.of(context).textTheme;
     final change = viewModel.change;
@@ -115,7 +115,7 @@ class RatingHistoryCard extends StatelessWidget {
             ),
           ],
         ),
-        Text(l10n.ratingSinceMonthStart, style: textTheme.bodySmall),
+        Text(l10n.ratingSincePeriodStart, style: textTheme.bodySmall),
       ],
     );
   }
@@ -182,8 +182,9 @@ class RatingHistoryCard extends StatelessWidget {
               showTitles: true,
               reservedSize: 28,
               interval: xInterval,
-              // Sinon la borne max s'affiche en plus de la dernière
-              // graduation, quasi au même endroit (libellé en double).
+              // Sinon les bornes s'affichent en plus des graduations, parfois
+              // quasi au même endroit (libellés superposés, ex. sur 3 mois).
+              minIncluded: false,
               maxIncluded: false,
               getTitlesWidget: (value, meta) => SideTitleWidget(
                 meta: meta,

@@ -9,7 +9,7 @@ import '../theme/app_theme.dart';
 import '../viewmodels/playing_hours_viewmodel.dart';
 import 'time_class_filter.dart';
 
-/// Page principale : cadran de 24 h des parties du mois selon leur heure
+/// Page principale : cadran de 24 h des parties de la période selon leur heure
 /// de début, en nombre de parties (activité) ou en performance, avec le
 /// meilleur et le moins bon créneau. Filtrable par cadence.
 class PlayingHoursCard extends StatelessWidget {

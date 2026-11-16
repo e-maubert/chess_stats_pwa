@@ -13,7 +13,7 @@ import 'pagination_controls.dart';
 import 'result_bar.dart';
 import 'time_class_filter.dart';
 
-/// Statistiques par pays des adversaires (mois en cours) : carte du monde
+/// Statistiques par pays des adversaires (période choisie) : carte du monde
 /// colorée selon le nombre de parties, puis tableau rang,
 /// pays, parties jouées, adversaires, barre victoires / nulles / défaites.
 /// Filtrable par cadence et triable par parties jouées ou par taux.

@@ -10,7 +10,7 @@ class RatingHistoryViewModel extends ChangeNotifier {
   late String _timeClass;
   late List<RatingPoint> _points;
 
-  /// Commence sur la cadence la plus jouée du mois.
+  /// Commence sur la cadence la plus jouée de la période.
   RatingHistoryViewModel(List<CountryGame> games) : _games = games {
     _timeClass = RatingHistoryService.mostPlayed(games, timeClasses);
     _points = RatingHistoryService.history(games, _timeClass);
@@ -22,7 +22,7 @@ class RatingHistoryViewModel extends ChangeNotifier {
   /// Classement actuel (après la dernière partie), null sans partie.
   int? get currentRating => _points.isEmpty ? null : _points.last.rating;
 
-  /// Variation depuis la première partie du mois.
+  /// Variation depuis la première partie de la période.
   int get change => RatingHistoryService.change(_points);
 
   void setTimeClass(String? timeClass) {

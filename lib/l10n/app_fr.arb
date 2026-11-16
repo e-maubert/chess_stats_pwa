@@ -13,6 +13,15 @@
   "search": "Rechercher",
   "refresh": "Actualiser",
   "retry": "Réessayer",
+  "periodOneMonth": "1 mois",
+  "periodThreeMonths": "3 mois",
+  "periodRange": "du {start} au {end}",
+  "@periodRange": {
+    "placeholders": {
+      "start": {"type": "String"},
+      "end": {"type": "String"}
+    }
+  },
   "switchToDarkMode": "Passer en mode sombre",
   "switchToLightMode": "Passer en mode clair",
   "errorFetchingStats": "Erreur lors de la récupération des statistiques",
@@ -33,7 +42,7 @@
       }
     }
   },
-  "countryStatsPeriod": "Parties du mois en cours",
+  "countryStatsPeriod": "Parties de la période choisie",
   "countryRankColumn": "#",
   "countryColumn": "Pays",
   "opponentsColumn": "Adversaires",
@@ -45,7 +54,7 @@
   "openingColumn": "Ouverture",
   "ratingEvolution": "Évolution du classement",
   "ratingCurrent": "Classement actuel",
-  "ratingSinceMonthStart": "depuis la 1re partie du mois",
+  "ratingSincePeriodStart": "depuis la 1re partie de la période",
   "noRatingData": "Aucune partie classée pour cette cadence",
   "countryResultRates": "V {win} · N {draw} · D {loss}",
   "@countryResultRates": {
@@ -212,8 +221,8 @@
   },
   "countryMapStrengths": "Points forts : ",
   "countryMapWeaknesses": "Points faibles : ",
-  "countryMapNoStrength": "aucun ce mois-ci",
-  "countryMapNoWeakness": "aucun ce mois-ci",
+  "countryMapNoStrength": "aucun sur la période",
+  "countryMapNoWeakness": "aucun sur la période",
   "countryMapSummaryItem": "{country} {percent} %",
   "@countryMapSummaryItem": {
     "placeholders": {

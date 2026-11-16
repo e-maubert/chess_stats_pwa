@@ -32,6 +32,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get retry => 'Retry';
 
   @override
+  String get periodOneMonth => '1 month';
+
+  @override
+  String get periodThreeMonths => '3 months';
+
+  @override
+  String periodRange(String start, String end) {
+    return 'from $start to $end';
+  }
+
+  @override
   String get switchToDarkMode => 'Switch to dark mode';
 
   @override
@@ -73,7 +84,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get countryStatsPeriod => 'Games of the current month';
+  String get countryStatsPeriod => 'Games in the selected period';
 
   @override
   String get countryRankColumn => '#';
@@ -109,7 +120,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ratingCurrent => 'Current rating';
 
   @override
-  String get ratingSinceMonthStart => 'since the first game of the month';
+  String get ratingSincePeriodStart => 'since the first game of the period';
 
   @override
   String get noRatingData => 'No rated games for this time control';
@@ -564,10 +575,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get countryMapWeaknesses => 'Weaknesses: ';
 
   @override
-  String get countryMapNoStrength => 'none this month';
+  String get countryMapNoStrength => 'none in this period';
 
   @override
-  String get countryMapNoWeakness => 'none this month';
+  String get countryMapNoWeakness => 'none in this period';
 
   @override
   String countryMapSummaryItem(String country, int percent) {

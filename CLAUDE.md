@@ -1,6 +1,6 @@
 # Chess Stats PWA
 
-Application web (PWA) Flutter qui affiche les statistiques d'un joueur chess.com pour le **mois en cours** : par couleur, par ouverture, par pays des adversaires, et répartition des défaites par cause.
+Application web (PWA) Flutter qui affiche les statistiques d'un joueur chess.com sur une **période glissante** (« 1 mois » = 30 derniers jours, « 3 mois » = 90 derniers jours, sélecteur dans l'en-tête de la page des stats, choix mémorisé) : par couleur, par ouverture, par pays des adversaires, et répartition des défaites par cause.
 L'interface est en **français** ou en **anglais**, selon la langue du navigateur.
 
 ## Commandes

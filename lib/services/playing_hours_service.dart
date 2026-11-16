@@ -30,7 +30,7 @@ class HourStats {
 /// Classe de performance d'une heure, de la plus faible à la meilleure.
 enum PerformanceBand { veryLow, low, even, high, veryHigh }
 
-/// Heures de jeu : parties du mois réparties par heure locale de début,
+/// Heures de jeu : parties de la période réparties par heure locale de début,
 /// avec la performance de chaque heure.
 class PlayingHoursService {
   /// En dessous, une heure n'a pas assez de parties pour juger sa
