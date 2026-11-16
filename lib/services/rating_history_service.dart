@@ -8,7 +8,7 @@ class RatingPoint {
   const RatingPoint(this.time, this.rating);
 }
 
-/// Évolution du classement sur le mois, calculée à partir des parties.
+/// Évolution du classement sur la période, calculée à partir des parties.
 class RatingHistoryService {
   /// Classement après chaque partie classée de la cadence [timeClass],
   /// dans l'ordre chronologique. Les parties sans classement ou sans date
@@ -26,7 +26,7 @@ class RatingHistoryService {
     return points;
   }
 
-  /// Variation depuis la première partie du mois : chess.com ne donne que
+  /// Variation depuis la première partie de la période : chess.com ne donne que
   /// le classement après chaque partie, la première partie sert donc de
   /// point de départ. 0 s'il n'y a pas de point.
   static int change(List<RatingPoint> points) =>

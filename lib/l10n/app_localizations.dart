@@ -140,6 +140,24 @@ abstract class AppLocalizations {
   /// **'Retry'**
   String get retry;
 
+  /// No description provided for @periodOneMonth.
+  ///
+  /// In en, this message translates to:
+  /// **'1 month'**
+  String get periodOneMonth;
+
+  /// No description provided for @periodThreeMonths.
+  ///
+  /// In en, this message translates to:
+  /// **'3 months'**
+  String get periodThreeMonths;
+
+  /// Exact dates of the selected period, under the period selector
+  ///
+  /// In en, this message translates to:
+  /// **'from {start} to {end}'**
+  String periodRange(String start, String end);
+
   /// No description provided for @switchToDarkMode.
   ///
   /// In en, this message translates to:
@@ -221,7 +239,7 @@ abstract class AppLocalizations {
   /// No description provided for @countryStatsPeriod.
   ///
   /// In en, this message translates to:
-  /// **'Games of the current month'**
+  /// **'Games in the selected period'**
   String get countryStatsPeriod;
 
   /// No description provided for @countryRankColumn.
@@ -290,11 +308,11 @@ abstract class AppLocalizations {
   /// **'Current rating'**
   String get ratingCurrent;
 
-  /// No description provided for @ratingSinceMonthStart.
+  /// No description provided for @ratingSincePeriodStart.
   ///
   /// In en, this message translates to:
-  /// **'since the first game of the month'**
-  String get ratingSinceMonthStart;
+  /// **'since the first game of the period'**
+  String get ratingSincePeriodStart;
 
   /// No description provided for @noRatingData.
   ///
@@ -534,13 +552,13 @@ abstract class AppLocalizations {
   /// No description provided for @countryMapNoStrength.
   ///
   /// In en, this message translates to:
-  /// **'none this month'**
+  /// **'none in this period'**
   String get countryMapNoStrength;
 
   /// No description provided for @countryMapNoWeakness.
   ///
   /// In en, this message translates to:
-  /// **'none this month'**
+  /// **'none in this period'**
   String get countryMapNoWeakness;
 
   /// No description provided for @countryMapSummaryItem.

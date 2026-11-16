@@ -14,6 +14,16 @@
   "search": "Search",
   "refresh": "Refresh",
   "retry": "Retry",
+  "periodOneMonth": "1 month",
+  "periodThreeMonths": "3 months",
+  "periodRange": "from {start} to {end}",
+  "@periodRange": {
+    "description": "Exact dates of the selected period, under the period selector",
+    "placeholders": {
+      "start": {"type": "String"},
+      "end": {"type": "String"}
+    }
+  },
   "switchToDarkMode": "Switch to dark mode",
   "switchToLightMode": "Switch to light mode",
   "errorFetchingStats": "Error fetching statistics",
@@ -34,7 +44,7 @@
       }
     }
   },
-  "countryStatsPeriod": "Games of the current month",
+  "countryStatsPeriod": "Games in the selected period",
   "countryRankColumn": "#",
   "countryColumn": "Country",
   "opponentsColumn": "Opponents",
@@ -46,7 +56,7 @@
   "openingColumn": "Opening",
   "ratingEvolution": "Rating progress",
   "ratingCurrent": "Current rating",
-  "ratingSinceMonthStart": "since the first game of the month",
+  "ratingSincePeriodStart": "since the first game of the period",
   "noRatingData": "No rated games for this time control",
   "countryResultRates": "W {win} · D {draw} · L {loss}",
   "@countryResultRates": {
@@ -223,8 +233,8 @@
   },
   "countryMapStrengths": "Strengths: ",
   "countryMapWeaknesses": "Weaknesses: ",
-  "countryMapNoStrength": "none this month",
-  "countryMapNoWeakness": "none this month",
+  "countryMapNoStrength": "none in this period",
+  "countryMapNoWeakness": "none in this period",
   "countryMapSummaryItem": "{country} {percent}%",
   "@countryMapSummaryItem": {
     "placeholders": {

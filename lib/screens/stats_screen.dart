@@ -3,8 +3,10 @@ import 'package:provider/provider.dart';
 import '../models/country_game.dart';
 import '../services/game_repository.dart';
 import '../viewmodels/player_games_viewmodel.dart';
+import '../viewmodels/stats_period_viewmodel.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import '../widgets/app_logo.dart';
+import '../widgets/period_selector.dart';
 import '../widgets/stats_display.dart';
 import '../widgets/theme_toggle_button.dart';
 
@@ -20,6 +22,10 @@ class StatsScreen extends StatelessWidget {
   final bool upToDate;
 
   const StatsScreen({Key? key, required this.username, this.initialGames, this.upToDate = false}) : super(key: key);
+
+  /// Hauteur de l'en-tête sous la barre du haut : sélecteur de période,
+  /// dates et barre de mise à jour.
+  static const double _periodHeaderHeight = 80;
 
   @override
   Widget build(BuildContext context) {
@@ -56,13 +62,24 @@ class StatsScreen extends StatelessWidget {
               ),
               const ThemeToggleButton(),
             ],
-            // Mise à jour en arrière-plan des parties déjà affichées.
-            bottom: viewModel.isUpdating && viewModel.games != null
-                ? const PreferredSize(
-                    preferredSize: Size.fromHeight(2),
-                    child: LinearProgressIndicator(minHeight: 2),
-                  )
-                : null,
+            // Choix de la période, puis barre fine pendant la mise à jour en
+            // arrière-plan des parties déjà affichées.
+            bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(_periodHeaderHeight),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  PeriodSelector(now: context.read<GameRepository>().now),
+                  const SizedBox(height: 6),
+                  SizedBox(
+                    height: 2,
+                    child: viewModel.isUpdating && viewModel.games != null
+                        ? const LinearProgressIndicator(minHeight: 2)
+                        : null,
+                  ),
+                ],
+              ),
+            ),
           ),
           body: _body(context, viewModel, l10n),
         ),
@@ -79,7 +96,9 @@ class StatsScreen extends StatelessWidget {
               content: Text(l10n.errorFetchingStats),
               actions: [TextButton(onPressed: viewModel.update, child: Text(l10n.retry))],
             ),
-          Expanded(child: StatsDisplay(games: viewModel.displayedGames)),
+          Expanded(
+            child: StatsDisplay(games: viewModel.gamesIn(context.watch<StatsPeriodViewModel>().period)),
+          ),
         ],
       );
     }

@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
 
 import '../models/country_game.dart';
-import '../models/year_month.dart';
+import '../models/stats_period.dart';
 import '../services/game_repository.dart';
+import '../services/stats_period_service.dart';
 
 /// Parties du joueur affiché : celles du stockage local d'abord (affichage
 /// immédiat), puis mises à jour en arrière-plan.
@@ -31,22 +32,20 @@ class PlayerGamesViewModel extends ChangeNotifier {
   /// sont celles du stockage).
   bool get updateFailed => _updateFailed;
 
-  /// Parties du mois calendaire en cours (UTC), celles affichées. Même
-  /// liste tant que les parties ne changent pas : les cartes gardent leurs
-  /// filtres (elles repartent de zéro quand la liste change).
-  List<CountryGame> get displayedGames {
-    if (_displayedSource != _games || _displayed == null) {
-      final month = YearMonth.of(_repository.now);
+  /// Parties de la [period] (les N derniers jours), celles affichées. Même
+  /// liste tant que les parties et la période ne changent pas : les cartes
+  /// gardent leurs filtres (elles repartent de zéro quand la liste change).
+  List<CountryGame> gamesIn(StatsPeriod period) {
+    if (_displayedSource != _games || _displayedPeriod != period || _displayed == null) {
       _displayedSource = _games;
-      _displayed = [
-        for (final game in _games ?? const <CountryGame>[])
-          if (game.endTime != null && YearMonth.of(game.endTime!) == month) game,
-      ];
+      _displayedPeriod = period;
+      _displayed = StatsPeriodService.filter(_games ?? const [], period, _repository.now);
     }
     return _displayed!;
   }
 
   List<CountryGame>? _displayedSource;
+  StatsPeriod? _displayedPeriod;
   List<CountryGame>? _displayed;
 
   Future<void> _open(bool upToDate) async {

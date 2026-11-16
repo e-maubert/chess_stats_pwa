@@ -161,7 +161,7 @@ class WorldMapService {
   }
 
   /// Nombre minimum de parties contre un pays pour juger la performance :
-  /// 2 tant que le mois compte au plus [smallMonthMaxGames] parties, 3
+  /// 2 tant que la période compte au plus [smallMonthMaxGames] parties, 3
   /// au-delà. Avec une seule partie, 0 % ou 100 % ne veulent rien dire.
   static int minGamesForPerformance(int totalGames) => totalGames <= smallMonthMaxGames ? 2 : 3;
 
