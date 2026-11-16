@@ -72,7 +72,25 @@ npx --yes netlify-cli@27.17.0 deploy --prod --dir build/web
 - Si l'outil n'est plus connecté : `npx netlify-cli login` (connexion dans le navigateur, faite par l'utilisateur). Équipe Netlify : slug `etienne-maubert`.
 - Logo et icônes : sources dans `design/`, PNG régénérés par `tool/generate_icons.ps1`.
 
-## Workflow des agents (Trello)
+## Modes de travail
+
+Deux modes. **Par défaut : mode perso.** Le mode démo / agence ne s'applique que si l'utilisateur le demande (« mode démo », « mode agence », ou en demandant de passer par les agents ou par Trello).
+
+### Mode perso (par défaut)
+
+Le but est de consommer peu de tokens.
+- Développer directement dans la conversation, où le contexte est déjà chargé. Pas d'agent `developpeur-trello` ni `relecteur-code`.
+- Pas de suivi Trello obligatoire. Si une carte existe pour le changement, y laisser un seul commentaire court à la fin (branche, ce qui a été fait) et la déplacer.
+- Vérifier une seule fois : `flutter analyze` + `flutter test`, et l'app dans le navigateur seulement si le changement est visible et pas couvert par un test. Limiter les captures d'écran.
+- Relecture uniquement sur un changement délicat (stockage, calculs de stats) : `/code-review` sur la branche, pas d'agent relecteur.
+
+### Mode démo / agence (agents + Trello)
+
+Pour montrer les agents, ou quand des humains suivent le projet. Les rôles sont décrits plus bas.
+- Une seule vérification complète par étape : le relecteur ne relance le navigateur que pour les critères visuels non couverts par un test, et la session principale ne refait pas les vérifications des agents (elle contrôle seulement que les branches existent et que `analyze` / `test` passent).
+- Modèles : `developpeur-trello` hérite du modèle de la session ; `reception-client` et `relecteur-code` tournent sur Sonnet (champ `model` de `.claude/agents/`).
+
+## Workflow des agents (Trello, mode démo / agence)
 
 Tableau « Retours client – Chess Stats » : https://trello.com/b/xJvUOeeJ/retours-client-chess-stats
 Colonnes : **À faire → En cours → En relecture → Livré**.
