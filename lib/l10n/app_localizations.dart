@@ -128,6 +128,12 @@ abstract class AppLocalizations {
   /// **'Search'**
   String get search;
 
+  /// No description provided for @searchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g. Hikaru'**
+  String get searchHint;
+
   /// No description provided for @refresh.
   ///
   /// In en, this message translates to:

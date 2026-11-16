@@ -26,6 +26,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get search => 'Rechercher';
 
   @override
+  String get searchHint => 'ex : Hikaru';
+
+  @override
   String get refresh => 'Actualiser';
 
   @override

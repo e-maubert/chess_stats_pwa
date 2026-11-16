@@ -12,6 +12,7 @@
   },
   "enterUsername": "Enter your Chess.com username",
   "search": "Search",
+  "searchHint": "e.g. Hikaru",
   "refresh": "Refresh",
   "retry": "Retry",
   "periodOneMonth": "1 month",

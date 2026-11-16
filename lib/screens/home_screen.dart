@@ -69,8 +69,8 @@ class HomeScreenState extends State<HomeScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
+      // Le nom de l'appli est affiché sous le logo, pas dans la barre.
       appBar: AppBar(
-        title: Text(l10n.appTitle),
         actions: const [ThemeToggleButton()],
       ),
       body: Column(
@@ -102,17 +102,26 @@ class HomeScreenState extends State<HomeScreen> {
       mainAxisSize: MainAxisSize.min,
       children: [
         const AppLogo(size: 120),
-        const SizedBox(height: 24),
+        const SizedBox(height: 16),
+        // Nom de l'appli sous le logo, puis la consigne en sous-titre.
+        Text(
+          l10n.appTitle,
+          style: Theme.of(context).textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.bold),
+          textAlign: TextAlign.center,
+        ),
+        const SizedBox(height: 4),
         Text(
           l10n.enterUsername,
-          style: Theme.of(context).textTheme.titleLarge,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 24),
         TextField(
           controller: _usernameController,
           decoration: InputDecoration(
-            hintText: l10n.enterUsername,
+            hintText: l10n.searchHint,
             border: const OutlineInputBorder(),
           ),
           onSubmitted: (_) => _searchUser(),
