@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/game_repository.dart';
+import '../services/game_store.dart';
+import '../viewmodels/recent_players_viewmodel.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import '../services/layout_service.dart';
 import '../widgets/app_footer.dart';
 import '../widgets/app_logo.dart';
+import '../widgets/recent_players_options.dart';
 import '../widgets/theme_toggle_button.dart';
 import 'stats_screen.dart';
 
@@ -17,11 +20,21 @@ class HomeScreen extends StatefulWidget {
 
 class HomeScreenState extends State<HomeScreen> {
   final _usernameController = TextEditingController();
+  final _usernameFocusNode = FocusNode();
+  late final RecentPlayersViewModel _recentPlayers;
   bool _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _recentPlayers = RecentPlayersViewModel(context.read<GameRepository>())..load();
+  }
 
   @override
   void dispose() {
     _usernameController.dispose();
+    _usernameFocusNode.dispose();
+    _recentPlayers.dispose();
     super.dispose();
   }
 
@@ -39,6 +52,8 @@ class HomeScreenState extends State<HomeScreen> {
       final games = stored ?? await repository.updateGames(username);
       if (!mounted) return;
 
+      _usernameFocusNode.unfocus();
+      // Au retour, le joueur consulté apparaît en tête des joueurs proposés.
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -48,7 +63,7 @@ class HomeScreenState extends State<HomeScreen> {
             upToDate: stored == null,
           ),
         ),
-      );
+      ).then((_) => _recentPlayers.load());
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
@@ -109,13 +124,28 @@ class HomeScreenState extends State<HomeScreen> {
           textAlign: TextAlign.center,
         ),
         const SizedBox(height: 24),
-        TextField(
-          controller: _usernameController,
-          decoration: InputDecoration(
-            hintText: l10n.enterUsername,
-            border: const OutlineInputBorder(),
+        // Un clic dans le champ propose les joueurs déjà consultés, filtrés
+        // pendant la saisie.
+        RawAutocomplete<StoredPlayer>(
+          textEditingController: _usernameController,
+          focusNode: _usernameFocusNode,
+          displayStringForOption: (player) => player.username,
+          optionsBuilder: (value) => _recentPlayers.matching(value.text),
+          onSelected: (player) => _searchUser(),
+          fieldViewBuilder: (context, controller, focusNode, onFieldSubmitted) => TextField(
+            controller: controller,
+            focusNode: focusNode,
+            decoration: InputDecoration(
+              hintText: l10n.enterUsername,
+              border: const OutlineInputBorder(),
+            ),
+            onSubmitted: (_) => _searchUser(),
           ),
-          onSubmitted: (_) => _searchUser(),
+          optionsViewBuilder: (context, onSelected, options) => RecentPlayersOptions(
+            viewModel: _recentPlayers,
+            controller: _usernameController,
+            onSelected: onSelected,
+          ),
         ),
         const SizedBox(height: 16),
         ElevatedButton(

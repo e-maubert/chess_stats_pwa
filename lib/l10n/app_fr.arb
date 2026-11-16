@@ -11,6 +11,12 @@
   },
   "enterUsername": "Entrez votre nom d'utilisateur Chess.com",
   "search": "Rechercher",
+  "removeRecentPlayer": "Retirer {username} de la liste",
+  "@removeRecentPlayer": {
+    "placeholders": {
+      "username": {"type": "String"}
+    }
+  },
   "refresh": "Actualiser",
   "retry": "Réessayer",
   "switchToDarkMode": "Passer en mode sombre",

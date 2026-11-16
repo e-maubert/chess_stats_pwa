@@ -12,6 +12,13 @@
   },
   "enterUsername": "Enter your Chess.com username",
   "search": "Search",
+  "removeRecentPlayer": "Remove {username} from the list",
+  "@removeRecentPlayer": {
+    "description": "Tooltip of the cross next to an already viewed player, under the search field",
+    "placeholders": {
+      "username": {"type": "String"}
+    }
+  },
   "refresh": "Refresh",
   "retry": "Retry",
   "switchToDarkMode": "Switch to dark mode",

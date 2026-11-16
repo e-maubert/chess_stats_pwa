@@ -26,6 +26,11 @@ class AppLocalizationsFr extends AppLocalizations {
   String get search => 'Rechercher';
 
   @override
+  String removeRecentPlayer(String username) {
+    return 'Retirer $username de la liste';
+  }
+
+  @override
   String get refresh => 'Actualiser';
 
   @override
