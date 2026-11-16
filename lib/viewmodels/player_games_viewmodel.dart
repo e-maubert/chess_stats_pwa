@@ -31,14 +31,23 @@ class PlayerGamesViewModel extends ChangeNotifier {
   /// sont celles du stockage).
   bool get updateFailed => _updateFailed;
 
-  /// Parties du mois calendaire en cours (UTC), celles affichées.
+  /// Parties du mois calendaire en cours (UTC), celles affichées. Même
+  /// liste tant que les parties ne changent pas : les cartes gardent leurs
+  /// filtres (elles repartent de zéro quand la liste change).
   List<CountryGame> get displayedGames {
-    final month = YearMonth.of(_repository.now);
-    return [
-      for (final game in _games ?? const <CountryGame>[])
-        if (game.endTime != null && YearMonth.of(game.endTime!) == month) game,
-    ];
+    if (_displayedSource != _games || _displayed == null) {
+      final month = YearMonth.of(_repository.now);
+      _displayedSource = _games;
+      _displayed = [
+        for (final game in _games ?? const <CountryGame>[])
+          if (game.endTime != null && YearMonth.of(game.endTime!) == month) game,
+      ];
+    }
+    return _displayed!;
   }
+
+  List<CountryGame>? _displayedSource;
+  List<CountryGame>? _displayed;
 
   Future<void> _open(bool upToDate) async {
     await _repository.markViewed(username);
