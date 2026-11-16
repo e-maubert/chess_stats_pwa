@@ -134,6 +134,12 @@ abstract class AppLocalizations {
   /// **'e.g. Hikaru'**
   String get searchHint;
 
+  /// Tooltip of the cross next to an already viewed player, under the search field
+  ///
+  /// In en, this message translates to:
+  /// **'Remove {username} from the list'**
+  String removeRecentPlayer(String username);
+
   /// No description provided for @refresh.
   ///
   /// In en, this message translates to:

@@ -58,6 +58,20 @@ class GameRepository {
   Future<void> markViewed(String username) =>
       _safe(() => _store.savePlayer(StoredPlayer(username: username, lastViewedAt: _now().toUtc())), null);
 
+  /// Joueurs consultés encore présents dans le stockage, du plus récent au
+  /// plus ancien (sans ceux que la purge supprimera).
+  Future<List<StoredPlayer>> viewedPlayers() => _safe(() async {
+        final now = _now();
+        return [
+          for (final player in await _store.players())
+            if (!GameStoragePolicy.isPlayerExpired(player.lastViewedAt, now)) player,
+        ];
+      }, const <StoredPlayer>[]);
+
+  /// Retire [username] des joueurs consultés et supprime ses parties
+  /// stockées.
+  Future<void> removePlayer(String username) => _safe(() => _store.deletePlayer(username), null);
+
   /// Nettoyage au lancement : supprime les joueurs non consultés depuis
   /// plus d'un mois, et les mois au-delà de la durée de conservation.
   Future<void> purge() => _safe(() async {

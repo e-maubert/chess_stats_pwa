@@ -12,6 +12,12 @@
   "enterUsername": "Entrez votre nom d'utilisateur Chess.com",
   "search": "Rechercher",
   "searchHint": "ex : Hikaru",
+  "removeRecentPlayer": "Retirer {username} de la liste",
+  "@removeRecentPlayer": {
+    "placeholders": {
+      "username": {"type": "String"}
+    }
+  },
   "refresh": "Actualiser",
   "retry": "Réessayer",
   "periodOneMonth": "1 mois",

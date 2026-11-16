@@ -13,6 +13,13 @@
   "enterUsername": "Enter your Chess.com username",
   "search": "Search",
   "searchHint": "e.g. Hikaru",
+  "removeRecentPlayer": "Remove {username} from the list",
+  "@removeRecentPlayer": {
+    "description": "Tooltip of the cross next to an already viewed player, under the search field",
+    "placeholders": {
+      "username": {"type": "String"}
+    }
+  },
   "refresh": "Refresh",
   "retry": "Retry",
   "periodOneMonth": "1 month",
