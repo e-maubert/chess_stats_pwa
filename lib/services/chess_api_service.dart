@@ -1,79 +1,48 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import '../models/chess_stats.dart';
-import '../models/opening_stats.dart';
-import '../models/country_stats.dart';
-import '../models/color_stats.dart';
 import '../models/country_game.dart';
-import 'cache_service.dart';
+import '../models/year_month.dart';
 import 'country_stats_service.dart';
 import 'loss_stats_service.dart';
+import 'monthly_games_source.dart';
 import 'player_country_service.dart';
 import 'playing_hours_service.dart';
 import 'time_management_service.dart';
 
-class ChessApiService {
+/// Parties d'un joueur téléchargées depuis les archives mensuelles de l'API
+/// publique chess.com, transformées en [CountryGame] (sans le PGN).
+class ChessApiService implements MonthlyGamesSource {
   static const String baseUrl = 'https://api.chess.com/pub/player';
-  final _cacheService = CacheService();
-  final _playerCountryService = PlayerCountryService();
+  final http.Client _client;
+  final PlayerCountryService _playerCountryService;
 
-  Future<ChessStats> getPlayerStats(String username) async {
-    // Essayer de récupérer les données du cache
-    final cachedStats = await _cacheService.getCachedStats(username);
-    if (cachedStats != null) {
-      return cachedStats;
-    }
+  ChessApiService({http.Client? client, PlayerCountryService? playerCountryService})
+      : _client = client ?? http.Client(),
+        _playerCountryService = playerCountryService ?? PlayerCountryService();
 
-    // Si pas de cache valide, faire l'appel API
-    final now = DateTime.now();
-    final year = now.year;
-    final month = now.month.toString().padLeft(2, '0');
-    
-    final response = await http.get(
-      Uri.parse('$baseUrl/$username/games/$year/$month'),
+  @override
+  Future<Map<YearMonth, List<CountryGame>>> fetchMonths(String username, List<YearMonth> months) async {
+    final player = username.toLowerCase();
+    // Archives en parallèle, puis les pays de tous les adversaires d'un coup.
+    final archives = await Future.wait([for (final month in months) _fetchArchive(player, month)]);
+    final countries = await _playerCountryService.countries([
+      for (final games in archives)
+        for (final game in games) _opponent(game, player),
+    ]);
+    return {
+      for (final (index, month) in months.indexed)
+        month: [for (final game in archives[index]) _toCountryGame(game, player, countries)],
+    };
+  }
+
+  Future<List<dynamic>> _fetchArchive(String player, YearMonth month) async {
+    final response = await _client.get(
+      Uri.parse('$baseUrl/$player/games/${month.year}/${month.month.toString().padLeft(2, '0')}'),
     );
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      final stats = await _processGameData(data['games'], username.toLowerCase());
-      
-      // Mettre en cache les nouvelles données
-      await _cacheService.cacheStats(username, stats);
-      
-      return stats;
-    } else {
-      throw Exception('Failed to load player stats');
+    if (response.statusCode != 200) {
+      throw Exception('Failed to load games of $player for ${month.key}');
     }
-  }
-
-  Future<void> clearCache(String username) async {
-    await _cacheService.clearCache(username);
-  }
-
-  void _updateCountryStats(Map<String, CountryStats> stats, String country, String result) {
-    if (!stats.containsKey(country)) {
-      stats[country] = CountryStats(
-        name: country,
-        gamesPlayed: 0,
-        gamesWon: 0,
-        gamesLost: 0,
-        gamesDrawn: 0,
-      );
-    }
-    
-    final countryStat = stats[country]!;
-    countryStat.gamesPlayed++;
-    switch (result) {
-      case 'win':
-        countryStat.gamesWon++;
-        break;
-      case 'loss':
-        countryStat.gamesLost++;
-        break;
-      case 'draw':
-        countryStat.gamesDrawn++;
-        break;
-    }
+    return (json.decode(response.body)['games'] as List<dynamic>?) ?? const [];
   }
 
   static String _opponent(dynamic game, String username) {
@@ -81,117 +50,41 @@ class ChessApiService {
     return game[isWhite ? 'black' : 'white']['username'].toString();
   }
 
-  Future<ChessStats> _processGameData(List<dynamic> games, String username) async {
-    final openingStats = <String, OpeningStats>{};
-    final countryStats = <String, CountryStats>{};
-    final countryGames = <CountryGame>[];
-
-    int whiteWins = 0;
-    int whiteLosses = 0;
-    int whiteDraws = 0;
-    
-    int blackWins = 0;
-    int blackLosses = 0;
-    int blackDraws = 0;
-
-    // Pays de tous les adversaires d'un coup : un appel par adversaire
-    // (pas par partie), en parallèle, avec cache local.
-    final countries = await _playerCountryService.countries([for (final game in games) _opponent(game, username)]);
-
-    for (var game in games) {
-      final isWhite = game['white']['username'].toString().toLowerCase() == username;
-      final result = _getGameResult(game, isWhite);
-      final opponentUsername = _opponent(game, username);
-      final country = countries[opponentUsername.toLowerCase()] ?? CountryStatsService.unknownCountry;
-      
-      // Update color-specific stats
-      if (isWhite) {
-        switch (result) {
-          case 'win':
-            whiteWins++;
-            break;
-          case 'loss':
-            whiteLosses++;
-            break;
-          case 'draw':
-            whiteDraws++;
-            break;
-        }
-      } else {
-        switch (result) {
-          case 'win':
-            blackWins++;
-            break;
-          case 'loss':
-            blackLosses++;
-            break;
-          case 'draw':
-            blackDraws++;
-            break;
-        }
-      }
-
-      // Update opening stats
-      final openingName = _extractOpeningName(game);
-      _updateOpeningStats(openingStats, openingName, result, isWhite ? 'white' : 'black');
-
-      // Update country stats
-      _updateCountryStats(countryStats, country, result);
-      final lossCause = result == 'loss'
-          ? LossStatsService.lossCause(game[isWhite ? 'white' : 'black']['result']?.toString())
-          : null;
-      final baseTime = TimeManagementService.baseTime(game['time_control']?.toString());
-      final clocks = TimeManagementService.lastClocks(game['pgn'] as String? ?? '');
-      // Pendule absente pour une couleur qui n'a pas joué : temps initial.
-      final whiteClock = clocks.white ?? baseTime?.toDouble();
-      final blackClock = clocks.black ?? baseTime?.toDouble();
-      countryGames.add(CountryGame(
-        country: country,
-        opponent: opponentUsername,
-        timeClass: game['time_class']?.toString() ?? '',
-        result: result,
-        playerColor: isWhite ? 'white' : 'black',
-        opening: openingName,
-        lossCause: lossCause,
-        rating: (game[isWhite ? 'white' : 'black']['rating'] as num?)?.toInt(),
-        endTime: game['end_time'] is num
-            ? DateTime.fromMillisecondsSinceEpoch((game['end_time'] as num).toInt() * 1000)
-            : null,
-        startTime: PlayingHoursService.startTimeFromPgn(game['pgn'] as String? ?? ''),
-        rated: game['rated'] as bool? ?? true,
-        // Perdue au temps : notre pendule est à 0 (le PGN garde la valeur
-        // après notre dernier coup).
-        playerClock: lossCause == LossStatsService.timeout
-            ? 0
-            : (isWhite ? whiteClock : blackClock),
-        opponentClock: isWhite ? blackClock : whiteClock,
-        baseTime: baseTime,
-      ));
-    }
-
-    final whiteStats = ColorStats(
-      wins: whiteWins,
-      losses: whiteLosses,
-      draws: whiteDraws,
-    );
-
-    final blackStats = ColorStats(
-      wins: blackWins,
-      losses: blackLosses,
-      draws: blackDraws,
-    );
-
-    return ChessStats(
-      username: username,
-      whiteStats: whiteStats,
-      blackStats: blackStats,
-      openings: openingStats,
-      countryStats: countryStats,
-      countryGames: countryGames,
-      totalGames: games.length,
-      wins: whiteWins + blackWins,
-      losses: whiteLosses + blackLosses,
-      draws: whiteDraws + blackDraws,
+  CountryGame _toCountryGame(dynamic game, String username, Map<String, String> countries) {
+    final isWhite = game['white']['username'].toString().toLowerCase() == username;
+    final result = _getGameResult(game, isWhite);
+    final opponentUsername = _opponent(game, username);
+    final country = countries[opponentUsername.toLowerCase()] ?? CountryStatsService.unknownCountry;
+    final lossCause = result == 'loss'
+        ? LossStatsService.lossCause(game[isWhite ? 'white' : 'black']['result']?.toString())
+        : null;
+    final baseTime = TimeManagementService.baseTime(game['time_control']?.toString());
+    final clocks = TimeManagementService.lastClocks(game['pgn'] as String? ?? '');
+    // Pendule absente pour une couleur qui n'a pas joué : temps initial.
+    final whiteClock = clocks.white ?? baseTime?.toDouble();
+    final blackClock = clocks.black ?? baseTime?.toDouble();
+    return CountryGame(
+      country: country,
+      opponent: opponentUsername,
+      timeClass: game['time_class']?.toString() ?? '',
+      result: result,
+      playerColor: isWhite ? 'white' : 'black',
+      opening: _extractOpeningName(game),
+      lossCause: lossCause,
+      rating: (game[isWhite ? 'white' : 'black']['rating'] as num?)?.toInt(),
+      endTime: game['end_time'] is num
+          ? DateTime.fromMillisecondsSinceEpoch((game['end_time'] as num).toInt() * 1000)
+          : null,
+      startTime: PlayingHoursService.startTimeFromPgn(game['pgn'] as String? ?? ''),
+      rated: game['rated'] as bool? ?? true,
+      // Perdue au temps : notre pendule est à 0 (le PGN garde la valeur
+      // après notre dernier coup).
+      playerClock: lossCause == LossStatsService.timeout
+          ? 0
+          : (isWhite ? whiteClock : blackClock),
+      opponentClock: isWhite ? blackClock : whiteClock,
+      baseTime: baseTime,
+      url: game['url'] as String?,
     );
   }
 
@@ -236,16 +129,6 @@ class ChessApiService {
     }
 
     return 'Unknown-Opening';
-  }
-
-  void _updateOpeningStats(Map<String, OpeningStats> stats, String openingName, String result, String color) {
-    if (!stats.containsKey(openingName)) {
-      stats[openingName] = OpeningStats(name: openingName, played: 0, won: 0, color: color);
-    }
-    
-    final openingStat = stats[openingName]!;
-    openingStat.played++;
-    if (result == 'win') openingStat.won++;
   }
 
   String _getOpeningName(String eco) {

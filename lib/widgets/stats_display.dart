@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/chess_stats.dart';
+import '../models/country_game.dart';
 import '../services/layout_service.dart';
 import 'app_footer.dart';
 import 'color_stats_card.dart';
@@ -14,9 +14,9 @@ import 'time_management_card.dart';
 /// deux sur grand écran (contenu centré, largeur limitée), puis le pied de
 /// page.
 class StatsDisplay extends StatefulWidget {
-  final ChessStats stats;
+  final List<CountryGame> games;
 
-  const StatsDisplay({Key? key, required this.stats}) : super(key: key);
+  const StatsDisplay({Key? key, required this.games}) : super(key: key);
 
   @override
   State<StatsDisplay> createState() => _StatsDisplayState();
@@ -32,7 +32,7 @@ class _StatsDisplayState extends State<StatsDisplay> {
 
   @override
   Widget build(BuildContext context) {
-    final games = widget.stats.countryGames;
+    final games = widget.games;
     final cards = <Widget>[
       ColorStatsCard(key: _cardKeys[0], games: games),
       RatingHistoryCard(key: _cardKeys[1], games: games),

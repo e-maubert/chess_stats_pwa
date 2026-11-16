@@ -1,97 +1,109 @@
 import 'package:flutter/material.dart';
-import '../models/chess_stats.dart';
-import '../services/chess_api_service.dart';
+import 'package:provider/provider.dart';
+import '../models/country_game.dart';
+import '../services/game_repository.dart';
+import '../viewmodels/player_games_viewmodel.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/stats_display.dart';
 import '../widgets/theme_toggle_button.dart';
 
-class StatsScreen extends StatefulWidget {
-  final ChessStats stats;
+class StatsScreen extends StatelessWidget {
+  final String username;
 
-  const StatsScreen({Key? key, required this.stats}) : super(key: key);
+  /// Parties déjà chargées par l'écran de recherche (stockées ou
+  /// téléchargées), affichées tout de suite.
+  final List<CountryGame>? initialGames;
 
-  @override
-  State<StatsScreen> createState() => _StatsScreenState();
-}
+  /// [initialGames] viennent d'être téléchargées : pas de mise à jour à
+  /// l'ouverture.
+  final bool upToDate;
 
-class _StatsScreenState extends State<StatsScreen> {
-  late Future<ChessStats> _statsFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _statsFuture = Future.value(widget.stats);
-  }
-
-  Future<void> _refreshStats() async {
-    setState(() {
-      _statsFuture = ChessApiService().getPlayerStats(widget.stats.username);
-    });
-  }
+  const StatsScreen({Key? key, required this.username, this.initialGames, this.upToDate = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const AppLogo(size: 32, decorative: true),
-            const SizedBox(width: 10),
-            Flexible(
-              child: Text(
-                l10n.statsTitle(widget.stats.username),
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            onPressed: _refreshStats,
-            tooltip: l10n.refresh,
-          ),
-          const ThemeToggleButton(),
-        ],
+    return ChangeNotifierProvider(
+      create: (context) => PlayerGamesViewModel(
+        context.read<GameRepository>(),
+        username,
+        initialGames: initialGames,
+        upToDate: upToDate,
       ),
-      body: FutureBuilder<ChessStats>(
-        future: _statsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (snapshot.hasError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    l10n.errorFetchingStats,
-                    style: Theme.of(context).textTheme.titleMedium,
-                    textAlign: TextAlign.center,
+      child: Consumer<PlayerGamesViewModel>(
+        builder: (context, viewModel, child) => Scaffold(
+          appBar: AppBar(
+            title: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const AppLogo(size: 32, decorative: true),
+                const SizedBox(width: 10),
+                Flexible(
+                  child: Text(
+                    l10n.statsTitle(username),
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: _refreshStats,
-                    child: Text(l10n.retry),
-                  ),
-                ],
+                ),
+              ],
+            ),
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.refresh),
+                onPressed: viewModel.isUpdating ? null : viewModel.update,
+                tooltip: l10n.refresh,
               ),
-            );
-          }
-
-          if (!snapshot.hasData) {
-            return const SizedBox.shrink();
-          }
-
-          return StatsDisplay(stats: snapshot.data!);
-        },
+              const ThemeToggleButton(),
+            ],
+            // Mise à jour en arrière-plan des parties déjà affichées.
+            bottom: viewModel.isUpdating && viewModel.games != null
+                ? const PreferredSize(
+                    preferredSize: Size.fromHeight(2),
+                    child: LinearProgressIndicator(minHeight: 2),
+                  )
+                : null,
+          ),
+          body: _body(context, viewModel, l10n),
+        ),
       ),
     );
   }
-} 
+
+  Widget _body(BuildContext context, PlayerGamesViewModel viewModel, AppLocalizations l10n) {
+    if (viewModel.games != null) {
+      return Column(
+        children: [
+          if (viewModel.updateFailed)
+            MaterialBanner(
+              content: Text(l10n.errorFetchingStats),
+              actions: [TextButton(onPressed: viewModel.update, child: Text(l10n.retry))],
+            ),
+          Expanded(child: StatsDisplay(games: viewModel.displayedGames)),
+        ],
+      );
+    }
+
+    if (viewModel.updateFailed) {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              l10n.errorFetchingStats,
+              style: Theme.of(context).textTheme.titleMedium,
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: viewModel.update,
+              child: Text(l10n.retry),
+            ),
+          ],
+        ),
+      );
+    }
+
+    return const Center(child: CircularProgressIndicator());
+  }
+}

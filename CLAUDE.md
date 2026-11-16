@@ -35,7 +35,7 @@ Point d'entrée : `lib/main.dart` → `screens/home_screen.dart` (recherche) →
 - État géré avec `provider` (`ChangeNotifierProvider` + `Consumer`).
 - Graphiques avec `fl_chart`.
 - Thème : clair ou sombre selon le système, ou selon le choix fait avec le bouton soleil / lune de la barre du haut (mémorisé, `services/theme_preference_service.dart`). Toute nouvelle carte doit rester lisible dans les deux thèmes : couleurs du `ColorScheme`, ou `AppTheme.positiveText` / `negativeText` / `warningText` pour les textes colorés, pas de teinte foncée en dur.
-- Cache : `services/cache_service.dart`, `SharedPreferences`, durée 1 h, clé préfixée `chess_stats_v7_`. **Si la forme des données en cache change, incrémenter la version de la clé**, sinon d'anciennes entrées incomplètes seront relues.
+- Parties : stockage local IndexedDB (`sembast` / `sembast_web`) par (joueur, mois), via `services/game_repository.dart` (point d'accès unique « parties du joueur X pour le mois M », source `MonthlyGamesSource` = API chess.com). Seuls les mois manquants ou pas encore clos sont téléchargés ; règles (mois clos, purge, conservation) dans `services/game_storage_policy.dart`, purge au lancement. **Si la forme des données stockées change, incrémenter `GameStore.schemaVersion`** (les anciennes données sont alors effacées).
 - Résultats chess.com : `win`, `checkmated`, `resigned`, `timeout`, `abandoned`, nulles diverses… `checkmated` est une défaite ; `resigned` et `abandoned` sont regroupés en « Par abandon ».
 
 ## Localisation

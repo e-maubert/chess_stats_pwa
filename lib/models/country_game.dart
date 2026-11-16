@@ -46,6 +46,10 @@ class CountryGame {
   /// les parties par correspondance.
   final int? baseTime;
 
+  /// Adresse de la partie sur chess.com (champ `url`) : identifie la partie
+  /// pour éviter les doublons dans le stockage local. null si absente.
+  final String? url;
+
   const CountryGame({
     required this.country,
     required this.opponent,
@@ -61,6 +65,7 @@ class CountryGame {
     this.playerClock,
     this.opponentClock,
     this.baseTime,
+    this.url,
   });
 
   Map<String, dynamic> toJson() {
@@ -79,6 +84,7 @@ class CountryGame {
       'playerClock': playerClock,
       'opponentClock': opponentClock,
       'baseTime': baseTime,
+      'url': url,
     };
   }
 
@@ -102,6 +108,7 @@ class CountryGame {
       playerClock: (json['playerClock'] as num?)?.toDouble(),
       opponentClock: (json['opponentClock'] as num?)?.toDouble(),
       baseTime: json['baseTime'] as int?,
+      url: json['url'] as String?,
     );
   }
 }
