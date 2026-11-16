@@ -11,6 +11,7 @@
   },
   "enterUsername": "Entrez votre nom d'utilisateur Chess.com",
   "search": "Rechercher",
+  "searchHint": "ex : Hikaru",
   "refresh": "Actualiser",
   "retry": "Réessayer",
   "switchToDarkMode": "Passer en mode sombre",

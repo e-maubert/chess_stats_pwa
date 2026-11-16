@@ -26,6 +26,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get search => 'Search';
 
   @override
+  String get searchHint => 'e.g. Hikaru';
+
+  @override
   String get refresh => 'Refresh';
 
   @override
