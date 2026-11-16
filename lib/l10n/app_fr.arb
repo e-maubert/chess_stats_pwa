@@ -49,11 +49,11 @@
       }
     }
   },
-  "countryStatsPeriod": "Parties de la période choisie",
   "countryRankColumn": "#",
   "countryColumn": "Pays",
   "opponentsColumn": "Adversaires",
-  "timeClassAll": "Toutes les parties",
+  "timeClassLabel": "Cadence",
+  "timeClassAll": "Toutes",
   "timeClassBullet": "Bullet",
   "timeClassBlitz": "Blitz",
   "timeClassRapid": "Rapide",

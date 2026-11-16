@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../models/country_game.dart';
 import '../models/loss_stats.dart';
 import '../viewmodels/loss_stats_viewmodel.dart';
+import 'time_class_filter.dart';
 
 /// Page principale : répartition des défaites par cause (temps, mat,
 /// abandon), en camembert, filtrable par cadence.
@@ -35,10 +36,12 @@ class LossBreakdownCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
               ),
-              const SizedBox(height: 4),
-              Text(l10n.countryStatsPeriod, style: Theme.of(context).textTheme.bodyMedium),
               const SizedBox(height: 12),
-              _buildTimeClassFilter(viewModel, l10n),
+              TimeClassFilter(
+                timeClasses: LossStatsViewModel.timeClasses,
+                selected: viewModel.timeClass,
+                onSelected: viewModel.setTimeClass,
+              ),
               const SizedBox(height: 16),
               if (stats.total == 0)
                 Padding(
@@ -92,33 +95,6 @@ class LossBreakdownCard extends StatelessWidget {
         _Slice(l10n.lossByResignation, stats.resigned, stats.resignedRate, Colors.blueGrey),
         if (stats.other > 0) _Slice(l10n.lossOther, stats.other, stats.otherRate, Colors.grey),
       ];
-
-  String _timeClassLabel(String? timeClass, AppLocalizations l10n) {
-    switch (timeClass) {
-      case 'bullet':
-        return l10n.timeClassBullet;
-      case 'blitz':
-        return l10n.timeClassBlitz;
-      case 'rapid':
-        return l10n.timeClassRapid;
-      default:
-        return l10n.timeClassAll;
-    }
-  }
-
-  Widget _buildTimeClassFilter(LossStatsViewModel viewModel, AppLocalizations l10n) {
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: LossStatsViewModel.timeClasses
-          .map((timeClass) => ChoiceChip(
-                label: Text(_timeClassLabel(timeClass, l10n)),
-                selected: viewModel.timeClass == timeClass,
-                onSelected: (_) => viewModel.setTimeClass(timeClass),
-              ))
-          .toList(),
-    );
-  }
 
   Widget _buildLegendRow(BuildContext context, _Slice slice, AppLocalizations l10n) {
     return Padding(

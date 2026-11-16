@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 
-/// Puces de choix de cadence : Toutes les parties / Bullet / Blitz / Rapide.
+/// Petit titre « Cadence », puis puces de choix : Toutes / Bullet / Blitz /
+/// Rapide. Sans coche et en version compacte, elles tiennent sur une ligne
+/// même sur un téléphone.
 class TimeClassFilter extends StatelessWidget {
   /// Cadences proposées (null = toutes les parties).
   final List<String?> timeClasses;
@@ -18,16 +20,32 @@ class TimeClassFilter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    return Wrap(
-      spacing: 8,
-      runSpacing: 8,
-      children: timeClasses
-          .map((timeClass) => ChoiceChip(
-                label: Text(_label(timeClass, l10n)),
-                selected: selected == timeClass,
-                onSelected: (_) => onSelected(timeClass),
-              ))
-          .toList(),
+    final theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          l10n.timeClassLabel,
+          style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+        ),
+        const SizedBox(height: 6),
+        Wrap(
+          spacing: 6,
+          runSpacing: 6,
+          children: timeClasses
+              .map((timeClass) => ChoiceChip(
+                    label: Text(_label(timeClass, l10n)),
+                    selected: selected == timeClass,
+                    showCheckmark: false,
+                    visualDensity: VisualDensity.compact,
+                    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    padding: const EdgeInsets.symmetric(horizontal: 2),
+                    onSelected: (_) => onSelected(timeClass),
+                  ))
+              .toList(),
+        ),
+      ],
     );
   }
 

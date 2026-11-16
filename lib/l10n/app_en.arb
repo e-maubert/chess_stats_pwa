@@ -52,11 +52,11 @@
       }
     }
   },
-  "countryStatsPeriod": "Games in the selected period",
   "countryRankColumn": "#",
   "countryColumn": "Country",
   "opponentsColumn": "Opponents",
-  "timeClassAll": "All games",
+  "timeClassLabel": "Time control",
+  "timeClassAll": "All",
   "timeClassBullet": "Bullet",
   "timeClassBlitz": "Blitz",
   "timeClassRapid": "Rapid",

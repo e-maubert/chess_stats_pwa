@@ -23,7 +23,8 @@ class StatsDisplay extends StatefulWidget {
 }
 
 class _StatsDisplayState extends State<StatsDisplay> {
-  static const double _gap = 24;
+  /// Espace entre deux encadrés (et entre les colonnes sur grand écran).
+  static const double _gap = 16;
 
   // Une clé par carte : en passant d'une à deux colonnes (fenêtre
   // redimensionnée), chaque carte est déplacée sans être recréée et garde
@@ -48,7 +49,7 @@ class _StatsDisplayState extends State<StatsDisplay> {
         final columns = LayoutService.columnCount(constraints.maxWidth);
         final wide = columns > 1;
         return SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: wide ? 32 : 16, vertical: 16),
+          padding: EdgeInsets.symmetric(horizontal: wide ? 32 : 12, vertical: 12),
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: LayoutService.maxContentWidth),
@@ -60,13 +61,13 @@ class _StatsDisplayState extends State<StatsDisplay> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         for (final (index, column) in LayoutService.splitIntoColumns(cards, columns).indexed) ...[
-                          if (index > 0) const SizedBox(width: _gap * 2),
-                          Expanded(child: _column(column)),
+                          if (index > 0) const SizedBox(width: _gap),
+                          Expanded(child: _column(column, wide: true)),
                         ],
                       ],
                     )
                   else
-                    _column(cards),
+                    _column(cards, wide: false),
                   const SizedBox(height: _gap),
                   const AppFooter(),
                 ],
@@ -78,13 +79,35 @@ class _StatsDisplayState extends State<StatsDisplay> {
     );
   }
 
-  Widget _column(List<Widget> cards) => Column(
+  Widget _column(List<Widget> cards, {required bool wide}) => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           for (final (index, card) in cards.indexed) ...[
             if (index > 0) const SizedBox(height: _gap),
-            card,
+            _StatsFrame(padding: wide ? 20 : 14, child: card),
           ],
         ],
       );
+}
+
+/// Encadré d'une catégorie de stats : fond légèrement teinté, bord fin et
+/// coins arrondis, pour bien voir où chaque catégorie commence et finit.
+class _StatsFrame extends StatelessWidget {
+  final double padding;
+  final Widget child;
+
+  const _StatsFrame({required this.padding, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: colors.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: colors.outlineVariant),
+      ),
+      child: Padding(padding: EdgeInsets.all(padding), child: child),
+    );
+  }
 }

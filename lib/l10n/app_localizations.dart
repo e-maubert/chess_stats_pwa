@@ -248,12 +248,6 @@ abstract class AppLocalizations {
   /// **'Games Played: {count}'**
   String played(int count);
 
-  /// No description provided for @countryStatsPeriod.
-  ///
-  /// In en, this message translates to:
-  /// **'Games in the selected period'**
-  String get countryStatsPeriod;
-
   /// No description provided for @countryRankColumn.
   ///
   /// In en, this message translates to:
@@ -272,10 +266,16 @@ abstract class AppLocalizations {
   /// **'Opponents'**
   String get opponentsColumn;
 
+  /// No description provided for @timeClassLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Time control'**
+  String get timeClassLabel;
+
   /// No description provided for @timeClassAll.
   ///
   /// In en, this message translates to:
-  /// **'All games'**
+  /// **'All'**
   String get timeClassAll;
 
   /// No description provided for @timeClassBullet.

@@ -92,9 +92,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get countryStatsPeriod => 'Games in the selected period';
-
-  @override
   String get countryRankColumn => '#';
 
   @override
@@ -104,7 +101,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get opponentsColumn => 'Opponents';
 
   @override
-  String get timeClassAll => 'All games';
+  String get timeClassLabel => 'Time control';
+
+  @override
+  String get timeClassAll => 'All';
 
   @override
   String get timeClassBullet => 'Bullet';
