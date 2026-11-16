@@ -7,8 +7,8 @@ import '../services/stats_period_service.dart';
 import '../viewmodels/stats_period_viewmodel.dart';
 import 'option_toggle.dart';
 
-/// En-tête de la page des stats, sur une seule ligne : choix de la période
-/// à gauche, dates exactes de la période à droite.
+/// En-tête de la page des stats, sur une seule ligne centrée : choix de la
+/// période, puis dates exactes de la période.
 class PeriodSelector extends StatelessWidget {
   /// Date de référence (fin de la période).
   final DateTime now;
@@ -37,6 +37,7 @@ class PeriodSelector extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             OptionToggle<StatsPeriod>(
               options: StatsPeriod.values,
@@ -45,13 +46,12 @@ class PeriodSelector extends StatelessWidget {
               onChanged: viewModel.select,
             ),
             const SizedBox(width: 12),
-            Expanded(
+            Flexible(
               child: Text(
                 l10n.periodRange(dateFormat.format(start.toLocal()), dateFormat.format(now.toLocal())),
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
-                textAlign: TextAlign.end,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
