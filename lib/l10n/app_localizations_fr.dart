@@ -644,6 +644,10 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get changelogV140 =>
+      'Statistiques sur 1 mois ou 3 mois glissants, au choix\nAffichage plus rapide : les parties d\'un joueur sont gardées dans le navigateur\nRecherche : les joueurs déjà consultés sont proposés\nPage plus claire et plus compacte, surtout sur mobile';
+
+  @override
   String get changelogV130 =>
       'Nouvelle carte « Heures de jeu » : cadran de 24 h des parties du mois selon leur heure de début, à l\'heure locale\nMode « Activité » : nombre de parties par heure, en dégradé de bleu\nMode « Performance » : score par heure, du rouge au vert en passant par le jaune (5 parties minimum par heure)\nMeilleur et moins bon créneau : un clic les montre sur le cadran\nToucher une heure affiche son détail dans une bulle';
 

@@ -633,6 +633,12 @@ abstract class AppLocalizations {
   /// **'Version {version} – {date}'**
   String changelogVersionTitle(String version, String date);
 
+  /// Nouveautés de la version 1.4.0, une par ligne.
+  ///
+  /// In en, this message translates to:
+  /// **'Stats for the last month or the last 3 months, your choice\nFaster display: each player\'s games are kept in your browser\nSearch: players you already looked up are suggested\nCleaner, more compact page, especially on mobile'**
+  String get changelogV140;
+
   /// Nouveautés de la version 1.3.0, une par ligne.
   ///
   /// In en, this message translates to:

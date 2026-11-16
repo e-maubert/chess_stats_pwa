@@ -649,6 +649,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get changelogV140 =>
+      'Stats for the last month or the last 3 months, your choice\nFaster display: each player\'s games are kept in your browser\nSearch: players you already looked up are suggested\nCleaner, more compact page, especially on mobile';
+
+  @override
   String get changelogV130 =>
       'New \"Playing hours\" card: a 24-hour dial of this month\'s games by start time, in your local time\n\"Activity\" mode: number of games per hour, in shades of blue\n\"Performance\" mode: score per hour, from red to green through yellow (at least 5 games per hour)\nBest and weakest time slots: one click shows them on the dial\nTap an hour to see its details in a bubble';
 
