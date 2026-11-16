@@ -40,8 +40,6 @@ class PlayingHoursCard extends StatelessWidget {
                 l10n.playingHours,
                 style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 4),
-              Text(l10n.countryStatsPeriod, style: textTheme.bodyMedium),
               const SizedBox(height: 12),
               TimeClassFilter(
                 timeClasses: PlayingHoursViewModel.timeClasses,

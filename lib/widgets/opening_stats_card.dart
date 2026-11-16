@@ -38,8 +38,6 @@ class OpeningStatsCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
               ),
-              const SizedBox(height: 4),
-              Text(l10n.countryStatsPeriod, style: Theme.of(context).textTheme.bodyMedium),
               const SizedBox(height: 12),
               TimeClassFilter(
                 timeClasses: OpeningStatsViewModel.timeClasses,

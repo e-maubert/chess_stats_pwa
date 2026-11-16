@@ -93,9 +93,6 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get countryStatsPeriod => 'Parties de la période choisie';
-
-  @override
   String get countryRankColumn => '#';
 
   @override
@@ -105,7 +102,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String get opponentsColumn => 'Adversaires';
 
   @override
-  String get timeClassAll => 'Toutes les parties';
+  String get timeClassLabel => 'Cadence';
+
+  @override
+  String get timeClassAll => 'Toutes';
 
   @override
   String get timeClassBullet => 'Bullet';
@@ -642,6 +642,10 @@ class AppLocalizationsFr extends AppLocalizations {
   String changelogVersionTitle(String version, String date) {
     return 'Version $version – $date';
   }
+
+  @override
+  String get changelogV140 =>
+      'Statistiques sur 1 mois ou 3 mois glissants, au choix\nAffichage plus rapide : les parties d\'un joueur sont gardées dans le navigateur\nRecherche : les joueurs déjà consultés sont proposés\nPage plus claire et plus compacte, surtout sur mobile';
 
   @override
   String get changelogV130 =>

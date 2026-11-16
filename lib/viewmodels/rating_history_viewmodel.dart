@@ -3,7 +3,7 @@ import '../models/country_game.dart';
 import '../services/rating_history_service.dart';
 
 class RatingHistoryViewModel extends ChangeNotifier {
-  /// Un classement par cadence : pas de choix « Toutes les parties ».
+  /// Un classement par cadence : pas de choix « Toutes ».
   static const List<String> timeClasses = ['bullet', 'blitz', 'rapid'];
 
   final List<CountryGame> _games;

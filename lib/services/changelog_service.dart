@@ -22,6 +22,7 @@ class ChangelogEntry {
 /// (clé `changelogV<version sans points>`) dans chaque fichier `.arb`.
 class ChangelogService {
   static final List<ChangelogEntry> entries = [
+    ChangelogEntry('1.4.0', DateTime(2026, 11, 16), (l10n) => l10n.changelogV140),
     ChangelogEntry('1.3.0', DateTime(2026, 11, 13), (l10n) => l10n.changelogV130),
     ChangelogEntry('1.2.1', DateTime(2026, 11, 12), (l10n) => l10n.changelogV121),
     ChangelogEntry('1.2.0', DateTime(2026, 11, 12), (l10n) => l10n.changelogV120),

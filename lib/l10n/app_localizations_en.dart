@@ -92,9 +92,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get countryStatsPeriod => 'Games in the selected period';
-
-  @override
   String get countryRankColumn => '#';
 
   @override
@@ -104,7 +101,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get opponentsColumn => 'Opponents';
 
   @override
-  String get timeClassAll => 'All games';
+  String get timeClassLabel => 'Time control';
+
+  @override
+  String get timeClassAll => 'All';
 
   @override
   String get timeClassBullet => 'Bullet';
@@ -647,6 +647,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String changelogVersionTitle(String version, String date) {
     return 'Version $version – $date';
   }
+
+  @override
+  String get changelogV140 =>
+      'Stats for the last month or the last 3 months, your choice\nFaster display: each player\'s games are kept in your browser\nSearch: players you already looked up are suggested\nCleaner, more compact page, especially on mobile';
 
   @override
   String get changelogV130 =>

@@ -248,12 +248,6 @@ abstract class AppLocalizations {
   /// **'Games Played: {count}'**
   String played(int count);
 
-  /// No description provided for @countryStatsPeriod.
-  ///
-  /// In en, this message translates to:
-  /// **'Games in the selected period'**
-  String get countryStatsPeriod;
-
   /// No description provided for @countryRankColumn.
   ///
   /// In en, this message translates to:
@@ -272,10 +266,16 @@ abstract class AppLocalizations {
   /// **'Opponents'**
   String get opponentsColumn;
 
+  /// No description provided for @timeClassLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Time control'**
+  String get timeClassLabel;
+
   /// No description provided for @timeClassAll.
   ///
   /// In en, this message translates to:
-  /// **'All games'**
+  /// **'All'**
   String get timeClassAll;
 
   /// No description provided for @timeClassBullet.
@@ -632,6 +632,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Version {version} – {date}'**
   String changelogVersionTitle(String version, String date);
+
+  /// Nouveautés de la version 1.4.0, une par ligne.
+  ///
+  /// In en, this message translates to:
+  /// **'Stats for the last month or the last 3 months, your choice\nFaster display: each player\'s games are kept in your browser\nSearch: players you already looked up are suggested\nCleaner, more compact page, especially on mobile'**
+  String get changelogV140;
 
   /// Nouveautés de la version 1.3.0, une par ligne.
   ///
