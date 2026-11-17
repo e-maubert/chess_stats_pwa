@@ -639,6 +639,12 @@ abstract class AppLocalizations {
   /// **'Version {version} – {date}'**
   String changelogVersionTitle(String version, String date);
 
+  /// Nouveautés de la version 1.5.0, une par ligne.
+  ///
+  /// In en, this message translates to:
+  /// **'New \"Game phases\" card: see where your games are decided, from the opening to the endgame\nYour time left against your opponent\'s, at a glance, after the opening and in the endgame\nYour endgame results by material and by type of endgame\nFaster page: the longest stats show up a moment later'**
+  String get changelogV150;
+
   /// Nouveautés de la version 1.4.0, une par ligne.
   ///
   /// In en, this message translates to:
@@ -783,6 +789,192 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No hour has enough games yet to rate your performance ({minGames} minimum).'**
   String playingHoursNoneJudged(int minGames);
+
+  /// No description provided for @gamePhases.
+  ///
+  /// In en, this message translates to:
+  /// **'Game phases'**
+  String get gamePhases;
+
+  /// No description provided for @gamePhasesLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysing your games… {percent}'**
+  String gamePhasesLoading(String percent);
+
+  /// No description provided for @noPhaseData.
+  ///
+  /// In en, this message translates to:
+  /// **'No analysed games for this time control'**
+  String get noPhaseData;
+
+  /// No description provided for @phaseEndTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Where your games end'**
+  String get phaseEndTitle;
+
+  /// No description provided for @phaseOpening.
+  ///
+  /// In en, this message translates to:
+  /// **'In the opening'**
+  String get phaseOpening;
+
+  /// No description provided for @phaseMiddlegame.
+  ///
+  /// In en, this message translates to:
+  /// **'In the middlegame'**
+  String get phaseMiddlegame;
+
+  /// No description provided for @phaseEndgame.
+  ///
+  /// In en, this message translates to:
+  /// **'In the endgame'**
+  String get phaseEndgame;
+
+  /// No description provided for @phaseTimeoutLosses.
+  ///
+  /// In en, this message translates to:
+  /// **'Including {count} lost on time'**
+  String phaseTimeoutLosses(int count);
+
+  /// No description provided for @phaseClockTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Time left'**
+  String get phaseClockTitle;
+
+  /// No description provided for @phaseClockMiddlegame.
+  ///
+  /// In en, this message translates to:
+  /// **'End of the opening'**
+  String get phaseClockMiddlegame;
+
+  /// No description provided for @phaseClockEndgame.
+  ///
+  /// In en, this message translates to:
+  /// **'Reaching the endgame'**
+  String get phaseClockEndgame;
+
+  /// No description provided for @phaseClockPlayer.
+  ///
+  /// In en, this message translates to:
+  /// **'You'**
+  String get phaseClockPlayer;
+
+  /// No description provided for @phaseClockOpponent.
+  ///
+  /// In en, this message translates to:
+  /// **'Opponent'**
+  String get phaseClockOpponent;
+
+  /// No description provided for @phaseClockNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Average, as a share of the starting time (timed games only).'**
+  String get phaseClockNote;
+
+  /// No description provided for @endgameMaterialTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your endgames by material'**
+  String get endgameMaterialTitle;
+
+  /// No description provided for @endgameMaterialAhead.
+  ///
+  /// In en, this message translates to:
+  /// **'Material up'**
+  String get endgameMaterialAhead;
+
+  /// No description provided for @endgameMaterialEqual.
+  ///
+  /// In en, this message translates to:
+  /// **'Material equal'**
+  String get endgameMaterialEqual;
+
+  /// No description provided for @endgameMaterialBehind.
+  ///
+  /// In en, this message translates to:
+  /// **'Material down'**
+  String get endgameMaterialBehind;
+
+  /// No description provided for @endgameTypeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'By endgame type'**
+  String get endgameTypeTitle;
+
+  /// No description provided for @endgameTypePawn.
+  ///
+  /// In en, this message translates to:
+  /// **'Pawn endgames'**
+  String get endgameTypePawn;
+
+  /// No description provided for @endgameTypeMinor.
+  ///
+  /// In en, this message translates to:
+  /// **'Minor piece endgames'**
+  String get endgameTypeMinor;
+
+  /// No description provided for @endgameTypeRook.
+  ///
+  /// In en, this message translates to:
+  /// **'Rook endgames'**
+  String get endgameTypeRook;
+
+  /// No description provided for @endgameTypeRookMinor.
+  ///
+  /// In en, this message translates to:
+  /// **'Rooks and minor pieces'**
+  String get endgameTypeRookMinor;
+
+  /// No description provided for @endgameTypeQueen.
+  ///
+  /// In en, this message translates to:
+  /// **'Queen endgames'**
+  String get endgameTypeQueen;
+
+  /// No description provided for @endgameTypeQueenOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Queens and other pieces'**
+  String get endgameTypeQueenOther;
+
+  /// No description provided for @phaseClockLegendPlayer.
+  ///
+  /// In en, this message translates to:
+  /// **'Your time left (top half):'**
+  String get phaseClockLegendPlayer;
+
+  /// No description provided for @phaseClockLegendOpponent.
+  ///
+  /// In en, this message translates to:
+  /// **'Opponent\'s time left (bottom half)'**
+  String get phaseClockLegendOpponent;
+
+  /// No description provided for @phaseClockLegendElapsed.
+  ///
+  /// In en, this message translates to:
+  /// **'Time used'**
+  String get phaseClockLegendElapsed;
+
+  /// No description provided for @phaseClockLegendAhead.
+  ///
+  /// In en, this message translates to:
+  /// **'More than your opponent (gap above 10% of the starting time)'**
+  String get phaseClockLegendAhead;
+
+  /// No description provided for @phaseClockLegendBalanced.
+  ///
+  /// In en, this message translates to:
+  /// **'About the same as your opponent (gap of 10% or less)'**
+  String get phaseClockLegendBalanced;
+
+  /// No description provided for @phaseClockLegendBehind.
+  ///
+  /// In en, this message translates to:
+  /// **'Less than your opponent (gap above 10% of the starting time)'**
+  String get phaseClockLegendBehind;
 }
 
 class _AppLocalizationsDelegate

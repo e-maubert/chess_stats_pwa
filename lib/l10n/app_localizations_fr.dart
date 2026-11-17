@@ -647,6 +647,10 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get changelogV150 =>
+      'Nouvelle carte « Phases de la partie » : où se jouent vos parties, de l\'ouverture à la finale\nVotre temps restant face à celui de l\'adversaire, d\'un coup d\'œil, à la sortie de l\'ouverture et en finale\nVos résultats en finale selon le matériel et le type de finale\nPage affichée plus vite : les statistiques les plus longues arrivent juste après';
+
+  @override
   String get changelogV140 =>
       'Statistiques sur 1 mois ou 3 mois glissants, au choix\nAffichage plus rapide : les parties d\'un joueur sont gardées dans le navigateur\nRecherche : les joueurs déjà consultés sont proposés\nPage plus claire et plus compacte, surtout sur mobile';
 
@@ -758,4 +762,106 @@ class AppLocalizationsFr extends AppLocalizations {
   String playingHoursNoneJudged(int minGames) {
     return 'Aucune heure n’a encore assez de parties pour juger la performance ($minGames minimum).';
   }
+
+  @override
+  String get gamePhases => 'Phases de la partie';
+
+  @override
+  String gamePhasesLoading(String percent) {
+    return 'Analyse de vos parties… $percent';
+  }
+
+  @override
+  String get noPhaseData => 'Aucune partie analysée pour cette cadence';
+
+  @override
+  String get phaseEndTitle => 'Où se terminent vos parties';
+
+  @override
+  String get phaseOpening => 'Dans l\'ouverture';
+
+  @override
+  String get phaseMiddlegame => 'En milieu de partie';
+
+  @override
+  String get phaseEndgame => 'En finale';
+
+  @override
+  String phaseTimeoutLosses(int count) {
+    return 'Dont $count perdues au temps';
+  }
+
+  @override
+  String get phaseClockTitle => 'Temps restant';
+
+  @override
+  String get phaseClockMiddlegame => 'Fin de l\'ouverture';
+
+  @override
+  String get phaseClockEndgame => 'Entrée en finale';
+
+  @override
+  String get phaseClockPlayer => 'Vous';
+
+  @override
+  String get phaseClockOpponent => 'Adversaire';
+
+  @override
+  String get phaseClockNote =>
+      'En moyenne, en part du temps initial (parties à la pendule uniquement).';
+
+  @override
+  String get endgameMaterialTitle => 'Vos finales selon le matériel';
+
+  @override
+  String get endgameMaterialAhead => 'Avec plus de matériel';
+
+  @override
+  String get endgameMaterialEqual => 'À égalité de matériel';
+
+  @override
+  String get endgameMaterialBehind => 'Avec moins de matériel';
+
+  @override
+  String get endgameTypeTitle => 'Par type de finale';
+
+  @override
+  String get endgameTypePawn => 'Finales de pions';
+
+  @override
+  String get endgameTypeMinor => 'Finales de pièces mineures';
+
+  @override
+  String get endgameTypeRook => 'Finales de tours';
+
+  @override
+  String get endgameTypeRookMinor => 'Tours et pièces mineures';
+
+  @override
+  String get endgameTypeQueen => 'Finales de dames';
+
+  @override
+  String get endgameTypeQueenOther => 'Dames et autres pièces';
+
+  @override
+  String get phaseClockLegendPlayer => 'Votre temps restant (moitié haute) :';
+
+  @override
+  String get phaseClockLegendOpponent =>
+      'Temps restant de l\'adversaire (moitié basse)';
+
+  @override
+  String get phaseClockLegendElapsed => 'Temps écoulé';
+
+  @override
+  String get phaseClockLegendAhead =>
+      'Plus que l\'adversaire (écart de plus de 10 % du temps initial)';
+
+  @override
+  String get phaseClockLegendBalanced =>
+      'À peu près autant que l\'adversaire (écart de 10 % ou moins)';
+
+  @override
+  String get phaseClockLegendBehind =>
+      'Moins que l\'adversaire (écart de plus de 10 % du temps initial)';
 }

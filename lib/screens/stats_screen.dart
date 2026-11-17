@@ -118,6 +118,8 @@ class StatsScreen extends StatelessWidget {
             child: StatsDisplay(
               games: viewModel.gamesIn(period),
               countryGames: viewModel.countryGamesIn(period),
+              phaseGames: viewModel.phaseGamesIn(period),
+              phaseProgress: viewModel.phaseProgress,
             ),
           ),
         ],

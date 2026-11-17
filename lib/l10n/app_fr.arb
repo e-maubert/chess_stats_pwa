@@ -15,7 +15,9 @@
   "removeRecentPlayer": "Retirer {username} de la liste",
   "@removeRecentPlayer": {
     "placeholders": {
-      "username": {"type": "String"}
+      "username": {
+        "type": "String"
+      }
     }
   },
   "refresh": "Actualiser",
@@ -25,8 +27,12 @@
   "periodRange": "du {start} au {end}",
   "@periodRange": {
     "placeholders": {
-      "start": {"type": "String"},
-      "end": {"type": "String"}
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
     }
   },
   "switchToDarkMode": "Passer en mode sombre",
@@ -295,6 +301,10 @@
       }
     }
   },
+  "changelogV150": "Nouvelle carte « Phases de la partie » : où se jouent vos parties, de l'ouverture à la finale\nVotre temps restant face à celui de l'adversaire, d'un coup d'œil, à la sortie de l'ouverture et en finale\nVos résultats en finale selon le matériel et le type de finale\nPage affichée plus vite : les statistiques les plus longues arrivent juste après",
+  "@changelogV150": {
+    "description": "Nouveautés de la version 1.5.0, une par ligne."
+  },
   "changelogV140": "Statistiques sur 1 mois ou 3 mois glissants, au choix\nAffichage plus rapide : les parties d'un joueur sont gardées dans le navigateur\nRecherche : les joueurs déjà consultés sont proposés\nPage plus claire et plus compacte, surtout sur mobile",
   "@changelogV140": {
     "description": "Nouveautés de la version 1.4.0, une par ligne."
@@ -303,7 +313,7 @@
   "@changelogV130": {
     "description": "Nouveautés de la version 1.3.0, une par ligne."
   },
-  "changelogV121":"Chargement plus rapide : le pays de chaque adversaire n'est demandé qu'une fois, plusieurs à la fois, et mémorisé un mois dans le navigateur",
+  "changelogV121": "Chargement plus rapide : le pays de chaque adversaire n'est demandé qu'une fois, plusieurs à la fois, et mémorisé un mois dans le navigateur",
   "@changelogV121": {
     "description": "Nouveautés de la version 1.2.1, une par ligne."
   },
@@ -311,7 +321,7 @@
   "@changelogV120": {
     "description": "Nouveautés de la version 1.2.0, une par ligne."
   },
-  "changelogV110":"Affichage sur ordinateur : statistiques sur deux colonnes sur grand écran\nTitre centré sur toutes les pages\nOuvertures jouées et pays rencontrés : tableaux paginés, 5 lignes par page\nPied de page avec le numéro de version et les nouveautés",
+  "changelogV110": "Affichage sur ordinateur : statistiques sur deux colonnes sur grand écran\nTitre centré sur toutes les pages\nOuvertures jouées et pays rencontrés : tableaux paginés, 5 lignes par page\nPied de page avec le numéro de version et les nouveautés",
   "@changelogV110": {
     "description": "Nouveautés de la version 1.1.0, une par ligne."
   },
@@ -416,5 +426,50 @@
         "type": "int"
       }
     }
-  }
+  },
+  "gamePhases": "Phases de la partie",
+  "gamePhasesLoading": "Analyse de vos parties… {percent}",
+  "@gamePhasesLoading": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "noPhaseData": "Aucune partie analysée pour cette cadence",
+  "phaseEndTitle": "Où se terminent vos parties",
+  "phaseOpening": "Dans l'ouverture",
+  "phaseMiddlegame": "En milieu de partie",
+  "phaseEndgame": "En finale",
+  "phaseTimeoutLosses": "Dont {count} perdues au temps",
+  "@phaseTimeoutLosses": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "phaseClockTitle": "Temps restant",
+  "phaseClockMiddlegame": "Fin de l'ouverture",
+  "phaseClockEndgame": "Entrée en finale",
+  "phaseClockPlayer": "Vous",
+  "phaseClockOpponent": "Adversaire",
+  "phaseClockNote": "En moyenne, en part du temps initial (parties à la pendule uniquement).",
+  "endgameMaterialTitle": "Vos finales selon le matériel",
+  "endgameMaterialAhead": "Avec plus de matériel",
+  "endgameMaterialEqual": "À égalité de matériel",
+  "endgameMaterialBehind": "Avec moins de matériel",
+  "endgameTypeTitle": "Par type de finale",
+  "endgameTypePawn": "Finales de pions",
+  "endgameTypeMinor": "Finales de pièces mineures",
+  "endgameTypeRook": "Finales de tours",
+  "endgameTypeRookMinor": "Tours et pièces mineures",
+  "endgameTypeQueen": "Finales de dames",
+  "endgameTypeQueenOther": "Dames et autres pièces",
+  "phaseClockLegendPlayer": "Votre temps restant (moitié haute) :",
+  "phaseClockLegendOpponent": "Temps restant de l'adversaire (moitié basse)",
+  "phaseClockLegendElapsed": "Temps écoulé",
+  "phaseClockLegendAhead": "Plus que l'adversaire (écart de plus de 10 % du temps initial)",
+  "phaseClockLegendBalanced": "À peu près autant que l'adversaire (écart de 10 % ou moins)",
+  "phaseClockLegendBehind": "Moins que l'adversaire (écart de plus de 10 % du temps initial)"
 }

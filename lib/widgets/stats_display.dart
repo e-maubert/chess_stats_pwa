@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../models/country_game.dart';
 import '../services/layout_service.dart';
 import 'app_footer.dart';
 import 'color_stats_card.dart';
 import 'country_stats_card.dart';
+import 'game_phase_card.dart';
 import 'loss_breakdown_card.dart';
 import 'opening_stats_card.dart';
 import 'playing_hours_card.dart';
@@ -20,7 +22,18 @@ class StatsDisplay extends StatefulWidget {
   /// carte des pays attend, les autres s'affichent tout de suite).
   final List<CountryGame>? countryGames;
 
-  const StatsDisplay({Key? key, required this.games, this.countryGames}) : super(key: key);
+  /// [games] avec leurs phases ; null pendant l'analyse (avancement dans
+  /// [phaseProgress]).
+  final List<CountryGame>? phaseGames;
+  final ValueListenable<double>? phaseProgress;
+
+  const StatsDisplay({
+    Key? key,
+    required this.games,
+    this.countryGames,
+    this.phaseGames,
+    this.phaseProgress,
+  }) : super(key: key);
 
   @override
   State<StatsDisplay> createState() => _StatsDisplayState();
@@ -33,7 +46,7 @@ class _StatsDisplayState extends State<StatsDisplay> {
   // Une clé par carte : en passant d'une à deux colonnes (fenêtre
   // redimensionnée), chaque carte est déplacée sans être recréée et garde
   // ses filtres et son tri.
-  final List<GlobalKey> _cardKeys = List.generate(7, (_) => GlobalKey());
+  final List<GlobalKey> _cardKeys = List.generate(8, (_) => GlobalKey());
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +56,7 @@ class _StatsDisplayState extends State<StatsDisplay> {
       RatingHistoryCard(key: _cardKeys[1], games: games),
       LossBreakdownCard(key: _cardKeys[2], games: games),
       TimeManagementCard(key: _cardKeys[3], games: games),
+      GamePhaseCard(key: _cardKeys[7], games: widget.phaseGames, progress: widget.phaseProgress),
       PlayingHoursCard(key: _cardKeys[4], games: games),
       OpeningStatsCard(key: _cardKeys[5], games: games),
       CountryStatsCard(key: _cardKeys[6], games: widget.countryGames),

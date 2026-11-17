@@ -55,17 +55,26 @@ class GameStoragePolicy {
 
   /// Fusionne des parties déjà stockées et des parties fraîchement
   /// téléchargées, sans doublon : une partie est identifiée par son URL (la
-  /// version téléchargée l'emporte). Triées par date de fin.
+  /// version téléchargée l'emporte, sauf si seule la version stockée a déjà
+  /// ses phases calculées : une partie finie ne change plus). Triées par
+  /// date de fin.
   static List<CountryGame> merge(List<CountryGame> stored, List<CountryGame> fresh) {
     final byKey = <String, CountryGame>{};
-    for (final game in [...stored, ...fresh]) {
-      byKey[_identity(game)] = game;
+    for (final game in stored) {
+      byKey[identity(game)] = game;
+    }
+    for (final game in fresh) {
+      final key = identity(game);
+      final previous = byKey[key];
+      if (previous != null && previous.phases != null && game.phases == null) continue;
+      byKey[key] = game;
     }
     final games = byKey.values.toList();
     games.sort((a, b) => (a.endTime ?? DateTime(0)).compareTo(b.endTime ?? DateTime(0)));
     return games;
   }
 
-  static String _identity(CountryGame game) =>
+  /// Identifiant d'une partie : son URL, sinon fin + adversaire + couleur.
+  static String identity(CountryGame game) =>
       game.url ?? '${game.endTime?.millisecondsSinceEpoch}|${game.opponent}|${game.playerColor}';
 }

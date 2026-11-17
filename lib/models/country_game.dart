@@ -1,3 +1,5 @@
+import 'game_phase_summary.dart';
+
 /// Une partie jouée, vue sous l'angle du pays de l'adversaire.
 /// Sert à recalculer les statistiques par pays selon la cadence choisie.
 class CountryGame {
@@ -53,6 +55,14 @@ class CountryGame {
   /// pour éviter les doublons dans le stockage local. null si absente.
   final String? url;
 
+  /// Coups de la partie (partie « coups » du PGN, avec les pendules),
+  /// gardés seulement jusqu'au calcul de [phases] : null ensuite.
+  final String? moves;
+
+  /// Phases de la partie, calculées après l'affichage des stats (voir
+  /// PlayerGamesViewModel.phaseGamesIn) ; null tant qu'elles ne le sont pas.
+  final GamePhaseSummary? phases;
+
   const CountryGame({
     this.country,
     required this.opponent,
@@ -69,10 +79,19 @@ class CountryGame {
     this.opponentClock,
     this.baseTime,
     this.url,
+    this.moves,
+    this.phases,
   });
 
   /// Même partie, avec le pays de l'adversaire.
-  CountryGame withCountry(String country) => CountryGame(
+  CountryGame withCountry(String country) => _copy(country: country, moves: moves, phases: phases);
+
+  /// Même partie, avec ses phases ; les coups, devenus inutiles, sont
+  /// retirés.
+  CountryGame withPhases(GamePhaseSummary phases) => _copy(country: country, moves: null, phases: phases);
+
+  CountryGame _copy({required String? country, required String? moves, required GamePhaseSummary? phases}) =>
+      CountryGame(
         country: country,
         opponent: opponent,
         timeClass: timeClass,
@@ -88,6 +107,8 @@ class CountryGame {
         opponentClock: opponentClock,
         baseTime: baseTime,
         url: url,
+        moves: moves,
+        phases: phases,
       );
 
   Map<String, dynamic> toJson() {
@@ -107,6 +128,8 @@ class CountryGame {
       'opponentClock': opponentClock,
       'baseTime': baseTime,
       'url': url,
+      'moves': moves,
+      'phases': phases?.toJson(),
     };
   }
 
@@ -131,6 +154,10 @@ class CountryGame {
       opponentClock: (json['opponentClock'] as num?)?.toDouble(),
       baseTime: json['baseTime'] as int?,
       url: json['url'] as String?,
+      moves: json['moves'] as String?,
+      phases: json['phases'] == null
+          ? null
+          : GamePhaseSummary.fromJson(Map<String, dynamic>.from(json['phases'] as Map)),
     );
   }
 }

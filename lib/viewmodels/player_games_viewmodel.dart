@@ -3,9 +3,12 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 
 import '../models/country_game.dart';
+import '../models/game_phase_summary.dart';
 import '../models/stats_period.dart';
 import '../services/country_stats_service.dart';
+import '../services/game_phase_service.dart';
 import '../services/game_repository.dart';
+import '../services/game_storage_policy.dart';
 import '../services/opponent_country_service.dart';
 import '../services/player_country_service.dart';
 import '../services/stats_period_service.dart';
@@ -121,6 +124,80 @@ class PlayerGamesViewModel extends ChangeNotifier {
     }
   }
 
+  /// Phases déjà calculées (identité de la partie → résumé ; null si ses
+  /// coups sont illisibles).
+  final Map<String, GamePhaseSummary?> _phases = {};
+  int _phasesVersion = 0;
+  bool _analyzingPhases = false;
+  List<CountryGame> _phasesWanted = const [];
+
+  List<CountryGame>? _phaseSource;
+  int? _phaseSourceVersion;
+  List<CountryGame>? _phaseGames;
+
+  /// Durée de calcul avant de rendre la main au navigateur : la page reste
+  /// fluide pendant l'analyse.
+  static const Duration _phaseSlice = Duration(milliseconds: 12);
+
+  /// Avancement de l'analyse en cours (0 à 1). Séparé des notifications du
+  /// viewmodel : seule la carte des phases se redessine pendant le calcul.
+  final ValueNotifier<double> phaseProgress = ValueNotifier(0);
+
+  /// Parties de la [period] avec leurs phases ; null tant qu'il en manque
+  /// (la carte des phases affiche alors l'avancement). Lance l'analyse des
+  /// parties manquantes, et seulement pour cette période.
+  List<CountryGame>? phaseGamesIn(StatsPeriod period) {
+    final games = gamesIn(period);
+    if (!identical(_phaseSource, games) || _phaseSourceVersion != _phasesVersion) {
+      _phaseSource = games;
+      _phaseSourceVersion = _phasesVersion;
+      _phaseGames = GamePhaseService.withPhases(games, _phases);
+    }
+    if (_phaseGames == null) {
+      _phasesWanted = games;
+      scheduleMicrotask(_analyzePhases);
+    }
+    return _phaseGames;
+  }
+
+  /// Rejoue les parties demandées en dernier, par tranches de
+  /// [_phaseSlice], puis enregistre le résultat (calcul fait une seule fois
+  /// par partie).
+  Future<void> _analyzePhases() async {
+    if (_analyzingPhases) return;
+    _analyzingPhases = true;
+    try {
+      while (!_disposed) {
+        final pending = GamePhaseService.pending(_phasesWanted, _phases);
+        if (pending.isEmpty) break;
+        final found = <String, GamePhaseSummary?>{};
+        final watch = Stopwatch()..start();
+        phaseProgress.value = 0;
+        for (final (index, game) in pending.indexed) {
+          GamePhaseSummary? summary;
+          try {
+            summary = GamePhaseService.summarize(game);
+          } catch (error) {
+            debugPrint('Phases non calculées pour ${game.url} : $error');
+          }
+          found[GameStoragePolicy.identity(game)] = summary;
+          if (watch.elapsed >= _phaseSlice) {
+            phaseProgress.value = (index + 1) / pending.length;
+            await Future<void>.delayed(Duration.zero);
+            if (_disposed) return;
+            watch.reset();
+          }
+        }
+        _phases.addAll(found);
+        _phasesVersion++;
+        _notify();
+        await _repository.savePhases(username, found);
+      }
+    } finally {
+      _analyzingPhases = false;
+    }
+  }
+
   Future<void> _open(bool upToDate) async {
     await _repository.markViewed(username);
     if (_games == null) {
@@ -137,6 +214,9 @@ class PlayerGamesViewModel extends ChangeNotifier {
     _notify();
     try {
       _games = await _repository.updateGames(username);
+      // Le téléchargement a pu réécrire un mois pendant l'analyse : on
+      // réenregistre les phases déjà calculées.
+      await _repository.savePhases(username, _phases);
     } catch (error) {
       debugPrint('Mise à jour impossible : $error');
       _updateFailed = true;
@@ -153,6 +233,7 @@ class PlayerGamesViewModel extends ChangeNotifier {
   @override
   void dispose() {
     _disposed = true;
+    phaseProgress.dispose();
     super.dispose();
   }
 }
