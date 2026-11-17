@@ -61,6 +61,7 @@
   "timeClassBlitz": "Blitz",
   "timeClassRapid": "Rapid",
   "noCountryData": "No games for this time control",
+  "countryStatsLoading": "Looking up your opponents' countries…",
   "openingColumn": "Opening",
   "ratingEvolution": "Rating progress",
   "ratingCurrent": "Current rating",

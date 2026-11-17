@@ -58,6 +58,7 @@
   "timeClassBlitz": "Blitz",
   "timeClassRapid": "Rapide",
   "noCountryData": "Aucune partie pour cette cadence",
+  "countryStatsLoading": "Recherche du pays de vos adversaires…",
   "openingColumn": "Ouverture",
   "ratingEvolution": "Évolution du classement",
   "ratingCurrent": "Classement actuel",

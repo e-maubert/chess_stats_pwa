@@ -2,36 +2,28 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/country_game.dart';
 import '../models/year_month.dart';
-import 'country_stats_service.dart';
 import 'loss_stats_service.dart';
 import 'monthly_games_source.dart';
-import 'player_country_service.dart';
 import 'playing_hours_service.dart';
 import 'time_management_service.dart';
 
 /// Parties d'un joueur téléchargées depuis les archives mensuelles de l'API
-/// publique chess.com, transformées en [CountryGame] (sans le PGN).
+/// publique chess.com, transformées en [CountryGame] (sans le PGN). Le pays
+/// des adversaires n'est pas cherché ici (un appel par adversaire) : il
+/// l'est ensuite, pour la carte des pays (OpponentCountryService).
 class ChessApiService implements MonthlyGamesSource {
   static const String baseUrl = 'https://api.chess.com/pub/player';
   final http.Client _client;
-  final PlayerCountryService _playerCountryService;
 
-  ChessApiService({http.Client? client, PlayerCountryService? playerCountryService})
-      : _client = client ?? http.Client(),
-        _playerCountryService = playerCountryService ?? PlayerCountryService();
+  ChessApiService({http.Client? client}) : _client = client ?? http.Client();
 
   @override
   Future<Map<YearMonth, List<CountryGame>>> fetchMonths(String username, List<YearMonth> months) async {
     final player = username.toLowerCase();
-    // Archives en parallèle, puis les pays de tous les adversaires d'un coup.
     final archives = await Future.wait([for (final month in months) _fetchArchive(player, month)]);
-    final countries = await _playerCountryService.countries([
-      for (final games in archives)
-        for (final game in games) _opponent(game, player),
-    ]);
     return {
       for (final (index, month) in months.indexed)
-        month: [for (final game in archives[index]) _toCountryGame(game, player, countries)],
+        month: [for (final game in archives[index]) _toCountryGame(game, player)],
     };
   }
 
@@ -50,11 +42,10 @@ class ChessApiService implements MonthlyGamesSource {
     return game[isWhite ? 'black' : 'white']['username'].toString();
   }
 
-  CountryGame _toCountryGame(dynamic game, String username, Map<String, String> countries) {
+  CountryGame _toCountryGame(dynamic game, String username) {
     final isWhite = game['white']['username'].toString().toLowerCase() == username;
     final result = _getGameResult(game, isWhite);
     final opponentUsername = _opponent(game, username);
-    final country = countries[opponentUsername.toLowerCase()] ?? CountryStatsService.unknownCountry;
     final lossCause = result == 'loss'
         ? LossStatsService.lossCause(game[isWhite ? 'white' : 'black']['result']?.toString())
         : null;
@@ -64,7 +55,6 @@ class ChessApiService implements MonthlyGamesSource {
     final whiteClock = clocks.white ?? baseTime?.toDouble();
     final blackClock = clocks.black ?? baseTime?.toDouble();
     return CountryGame(
-      country: country,
       opponent: opponentUsername,
       timeClass: game['time_class']?.toString() ?? '',
       result: result,

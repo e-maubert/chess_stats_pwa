@@ -1,8 +1,11 @@
 /// Une partie jouée, vue sous l'angle du pays de l'adversaire.
 /// Sert à recalculer les statistiques par pays selon la cadence choisie.
 class CountryGame {
-  /// Code pays chess.com (ex. 'FR'), ou 'Unknown' si introuvable.
-  final String country;
+  /// Code pays chess.com (ex. 'FR'), ou 'Unknown' si introuvable ; null
+  /// tant qu'il n'a pas été cherché. Il n'est pas demandé au téléchargement
+  /// des parties (un appel par adversaire, coûteux) mais ensuite, pour la
+  /// seule carte des pays : voir OpponentCountryService.
+  final String? country;
   final String opponent;
 
   /// Cadence chess.com : 'bullet', 'blitz', 'rapid', 'daily'...
@@ -51,7 +54,7 @@ class CountryGame {
   final String? url;
 
   const CountryGame({
-    required this.country,
+    this.country,
     required this.opponent,
     required this.timeClass,
     required this.result,
@@ -67,6 +70,25 @@ class CountryGame {
     this.baseTime,
     this.url,
   });
+
+  /// Même partie, avec le pays de l'adversaire.
+  CountryGame withCountry(String country) => CountryGame(
+        country: country,
+        opponent: opponent,
+        timeClass: timeClass,
+        result: result,
+        playerColor: playerColor,
+        opening: opening,
+        lossCause: lossCause,
+        rating: rating,
+        endTime: endTime,
+        startTime: startTime,
+        rated: rated,
+        playerClock: playerClock,
+        opponentClock: opponentClock,
+        baseTime: baseTime,
+        url: url,
+      );
 
   Map<String, dynamic> toJson() {
     return {
@@ -90,7 +112,7 @@ class CountryGame {
 
   factory CountryGame.fromJson(Map<String, dynamic> json) {
     return CountryGame(
-      country: json['country'] as String,
+      country: json['country'] as String?,
       opponent: json['opponent'] as String,
       timeClass: json['timeClass'] as String,
       result: json['result'] as String,

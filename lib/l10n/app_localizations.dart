@@ -302,6 +302,12 @@ abstract class AppLocalizations {
   /// **'No games for this time control'**
   String get noCountryData;
 
+  /// No description provided for @countryStatsLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Looking up your opponents\' countries…'**
+  String get countryStatsLoading;
+
   /// No description provided for @openingColumn.
   ///
   /// In en, this message translates to:

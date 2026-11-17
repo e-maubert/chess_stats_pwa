@@ -106,6 +106,7 @@ class StatsScreen extends StatelessWidget {
 
   Widget _body(BuildContext context, PlayerGamesViewModel viewModel, AppLocalizations l10n) {
     if (viewModel.games != null) {
+      final period = context.watch<StatsPeriodViewModel>().period;
       return Column(
         children: [
           if (viewModel.updateFailed)
@@ -114,7 +115,10 @@ class StatsScreen extends StatelessWidget {
               actions: [TextButton(onPressed: viewModel.update, child: Text(l10n.retry))],
             ),
           Expanded(
-            child: StatsDisplay(games: viewModel.gamesIn(context.watch<StatsPeriodViewModel>().period)),
+            child: StatsDisplay(
+              games: viewModel.gamesIn(period),
+              countryGames: viewModel.countryGamesIn(period),
+            ),
           ),
         ],
       );

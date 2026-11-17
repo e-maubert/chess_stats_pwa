@@ -19,10 +19,11 @@ class CountryStatsService {
 
     for (final game in games) {
       if (timeClass != null && game.timeClass != timeClass) continue;
+      final country = game.country ?? unknownCountry;
 
       final stat = stats.putIfAbsent(
-        game.country,
-        () => CountryStats(name: game.country, gamesPlayed: 0, gamesWon: 0),
+        country,
+        () => CountryStats(name: country, gamesPlayed: 0, gamesWon: 0),
       );
       stat.gamesPlayed++;
       switch (game.result) {
@@ -37,7 +38,7 @@ class CountryStatsService {
           break;
       }
       opponents
-          .putIfAbsent(game.country, () => <String>{})
+          .putIfAbsent(country, () => <String>{})
           .add(game.opponent.toLowerCase());
     }
 

@@ -120,6 +120,9 @@ class AppLocalizationsFr extends AppLocalizations {
   String get noCountryData => 'Aucune partie pour cette cadence';
 
   @override
+  String get countryStatsLoading => 'Recherche du pays de vos adversaires…';
+
+  @override
   String get openingColumn => 'Ouverture';
 
   @override
