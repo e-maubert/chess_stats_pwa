@@ -647,6 +647,10 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get changelogV150 =>
+      'Nouvelle carte « Phases de la partie » : où se jouent vos parties, de l\'ouverture à la finale\nVotre temps restant face à celui de l\'adversaire, d\'un coup d\'œil, à la sortie de l\'ouverture et en finale\nVos résultats en finale selon le matériel et le type de finale\nPage affichée plus vite : les statistiques les plus longues arrivent juste après';
+
+  @override
   String get changelogV140 =>
       'Statistiques sur 1 mois ou 3 mois glissants, au choix\nAffichage plus rapide : les parties d\'un joueur sont gardées dans le navigateur\nRecherche : les joueurs déjà consultés sont proposés\nPage plus claire et plus compacte, surtout sur mobile';
 

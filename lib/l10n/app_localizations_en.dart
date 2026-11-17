@@ -652,6 +652,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get changelogV150 =>
+      'New \"Game phases\" card: see where your games are decided, from the opening to the endgame\nYour time left against your opponent\'s, at a glance, after the opening and in the endgame\nYour endgame results by material and by type of endgame\nFaster page: the longest stats show up a moment later';
+
+  @override
   String get changelogV140 =>
       'Stats for the last month or the last 3 months, your choice\nFaster display: each player\'s games are kept in your browser\nSearch: players you already looked up are suggested\nCleaner, more compact page, especially on mobile';
 

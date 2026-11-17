@@ -639,6 +639,12 @@ abstract class AppLocalizations {
   /// **'Version {version} – {date}'**
   String changelogVersionTitle(String version, String date);
 
+  /// Nouveautés de la version 1.5.0, une par ligne.
+  ///
+  /// In en, this message translates to:
+  /// **'New \"Game phases\" card: see where your games are decided, from the opening to the endgame\nYour time left against your opponent\'s, at a glance, after the opening and in the endgame\nYour endgame results by material and by type of endgame\nFaster page: the longest stats show up a moment later'**
+  String get changelogV150;
+
   /// Nouveautés de la version 1.4.0, une par ligne.
   ///
   /// In en, this message translates to:
