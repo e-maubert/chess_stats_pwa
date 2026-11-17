@@ -17,7 +17,9 @@
   "@removeRecentPlayer": {
     "description": "Tooltip of the cross next to an already viewed player, under the search field",
     "placeholders": {
-      "username": {"type": "String"}
+      "username": {
+        "type": "String"
+      }
     }
   },
   "refresh": "Refresh",
@@ -28,8 +30,12 @@
   "@periodRange": {
     "description": "Exact dates of the selected period, under the period selector",
     "placeholders": {
-      "start": {"type": "String"},
-      "end": {"type": "String"}
+      "start": {
+        "type": "String"
+      },
+      "end": {
+        "type": "String"
+      }
     }
   },
   "switchToDarkMode": "Switch to dark mode",
@@ -324,7 +330,7 @@
   "@changelogV130": {
     "description": "Nouveautés de la version 1.3.0, une par ligne."
   },
-  "changelogV121":"Faster loading: each opponent's country is requested only once, several at a time, and remembered for a month in your browser",
+  "changelogV121": "Faster loading: each opponent's country is requested only once, several at a time, and remembered for a month in your browser",
   "@changelogV121": {
     "description": "Nouveautés de la version 1.2.1, une par ligne."
   },
@@ -332,7 +338,7 @@
   "@changelogV120": {
     "description": "Nouveautés de la version 1.2.0, une par ligne."
   },
-  "changelogV110":"Desktop display: statistics on two columns on large screens\nPage title centered on every page\nPlayed openings and opponents' countries: paginated tables, 5 rows per page\nFooter with the version number and what's new",
+  "changelogV110": "Desktop display: statistics on two columns on large screens\nPage title centered on every page\nPlayed openings and opponents' countries: paginated tables, 5 rows per page\nFooter with the version number and what's new",
   "@changelogV110": {
     "description": "Nouveautés de la version 1.1.0, une par ligne."
   },
@@ -437,5 +443,50 @@
         "type": "int"
       }
     }
-  }
+  },
+  "gamePhases": "Game phases",
+  "gamePhasesLoading": "Analysing your games… {percent}",
+  "@gamePhasesLoading": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "noPhaseData": "No analysed games for this time control",
+  "phaseEndTitle": "Where your games end",
+  "phaseOpening": "In the opening",
+  "phaseMiddlegame": "In the middlegame",
+  "phaseEndgame": "In the endgame",
+  "phaseTimeoutLosses": "Including {count} lost on time",
+  "@phaseTimeoutLosses": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "phaseClockTitle": "Time left",
+  "phaseClockMiddlegame": "End of the opening",
+  "phaseClockEndgame": "Reaching the endgame",
+  "phaseClockPlayer": "You",
+  "phaseClockOpponent": "Opponent",
+  "phaseClockNote": "Average, as a share of the starting time (timed games only).",
+  "endgameMaterialTitle": "Your endgames by material",
+  "endgameMaterialAhead": "Material up",
+  "endgameMaterialEqual": "Material equal",
+  "endgameMaterialBehind": "Material down",
+  "endgameTypeTitle": "By endgame type",
+  "endgameTypePawn": "Pawn endgames",
+  "endgameTypeMinor": "Minor piece endgames",
+  "endgameTypeRook": "Rook endgames",
+  "endgameTypeRookMinor": "Rooks and minor pieces",
+  "endgameTypeQueen": "Queen endgames",
+  "endgameTypeQueenOther": "Queens and other pieces",
+  "phaseClockLegendPlayer": "Your time left (top half):",
+  "phaseClockLegendOpponent": "Opponent's time left (bottom half)",
+  "phaseClockLegendElapsed": "Time used",
+  "phaseClockLegendAhead": "More than your opponent (gap above 10% of the starting time)",
+  "phaseClockLegendBalanced": "About the same as your opponent (gap of 10% or less)",
+  "phaseClockLegendBehind": "Less than your opponent (gap above 10% of the starting time)"
 }

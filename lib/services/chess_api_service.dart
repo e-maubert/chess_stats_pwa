@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/country_game.dart';
 import '../models/year_month.dart';
+import 'game_phase_service.dart';
 import 'loss_stats_service.dart';
 import 'monthly_games_source.dart';
 import 'playing_hours_service.dart';
@@ -75,6 +76,9 @@ class ChessApiService implements MonthlyGamesSource {
       opponentClock: isWhite ? blackClock : whiteClock,
       baseTime: baseTime,
       url: game['url'] as String?,
+      // Coups gardés pour calculer les phases après l'affichage ; pas pour
+      // les variantes (Chess960…), dont la position de départ diffère.
+      moves: (game['rules'] ?? 'chess') == 'chess' ? GamePhaseService.moveText(game['pgn'] as String?) : null,
     );
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/country_game.dart';
+import '../models/game_phase_summary.dart';
 import '../models/year_month.dart';
 import 'chess_api_service.dart';
 import 'game_database_factory.dart';
@@ -57,6 +58,29 @@ class GameRepository {
   /// comme une consultation pour la purge).
   Future<void> markViewed(String username) =>
       _safe(() => _store.savePlayer(StoredPlayer(username: username, lastViewedAt: _now().toUtc())), null);
+
+  /// Enregistre les phases calculées des parties de [player] (identité de
+  /// la partie → résumé) : chaque partie concernée les garde et perd ses
+  /// coups, devenus inutiles. Les mois sans changement ne sont pas réécrits.
+  Future<void> savePhases(String player, Map<String, GamePhaseSummary?> phases) => _safe(() async {
+        if (phases.isEmpty) return;
+        for (final stored in await _store.months(player)) {
+          var changed = false;
+          final games = [
+            for (final game in stored.games)
+              if (game.phases == null && phases[GameStoragePolicy.identity(game)] != null)
+                (() {
+                  changed = true;
+                  return game.withPhases(phases[GameStoragePolicy.identity(game)]!);
+                })()
+              else
+                game,
+          ];
+          if (changed) {
+            await _store.saveMonth(player, StoredMonth(month: stored.month, fetchedAt: stored.fetchedAt, games: games));
+          }
+        }
+      }, null);
 
   /// Joueurs consultés encore présents dans le stockage, du plus récent au
   /// plus ancien (sans ceux que la purge supprimera).

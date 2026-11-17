@@ -763,4 +763,105 @@ class AppLocalizationsEn extends AppLocalizations {
   String playingHoursNoneJudged(int minGames) {
     return 'No hour has enough games yet to rate your performance ($minGames minimum).';
   }
+
+  @override
+  String get gamePhases => 'Game phases';
+
+  @override
+  String gamePhasesLoading(String percent) {
+    return 'Analysing your games… $percent';
+  }
+
+  @override
+  String get noPhaseData => 'No analysed games for this time control';
+
+  @override
+  String get phaseEndTitle => 'Where your games end';
+
+  @override
+  String get phaseOpening => 'In the opening';
+
+  @override
+  String get phaseMiddlegame => 'In the middlegame';
+
+  @override
+  String get phaseEndgame => 'In the endgame';
+
+  @override
+  String phaseTimeoutLosses(int count) {
+    return 'Including $count lost on time';
+  }
+
+  @override
+  String get phaseClockTitle => 'Time left';
+
+  @override
+  String get phaseClockMiddlegame => 'End of the opening';
+
+  @override
+  String get phaseClockEndgame => 'Reaching the endgame';
+
+  @override
+  String get phaseClockPlayer => 'You';
+
+  @override
+  String get phaseClockOpponent => 'Opponent';
+
+  @override
+  String get phaseClockNote =>
+      'Average, as a share of the starting time (timed games only).';
+
+  @override
+  String get endgameMaterialTitle => 'Your endgames by material';
+
+  @override
+  String get endgameMaterialAhead => 'Material up';
+
+  @override
+  String get endgameMaterialEqual => 'Material equal';
+
+  @override
+  String get endgameMaterialBehind => 'Material down';
+
+  @override
+  String get endgameTypeTitle => 'By endgame type';
+
+  @override
+  String get endgameTypePawn => 'Pawn endgames';
+
+  @override
+  String get endgameTypeMinor => 'Minor piece endgames';
+
+  @override
+  String get endgameTypeRook => 'Rook endgames';
+
+  @override
+  String get endgameTypeRookMinor => 'Rooks and minor pieces';
+
+  @override
+  String get endgameTypeQueen => 'Queen endgames';
+
+  @override
+  String get endgameTypeQueenOther => 'Queens and other pieces';
+
+  @override
+  String get phaseClockLegendPlayer => 'Your time left (top half):';
+
+  @override
+  String get phaseClockLegendOpponent => 'Opponent\'s time left (bottom half)';
+
+  @override
+  String get phaseClockLegendElapsed => 'Time used';
+
+  @override
+  String get phaseClockLegendAhead =>
+      'More than your opponent (gap above 10% of the starting time)';
+
+  @override
+  String get phaseClockLegendBalanced =>
+      'About the same as your opponent (gap of 10% or less)';
+
+  @override
+  String get phaseClockLegendBehind =>
+      'Less than your opponent (gap above 10% of the starting time)';
 }
