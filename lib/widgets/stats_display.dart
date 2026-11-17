@@ -16,7 +16,11 @@ import 'time_management_card.dart';
 class StatsDisplay extends StatefulWidget {
   final List<CountryGame> games;
 
-  const StatsDisplay({Key? key, required this.games}) : super(key: key);
+  /// [games] avec le pays des adversaires ; null tant qu'il est cherché (la
+  /// carte des pays attend, les autres s'affichent tout de suite).
+  final List<CountryGame>? countryGames;
+
+  const StatsDisplay({Key? key, required this.games, this.countryGames}) : super(key: key);
 
   @override
   State<StatsDisplay> createState() => _StatsDisplayState();
@@ -41,7 +45,7 @@ class _StatsDisplayState extends State<StatsDisplay> {
       TimeManagementCard(key: _cardKeys[3], games: games),
       PlayingHoursCard(key: _cardKeys[4], games: games),
       OpeningStatsCard(key: _cardKeys[5], games: games),
-      CountryStatsCard(key: _cardKeys[6], games: games),
+      CountryStatsCard(key: _cardKeys[6], games: widget.countryGames),
     ];
 
     return LayoutBuilder(

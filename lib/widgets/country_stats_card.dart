@@ -18,13 +18,43 @@ import 'time_class_filter.dart';
 /// pays, parties jouées, adversaires, barre victoires / nulles / défaites.
 /// Filtrable par cadence et triable par parties jouées ou par taux.
 class CountryStatsCard extends StatelessWidget {
-  final List<CountryGame> games;
+  /// Parties avec le pays des adversaires ; null tant qu'il est cherché :
+  /// la carte affiche alors un indicateur de chargement.
+  final List<CountryGame>? games;
 
   const CountryStatsCard({super.key, required this.games});
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final games = this.games;
+
+    if (games == null) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _title(context, l10n),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 48),
+            child: Center(
+              child: Column(
+                children: [
+                  const CircularProgressIndicator(),
+                  const SizedBox(height: 16),
+                  Text(
+                    l10n.countryStatsLoading,
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      );
+    }
 
     return ChangeNotifierProvider(
       // Nouvelle liste (ex. après « Actualiser ») => nouveau viewmodel.
@@ -36,13 +66,7 @@ class CountryStatsCard extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                l10n.countryStats,
-                style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-              ),
-              const SizedBox(height: 12),
+              _title(context, l10n),
               TimeClassFilter(
                 timeClasses: CountryStatsViewModel.timeClasses,
                 selected: viewModel.timeClass,
@@ -99,6 +123,15 @@ class CountryStatsCard extends StatelessWidget {
       ),
     );
   }
+
+  /// Titre de la carte, suivi de son espacement.
+  Widget _title(BuildContext context, AppLocalizations l10n) => Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: Text(
+          l10n.countryStats,
+          style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+        ),
+      );
 
   /// En-tête cliquable : trie le tableau selon [key], avec une flèche
   /// indiquant le sens du tri quand la colonne est active.
