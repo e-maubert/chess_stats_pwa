@@ -1041,6 +1041,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not enough rated games to compute the trend'**
   String get ratingTrendNotEnough;
+
+  /// Nom d'une famille d'ouvertures ; family = famille sans tirets (ex. SicilianDefense), fallback = nom anglais lisible si la famille n'est pas connue.
+  ///
+  /// In en, this message translates to:
+  /// **'{family, select, QueensPawn{Queen\'s Pawn Game} QueensGambit{Queen\'s Gambit} SicilianDefense{Sicilian Defense} RuyLopez{Ruy Lopez} EnglishOpening{English Opening} FrenchDefense{French Defense} DutchDefense{Dutch Defense} KingsGambit{King\'s Gambit} CaroKann{Caro-Kann Defense} ViennaGame{Vienna Game} TwoKnights{Two Knights Defense} GiuocoPiano{Giuoco Piano} ItalianGame{Italian Game} AlekhinesDefense{Alekhine\'s Defense} RetiOpening{Réti Opening} RetiAccepted{Réti Accepted} PircDefense{Pirc Defense} KingsPawn{King\'s Pawn Game} FourKnights{Four Knights Game} PetrovDefense{Petrov\'s Defense} PetrovsDefense{Petrov\'s Defense} KingsKnights{King\'s Knight Opening} KingsIndian{King\'s Indian} QueensIndian{Queen\'s Indian Defense} NimzoIndian{Nimzo-Indian Defense} BogoIndian{Bogo-Indian Defense} IndianGame{Indian Game} CenterGame{Center Game} BishopsOpening{Bishop\'s Opening} BirdsOpening{Bird\'s Opening} ScotchGame{Scotch Game} ScandinavianDefense{Scandinavian Defense} RobatschDefense{Modern Defense (Robatsch)} ModernDefense{Modern Defense} PhilidorDefense{Philidor Defense} NimzowitschLarsen{Nimzowitsch-Larsen Attack} AnderssenOpening{Anderssen\'s Opening} LondonSystem{London System} ColleSystem{Colle System} TrompowskyAttack{Trompowsky Attack} GrunfeldDefense{Grünfeld Defense} SlavDefense{Slav Defense} SemiSlav{Semi-Slav Defense} CatalanOpening{Catalan Opening} BenoniDefense{Benoni Defense} BenkoGambit{Benko Gambit} OwensDefense{Owen\'s Defense} PolishOpening{Polish Opening} ZukertortOpening{Zukertort Opening} PonzianiOpening{Ponziani Opening} EvansGambit{Evans Gambit} DanishGambit{Danish Gambit} UnknownOpening{Unknown opening} other{{fallback}}}'**
+  String openingFamilyName(String family, String fallback);
 }
 
 class _AppLocalizationsDelegate

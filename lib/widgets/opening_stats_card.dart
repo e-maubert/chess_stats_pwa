@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/country_game.dart';
 import '../models/opening_family_stats.dart';
 import '../services/opening_stats_service.dart';
+import '../services/opening_name_service.dart';
 import '../services/pagination_service.dart';
 import '../viewmodels/opening_stats_viewmodel.dart';
 import '../viewmodels/stats_filter_viewmodel.dart';
@@ -156,7 +157,13 @@ class OpeningStatsCard extends StatelessWidget {
         for (var i = 0; i < families.length; i++)
           DataRow(cells: [
             DataCell(Text('${firstRank + i}')),
-            DataCell(Text(families[i].name, softWrap: false)),
+            DataCell(Text(
+              l10n.openingFamilyName(
+                OpeningNameService.key(families[i].name),
+                OpeningNameService.fallback(families[i].name),
+              ),
+              softWrap: false,
+            )),
             DataCell(Text('${families[i].totalGames}')),
             DataCell(Column(
               mainAxisAlignment: MainAxisAlignment.center,
