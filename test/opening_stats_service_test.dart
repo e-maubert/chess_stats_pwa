@@ -103,6 +103,14 @@ void main() {
     expect(notified, 1);
   });
 
+  test('le filtre de couleur ne garde que le tableau de cette couleur', () {
+    final viewModel = OpeningStatsViewModel(games);
+    expect(viewModel.shownColors, ['white', 'black']);
+    viewModel.colorFilter.select('black');
+    expect(viewModel.shownColors, ['black']);
+    expect(viewModel.black.length, 2);
+  });
+
   test('le viewmodel trie les deux tableaux ; re-clic inverse le sens', () {
     final viewModel = OpeningStatsViewModel(games);
     expect(viewModel.sortKey, OpeningSortKey.gamesPlayed);

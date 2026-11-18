@@ -1,12 +1,10 @@
-import '../models/country_game.dart';
 import '../models/loss_stats.dart';
 import '../services/loss_stats_service.dart';
-import 'time_class_viewmodel.dart';
+import 'filtered_stats_viewmodel.dart';
 
-class LossStatsViewModel extends TimeClassFilteredViewModel {
-  final List<CountryGame> _games;
+class LossStatsViewModel extends FilteredStatsViewModel {
 
-  LossStatsViewModel(List<CountryGame> games, [super.filter]) : _games = games;
+  LossStatsViewModel(super.games, {super.timeClassFilter, super.colorFilter});
 
-  LossStats get stats => LossStatsService.aggregate(_games, timeClass: timeClass);
+  LossStats get stats => LossStatsService.aggregate(filteredGames, timeClass: timeClass);
 }

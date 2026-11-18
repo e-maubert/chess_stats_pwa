@@ -43,7 +43,7 @@
   "wins": "Victoires",
   "losses": "Défaites",
   "draws": "Matchs nuls",
-  "colorStats": "Statistiques par couleur",
+  "colorStats": "Statistiques de victoire",
   "withWhite": "Avec les blancs",
   "withBlack": "Avec les noirs",
   "countryStats": "Statistiques par pays",
@@ -471,5 +471,40 @@
   "phaseClockLegendElapsed": "Temps écoulé",
   "phaseClockLegendAhead": "Plus que l'adversaire (écart de plus de 10 % du temps initial)",
   "phaseClockLegendBalanced": "À peu près autant que l'adversaire (écart de 10 % ou moins)",
-  "phaseClockLegendBehind": "Moins que l'adversaire (écart de plus de 10 % du temps initial)"
+  "phaseClockLegendBehind": "Moins que l'adversaire (écart de plus de 10 % du temps initial)",
+  "colorFilterLabel": "Couleur jouée",
+  "colorFilterBoth": "Les deux",
+  "colorFilterWhite": "Blancs",
+  "colorFilterBlack": "Noirs",
+  "allGames": "Toutes les parties",
+  "resultRateWithCount": "{rate} ({count})",
+  "@resultRateWithCount": {
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ratingTrendWhite": "Points de classement gagnés ou perdus avec les blancs",
+  "ratingTrendBlack": "Points de classement gagnés ou perdus avec les noirs",
+  "ratingTrendPoints": "{points} pts",
+  "@ratingTrendPoints": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "ratingTrendGames": "{count, plural, =1{sur 1 partie} other{sur {count} parties}}",
+  "@ratingTrendGames": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ratingTrendNotEnough": "Pas assez de parties classées pour calculer la tendance"
 }

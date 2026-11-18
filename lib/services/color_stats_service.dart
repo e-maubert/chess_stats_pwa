@@ -32,4 +32,11 @@ class ColorStatsService {
 
     return (white: count('white'), black: count('black'));
   }
+
+  /// Somme de deux bilans (ex. blancs + noirs = toutes les parties).
+  static ColorStats combine(ColorStats a, ColorStats b) => ColorStats(
+        wins: a.wins + b.wins,
+        losses: a.losses + b.losses,
+        draws: a.draws + b.draws,
+      );
 }

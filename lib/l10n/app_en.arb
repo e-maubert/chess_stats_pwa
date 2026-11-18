@@ -46,7 +46,7 @@
   "wins": "Wins",
   "losses": "Losses",
   "draws": "Draws",
-  "colorStats": "Statistics by Color",
+  "colorStats": "Win statistics",
   "withWhite": "With White",
   "withBlack": "With Black",
   "countryStats": "Statistics by Country",
@@ -492,5 +492,40 @@
   "phaseClockLegendElapsed": "Time used",
   "phaseClockLegendAhead": "More than your opponent (gap above 10% of the starting time)",
   "phaseClockLegendBalanced": "About the same as your opponent (gap of 10% or less)",
-  "phaseClockLegendBehind": "Less than your opponent (gap above 10% of the starting time)"
+  "phaseClockLegendBehind": "Less than your opponent (gap above 10% of the starting time)",
+  "colorFilterLabel": "Color played",
+  "colorFilterBoth": "Both",
+  "colorFilterWhite": "White",
+  "colorFilterBlack": "Black",
+  "allGames": "All games",
+  "resultRateWithCount": "{rate} ({count})",
+  "@resultRateWithCount": {
+    "placeholders": {
+      "rate": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ratingTrendWhite": "Rating points won or lost with white",
+  "ratingTrendBlack": "Rating points won or lost with black",
+  "ratingTrendPoints": "{points} pts",
+  "@ratingTrendPoints": {
+    "placeholders": {
+      "points": {
+        "type": "String"
+      }
+    }
+  },
+  "ratingTrendGames": "{count, plural, =1{over 1 game} other{over {count} games}}",
+  "@ratingTrendGames": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ratingTrendNotEnough": "Not enough rated games to compute the trend"
 }

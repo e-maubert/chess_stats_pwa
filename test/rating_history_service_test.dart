@@ -1,7 +1,7 @@
 import 'package:chess_stats_pwa/models/country_game.dart';
 import 'package:chess_stats_pwa/services/rating_history_service.dart';
 import 'package:chess_stats_pwa/viewmodels/rating_history_viewmodel.dart';
-import 'package:chess_stats_pwa/viewmodels/time_class_viewmodel.dart';
+import 'package:chess_stats_pwa/viewmodels/stats_filter_viewmodel.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 CountryGame g(String timeClass, int? rating, int day, {bool rated = true}) => CountryGame(
@@ -52,7 +52,7 @@ void main() {
 
   test('viewmodel : toutes les courbes sur « Toutes », une seule sinon', () {
     final filter = TimeClassViewModel.temporary();
-    final viewModel = RatingHistoryViewModel(games, filter);
+    final viewModel = RatingHistoryViewModel(games, timeClassFilter: filter);
     var notified = 0;
     viewModel.addListener(() => notified++);
 
@@ -70,6 +70,59 @@ void main() {
     viewModel.dispose();
     filter.select(null); // plus suivi après dispose
     expect(notified, 2);
+  });
+
+  group('tendance (filtre de couleur)', () {
+    CountryGame c(String color, int rating, int day, {String timeClass = 'blitz'}) => CountryGame(
+          country: 'FR',
+          opponent: 'x',
+          timeClass: timeClass,
+          result: 'win',
+          playerColor: color,
+          opening: 'Italian-Game',
+          rating: rating,
+          endTime: DateTime(2026, 11, day),
+        );
+    final mixed = [
+      c('white', 1500, 1), // 1re partie : pas d'écart, non comptée
+      c('black', 1490, 2), // -10 (noirs)
+      c('white', 1510, 3), // +20 (blancs, écart avec la partie noire)
+      c('black', 1505, 4), // -5 (noirs)
+      c('white', 1530, 5), // +25 (blancs)
+      c('white', 1200, 1, timeClass: 'bullet'),
+    ];
+
+    test('écart avec la partie précédente de la cadence, toutes couleurs', () {
+      final white = RatingHistoryService.trend(mixed, 'blitz', (g) => g.playerColor == 'white');
+      expect(white.points, 45);
+      expect(white.games, 2);
+      expect(white.current, 1530); // dernière partie de la cadence
+      final bullet = RatingHistoryService.trend(mixed, 'bullet', (g) => g.playerColor == 'black');
+      expect(bullet.current, 1200); // classement même sans partie comptée
+      expect(bullet.games, 0);
+      final black = RatingHistoryService.trend(mixed, 'blitz', (g) => g.playerColor == 'black');
+      expect(black.points, -15);
+      expect(black.games, 2);
+    });
+
+    test('viewmodel : courbes sans couleur, tendance par cadence avec', () {
+      final colorFilter = PlayerColorViewModel.temporary();
+      final viewModel = RatingHistoryViewModel(mixed, colorFilter: colorFilter);
+      expect(viewModel.showsTrend, isFalse);
+
+      colorFilter.select('white');
+      expect(viewModel.showsTrend, isTrue);
+      // Bullet : une seule partie, pas d'écart => absente.
+      expect(viewModel.trends.single.timeClass, 'blitz');
+      expect(viewModel.trends.single.points, 45);
+    });
+
+    test("pas assez de parties : aucune tendance", () {
+      final colorFilter = PlayerColorViewModel.temporary();
+      final viewModel = RatingHistoryViewModel([c('white', 1500, 1)], colorFilter: colorFilter);
+      colorFilter.select('white');
+      expect(viewModel.trends, isEmpty);
+    });
   });
 
   test('toJson / fromJson conserve classement, date et partie classée', () {

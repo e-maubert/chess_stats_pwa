@@ -62,4 +62,16 @@ void main() {
     viewModel.timeClassFilter.select('blitz');
     expect(notified, 1);
   });
+
+  test('sans filtre de couleur : jauges ensemble, blancs, noirs ; avec : la seule couleur', () {
+    final viewModel = ColorStatsViewModel(games);
+    expect(viewModel.rows.map((row) => row.color), [null, 'white', 'black']);
+    expect(viewModel.rows.first.stats.totalGames, 7);
+    expect(viewModel.rows.first.stats.wins, viewModel.rows[1].stats.wins + viewModel.rows[2].stats.wins);
+
+    viewModel.colorFilter.select('black');
+    expect(viewModel.rows.single.color, 'black');
+    expect(viewModel.rows.single.stats.totalGames, 3);
+    expect(viewModel.stats.white.totalGames, 0); // parties filtrées par couleur
+  });
 }

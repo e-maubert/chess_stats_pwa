@@ -1,11 +1,9 @@
-import '../models/country_game.dart';
 import '../services/time_management_service.dart';
-import 'time_class_viewmodel.dart';
+import 'filtered_stats_viewmodel.dart';
 
-class TimeManagementViewModel extends TimeClassFilteredViewModel {
-  final List<CountryGame> _games;
+class TimeManagementViewModel extends FilteredStatsViewModel {
 
-  TimeManagementViewModel(List<CountryGame> games, [super.filter]) : _games = games;
+  TimeManagementViewModel(super.games, {super.timeClassFilter, super.colorFilter});
 
-  TimeManagementStats get stats => TimeManagementService.aggregate(_games, timeClass: timeClass);
+  TimeManagementStats get stats => TimeManagementService.aggregate(filteredGames, timeClass: timeClass);
 }

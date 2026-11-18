@@ -8,7 +8,7 @@ import '../services/game_phase_stats_service.dart';
 import '../services/time_management_service.dart';
 import '../theme/app_theme.dart';
 import '../viewmodels/game_phase_stats_viewmodel.dart';
-import '../viewmodels/time_class_viewmodel.dart';
+import '../viewmodels/stats_filter_viewmodel.dart';
 import 'clock_pie.dart';
 import 'result_summary.dart';
 
@@ -61,7 +61,11 @@ class GamePhaseCard extends StatelessWidget {
     return ChangeNotifierProvider(
       // Nouvelle liste (ex. après « Actualiser ») => nouveau viewmodel.
       key: ObjectKey(games),
-      create: (context) => GamePhaseStatsViewModel(games, context.read<TimeClassViewModel>()),
+      create: (context) => GamePhaseStatsViewModel(
+        games,
+        timeClassFilter: context.read<TimeClassViewModel>(),
+        colorFilter: context.read<PlayerColorViewModel>(),
+      ),
       child: Consumer<GamePhaseStatsViewModel>(
         builder: (context, viewModel, child) {
           final stats = viewModel.stats;
@@ -238,7 +242,8 @@ class GamePhaseCard extends StatelessWidget {
           children: [
             for (final swatch in swatches) Padding(padding: const EdgeInsets.only(right: 2), child: swatch),
             const SizedBox(width: 6),
-            Text(text, style: textTheme.bodySmall),
+            // Texte long sur mobile : il passe à la ligne au lieu de déborder.
+            Flexible(child: Text(text, style: textTheme.bodySmall)),
           ],
         );
     final gapLabels = {

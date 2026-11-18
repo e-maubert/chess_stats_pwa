@@ -76,7 +76,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get draws => 'Matchs nuls';
 
   @override
-  String get colorStats => 'Statistiques par couleur';
+  String get colorStats => 'Statistiques de victoire';
 
   @override
   String get withWhite => 'Avec les blancs';
@@ -864,4 +864,52 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get phaseClockLegendBehind =>
       'Moins que l\'adversaire (écart de plus de 10 % du temps initial)';
+
+  @override
+  String get colorFilterLabel => 'Couleur jouée';
+
+  @override
+  String get colorFilterBoth => 'Les deux';
+
+  @override
+  String get colorFilterWhite => 'Blancs';
+
+  @override
+  String get colorFilterBlack => 'Noirs';
+
+  @override
+  String get allGames => 'Toutes les parties';
+
+  @override
+  String resultRateWithCount(String rate, int count) {
+    return '$rate ($count)';
+  }
+
+  @override
+  String get ratingTrendWhite =>
+      'Points de classement gagnés ou perdus avec les blancs';
+
+  @override
+  String get ratingTrendBlack =>
+      'Points de classement gagnés ou perdus avec les noirs';
+
+  @override
+  String ratingTrendPoints(String points) {
+    return '$points pts';
+  }
+
+  @override
+  String ratingTrendGames(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'sur $count parties',
+      one: 'sur 1 partie',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ratingTrendNotEnough =>
+      'Pas assez de parties classées pour calculer la tendance';
 }

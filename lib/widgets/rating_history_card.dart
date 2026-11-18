@@ -9,8 +9,8 @@ import '../models/country_game.dart';
 import '../services/rating_history_service.dart';
 import '../theme/app_theme.dart';
 import '../viewmodels/rating_history_viewmodel.dart';
-import '../viewmodels/time_class_viewmodel.dart';
-import 'time_class_selector.dart';
+import '../viewmodels/stats_filter_viewmodel.dart';
+import 'stats_filter_selectors.dart';
 
 /// Page principale : courbe du classement sur la période pour la cadence
 /// choisie, ou une courbe par cadence sur « Toutes », avec le classement
@@ -31,7 +31,11 @@ class RatingHistoryCard extends StatelessWidget {
     return ChangeNotifierProvider(
       // Nouvelle liste (ex. après « Actualiser ») => nouveau viewmodel.
       key: ObjectKey(games),
-      create: (context) => RatingHistoryViewModel(games, context.read<TimeClassViewModel>()),
+      create: (context) => RatingHistoryViewModel(
+        games,
+        timeClassFilter: context.read<TimeClassViewModel>(),
+        colorFilter: context.read<PlayerColorViewModel>(),
+      ),
       child: Consumer<RatingHistoryViewModel>(
         builder: (context, viewModel, child) {
           final series = viewModel.series;
@@ -45,7 +49,9 @@ class RatingHistoryCard extends StatelessWidget {
                     ),
               ),
               const SizedBox(height: 12),
-              if (series.isEmpty)
+              if (viewModel.showsTrend)
+                _trend(context, viewModel, l10n)
+              else if (series.isEmpty)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 32),
                   child: Center(child: Text(l10n.noRatingData)),
@@ -85,6 +91,76 @@ class RatingHistoryCard extends StatelessWidget {
           : Theme.of(context).colorScheme.onSurfaceVariant;
 
   static String _changeText(int change) => change > 0 ? '+$change' : '$change';
+
+  /// Filtre de couleur actif : pas de courbe, mais les points gagnés ou
+  /// perdus avec cette couleur, une ligne par cadence (icône montante /
+  /// descendante, cadence, classement actuel, points, nombre de parties).
+  Widget _trend(BuildContext context, RatingHistoryViewModel viewModel, AppLocalizations l10n) {
+    final textTheme = Theme.of(context).textTheme;
+    final trends = viewModel.trends;
+    final colors = Theme.of(context).colorScheme;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          viewModel.color == PlayerColorViewModel.white ? l10n.ratingTrendWhite : l10n.ratingTrendBlack,
+          style: textTheme.bodyMedium?.copyWith(color: colors.onSurfaceVariant),
+        ),
+        const SizedBox(height: 12),
+        if (trends.isEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            child: Center(child: Text(l10n.ratingTrendNotEnough, textAlign: TextAlign.center)),
+          )
+        else
+          for (final trend in trends)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(
+                    trend.points > 0
+                        ? Icons.trending_up
+                        : trend.points < 0
+                            ? Icons.trending_down
+                            : Icons.trending_flat,
+                    color: _changeColor(context, trend.points),
+                    size: 32,
+                  ),
+                  const SizedBox(width: 10),
+                  SizedBox(
+                    width: 56,
+                    child: Text(FilterLabels.timeClass(trend.timeClass, l10n), style: textTheme.bodyMedium),
+                  ),
+                  // Classement actuel, pour situer le niveau.
+                  if (trend.current != null) ...[
+                    Text(
+                      '${trend.current}',
+                      style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(width: 8),
+                  ],
+                  Text(
+                    l10n.ratingTrendPoints(_changeText(trend.points)),
+                    style: textTheme.titleMedium?.copyWith(
+                      color: _changeColor(context, trend.points),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Flexible(
+                    child: Text(
+                      l10n.ratingTrendGames(trend.games),
+                      style: textTheme.bodyMedium?.copyWith(color: colors.onSurfaceVariant),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+      ],
+    );
+  }
 
   /// Une seule cadence : classement actuel en gros, variation sur la période
   /// en vert / rouge à côté.
@@ -144,7 +220,7 @@ class RatingHistoryCard extends StatelessWidget {
                 const SizedBox(width: 8),
                 SizedBox(
                   width: 60,
-                  child: Text(TimeClassSelector.labelOf(item.timeClass, l10n), style: textTheme.bodyMedium),
+                  child: Text(FilterLabels.timeClass(item.timeClass, l10n), style: textTheme.bodyMedium),
                 ),
                 Text(
                   '${item.current}',
@@ -264,7 +340,7 @@ class RatingHistoryCard extends StatelessWidget {
                 LineTooltipItem(
                   single
                       ? '${spot.y.toInt()}\n'
-                      : '${TimeClassSelector.labelOf(series[spot.barIndex].timeClass, l10n)} ${spot.y.toInt()}\n',
+                      : '${FilterLabels.timeClass(series[spot.barIndex].timeClass, l10n)} ${spot.y.toInt()}\n',
                   TextStyle(
                     color: theme.colorScheme.onInverseSurface,
                     fontWeight: FontWeight.bold,

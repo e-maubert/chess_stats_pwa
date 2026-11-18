@@ -8,7 +8,7 @@ import '../services/country_name_service.dart';
 import '../services/country_stats_service.dart';
 import '../services/pagination_service.dart';
 import '../viewmodels/country_stats_viewmodel.dart';
-import '../viewmodels/time_class_viewmodel.dart';
+import '../viewmodels/stats_filter_viewmodel.dart';
 import 'country_map.dart';
 import 'pagination_controls.dart';
 import 'result_bar.dart';
@@ -59,7 +59,11 @@ class CountryStatsCard extends StatelessWidget {
     return ChangeNotifierProvider(
       // Nouvelle liste (ex. après « Actualiser ») => nouveau viewmodel.
       key: ObjectKey(games),
-      create: (context) => CountryStatsViewModel(games, context.read<TimeClassViewModel>()),
+      create: (context) => CountryStatsViewModel(
+        games,
+        timeClassFilter: context.read<TimeClassViewModel>(),
+        colorFilter: context.read<PlayerColorViewModel>(),
+      ),
       child: Consumer<CountryStatsViewModel>(
         builder: (context, viewModel, child) {
           final countries = viewModel.countries;

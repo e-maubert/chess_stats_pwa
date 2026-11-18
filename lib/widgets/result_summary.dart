@@ -3,7 +3,8 @@ import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import 'result_bar.dart';
 
 /// Libellé + nombre de parties, puis barre victoires / nulles / défaites et
-/// pourcentages, comme sur la page des statistiques par pays.
+/// pourcentages (avec le nombre de parties), comme sur la page des
+/// statistiques par pays.
 class ResultSummary extends StatelessWidget {
   final String label;
   final int wins;
@@ -22,7 +23,9 @@ class ResultSummary extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final total = wins + draws + losses;
-    String percent(int count) => '${(count * 100 / total).toStringAsFixed(0)}%';
+    // Pourcentage suivi du nombre de parties : « 6% » seul parle peu.
+    String percent(int count) =>
+        l10n.resultRateWithCount('${(count * 100 / total).toStringAsFixed(0)}%', count);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
