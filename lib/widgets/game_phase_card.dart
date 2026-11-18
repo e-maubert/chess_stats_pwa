@@ -242,7 +242,8 @@ class GamePhaseCard extends StatelessWidget {
           children: [
             for (final swatch in swatches) Padding(padding: const EdgeInsets.only(right: 2), child: swatch),
             const SizedBox(width: 6),
-            Text(text, style: textTheme.bodySmall),
+            // Texte long sur mobile : il passe à la ligne au lieu de déborder.
+            Flexible(child: Text(text, style: textTheme.bodySmall)),
           ],
         );
     final gapLabels = {
