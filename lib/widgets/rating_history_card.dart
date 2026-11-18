@@ -35,6 +35,7 @@ class RatingHistoryCard extends StatelessWidget {
         games,
         timeClassFilter: context.read<TimeClassViewModel>(),
         colorFilter: context.read<PlayerColorViewModel>(),
+        openingFilter: context.read<OpeningFilterViewModel>(),
       ),
       child: Consumer<RatingHistoryViewModel>(
         builder: (context, viewModel, child) {
@@ -103,7 +104,11 @@ class RatingHistoryCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          viewModel.color == PlayerColorViewModel.white ? l10n.ratingTrendWhite : l10n.ratingTrendBlack,
+          viewModel.opening != null
+              ? l10n.ratingTrendSelection
+              : viewModel.color == PlayerColorViewModel.white
+                  ? l10n.ratingTrendWhite
+                  : l10n.ratingTrendBlack,
           style: textTheme.bodyMedium?.copyWith(color: colors.onSurfaceVariant),
         ),
         const SizedBox(height: 12),

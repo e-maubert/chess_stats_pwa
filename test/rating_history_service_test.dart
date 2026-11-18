@@ -51,7 +51,7 @@ void main() {
   });
 
   test('viewmodel : toutes les courbes sur « Toutes », une seule sinon', () {
-    final filter = TimeClassViewModel.temporary();
+    final filter = TimeClassViewModel();
     final viewModel = RatingHistoryViewModel(games, timeClassFilter: filter);
     var notified = 0;
     viewModel.addListener(() => notified++);
@@ -106,7 +106,7 @@ void main() {
     });
 
     test('viewmodel : courbes sans couleur, tendance par cadence avec', () {
-      final colorFilter = PlayerColorViewModel.temporary();
+      final colorFilter = PlayerColorViewModel();
       final viewModel = RatingHistoryViewModel(mixed, colorFilter: colorFilter);
       expect(viewModel.showsTrend, isFalse);
 
@@ -118,7 +118,7 @@ void main() {
     });
 
     test("pas assez de parties : aucune tendance", () {
-      final colorFilter = PlayerColorViewModel.temporary();
+      final colorFilter = PlayerColorViewModel();
       final viewModel = RatingHistoryViewModel([c('white', 1500, 1)], colorFilter: colorFilter);
       colorFilter.select('white');
       expect(viewModel.trends, isEmpty);

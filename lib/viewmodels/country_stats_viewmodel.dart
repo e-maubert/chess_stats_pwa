@@ -10,7 +10,7 @@ class CountryStatsViewModel extends FilteredStatsViewModel {
   int _page = 0;
   CountryMapMode _mapMode = CountryMapMode.gamesPlayed;
 
-  CountryStatsViewModel(super.games, {super.timeClassFilter, super.colorFilter});
+  CountryStatsViewModel(super.games, {super.timeClassFilter, super.colorFilter, super.openingFilter});
 
   /// Carte affichée : parties jouées ou performance. Ne change ni le
   /// tableau ni sa page.

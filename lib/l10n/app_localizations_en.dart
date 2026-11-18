@@ -914,4 +914,94 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get ratingTrendNotEnough =>
       'Not enough rated games to compute the trend';
+
+  @override
+  String openingFamilyName(String family, String fallback) {
+    String _temp0 = intl.Intl.selectLogic(
+      family,
+      {
+        'QueensPawn': 'Queen\'s Pawn Game',
+        'QueensGambit': 'Queen\'s Gambit',
+        'SicilianDefense': 'Sicilian Defense',
+        'RuyLopez': 'Ruy Lopez',
+        'EnglishOpening': 'English Opening',
+        'FrenchDefense': 'French Defense',
+        'DutchDefense': 'Dutch Defense',
+        'KingsGambit': 'King\'s Gambit',
+        'CaroKann': 'Caro-Kann Defense',
+        'ViennaGame': 'Vienna Game',
+        'TwoKnights': 'Two Knights Defense',
+        'GiuocoPiano': 'Giuoco Piano',
+        'ItalianGame': 'Italian Game',
+        'AlekhinesDefense': 'Alekhine\'s Defense',
+        'RetiOpening': 'Réti Opening',
+        'RetiAccepted': 'Réti Accepted',
+        'PircDefense': 'Pirc Defense',
+        'KingsPawn': 'King\'s Pawn Game',
+        'FourKnights': 'Four Knights Game',
+        'PetrovDefense': 'Petrov\'s Defense',
+        'PetrovsDefense': 'Petrov\'s Defense',
+        'KingsKnights': 'King\'s Knight Opening',
+        'KingsIndian': 'King\'s Indian',
+        'QueensIndian': 'Queen\'s Indian Defense',
+        'NimzoIndian': 'Nimzo-Indian Defense',
+        'BogoIndian': 'Bogo-Indian Defense',
+        'IndianGame': 'Indian Game',
+        'CenterGame': 'Center Game',
+        'BishopsOpening': 'Bishop\'s Opening',
+        'BirdsOpening': 'Bird\'s Opening',
+        'ScotchGame': 'Scotch Game',
+        'ScandinavianDefense': 'Scandinavian Defense',
+        'RobatschDefense': 'Modern Defense (Robatsch)',
+        'ModernDefense': 'Modern Defense',
+        'PhilidorDefense': 'Philidor Defense',
+        'NimzowitschLarsen': 'Nimzowitsch-Larsen Attack',
+        'AnderssenOpening': 'Anderssen\'s Opening',
+        'LondonSystem': 'London System',
+        'ColleSystem': 'Colle System',
+        'TrompowskyAttack': 'Trompowsky Attack',
+        'GrunfeldDefense': 'Grünfeld Defense',
+        'SlavDefense': 'Slav Defense',
+        'SemiSlav': 'Semi-Slav Defense',
+        'CatalanOpening': 'Catalan Opening',
+        'BenoniDefense': 'Benoni Defense',
+        'BenkoGambit': 'Benko Gambit',
+        'OwensDefense': 'Owen\'s Defense',
+        'PolishOpening': 'Polish Opening',
+        'ZukertortOpening': 'Zukertort Opening',
+        'PonzianiOpening': 'Ponziani Opening',
+        'EvansGambit': 'Evans Gambit',
+        'DanishGambit': 'Danish Gambit',
+        'UnknownOpening': 'Unknown opening',
+        'UncommonOpening': 'Uncommon Opening',
+        'KingsIndianAttack': 'King\'s Indian Attack',
+        'BudapestGambit': 'Budapest Gambit',
+        'OldIndian': 'Old Indian Defense',
+        'KingsKnight': 'King\'s Knight Opening',
+        'ThreeKnights': 'Three Knights Game',
+        'VeresovAttack': 'Veresov Attack',
+        'TorreAttack': 'Torre Attack',
+        'other': '$fallback',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get openingFilterLabel => 'Opening';
+
+  @override
+  String get openingFilterAll => 'All openings';
+
+  @override
+  String get openingFilterOthers => 'Other openings';
+
+  @override
+  String openingOptionCount(String name, int count) {
+    return '$name ($count)';
+  }
+
+  @override
+  String get ratingTrendSelection =>
+      'Rating points won or lost in the selected games';
 }

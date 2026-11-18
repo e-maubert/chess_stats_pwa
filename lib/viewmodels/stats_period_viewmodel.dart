@@ -1,25 +1,21 @@
 import 'package:flutter/foundation.dart';
 
 import '../models/stats_period.dart';
-import '../services/period_preference_service.dart';
 
 /// Période des statistiques choisie dans l'en-tête de la page des stats.
+/// Non mémorisée : « 1 mois » pour chaque joueur consulté (voir
+/// ChoiceFilterViewModel).
 class StatsPeriodViewModel extends ChangeNotifier {
-  final PeriodPreferenceService _preferences;
-  StatsPeriod _period;
+  /// Période affichée à l'ouverture de la page d'un joueur.
+  static const StatsPeriod defaultPeriod = StatsPeriod.oneMonth;
 
-  /// [initialPeriod] : choix enregistré, ou « 1 mois » s'il n'y en a pas.
-  StatsPeriodViewModel(StatsPeriod initialPeriod, {PeriodPreferenceService? preferences})
-      : _period = initialPeriod,
-        _preferences = preferences ?? PeriodPreferenceService();
+  StatsPeriod _period = defaultPeriod;
 
   StatsPeriod get period => _period;
 
-  /// Change de période et mémorise ce choix.
-  Future<void> select(StatsPeriod period) async {
+  void select(StatsPeriod period) {
     if (period == _period) return;
     _period = period;
     notifyListeners();
-    await _preferences.save(period);
   }
 }

@@ -912,4 +912,94 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get ratingTrendNotEnough =>
       'Pas assez de parties classées pour calculer la tendance';
+
+  @override
+  String openingFamilyName(String family, String fallback) {
+    String _temp0 = intl.Intl.selectLogic(
+      family,
+      {
+        'QueensPawn': 'Partie du pion dame',
+        'QueensGambit': 'Gambit dame',
+        'SicilianDefense': 'Défense sicilienne',
+        'RuyLopez': 'Partie espagnole',
+        'EnglishOpening': 'Ouverture anglaise',
+        'FrenchDefense': 'Défense française',
+        'DutchDefense': 'Défense hollandaise',
+        'KingsGambit': 'Gambit du roi',
+        'CaroKann': 'Défense Caro-Kann',
+        'ViennaGame': 'Partie viennoise',
+        'TwoKnights': 'Défense des deux cavaliers',
+        'GiuocoPiano': 'Giuoco piano',
+        'ItalianGame': 'Partie italienne',
+        'AlekhinesDefense': 'Défense Alekhine',
+        'RetiOpening': 'Ouverture Réti',
+        'RetiAccepted': 'Réti acceptée',
+        'PircDefense': 'Défense Pirc',
+        'KingsPawn': 'Partie du pion roi',
+        'FourKnights': 'Partie des quatre cavaliers',
+        'PetrovDefense': 'Défense Petrov',
+        'PetrovsDefense': 'Défense Petrov',
+        'KingsKnights': 'Ouverture du cavalier roi',
+        'KingsIndian': 'Indienne du roi',
+        'QueensIndian': 'Défense indienne de la dame',
+        'NimzoIndian': 'Défense nimzo-indienne',
+        'BogoIndian': 'Défense bogo-indienne',
+        'IndianGame': 'Partie indienne',
+        'CenterGame': 'Partie du centre',
+        'BishopsOpening': 'Ouverture du fou',
+        'BirdsOpening': 'Ouverture Bird',
+        'ScotchGame': 'Partie écossaise',
+        'ScandinavianDefense': 'Défense scandinave',
+        'RobatschDefense': 'Défense moderne (Robatsch)',
+        'ModernDefense': 'Défense moderne',
+        'PhilidorDefense': 'Défense Philidor',
+        'NimzowitschLarsen': 'Attaque Nimzowitsch-Larsen',
+        'AnderssenOpening': 'Ouverture Anderssen',
+        'LondonSystem': 'Système de Londres',
+        'ColleSystem': 'Système Colle',
+        'TrompowskyAttack': 'Attaque Trompowsky',
+        'GrunfeldDefense': 'Défense Grünfeld',
+        'SlavDefense': 'Défense slave',
+        'SemiSlav': 'Défense semi-slave',
+        'CatalanOpening': 'Ouverture catalane',
+        'BenoniDefense': 'Défense Benoni',
+        'BenkoGambit': 'Gambit Benko',
+        'OwensDefense': 'Défense Owen',
+        'PolishOpening': 'Ouverture polonaise',
+        'ZukertortOpening': 'Ouverture Zukertort',
+        'PonzianiOpening': 'Ouverture Ponziani',
+        'EvansGambit': 'Gambit Evans',
+        'DanishGambit': 'Gambit danois',
+        'UnknownOpening': 'Ouverture inconnue',
+        'UncommonOpening': 'Début irrégulier',
+        'KingsIndianAttack': 'Attaque indienne du roi',
+        'BudapestGambit': 'Gambit de Budapest',
+        'OldIndian': 'Vieille défense indienne',
+        'KingsKnight': 'Ouverture du cavalier roi',
+        'ThreeKnights': 'Partie des trois cavaliers',
+        'VeresovAttack': 'Attaque Veresov',
+        'TorreAttack': 'Attaque Torre',
+        'other': '$fallback',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get openingFilterLabel => 'Ouverture';
+
+  @override
+  String get openingFilterAll => 'Toutes les ouvertures';
+
+  @override
+  String get openingFilterOthers => 'Autres ouvertures';
+
+  @override
+  String openingOptionCount(String name, int count) {
+    return '$name ($count)';
+  }
+
+  @override
+  String get ratingTrendSelection =>
+      'Points de classement gagnés ou perdus sur les parties sélectionnées';
 }

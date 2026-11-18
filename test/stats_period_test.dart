@@ -4,7 +4,6 @@ import 'package:chess_stats_pwa/models/year_month.dart';
 import 'package:chess_stats_pwa/services/game_repository.dart';
 import 'package:chess_stats_pwa/services/game_store.dart';
 import 'package:chess_stats_pwa/services/monthly_games_source.dart';
-import 'package:chess_stats_pwa/services/period_preference_service.dart';
 import 'package:chess_stats_pwa/services/stats_period_service.dart';
 import 'package:chess_stats_pwa/viewmodels/player_games_viewmodel.dart';
 import 'package:chess_stats_pwa/viewmodels/stats_period_viewmodel.dart';
@@ -59,22 +58,15 @@ void main() {
     });
   });
 
-  group('Choix de la période', () {
-    test('« 1 mois » par défaut, dernier choix mémorisé', () async {
-      expect(await PeriodPreferenceService().load(), StatsPeriod.oneMonth);
-      final viewModel = StatsPeriodViewModel(StatsPeriod.oneMonth);
-      var notified = 0;
-      viewModel.addListener(() => notified++);
-      await viewModel.select(StatsPeriod.threeMonths);
-      expect(viewModel.period, StatsPeriod.threeMonths);
-      expect(notified, 1);
-      expect(await PeriodPreferenceService().load(), StatsPeriod.threeMonths);
-    });
-
-    test('valeur enregistrée inconnue : « 1 mois »', () async {
-      SharedPreferences.setMockInitialValues({'stats_period': 'sixMonths'});
-      expect(await PeriodPreferenceService().load(), StatsPeriod.oneMonth);
-    });
+  test('période : « 1 mois » par défaut, changement notifié', () {
+    final viewModel = StatsPeriodViewModel();
+    expect(viewModel.period, StatsPeriod.oneMonth);
+    var notified = 0;
+    viewModel.addListener(() => notified++);
+    viewModel.select(StatsPeriod.threeMonths);
+    viewModel.select(StatsPeriod.threeMonths);
+    expect(viewModel.period, StatsPeriod.threeMonths);
+    expect(notified, 1);
   });
 
   group('PlayerGamesViewModel.gamesIn', () {

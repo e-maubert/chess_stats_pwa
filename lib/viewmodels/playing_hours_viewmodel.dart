@@ -14,7 +14,7 @@ class PlayingHoursViewModel extends FilteredStatsViewModel {
   PlayingHoursMode _mode = PlayingHoursMode.activity;
   int? _selectedHour;
 
-  PlayingHoursViewModel(super.games, {super.timeClassFilter, super.colorFilter});
+  PlayingHoursViewModel(super.games, {super.timeClassFilter, super.colorFilter, super.openingFilter});
 
   PlayingHoursMode get mode => _mode;
 
