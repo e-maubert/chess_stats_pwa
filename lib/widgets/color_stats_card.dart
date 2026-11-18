@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import '../models/color_stats.dart';
 import '../models/country_game.dart';
 import '../viewmodels/color_stats_viewmodel.dart';
+import '../viewmodels/time_class_viewmodel.dart';
 import 'result_summary.dart';
-import 'time_class_filter.dart';
 
 /// Page principale : victoires / nulles / défaites avec les blancs et avec
 /// les noirs, en barres comme sur la page des pays, filtrables par cadence.
@@ -21,7 +21,7 @@ class ColorStatsCard extends StatelessWidget {
     return ChangeNotifierProvider(
       // Nouvelle liste (ex. après « Actualiser ») => nouveau viewmodel.
       key: ObjectKey(games),
-      create: (_) => ColorStatsViewModel(games),
+      create: (context) => ColorStatsViewModel(games, context.read<TimeClassViewModel>()),
       child: Consumer<ColorStatsViewModel>(
         builder: (context, viewModel, child) {
           final stats = viewModel.stats;
@@ -36,12 +36,6 @@ class ColorStatsCard extends StatelessWidget {
                     ),
               ),
               const SizedBox(height: 12),
-              TimeClassFilter(
-                timeClasses: ColorStatsViewModel.timeClasses,
-                selected: viewModel.timeClass,
-                onSelected: viewModel.setTimeClass,
-              ),
-              const SizedBox(height: 16),
               _summary(l10n.withWhite, stats.white),
               const SizedBox(height: 16),
               _summary(l10n.withBlack, stats.black),

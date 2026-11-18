@@ -5,7 +5,7 @@ import '../models/country_game.dart';
 import '../services/time_management_service.dart';
 import '../theme/app_theme.dart';
 import '../viewmodels/time_management_viewmodel.dart';
-import 'time_class_filter.dart';
+import '../viewmodels/time_class_viewmodel.dart';
 
 /// Page principale : sur les parties perdues, écart de pendule avec
 /// l'adversaire en fin de partie, répartition des défaites selon cet écart
@@ -29,7 +29,7 @@ class TimeManagementCard extends StatelessWidget {
     return ChangeNotifierProvider(
       // Nouvelle liste (ex. après « Actualiser ») => nouveau viewmodel.
       key: ObjectKey(games),
-      create: (_) => TimeManagementViewModel(games),
+      create: (context) => TimeManagementViewModel(games, context.read<TimeClassViewModel>()),
       child: Consumer<TimeManagementViewModel>(
         builder: (context, viewModel, child) {
           final stats = viewModel.stats;
@@ -42,12 +42,6 @@ class TimeManagementCard extends StatelessWidget {
                 style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
-              TimeClassFilter(
-                timeClasses: TimeManagementViewModel.timeClasses,
-                selected: viewModel.timeClass,
-                onSelected: viewModel.setTimeClass,
-              ),
-              const SizedBox(height: 16),
               if (stats.losses == 0)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 24),

@@ -9,10 +9,12 @@ import 'services/changelog_service.dart';
 import 'services/game_repository.dart';
 import 'services/period_preference_service.dart';
 import 'services/theme_preference_service.dart';
+import 'services/time_class_preference_service.dart';
 import 'theme/app_theme.dart';
 import 'viewmodels/changelog_viewmodel.dart';
 import 'viewmodels/stats_period_viewmodel.dart';
 import 'viewmodels/theme_viewmodel.dart';
+import 'viewmodels/time_class_viewmodel.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +25,8 @@ Future<void> main() async {
   final lastSeenVersion = await ChangelogService().loadLastSeen();
   // Période choisie lors d'une visite précédente, sinon « 1 mois ».
   final period = await PeriodPreferenceService().load();
+  // Cadence choisie lors d'une visite précédente, sinon « Toutes ».
+  final timeClass = await const TimeClassPreferenceService(allowed: TimeClassViewModel.timeClasses).load();
   // Parties stockées localement : nettoyage au lancement, sans attendre.
   final repository = GameRepository.local();
   unawaited(repository.purge());
@@ -31,6 +35,7 @@ Future<void> main() async {
     initialThemeMode: themeMode,
     lastSeenVersion: lastSeenVersion,
     initialPeriod: period,
+    initialTimeClass: timeClass,
     repository: repository,
   ));
 }
@@ -40,6 +45,9 @@ class MyApp extends StatelessWidget {
   final String? lastSeenVersion;
   final StatsPeriod initialPeriod;
 
+  /// Cadence choisie (null = toutes).
+  final String? initialTimeClass;
+
   /// Accès aux parties des joueurs ; par défaut stockage local + chess.com.
   final GameRepository? repository;
 
@@ -48,6 +56,7 @@ class MyApp extends StatelessWidget {
     this.initialThemeMode = ThemeMode.system,
     this.lastSeenVersion,
     this.initialPeriod = PeriodPreferenceService.defaultPeriod,
+    this.initialTimeClass,
     this.repository,
   });
 
@@ -59,6 +68,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => ThemeViewModel(initialThemeMode)),
         ChangeNotifierProvider(create: (_) => ChangelogViewModel(lastSeenVersion)),
         ChangeNotifierProvider(create: (_) => StatsPeriodViewModel(initialPeriod)),
+        ChangeNotifierProvider(create: (_) => TimeClassViewModel(initialTimeClass)),
       ],
       child: Consumer<ThemeViewModel>(
         builder: (context, themeViewModel, child) => MaterialApp(

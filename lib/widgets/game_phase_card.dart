@@ -8,9 +8,9 @@ import '../services/game_phase_stats_service.dart';
 import '../services/time_management_service.dart';
 import '../theme/app_theme.dart';
 import '../viewmodels/game_phase_stats_viewmodel.dart';
+import '../viewmodels/time_class_viewmodel.dart';
 import 'clock_pie.dart';
 import 'result_summary.dart';
-import 'time_class_filter.dart';
 
 /// Phases de la partie (fin de l'ouverture, entrée en finale) : où se
 /// terminent les parties, temps restant à ces deux moments, résultats en
@@ -61,7 +61,7 @@ class GamePhaseCard extends StatelessWidget {
     return ChangeNotifierProvider(
       // Nouvelle liste (ex. après « Actualiser ») => nouveau viewmodel.
       key: ObjectKey(games),
-      create: (_) => GamePhaseStatsViewModel(games),
+      create: (context) => GamePhaseStatsViewModel(games, context.read<TimeClassViewModel>()),
       child: Consumer<GamePhaseStatsViewModel>(
         builder: (context, viewModel, child) {
           final stats = viewModel.stats;
@@ -69,12 +69,6 @@ class GamePhaseCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _title(context, l10n.gamePhases),
-              TimeClassFilter(
-                timeClasses: GamePhaseStatsViewModel.timeClasses,
-                selected: viewModel.timeClass,
-                onSelected: viewModel.setTimeClass,
-              ),
-              const SizedBox(height: 16),
               if (stats.games == 0)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 24),

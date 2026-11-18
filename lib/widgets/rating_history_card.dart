@@ -9,10 +9,12 @@ import '../models/country_game.dart';
 import '../services/rating_history_service.dart';
 import '../theme/app_theme.dart';
 import '../viewmodels/rating_history_viewmodel.dart';
-import 'time_class_filter.dart';
+import '../viewmodels/time_class_viewmodel.dart';
+import 'time_class_selector.dart';
 
-/// Page principale : courbe du classement sur la période pour une cadence,
-/// avec le classement actuel et sa variation à droite du graphique.
+/// Page principale : courbe du classement sur la période pour la cadence
+/// choisie, ou une courbe par cadence sur « Toutes », avec le classement
+/// actuel et sa variation à droite du graphique.
 class RatingHistoryCard extends StatelessWidget {
   final List<CountryGame> games;
 
@@ -29,9 +31,10 @@ class RatingHistoryCard extends StatelessWidget {
     return ChangeNotifierProvider(
       // Nouvelle liste (ex. après « Actualiser ») => nouveau viewmodel.
       key: ObjectKey(games),
-      create: (_) => RatingHistoryViewModel(games),
+      create: (context) => RatingHistoryViewModel(games, context.read<TimeClassViewModel>()),
       child: Consumer<RatingHistoryViewModel>(
         builder: (context, viewModel, child) {
+          final series = viewModel.series;
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -42,21 +45,17 @@ class RatingHistoryCard extends StatelessWidget {
                     ),
               ),
               const SizedBox(height: 12),
-              TimeClassFilter(
-                timeClasses: RatingHistoryViewModel.timeClasses,
-                selected: viewModel.timeClass,
-                onSelected: viewModel.setTimeClass,
-              ),
-              const SizedBox(height: 16),
-              if (viewModel.points.isEmpty)
+              if (series.isEmpty)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 32),
                   child: Center(child: Text(l10n.noRatingData)),
                 )
               else
                 LayoutBuilder(builder: (context, constraints) {
-                  final chart = SizedBox(height: 220, child: _chart(context, viewModel.points));
-                  final summary = _summary(context, viewModel, l10n);
+                  final chart = SizedBox(height: 220, child: _chart(context, series, l10n));
+                  final summary = series.length == 1
+                      ? _summary(context, series.single, l10n)
+                      : _multiSummary(context, series, l10n);
                   if (constraints.maxWidth < _wideLayoutMinWidth) {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,17 +78,18 @@ class RatingHistoryCard extends StatelessWidget {
     );
   }
 
-  /// Classement actuel en gros, variation sur la période en vert / rouge à côté.
-  Widget _summary(BuildContext context, RatingHistoryViewModel viewModel, AppLocalizations l10n) {
-    final textTheme = Theme.of(context).textTheme;
-    final change = viewModel.change;
-    final changeColor = change > 0
-        ? AppTheme.positiveText(context)
-        : change < 0
-            ? AppTheme.negativeText(context)
-            : Theme.of(context).colorScheme.onSurfaceVariant;
-    final changeText = change > 0 ? '+$change' : '$change';
+  static Color _changeColor(BuildContext context, int change) => change > 0
+      ? AppTheme.positiveText(context)
+      : change < 0
+          ? AppTheme.negativeText(context)
+          : Theme.of(context).colorScheme.onSurfaceVariant;
 
+  static String _changeText(int change) => change > 0 ? '+$change' : '$change';
+
+  /// Une seule cadence : classement actuel en gros, variation sur la période
+  /// en vert / rouge à côté.
+  Widget _summary(BuildContext context, RatingSeries series, AppLocalizations l10n) {
+    final textTheme = Theme.of(context).textTheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -100,14 +100,14 @@ class RatingHistoryCard extends StatelessWidget {
           textBaseline: TextBaseline.alphabetic,
           children: [
             Text(
-              '${viewModel.currentRating}',
+              '${series.current}',
               style: textTheme.headlineLarge?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(width: 8),
             Text(
-              changeText,
+              _changeText(series.change),
               style: textTheme.titleMedium?.copyWith(
-                color: changeColor,
+                color: _changeColor(context, series.change),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -118,22 +118,81 @@ class RatingHistoryCard extends StatelessWidget {
     );
   }
 
-  Widget _chart(BuildContext context, List<RatingPoint> points) {
+  /// Plusieurs cadences : une ligne par courbe (pastille de sa couleur,
+  /// cadence, classement actuel, variation), qui sert aussi de légende.
+  Widget _multiSummary(BuildContext context, List<RatingSeries> series, AppLocalizations l10n) {
+    final textTheme = Theme.of(context).textTheme;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(l10n.ratingCurrent, style: textTheme.bodyMedium),
+        const SizedBox(height: 4),
+        for (final item in series)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 2),
+            child: Row(
+              children: [
+                Container(
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    color: AppTheme.timeClassColor(context, item.timeClass),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                SizedBox(
+                  width: 60,
+                  child: Text(TimeClassSelector.labelOf(item.timeClass, l10n), style: textTheme.bodyMedium),
+                ),
+                Text(
+                  '${item.current}',
+                  style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  _changeText(item.change),
+                  style: textTheme.bodyMedium?.copyWith(
+                    color: _changeColor(context, item.change),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        const SizedBox(height: 2),
+        Text(l10n.ratingSincePeriodStart, style: textTheme.bodySmall),
+      ],
+    );
+  }
+
+  Widget _chart(BuildContext context, List<RatingSeries> series, AppLocalizations l10n) {
     final theme = Theme.of(context);
     final locale = Localizations.localeOf(context).toLanguageTag();
     final dayFormat = DateFormat('d MMM', locale);
     final tooltipFormat = DateFormat('d MMM HH:mm', locale);
-    final lineColor = theme.colorScheme.primary;
     final labelStyle = theme.textTheme.bodySmall;
+    final single = series.length == 1;
 
-    final spots = [
-      for (final point in points)
-        FlSpot(point.time.millisecondsSinceEpoch.toDouble(), point.rating.toDouble()),
+    // Une seule courbe : couleur principale du thème ; sinon une couleur par
+    // cadence (celle de la légende).
+    final colors = [
+      for (final item in series)
+        single ? theme.colorScheme.primary : AppTheme.timeClassColor(context, item.timeClass),
     ];
+    final spotLists = [
+      for (final item in series)
+        [
+          for (final point in item.points)
+            FlSpot(point.time.millisecondsSinceEpoch.toDouble(), point.rating.toDouble()),
+        ],
+    ];
+    final allSpots = spotLists.expand((spots) => spots).toList();
 
     // Axe X : un écart nul (une seule partie) ferait planter le graphique.
-    var minX = spots.first.x;
-    var maxX = spots.last.x;
+    var minX = allSpots.map((spot) => spot.x).reduce(math.min);
+    var maxX = allSpots.map((spot) => spot.x).reduce(math.max);
     const hour = 3600 * 1000.0;
     if (maxX - minX < hour) {
       minX -= hour;
@@ -141,7 +200,7 @@ class RatingHistoryCard extends StatelessWidget {
     }
 
     // Axe Y : marge autour des classements, arrondie à la dizaine.
-    final ratings = points.map((p) => p.rating);
+    final ratings = allSpots.map((spot) => spot.y);
     final minY = ((ratings.reduce(math.min) - 10) / 10).floorToDouble() * 10;
     final maxY = ((ratings.reduce(math.max) + 10) / 10).ceilToDouble() * 10;
 
@@ -203,7 +262,9 @@ class RatingHistoryCard extends StatelessWidget {
             getTooltipItems: (touchedSpots) => [
               for (final spot in touchedSpots)
                 LineTooltipItem(
-                  '${spot.y.toInt()}\n',
+                  single
+                      ? '${spot.y.toInt()}\n'
+                      : '${TimeClassSelector.labelOf(series[spot.barIndex].timeClass, l10n)} ${spot.y.toInt()}\n',
                   TextStyle(
                     color: theme.colorScheme.onInverseSurface,
                     fontWeight: FontWeight.bold,
@@ -225,17 +286,20 @@ class RatingHistoryCard extends StatelessWidget {
           ),
         ),
         lineBarsData: [
-          LineChartBarData(
-            spots: spots,
-            color: lineColor,
-            barWidth: 2,
-            // Points visibles seulement s'il y a peu de parties.
-            dotData: FlDotData(show: spots.length <= 30),
-            belowBarData: BarAreaData(
-              show: true,
-              color: lineColor.withValues(alpha: 0.12),
+          for (final (index, spots) in spotLists.indexed)
+            LineChartBarData(
+              spots: spots,
+              color: colors[index],
+              barWidth: 2,
+              // Points visibles seulement s'il y a peu de parties.
+              dotData: FlDotData(show: spots.length <= 30),
+              // Aire sous la courbe seulement s'il n'y en a qu'une : plusieurs
+              // aires superposées brouilleraient le graphique.
+              belowBarData: BarAreaData(
+                show: single,
+                color: colors[index].withValues(alpha: 0.12),
+              ),
             ),
-          ),
         ],
       ),
     );

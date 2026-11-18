@@ -120,8 +120,8 @@ void main() {
     var notified = 0;
     viewModel.addListener(() => notified++);
     expect(viewModel.stats.losses, 2);
-    viewModel.setTimeClass('bullet');
-    viewModel.setTimeClass('bullet');
+    viewModel.timeClassFilter.select('bullet');
+    viewModel.timeClassFilter.select('bullet');
     expect(viewModel.stats.losses, 1);
     expect(notified, 1);
   });

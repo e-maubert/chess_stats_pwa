@@ -84,7 +84,7 @@ void main() {
       expect(viewModel.page, 0);
 
       viewModel.setPage(1);
-      viewModel.setTimeClass('bullet');
+      viewModel.timeClassFilter.select('bullet');
       expect(viewModel.page, 0);
       expect(viewModel.pageCountries, isEmpty);
     });

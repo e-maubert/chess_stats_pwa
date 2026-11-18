@@ -1,6 +1,7 @@
 import 'package:chess_stats_pwa/models/country_game.dart';
 import 'package:chess_stats_pwa/services/rating_history_service.dart';
 import 'package:chess_stats_pwa/viewmodels/rating_history_viewmodel.dart';
+import 'package:chess_stats_pwa/viewmodels/time_class_viewmodel.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 CountryGame g(String timeClass, int? rating, int day, {bool rated = true}) => CountryGame(
@@ -40,30 +41,34 @@ void main() {
     expect(RatingHistoryService.change(const []), 0);
   });
 
-  test('mostPlayed : cadence avec le plus de parties classées', () {
-    expect(RatingHistoryService.mostPlayed(games, ['bullet', 'blitz', 'rapid']), 'bullet');
-    expect(RatingHistoryService.mostPlayed(const [], ['bullet', 'blitz']), 'bullet');
+  test("series : une courbe par cadence jouée, dans l'ordre demandé", () {
+    final series = RatingHistoryService.series(games, ['bullet', 'blitz', 'rapid']);
+    expect(series.map((s) => s.timeClass), ['bullet', 'blitz']);
+    expect(series.first.current, 1150);
+    expect(series.first.change, -50);
+    expect(series.last.current, 1510);
+    expect(series.last.change, 10);
   });
 
-  test('le viewmodel démarre sur la cadence la plus jouée et notifie au changement', () {
-    final viewModel = RatingHistoryViewModel(games);
+  test('viewmodel : toutes les courbes sur « Toutes », une seule sinon', () {
+    final filter = TimeClassViewModel.temporary();
+    final viewModel = RatingHistoryViewModel(games, filter);
     var notified = 0;
     viewModel.addListener(() => notified++);
 
-    expect(viewModel.timeClass, 'bullet');
-    expect(viewModel.currentRating, 1150);
-    expect(viewModel.change, -50);
+    expect(viewModel.series.map((s) => s.timeClass), ['bullet', 'blitz']);
 
-    viewModel.setTimeClass('blitz');
-    expect(viewModel.currentRating, 1510);
-    expect(viewModel.change, 10);
+    filter.select('blitz');
+    expect(viewModel.series.single.current, 1510);
 
-    viewModel.setTimeClass('rapid');
-    expect(viewModel.points, isEmpty);
-    expect(viewModel.currentRating, isNull);
+    filter.select('rapid');
+    expect(viewModel.series, isEmpty);
 
-    viewModel.setTimeClass('rapid');
-    viewModel.setTimeClass(null);
+    filter.select('rapid');
+    expect(notified, 2);
+
+    viewModel.dispose();
+    filter.select(null); // plus suivi après dispose
     expect(notified, 2);
   });
 

@@ -96,10 +96,10 @@ void main() {
 
     expect(viewModel.white.length, 3);
     expect(viewModel.black.length, 2);
-    viewModel.setTimeClass('rapid');
+    viewModel.timeClassFilter.select('rapid');
     expect(viewModel.white.single.name, 'Reti-Opening');
     expect(viewModel.black, isEmpty);
-    viewModel.setTimeClass('rapid');
+    viewModel.timeClassFilter.select('rapid');
     expect(notified, 1);
   });
 

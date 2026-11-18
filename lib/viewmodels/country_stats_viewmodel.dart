@@ -1,22 +1,18 @@
-import 'package:flutter/foundation.dart';
 import '../models/country_game.dart';
 import '../models/country_map_mode.dart';
 import '../models/country_stats.dart';
 import '../services/country_stats_service.dart';
 import '../services/pagination_service.dart';
+import 'time_class_viewmodel.dart';
 
-class CountryStatsViewModel extends ChangeNotifier {
-  /// Cadences proposées dans le filtre (null = toutes les parties).
-  static const List<String?> timeClasses = [null, 'bullet', 'blitz', 'rapid'];
-
+class CountryStatsViewModel extends TimeClassFilteredViewModel {
   final List<CountryGame> _games;
-  String? _timeClass;
   CountrySortKey _sortKey = CountrySortKey.gamesPlayed;
   bool _descending = true;
   int _page = 0;
   CountryMapMode _mapMode = CountryMapMode.gamesPlayed;
 
-  CountryStatsViewModel(List<CountryGame> games) : _games = games;
+  CountryStatsViewModel(List<CountryGame> games, [super.filter]) : _games = games;
 
   /// Carte affichée : parties jouées ou performance. Ne change ni le
   /// tableau ni sa page.
@@ -28,13 +24,12 @@ class CountryStatsViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  String? get timeClass => _timeClass;
   CountrySortKey get sortKey => _sortKey;
   bool get descending => _descending;
 
   /// Tous les pays (carte du monde), triés selon la colonne choisie.
   List<CountryStats> get countries => CountryStatsService.sort(
-        CountryStatsService.aggregate(_games, timeClass: _timeClass),
+        CountryStatsService.aggregate(_games, timeClass: timeClass),
         _sortKey,
         descending: _descending,
       );
@@ -53,12 +48,8 @@ class CountryStatsViewModel extends ChangeNotifier {
   }
 
   /// Changer de cadence ou de tri ramène à la première page.
-  void setTimeClass(String? timeClass) {
-    if (_timeClass == timeClass) return;
-    _timeClass = timeClass;
-    _page = 0;
-    notifyListeners();
-  }
+  @override
+  void onTimeClassChanged() => _page = 0;
 
   /// Un clic sur la colonne déjà triée inverse l'ordre ; sinon on trie
   /// la nouvelle colonne par ordre décroissant.

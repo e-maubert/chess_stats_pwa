@@ -9,6 +9,7 @@ import '../widgets/app_logo.dart';
 import '../widgets/period_selector.dart';
 import '../widgets/stats_display.dart';
 import '../widgets/theme_toggle_button.dart';
+import '../widgets/time_class_selector.dart';
 
 class StatsScreen extends StatelessWidget {
   final String username;
@@ -80,14 +81,15 @@ class StatsScreen extends StatelessWidget {
               ),
               const ThemeToggleButton(),
             ],
-            // Choix de la période, puis barre fine pendant la mise à jour en
+            // Choix de la période et de la cadence, puis barre fine pendant la mise à jour en
             // arrière-plan des parties déjà affichées.
             bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(PeriodSelector.height + 2),
+              preferredSize: const Size.fromHeight(PeriodSelector.height + TimeClassSelector.height + 2),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   PeriodSelector(now: context.read<GameRepository>().now),
+                  const TimeClassSelector(),
                   SizedBox(
                     height: 2,
                     child: viewModel.isUpdating && viewModel.games != null

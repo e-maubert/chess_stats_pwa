@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../models/country_game.dart';
 import '../models/loss_stats.dart';
 import '../viewmodels/loss_stats_viewmodel.dart';
-import 'time_class_filter.dart';
+import '../viewmodels/time_class_viewmodel.dart';
 
 /// Page principale : répartition des défaites par cause (temps, mat,
 /// abandon), en camembert, filtrable par cadence.
@@ -21,7 +21,7 @@ class LossBreakdownCard extends StatelessWidget {
     return ChangeNotifierProvider(
       // Nouvelle liste (ex. après « Actualiser ») => nouveau viewmodel.
       key: ObjectKey(games),
-      create: (_) => LossStatsViewModel(games),
+      create: (context) => LossStatsViewModel(games, context.read<TimeClassViewModel>()),
       child: Consumer<LossStatsViewModel>(
         builder: (context, viewModel, child) {
           final stats = viewModel.stats;
@@ -37,12 +37,6 @@ class LossBreakdownCard extends StatelessWidget {
                     ),
               ),
               const SizedBox(height: 12),
-              TimeClassFilter(
-                timeClasses: LossStatsViewModel.timeClasses,
-                selected: viewModel.timeClass,
-                onSelected: viewModel.setTimeClass,
-              ),
-              const SizedBox(height: 16),
               if (stats.total == 0)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 24),
