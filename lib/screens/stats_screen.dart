@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/country_game.dart';
 import '../services/game_repository.dart';
 import '../viewmodels/player_games_viewmodel.dart';
+import '../viewmodels/stats_filter_viewmodel.dart';
 import '../viewmodels/stats_period_viewmodel.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import '../widgets/app_logo.dart';
@@ -28,13 +29,20 @@ class StatsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return ChangeNotifierProvider(
-      create: (context) => PlayerGamesViewModel(
-        context.read<GameRepository>(),
-        username,
-        initialGames: initialGames,
-        upToDate: upToDate,
-      ),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => PlayerGamesViewModel(
+            context.read<GameRepository>(),
+            username,
+            initialGames: initialGames,
+            upToDate: upToDate,
+          ),
+        ),
+        // Choix d'ouverture propre à ce joueur : remis à « Toutes » pour
+        // chaque joueur consulté, jamais mémorisé.
+        ChangeNotifierProvider(create: (_) => OpeningFilterViewModel()),
+      ],
       child: Consumer<PlayerGamesViewModel>(
         builder: (context, viewModel, child) => Scaffold(
           appBar: AppBar(
@@ -81,16 +89,22 @@ class StatsScreen extends StatelessWidget {
               ),
               const ThemeToggleButton(),
             ],
-            // Choix de la période, de la cadence et de la couleur, puis barre fine pendant la mise à jour en
+            // Choix de la période, de la cadence, de la couleur et de
+            // l'ouverture, puis barre fine pendant la mise à jour en
             // arrière-plan des parties déjà affichées.
             bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(PeriodSelector.height + 2 * filterRowHeight + 2),
+              preferredSize: const Size.fromHeight(PeriodSelector.height + 3 * filterRowHeight + 2),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   PeriodSelector(now: context.read<GameRepository>().now),
                   const TimeClassSelector(),
                   const PlayerColorSelector(),
+                  OpeningSelector(
+                    games: viewModel.games == null
+                        ? const []
+                        : viewModel.gamesIn(context.watch<StatsPeriodViewModel>().period),
+                  ),
                   SizedBox(
                     height: 2,
                     child: viewModel.isUpdating && viewModel.games != null

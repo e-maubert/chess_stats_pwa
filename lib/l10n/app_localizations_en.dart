@@ -986,4 +986,22 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get openingFilterLabel => 'Opening';
+
+  @override
+  String get openingFilterAll => 'All openings';
+
+  @override
+  String get openingFilterOthers => 'Other openings';
+
+  @override
+  String openingOptionCount(String name, int count) {
+    return '$name ($count)';
+  }
+
+  @override
+  String get ratingTrendSelection =>
+      'Rating points won or lost in the selected games';
 }

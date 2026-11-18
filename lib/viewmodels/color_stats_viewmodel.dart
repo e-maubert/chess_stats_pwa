@@ -8,7 +8,7 @@ import 'stats_filter_viewmodel.dart';
 typedef WinStatsRow = ({String? color, ColorStats stats});
 
 class ColorStatsViewModel extends FilteredStatsViewModel {
-  ColorStatsViewModel(super.games, {super.timeClassFilter, super.colorFilter});
+  ColorStatsViewModel(super.games, {super.timeClassFilter, super.colorFilter, super.openingFilter});
 
   ({ColorStats white, ColorStats black}) get stats =>
       ColorStatsService.aggregate(filteredGames, timeClass: timeClass);

@@ -7,9 +7,10 @@ import 'filtered_stats_viewmodel.dart';
 /// choisie ou une par cadence jouée sur « Toutes » (les classements de
 /// cadences différentes ne se comparent pas, on ne les mélange donc pas).
 ///
-/// Avec un filtre de couleur : pas de courbe (le classement ne dépend pas de
-/// la couleur, ce serait la même courbe avec des trous) mais la tendance,
-/// points gagnés ou perdus avec cette couleur, par cadence.
+/// Avec un filtre de couleur ou d'ouverture : pas de courbe (le classement
+/// ne dépend pas de ces choix, ce serait la même courbe avec des trous) mais
+/// la tendance, points gagnés ou perdus sur les parties retenues, par
+/// cadence.
 class RatingHistoryViewModel extends FilteredStatsViewModel {
   /// Cadences qui ont un classement, dans l'ordre d'affichage.
   static const List<String> timeClasses = ['bullet', 'blitz', 'rapid'];
@@ -17,12 +18,12 @@ class RatingHistoryViewModel extends FilteredStatsViewModel {
   late List<RatingSeries> _series;
   late List<RatingTrend> _trends;
 
-  RatingHistoryViewModel(super.games, {super.timeClassFilter, super.colorFilter}) {
+  RatingHistoryViewModel(super.games, {super.timeClassFilter, super.colorFilter, super.openingFilter}) {
     _compute();
   }
 
   /// Vrai : afficher [trends] plutôt que [series].
-  bool get showsTrend => color != null;
+  bool get showsTrend => color != null || opening != null;
 
   /// Courbes affichées ; vide s'il n'y a aucune partie classée.
   List<RatingSeries> get series => _series;
@@ -38,14 +39,13 @@ class RatingHistoryViewModel extends FilteredStatsViewModel {
 
   void _compute() {
     final shown = _shownTimeClasses;
-    final color = this.color;
     _series = RatingHistoryService.series(games, shown);
-    _trends = color == null
+    _trends = !showsTrend
         ? const []
         : [
             for (final timeClass in shown)
-              if (RatingHistoryService.trend(games, timeClass, (game) => game.playerColor == color)
-                  case final trend when trend.games > 0)
+              if (RatingHistoryService.trend(games, timeClass, matchesFilters) case final trend
+                  when trend.games > 0)
                 trend,
           ];
   }

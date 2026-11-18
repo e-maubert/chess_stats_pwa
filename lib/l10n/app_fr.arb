@@ -518,5 +518,20 @@
         "type": "String"
       }
     }
+  },
+  "openingFilterLabel": "Ouverture",
+  "openingFilterAll": "Toutes les ouvertures",
+  "openingFilterOthers": "Autres ouvertures",
+  "openingOptionCount": "{name} ({count})",
+  "ratingTrendSelection": "Points de classement gagnés ou perdus sur les parties sélectionnées",
+  "@openingOptionCount": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

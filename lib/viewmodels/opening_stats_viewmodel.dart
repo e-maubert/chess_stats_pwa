@@ -13,7 +13,7 @@ class OpeningStatsViewModel extends FilteredStatsViewModel {
   /// Page affichée de chaque tableau (blancs, noirs), à partir de 0.
   final Map<String, int> _pages = {colorWhite: 0, colorBlack: 0};
 
-  OpeningStatsViewModel(super.games, {super.timeClassFilter, super.colorFilter});
+  OpeningStatsViewModel(super.games, {super.timeClassFilter, super.colorFilter, super.openingFilter});
 
   OpeningSortKey get sortKey => _sortKey;
   bool get descending => _descending;

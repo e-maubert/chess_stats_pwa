@@ -31,6 +31,7 @@ class PlayingHoursCard extends StatelessWidget {
         games,
         timeClassFilter: context.read<TimeClassViewModel>(),
         colorFilter: context.read<PlayerColorViewModel>(),
+        openingFilter: context.read<OpeningFilterViewModel>(),
       ),
       child: Consumer<PlayingHoursViewModel>(
         builder: (context, viewModel, child) {

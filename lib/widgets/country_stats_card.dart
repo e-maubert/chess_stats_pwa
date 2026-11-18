@@ -63,6 +63,7 @@ class CountryStatsCard extends StatelessWidget {
         games,
         timeClassFilter: context.read<TimeClassViewModel>(),
         colorFilter: context.read<PlayerColorViewModel>(),
+        openingFilter: context.read<OpeningFilterViewModel>(),
       ),
       child: Consumer<CountryStatsViewModel>(
         builder: (context, viewModel, child) {

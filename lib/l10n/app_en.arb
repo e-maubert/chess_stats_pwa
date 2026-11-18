@@ -539,5 +539,20 @@
         "type": "String"
       }
     }
+  },
+  "openingFilterLabel": "Opening",
+  "openingFilterAll": "All openings",
+  "openingFilterOthers": "Other openings",
+  "openingOptionCount": "{name} ({count})",
+  "ratingTrendSelection": "Rating points won or lost in the selected games",
+  "@openingOptionCount": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "count": {
+        "type": "int"
+      }
+    }
   }
 }

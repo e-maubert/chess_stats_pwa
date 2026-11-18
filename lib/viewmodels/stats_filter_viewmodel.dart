@@ -40,6 +40,16 @@ class TimeClassViewModel extends ChoiceFilterViewModel {
   String? get timeClass => value;
 }
 
+/// Famille d'ouvertures choisie (null = toutes ; voir OpeningFilterService
+/// pour « Autres ouvertures »). Propre au joueur consulté : ni mémorisée,
+/// ni partagée entre joueurs. Les choix proposés dépendent des parties et
+/// des autres filtres (OpeningFilterService.options).
+class OpeningFilterViewModel extends ChoiceFilterViewModel {
+  OpeningFilterViewModel() : super(const [], null, null);
+
+  String? get opening => value;
+}
+
 /// Couleur jouée choisie (null = les deux).
 class PlayerColorViewModel extends ChoiceFilterViewModel {
   static const String white = 'white';
