@@ -96,6 +96,10 @@ void main() {
       final white = RatingHistoryService.trend(mixed, 'blitz', (g) => g.playerColor == 'white');
       expect(white.points, 45);
       expect(white.games, 2);
+      expect(white.current, 1530); // dernière partie de la cadence
+      final bullet = RatingHistoryService.trend(mixed, 'bullet', (g) => g.playerColor == 'black');
+      expect(bullet.current, 1200); // classement même sans partie comptée
+      expect(bullet.games, 0);
       final black = RatingHistoryService.trend(mixed, 'blitz', (g) => g.playerColor == 'black');
       expect(black.points, -15);
       expect(black.games, 2);

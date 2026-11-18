@@ -29,7 +29,11 @@ class RatingTrend {
   final int points;
   final int games;
 
-  const RatingTrend(this.timeClass, {required this.points, required this.games});
+  /// Classement actuel de la cadence (après la dernière partie classée,
+  /// toutes couleurs), pour situer le niveau ; null sans partie classée.
+  final int? current;
+
+  const RatingTrend(this.timeClass, {required this.points, required this.games, this.current});
 }
 
 /// Évolution du classement sur la période, calculée à partir des parties.
@@ -76,7 +80,12 @@ class RatingHistoryService {
       points += rated[i].rating! - rated[i - 1].rating!;
       count++;
     }
-    return RatingTrend(timeClass, points: points, games: count);
+    return RatingTrend(
+      timeClass,
+      points: points,
+      games: count,
+      current: rated.isEmpty ? null : rated.last.rating,
+    );
   }
 
   /// Une courbe par cadence de [timeClasses] (dans cet ordre), en ignorant

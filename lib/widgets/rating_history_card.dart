@@ -94,7 +94,7 @@ class RatingHistoryCard extends StatelessWidget {
 
   /// Filtre de couleur actif : pas de courbe, mais les points gagnés ou
   /// perdus avec cette couleur, une ligne par cadence (icône montante /
-  /// descendante, points, nombre de parties).
+  /// descendante, cadence, classement actuel, points, nombre de parties).
   Widget _trend(BuildContext context, RatingHistoryViewModel viewModel, AppLocalizations l10n) {
     final textTheme = Theme.of(context).textTheme;
     final trends = viewModel.trends;
@@ -128,15 +128,22 @@ class RatingHistoryCard extends StatelessWidget {
                     color: _changeColor(context, trend.points),
                     size: 32,
                   ),
-                  const SizedBox(width: 12),
-                  if (trends.length > 1 || viewModel.timeClass == null)
-                    SizedBox(
-                      width: 64,
-                      child: Text(FilterLabels.timeClass(trend.timeClass, l10n), style: textTheme.bodyMedium),
+                  const SizedBox(width: 10),
+                  SizedBox(
+                    width: 56,
+                    child: Text(FilterLabels.timeClass(trend.timeClass, l10n), style: textTheme.bodyMedium),
+                  ),
+                  // Classement actuel, pour situer le niveau.
+                  if (trend.current != null) ...[
+                    Text(
+                      '${trend.current}',
+                      style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                     ),
+                    const SizedBox(width: 8),
+                  ],
                   Text(
                     l10n.ratingTrendPoints(_changeText(trend.points)),
-                    style: textTheme.titleLarge?.copyWith(
+                    style: textTheme.titleMedium?.copyWith(
                       color: _changeColor(context, trend.points),
                       fontWeight: FontWeight.bold,
                     ),
