@@ -8,6 +8,20 @@ class RatingPoint {
   const RatingPoint(this.time, this.rating);
 }
 
+/// Courbe de classement d'une cadence (au moins un point).
+class RatingSeries {
+  final String timeClass;
+  final List<RatingPoint> points;
+
+  const RatingSeries(this.timeClass, this.points);
+
+  /// Classement après la dernière partie.
+  int get current => points.last.rating;
+
+  /// Variation depuis la première partie de la période.
+  int get change => RatingHistoryService.change(points);
+}
+
 /// Évolution du classement sur la période, calculée à partir des parties.
 class RatingHistoryService {
   /// Classement après chaque partie classée de la cadence [timeClass],
@@ -32,18 +46,11 @@ class RatingHistoryService {
   static int change(List<RatingPoint> points) =>
       points.isEmpty ? 0 : points.last.rating - points.first.rating;
 
-  /// Cadence parmi [timeClasses] qui a le plus de parties classées
-  /// (la première de la liste en cas d'égalité ou s'il n'y en a aucune).
-  static String mostPlayed(List<CountryGame> games, List<String> timeClasses) {
-    var best = timeClasses.first;
-    var bestCount = 0;
-    for (final timeClass in timeClasses) {
-      final count = history(games, timeClass).length;
-      if (count > bestCount) {
-        best = timeClass;
-        bestCount = count;
-      }
-    }
-    return best;
-  }
+  /// Une courbe par cadence de [timeClasses] (dans cet ordre), en ignorant
+  /// les cadences sans partie classée.
+  static List<RatingSeries> series(List<CountryGame> games, List<String> timeClasses) => [
+        for (final timeClass in timeClasses)
+          if (history(games, timeClass) case final points when points.isNotEmpty)
+            RatingSeries(timeClass, points),
+      ];
 }

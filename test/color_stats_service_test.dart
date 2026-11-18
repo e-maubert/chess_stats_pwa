@@ -56,10 +56,10 @@ void main() {
     viewModel.addListener(() => notified++);
 
     expect(viewModel.stats.white.totalGames, 4);
-    viewModel.setTimeClass('blitz');
+    viewModel.timeClassFilter.select('blitz');
     expect(viewModel.stats.white.totalGames, 2);
     expect(viewModel.stats.black.totalGames, 1);
-    viewModel.setTimeClass('blitz');
+    viewModel.timeClassFilter.select('blitz');
     expect(notified, 1);
   });
 }

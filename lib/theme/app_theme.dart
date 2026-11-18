@@ -50,6 +50,17 @@ class AppTheme {
   static Color negativeText(BuildContext context) =>
       _isDark(context) ? Colors.red.shade300 : Colors.red.shade700;
 
+  /// Couleur de la courbe de classement d'une cadence, lisible sur les deux
+  /// thèmes.
+  static Color timeClassColor(BuildContext context, String timeClass) {
+    final dark = _isDark(context);
+    return switch (timeClass) {
+      'bullet' => dark ? Colors.orange.shade300 : Colors.orange.shade800,
+      'blitz' => dark ? Colors.lightBlue.shade300 : Colors.blue.shade700,
+      _ => dark ? Colors.purple.shade200 : Colors.purple.shade500,
+    };
+  }
+
   static Color warningText(BuildContext context) =>
       _isDark(context) ? Colors.amber.shade300 : Colors.amber.shade800;
 

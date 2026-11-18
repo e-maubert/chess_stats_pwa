@@ -6,9 +6,9 @@ import '../models/opening_family_stats.dart';
 import '../services/opening_stats_service.dart';
 import '../services/pagination_service.dart';
 import '../viewmodels/opening_stats_viewmodel.dart';
+import '../viewmodels/time_class_viewmodel.dart';
 import 'pagination_controls.dart';
 import 'result_bar.dart';
-import 'time_class_filter.dart';
 
 /// Page principale : un tableau des ouvertures jouées avec les blancs et un
 /// avec les noirs, sur le modèle du tableau des pays : rang, ouverture,
@@ -26,7 +26,7 @@ class OpeningStatsCard extends StatelessWidget {
     return ChangeNotifierProvider(
       // Nouvelle liste (ex. après « Actualiser ») => nouveau viewmodel.
       key: ObjectKey(games),
-      create: (_) => OpeningStatsViewModel(games),
+      create: (context) => OpeningStatsViewModel(games, context.read<TimeClassViewModel>()),
       child: Consumer<OpeningStatsViewModel>(
         builder: (context, viewModel, child) {
           return Column(
@@ -39,12 +39,6 @@ class OpeningStatsCard extends StatelessWidget {
                     ),
               ),
               const SizedBox(height: 12),
-              TimeClassFilter(
-                timeClasses: OpeningStatsViewModel.timeClasses,
-                selected: viewModel.timeClass,
-                onSelected: viewModel.setTimeClass,
-              ),
-              const SizedBox(height: 16),
               ..._colorBlock(context, l10n.withWhite, viewModel, OpeningStatsViewModel.colorWhite, l10n),
               const SizedBox(height: 24),
               ..._colorBlock(context, l10n.withBlack, viewModel, OpeningStatsViewModel.colorBlack, l10n),

@@ -8,10 +8,10 @@ import '../services/country_name_service.dart';
 import '../services/country_stats_service.dart';
 import '../services/pagination_service.dart';
 import '../viewmodels/country_stats_viewmodel.dart';
+import '../viewmodels/time_class_viewmodel.dart';
 import 'country_map.dart';
 import 'pagination_controls.dart';
 import 'result_bar.dart';
-import 'time_class_filter.dart';
 
 /// Statistiques par pays des adversaires (période choisie) : carte du monde
 /// colorée selon le nombre de parties, puis tableau rang,
@@ -59,7 +59,7 @@ class CountryStatsCard extends StatelessWidget {
     return ChangeNotifierProvider(
       // Nouvelle liste (ex. après « Actualiser ») => nouveau viewmodel.
       key: ObjectKey(games),
-      create: (_) => CountryStatsViewModel(games),
+      create: (context) => CountryStatsViewModel(games, context.read<TimeClassViewModel>()),
       child: Consumer<CountryStatsViewModel>(
         builder: (context, viewModel, child) {
           final countries = viewModel.countries;
@@ -67,12 +67,6 @@ class CountryStatsCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _title(context, l10n),
-              TimeClassFilter(
-                timeClasses: CountryStatsViewModel.timeClasses,
-                selected: viewModel.timeClass,
-                onSelected: viewModel.setTimeClass,
-              ),
-              const SizedBox(height: 16),
               if (countries.isEmpty)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 32),

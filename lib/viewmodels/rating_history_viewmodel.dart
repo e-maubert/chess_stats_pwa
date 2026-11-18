@@ -1,34 +1,30 @@
-import 'package:flutter/foundation.dart';
 import '../models/country_game.dart';
 import '../services/rating_history_service.dart';
+import 'time_class_viewmodel.dart';
 
-class RatingHistoryViewModel extends ChangeNotifier {
-  /// Un classement par cadence : pas de choix « Toutes ».
+/// Courbe(s) de classement : celle de la cadence choisie, ou une par cadence
+/// jouée sur « Toutes » (les classements de cadences différentes ne se
+/// comparent pas, on ne les mélange donc pas).
+class RatingHistoryViewModel extends TimeClassFilteredViewModel {
+  /// Cadences qui ont un classement, dans l'ordre d'affichage.
   static const List<String> timeClasses = ['bullet', 'blitz', 'rapid'];
 
   final List<CountryGame> _games;
-  late String _timeClass;
-  late List<RatingPoint> _points;
+  late List<RatingSeries> _series = _compute();
 
-  /// Commence sur la cadence la plus jouée de la période.
-  RatingHistoryViewModel(List<CountryGame> games) : _games = games {
-    _timeClass = RatingHistoryService.mostPlayed(games, timeClasses);
-    _points = RatingHistoryService.history(games, _timeClass);
+  RatingHistoryViewModel(List<CountryGame> games, [super.filter]) : _games = games;
+
+  /// Courbes affichées ; vide s'il n'y a aucune partie classée.
+  List<RatingSeries> get series => _series;
+
+  List<RatingSeries> _compute() {
+    final timeClass = this.timeClass;
+    return RatingHistoryService.series(
+      _games,
+      timeClass == null ? timeClasses : timeClasses.where((t) => t == timeClass).toList(),
+    );
   }
 
-  String get timeClass => _timeClass;
-  List<RatingPoint> get points => _points;
-
-  /// Classement actuel (après la dernière partie), null sans partie.
-  int? get currentRating => _points.isEmpty ? null : _points.last.rating;
-
-  /// Variation depuis la première partie de la période.
-  int get change => RatingHistoryService.change(_points);
-
-  void setTimeClass(String? timeClass) {
-    if (timeClass == null || timeClass == _timeClass) return;
-    _timeClass = timeClass;
-    _points = RatingHistoryService.history(_games, _timeClass);
-    notifyListeners();
-  }
+  @override
+  void onTimeClassChanged() => _series = _compute();
 }

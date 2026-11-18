@@ -64,7 +64,7 @@ void main() {
   test('le viewmodel recalcule selon la cadence choisie', () {
     final vm = LossStatsViewModel(games);
     expect(vm.stats.total, 5);
-    vm.setTimeClass('bullet');
+    vm.timeClassFilter.select('bullet');
     expect(vm.stats.total, 1);
     expect(vm.stats.resigned, 1);
   });

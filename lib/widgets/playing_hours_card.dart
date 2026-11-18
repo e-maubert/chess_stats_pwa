@@ -7,7 +7,7 @@ import '../models/country_game.dart';
 import '../services/playing_hours_service.dart';
 import '../theme/app_theme.dart';
 import '../viewmodels/playing_hours_viewmodel.dart';
-import 'time_class_filter.dart';
+import '../viewmodels/time_class_viewmodel.dart';
 
 /// Page principale : cadran de 24 h des parties de la période selon leur heure
 /// de début, en nombre de parties (activité) ou en performance, avec le
@@ -27,7 +27,7 @@ class PlayingHoursCard extends StatelessWidget {
     return ChangeNotifierProvider(
       // Nouvelle liste (ex. après « Actualiser ») => nouveau viewmodel.
       key: ObjectKey(games),
-      create: (_) => PlayingHoursViewModel(games),
+      create: (context) => PlayingHoursViewModel(games, context.read<TimeClassViewModel>()),
       child: Consumer<PlayingHoursViewModel>(
         builder: (context, viewModel, child) {
           final hours = viewModel.hours;
@@ -41,12 +41,6 @@ class PlayingHoursCard extends StatelessWidget {
                 style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 12),
-              TimeClassFilter(
-                timeClasses: PlayingHoursViewModel.timeClasses,
-                selected: viewModel.timeClass,
-                onSelected: viewModel.setTimeClass,
-              ),
-              const SizedBox(height: 16),
               if (total == 0)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 32),

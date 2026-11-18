@@ -168,7 +168,7 @@ void main() {
     ]);
     expect(vm.mode, PlayingHoursMode.activity);
     expect(vm.hours.fold<int>(0, (s, h) => s + h.games), 2);
-    vm.setTimeClass('bullet');
+    vm.timeClassFilter.select('bullet');
     expect(vm.hours.fold<int>(0, (s, h) => s + h.games), 1);
     vm.setMode(PlayingHoursMode.performance);
     expect(vm.mode, PlayingHoursMode.performance);

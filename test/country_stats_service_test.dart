@@ -80,7 +80,7 @@ void main() {
     expect(vm.descending, isFalse);
     expect(vm.countries.first.name, 'CA');
 
-    vm.setTimeClass('bullet');
+    vm.timeClassFilter.select('bullet');
     expect(vm.countries.map((c) => c.name).toList(), ['CA']);
   });
 }
