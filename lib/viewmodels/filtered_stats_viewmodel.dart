@@ -24,8 +24,8 @@ abstract class FilteredStatsViewModel extends ChangeNotifier {
     TimeClassViewModel? timeClassFilter,
     PlayerColorViewModel? colorFilter,
     OpeningFilterViewModel? openingFilter,
-  })  : _timeClassFilter = timeClassFilter ?? TimeClassViewModel.temporary(),
-        _colorFilter = colorFilter ?? PlayerColorViewModel.temporary(),
+  })  : _timeClassFilter = timeClassFilter ?? TimeClassViewModel(),
+        _colorFilter = colorFilter ?? PlayerColorViewModel(),
         _openingFilter = openingFilter ?? OpeningFilterViewModel() {
     _timeClassFilter.addListener(_onFiltersChanged);
     _colorFilter.addListener(_onFiltersChanged);

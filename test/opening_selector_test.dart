@@ -25,8 +25,8 @@ void main() {
     ];
     await tester.pumpWidget(MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => TimeClassViewModel.temporary()),
-        ChangeNotifierProvider(create: (_) => PlayerColorViewModel.temporary()),
+        ChangeNotifierProvider(create: (_) => TimeClassViewModel()),
+        ChangeNotifierProvider(create: (_) => PlayerColorViewModel()),
         ChangeNotifierProvider.value(value: opening),
       ],
       child: MaterialApp(

@@ -57,8 +57,8 @@ class _StatsDisplayState extends State<StatsDisplay> {
       LossBreakdownCard(key: _cardKeys[2], games: games),
       TimeManagementCard(key: _cardKeys[3], games: games),
       GamePhaseCard(key: _cardKeys[7], games: widget.phaseGames, progress: widget.phaseProgress),
-      PlayingHoursCard(key: _cardKeys[4], games: games),
       OpeningStatsCard(key: _cardKeys[5], games: games),
+      PlayingHoursCard(key: _cardKeys[4], games: games),
       CountryStatsCard(key: _cardKeys[6], games: widget.countryGames),
     ];
 

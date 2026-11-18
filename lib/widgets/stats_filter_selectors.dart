@@ -125,6 +125,10 @@ class OpeningSelector extends StatelessWidget {
                   items: items,
                   isDense: true,
                   isExpanded: true,
+                  // Après un choix, le menu garde le focus : sans cela, un
+                  // rectangle gris (plus petit que le champ arrondi) restait
+                  // affiché, visible surtout sur « Toutes les ouvertures ».
+                  focusColor: Colors.transparent,
                   menuMaxHeight: 420,
                   borderRadius: BorderRadius.circular(12),
                   style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.onSurface),

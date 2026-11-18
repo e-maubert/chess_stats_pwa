@@ -1,56 +1,46 @@
 import 'package:flutter/foundation.dart';
 
-import '../services/filter_preference_service.dart';
-
 /// Filtre de l'en-tête de la page des stats, commun à toutes les cartes :
-/// une valeur parmi [options] (null = pas de filtre), mémorisée.
+/// une valeur parmi [options] (null = pas de filtre).
+///
+/// Les filtres ne sont pas mémorisés : ils sont créés avec la page des
+/// stats (StatsScreen), donc remis à leur valeur par défaut pour chaque
+/// joueur consulté.
 class ChoiceFilterViewModel extends ChangeNotifier {
   final List<String?> options;
-  final FilterPreferenceService? _preferences;
   String? _value;
 
-  /// Sans [preferences] : choix non mémorisé (ex. dans un test).
-  ChoiceFilterViewModel(this.options, String? initialValue, this._preferences) : _value = initialValue;
+  ChoiceFilterViewModel(this.options) : _value = null;
 
   String? get value => _value;
 
-  /// Change de valeur et mémorise ce choix.
-  Future<void> select(String? value) async {
+  void select(String? value) {
     if (value == _value) return;
     _value = value;
     notifyListeners();
-    await _preferences?.save(value);
   }
 }
 
-/// Cadence choisie (null = toutes les parties).
+/// Cadence choisie (null = toutes les parties, par défaut).
 class TimeClassViewModel extends ChoiceFilterViewModel {
   /// Cadences proposées, dans l'ordre du sélecteur.
   static const List<String?> timeClasses = [null, 'bullet', 'blitz', 'rapid'];
 
-  static const FilterPreferenceService preferences = FilterPreferenceService('stats_time_class', timeClasses);
-
-  /// [initialTimeClass] : choix enregistré, ou « Toutes » s'il n'y en a pas.
-  TimeClassViewModel([String? initialTimeClass, FilterPreferenceService? prefs])
-      : super(timeClasses, initialTimeClass, prefs ?? preferences);
-
-  /// Filtre non mémorisé (viewmodel de carte créé seul, ex. dans un test).
-  TimeClassViewModel.temporary() : super(timeClasses, null, null);
+  TimeClassViewModel() : super(timeClasses);
 
   String? get timeClass => value;
 }
 
-/// Famille d'ouvertures choisie (null = toutes ; voir OpeningFilterService
-/// pour « Autres ouvertures »). Propre au joueur consulté : ni mémorisée,
-/// ni partagée entre joueurs. Les choix proposés dépendent des parties et
-/// des autres filtres (OpeningFilterService.options).
+/// Famille d'ouvertures choisie (null = toutes, par défaut ; voir
+/// OpeningFilterService pour « Autres ouvertures »). Les choix proposés
+/// dépendent des parties et des autres filtres (OpeningFilterService.options).
 class OpeningFilterViewModel extends ChoiceFilterViewModel {
-  OpeningFilterViewModel() : super(const [], null, null);
+  OpeningFilterViewModel() : super(const []);
 
   String? get opening => value;
 }
 
-/// Couleur jouée choisie (null = les deux).
+/// Couleur jouée choisie (null = les deux, par défaut).
 class PlayerColorViewModel extends ChoiceFilterViewModel {
   static const String white = 'white';
   static const String black = 'black';
@@ -58,14 +48,7 @@ class PlayerColorViewModel extends ChoiceFilterViewModel {
   /// Couleurs proposées, dans l'ordre du sélecteur.
   static const List<String?> colors = [null, white, black];
 
-  static const FilterPreferenceService preferences = FilterPreferenceService('stats_player_color', colors);
-
-  /// [initialColor] : choix enregistré, ou « Les deux » s'il n'y en a pas.
-  PlayerColorViewModel([String? initialColor, FilterPreferenceService? prefs])
-      : super(colors, initialColor, prefs ?? preferences);
-
-  /// Filtre non mémorisé (viewmodel de carte créé seul, ex. dans un test).
-  PlayerColorViewModel.temporary() : super(colors, null, null);
+  PlayerColorViewModel() : super(colors);
 
   String? get color => value;
 }

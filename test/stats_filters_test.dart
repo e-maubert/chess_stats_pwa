@@ -4,11 +4,8 @@ import 'package:chess_stats_pwa/widgets/stats_filter_selectors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
-  setUp(() => SharedPreferences.setMockInitialValues({}));
-
   Future<(TimeClassViewModel, PlayerColorViewModel)> pump(WidgetTester tester, Locale locale) async {
     final timeClass = TimeClassViewModel();
     final color = PlayerColorViewModel();
@@ -46,24 +43,9 @@ void main() {
     expect(find.text('White'), findsOneWidget);
   });
 
-  test('cadence et couleur choisies sont mémorisées, « Toutes » / « Les deux » compris', () async {
-    expect(await TimeClassViewModel.preferences.load(), isNull);
-    expect(await PlayerColorViewModel.preferences.load(), isNull);
-
-    final timeClass = TimeClassViewModel();
-    final color = PlayerColorViewModel();
-    await timeClass.select('rapid');
-    await color.select('white');
-    expect(await TimeClassViewModel.preferences.load(), 'rapid');
-    expect(await PlayerColorViewModel.preferences.load(), 'white');
-
-    await color.select(null);
-    expect(await PlayerColorViewModel.preferences.load(), isNull);
-  });
-
-  test('une valeur enregistrée inconnue retombe sur « Toutes »', () async {
-    SharedPreferences.setMockInitialValues({'stats_time_class': 'daily', 'stats_player_color': 'red'});
-    expect(await TimeClassViewModel.preferences.load(), isNull);
-    expect(await PlayerColorViewModel.preferences.load(), isNull);
+  test('par défaut : toutes cadences, les deux couleurs, toutes ouvertures', () {
+    expect(TimeClassViewModel().timeClass, isNull);
+    expect(PlayerColorViewModel().color, isNull);
+    expect(OpeningFilterViewModel().opening, isNull);
   });
 }

@@ -39,8 +39,12 @@ class StatsScreen extends StatelessWidget {
             upToDate: upToDate,
           ),
         ),
-        // Choix d'ouverture propre à ce joueur : remis à « Toutes » pour
-        // chaque joueur consulté, jamais mémorisé.
+        // Filtres de l'en-tête, propres à ce joueur : remis à leur valeur
+        // par défaut (1 mois, toutes cadences, les deux couleurs, toutes
+        // ouvertures) pour chaque joueur consulté, jamais mémorisés.
+        ChangeNotifierProvider(create: (_) => StatsPeriodViewModel()),
+        ChangeNotifierProvider(create: (_) => TimeClassViewModel()),
+        ChangeNotifierProvider(create: (_) => PlayerColorViewModel()),
         ChangeNotifierProvider(create: (_) => OpeningFilterViewModel()),
       ],
       child: Consumer<PlayerGamesViewModel>(
