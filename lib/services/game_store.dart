@@ -37,7 +37,8 @@ class GameStore {
   /// données d'une ancienne version sont alors effacées à l'ouverture
   /// (même principe que le préfixe `chess_stats_vN_` de l'ancien cache).
   /// 2 : coups (`moves`) et phases (`phases`) des parties.
-  static const int schemaVersion = 2;
+  /// 3 : ouverture (`opening`) = famille ECO exacte (EcoService).
+  static const int schemaVersion = 3;
   static const String defaultName = 'chess_stats_games.db';
 
   final DatabaseFactory _factory;

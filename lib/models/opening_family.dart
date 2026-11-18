@@ -20,7 +20,17 @@ class OpeningFamily {
   double get lossRate => totalGames > 0 ? totalLosses / totalGames : 0;
   double get drawRate => totalGames > 0 ? totalDraws / totalGames : 0;
 
+  /// Familles de trois mots, à ne pas confondre avec celle de leurs deux
+  /// premiers mots (attaque indienne du roi ≠ indienne du roi).
+  static const List<String> _threeWordFamilies = ['Kings-Indian-Attack'];
+
+  /// Famille d'une ouverture : ses deux premiers mots (ex.
+  /// 'Sicilian-Defense-Najdorf' => 'Sicilian-Defense'), sauf famille de
+  /// trois mots connue.
   static String getFamilyName(String openingName) {
+    for (final family in _threeWordFamilies) {
+      if (openingName == family || openingName.startsWith('$family-')) return family;
+    }
     final parts = openingName.split('-');
     if (parts.length >= 2) {
       return '${parts[0]}-${parts[1]}';
