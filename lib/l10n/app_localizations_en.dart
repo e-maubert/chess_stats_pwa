@@ -75,7 +75,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get draws => 'Draws';
 
   @override
-  String get colorStats => 'Statistics by Color';
+  String get colorStats => 'Win statistics';
 
   @override
   String get withWhite => 'With White';
@@ -868,4 +868,50 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get phaseClockLegendBehind =>
       'Less than your opponent (gap above 10% of the starting time)';
+
+  @override
+  String get colorFilterLabel => 'Color played';
+
+  @override
+  String get colorFilterBoth => 'Both';
+
+  @override
+  String get colorFilterWhite => 'White';
+
+  @override
+  String get colorFilterBlack => 'Black';
+
+  @override
+  String get allGames => 'All games';
+
+  @override
+  String resultRateWithCount(String rate, int count) {
+    return '$rate ($count)';
+  }
+
+  @override
+  String get ratingTrendWhite => 'Rating points won or lost with white';
+
+  @override
+  String get ratingTrendBlack => 'Rating points won or lost with black';
+
+  @override
+  String ratingTrendPoints(String points) {
+    return '$points pts';
+  }
+
+  @override
+  String ratingTrendGames(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'over $count games',
+      one: 'over 1 game',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get ratingTrendNotEnough =>
+      'Not enough rated games to compute the trend';
 }

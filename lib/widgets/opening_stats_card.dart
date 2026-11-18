@@ -6,7 +6,7 @@ import '../models/opening_family_stats.dart';
 import '../services/opening_stats_service.dart';
 import '../services/pagination_service.dart';
 import '../viewmodels/opening_stats_viewmodel.dart';
-import '../viewmodels/time_class_viewmodel.dart';
+import '../viewmodels/stats_filter_viewmodel.dart';
 import 'pagination_controls.dart';
 import 'result_bar.dart';
 
@@ -26,7 +26,11 @@ class OpeningStatsCard extends StatelessWidget {
     return ChangeNotifierProvider(
       // Nouvelle liste (ex. après « Actualiser ») => nouveau viewmodel.
       key: ObjectKey(games),
-      create: (context) => OpeningStatsViewModel(games, context.read<TimeClassViewModel>()),
+      create: (context) => OpeningStatsViewModel(
+        games,
+        timeClassFilter: context.read<TimeClassViewModel>(),
+        colorFilter: context.read<PlayerColorViewModel>(),
+      ),
       child: Consumer<OpeningStatsViewModel>(
         builder: (context, viewModel, child) {
           return Column(
@@ -39,9 +43,16 @@ class OpeningStatsCard extends StatelessWidget {
                     ),
               ),
               const SizedBox(height: 12),
-              ..._colorBlock(context, l10n.withWhite, viewModel, OpeningStatsViewModel.colorWhite, l10n),
-              const SizedBox(height: 24),
-              ..._colorBlock(context, l10n.withBlack, viewModel, OpeningStatsViewModel.colorBlack, l10n),
+              for (final (index, color) in viewModel.shownColors.indexed) ...[
+                if (index > 0) const SizedBox(height: 24),
+                ..._colorBlock(
+                  context,
+                  color == OpeningStatsViewModel.colorWhite ? l10n.withWhite : l10n.withBlack,
+                  viewModel,
+                  color,
+                  l10n,
+                ),
+              ],
             ],
           );
         },

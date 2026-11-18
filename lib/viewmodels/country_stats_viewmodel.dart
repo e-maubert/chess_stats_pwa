@@ -1,18 +1,16 @@
-import '../models/country_game.dart';
 import '../models/country_map_mode.dart';
 import '../models/country_stats.dart';
 import '../services/country_stats_service.dart';
 import '../services/pagination_service.dart';
-import 'time_class_viewmodel.dart';
+import 'filtered_stats_viewmodel.dart';
 
-class CountryStatsViewModel extends TimeClassFilteredViewModel {
-  final List<CountryGame> _games;
+class CountryStatsViewModel extends FilteredStatsViewModel {
   CountrySortKey _sortKey = CountrySortKey.gamesPlayed;
   bool _descending = true;
   int _page = 0;
   CountryMapMode _mapMode = CountryMapMode.gamesPlayed;
 
-  CountryStatsViewModel(List<CountryGame> games, [super.filter]) : _games = games;
+  CountryStatsViewModel(super.games, {super.timeClassFilter, super.colorFilter});
 
   /// Carte affichée : parties jouées ou performance. Ne change ni le
   /// tableau ni sa page.
@@ -29,7 +27,7 @@ class CountryStatsViewModel extends TimeClassFilteredViewModel {
 
   /// Tous les pays (carte du monde), triés selon la colonne choisie.
   List<CountryStats> get countries => CountryStatsService.sort(
-        CountryStatsService.aggregate(_games, timeClass: timeClass),
+        CountryStatsService.aggregate(filteredGames, timeClass: timeClass),
         _sortKey,
         descending: _descending,
       );
@@ -49,7 +47,7 @@ class CountryStatsViewModel extends TimeClassFilteredViewModel {
 
   /// Changer de cadence ou de tri ramène à la première page.
   @override
-  void onTimeClassChanged() => _page = 0;
+  void onFiltersChanged() => _page = 0;
 
   /// Un clic sur la colonne déjà triée inverse l'ordre ; sinon on trie
   /// la nouvelle colonne par ordre décroissant.

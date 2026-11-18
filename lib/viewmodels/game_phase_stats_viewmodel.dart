@@ -1,15 +1,13 @@
-import '../models/country_game.dart';
 import '../services/game_phase_stats_service.dart';
-import 'time_class_viewmodel.dart';
+import 'filtered_stats_viewmodel.dart';
 
-class GamePhaseStatsViewModel extends TimeClassFilteredViewModel {
-  final List<CountryGame> _games;
+class GamePhaseStatsViewModel extends FilteredStatsViewModel {
   GamePhaseStats? _stats;
 
-  GamePhaseStatsViewModel(List<CountryGame> games, [super.filter]) : _games = games;
+  GamePhaseStatsViewModel(super.games, {super.timeClassFilter, super.colorFilter});
 
-  GamePhaseStats get stats => _stats ??= GamePhaseStatsService.aggregate(_games, timeClass: timeClass);
+  GamePhaseStats get stats => _stats ??= GamePhaseStatsService.aggregate(filteredGames, timeClass: timeClass);
 
   @override
-  void onTimeClassChanged() => _stats = null;
+  void onFiltersChanged() => _stats = null;
 }

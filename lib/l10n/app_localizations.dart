@@ -221,7 +221,7 @@ abstract class AppLocalizations {
   /// No description provided for @colorStats.
   ///
   /// In en, this message translates to:
-  /// **'Statistics by Color'**
+  /// **'Win statistics'**
   String get colorStats;
 
   /// No description provided for @withWhite.
@@ -975,6 +975,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Less than your opponent (gap above 10% of the starting time)'**
   String get phaseClockLegendBehind;
+
+  /// No description provided for @colorFilterLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Color played'**
+  String get colorFilterLabel;
+
+  /// No description provided for @colorFilterBoth.
+  ///
+  /// In en, this message translates to:
+  /// **'Both'**
+  String get colorFilterBoth;
+
+  /// No description provided for @colorFilterWhite.
+  ///
+  /// In en, this message translates to:
+  /// **'White'**
+  String get colorFilterWhite;
+
+  /// No description provided for @colorFilterBlack.
+  ///
+  /// In en, this message translates to:
+  /// **'Black'**
+  String get colorFilterBlack;
+
+  /// No description provided for @allGames.
+  ///
+  /// In en, this message translates to:
+  /// **'All games'**
+  String get allGames;
+
+  /// No description provided for @resultRateWithCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{rate} ({count})'**
+  String resultRateWithCount(String rate, int count);
+
+  /// No description provided for @ratingTrendWhite.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating points won or lost with white'**
+  String get ratingTrendWhite;
+
+  /// No description provided for @ratingTrendBlack.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating points won or lost with black'**
+  String get ratingTrendBlack;
+
+  /// No description provided for @ratingTrendPoints.
+  ///
+  /// In en, this message translates to:
+  /// **'{points} pts'**
+  String ratingTrendPoints(String points);
+
+  /// No description provided for @ratingTrendGames.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{over 1 game} other{over {count} games}}'**
+  String ratingTrendGames(int count);
+
+  /// No description provided for @ratingTrendNotEnough.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough rated games to compute the trend'**
+  String get ratingTrendNotEnough;
 }
 
 class _AppLocalizationsDelegate

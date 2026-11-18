@@ -1,30 +1,55 @@
-import '../models/country_game.dart';
 import '../services/rating_history_service.dart';
-import 'time_class_viewmodel.dart';
+import 'filtered_stats_viewmodel.dart';
 
-/// Courbe(s) de classement : celle de la cadence choisie, ou une par cadence
-/// jouée sur « Toutes » (les classements de cadences différentes ne se
-/// comparent pas, on ne les mélange donc pas).
-class RatingHistoryViewModel extends TimeClassFilteredViewModel {
+/// Carte du classement.
+///
+/// Sans filtre de couleur : courbe(s) de classement, celle de la cadence
+/// choisie ou une par cadence jouée sur « Toutes » (les classements de
+/// cadences différentes ne se comparent pas, on ne les mélange donc pas).
+///
+/// Avec un filtre de couleur : pas de courbe (le classement ne dépend pas de
+/// la couleur, ce serait la même courbe avec des trous) mais la tendance,
+/// points gagnés ou perdus avec cette couleur, par cadence.
+class RatingHistoryViewModel extends FilteredStatsViewModel {
   /// Cadences qui ont un classement, dans l'ordre d'affichage.
   static const List<String> timeClasses = ['bullet', 'blitz', 'rapid'];
 
-  final List<CountryGame> _games;
-  late List<RatingSeries> _series = _compute();
+  late List<RatingSeries> _series;
+  late List<RatingTrend> _trends;
 
-  RatingHistoryViewModel(List<CountryGame> games, [super.filter]) : _games = games;
+  RatingHistoryViewModel(super.games, {super.timeClassFilter, super.colorFilter}) {
+    _compute();
+  }
+
+  /// Vrai : afficher [trends] plutôt que [series].
+  bool get showsTrend => color != null;
 
   /// Courbes affichées ; vide s'il n'y a aucune partie classée.
   List<RatingSeries> get series => _series;
 
-  List<RatingSeries> _compute() {
+  /// Tendances des cadences affichées qui ont au moins une partie comptée ;
+  /// vide s'il n'y en a pas assez.
+  List<RatingTrend> get trends => _trends;
+
+  List<String> get _shownTimeClasses {
     final timeClass = this.timeClass;
-    return RatingHistoryService.series(
-      _games,
-      timeClass == null ? timeClasses : timeClasses.where((t) => t == timeClass).toList(),
-    );
+    return timeClass == null ? timeClasses : timeClasses.where((t) => t == timeClass).toList();
+  }
+
+  void _compute() {
+    final shown = _shownTimeClasses;
+    final color = this.color;
+    _series = RatingHistoryService.series(games, shown);
+    _trends = color == null
+        ? const []
+        : [
+            for (final timeClass in shown)
+              if (RatingHistoryService.trend(games, timeClass, (game) => game.playerColor == color)
+                  case final trend when trend.games > 0)
+                trend,
+          ];
   }
 
   @override
-  void onTimeClassChanged() => _series = _compute();
+  void onFiltersChanged() => _compute();
 }

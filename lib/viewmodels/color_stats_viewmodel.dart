@@ -1,13 +1,31 @@
 import '../models/color_stats.dart';
-import '../models/country_game.dart';
 import '../services/color_stats_service.dart';
-import 'time_class_viewmodel.dart';
+import 'filtered_stats_viewmodel.dart';
+import 'stats_filter_viewmodel.dart';
 
-class ColorStatsViewModel extends TimeClassFilteredViewModel {
-  final List<CountryGame> _games;
+/// Une jauge de la carte « Statistiques de victoire » : [color] 'white',
+/// 'black', ou null pour l'ensemble des parties.
+typedef WinStatsRow = ({String? color, ColorStats stats});
 
-  ColorStatsViewModel(List<CountryGame> games, [super.filter]) : _games = games;
+class ColorStatsViewModel extends FilteredStatsViewModel {
+  ColorStatsViewModel(super.games, {super.timeClassFilter, super.colorFilter});
 
   ({ColorStats white, ColorStats black}) get stats =>
-      ColorStatsService.aggregate(_games, timeClass: timeClass);
+      ColorStatsService.aggregate(filteredGames, timeClass: timeClass);
+
+  /// Sans filtre de couleur : ensemble, blancs, noirs (les deux couleurs se
+  /// jouent différemment, on les garde côte à côte). Avec : la seule couleur
+  /// choisie.
+  List<WinStatsRow> get rows {
+    final stats = this.stats;
+    return switch (color) {
+      PlayerColorViewModel.white => [(color: PlayerColorViewModel.white, stats: stats.white)],
+      PlayerColorViewModel.black => [(color: PlayerColorViewModel.black, stats: stats.black)],
+      _ => [
+          (color: null, stats: ColorStatsService.combine(stats.white, stats.black)),
+          (color: PlayerColorViewModel.white, stats: stats.white),
+          (color: PlayerColorViewModel.black, stats: stats.black),
+        ],
+    };
+  }
 }
