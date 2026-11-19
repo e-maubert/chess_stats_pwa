@@ -8,15 +8,17 @@ import '../viewmodels/time_management_viewmodel.dart';
 import '../viewmodels/stats_filter_viewmodel.dart';
 
 /// Page principale : sur les parties perdues, écart de pendule avec
-/// l'adversaire en fin de partie, répartition des défaites selon cet écart
-/// et abandons sous pression du temps. Filtrable par cadence.
+/// l'adversaire en fin de partie, et répartition des défaites : perdues au
+/// temps, puis selon cet écart. Suit les filtres de l'en-tête.
 class TimeManagementCard extends StatelessWidget {
   final List<CountryGame> games;
 
   const TimeManagementCard({super.key, required this.games});
 
-  // Sur une défaite, aucun écart n'est « bon » : en retard = rouge,
-  // en avance (on a peut-être joué trop vite) = ambre, équilibré = gris.
+  // Sur une défaite, aucun écart n'est « bon » : perdu au temps = rouge
+  // foncé, en retard = rouge, en avance (on a peut-être joué trop vite) =
+  // ambre, équilibré = gris.
+  static final Color _timeoutColor = Colors.red.shade900;
   static const Color _behindColor = Colors.red;
   static const Color _balancedColor = Colors.grey;
   static const Color _aheadColor = Colors.amber;
@@ -57,6 +59,7 @@ class TimeManagementCard extends StatelessWidget {
                 const SizedBox(height: 16),
                 _gapBar(stats),
                 const SizedBox(height: 8),
+                _legendRow(context, l10n.timeTimeout, stats.timeout, stats.timeoutRate, _timeoutColor, l10n),
                 _legendRow(context, l10n.timeBehind, stats.behind, stats.behindRate, _behindColor, l10n),
                 _legendRow(context, l10n.timeBalanced, stats.balanced, stats.balancedRate, _balancedColor, l10n),
                 _legendRow(context, l10n.timeAhead, stats.ahead, stats.aheadRate, _aheadColor, l10n),
@@ -95,7 +98,8 @@ class TimeManagementCard extends StatelessWidget {
     );
   }
 
-  /// Barre en trois couleurs : en retard / équilibré / en avance au temps.
+  /// Barre de gauche à droite, du pire au moins grave : perdu au temps /
+  /// en retard / équilibré / en avance.
   Widget _gapBar(TimeManagementStats stats) {
     Widget segment(int flex, Color color) =>
         flex > 0 ? Expanded(flex: flex, child: Container(color: color)) : const SizedBox.shrink();
@@ -108,6 +112,7 @@ class TimeManagementCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(6),
           child: Row(
             children: [
+              segment(stats.timeout, _timeoutColor),
               segment(stats.behind, _behindColor),
               segment(stats.balanced, _balancedColor),
               segment(stats.ahead, _aheadColor),

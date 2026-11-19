@@ -1,4 +1,5 @@
 import '../models/country_game.dart';
+import 'loss_stats_service.dart';
 
 /// Position de la pendule par rapport à l'adversaire en fin de partie.
 enum TimeGap { behind, balanced, ahead }
@@ -9,8 +10,12 @@ class TimeManagementStats {
   /// Défaites dont les pendules sont connues.
   final int losses;
 
-  /// Défaites avec un écart de plus de 10 % du temps initial en notre
-  /// défaveur / dans les 10 % / en notre faveur.
+  /// Défaites au temps (pendule tombée), comptées à part quel que soit
+  /// l'écart avec l'adversaire.
+  final int timeout;
+
+  /// Autres défaites, avec un écart de plus de 10 % du temps initial en
+  /// notre défaveur / dans les 10 % / en notre faveur.
   final int behind;
   final int balanced;
   final int ahead;
@@ -24,6 +29,7 @@ class TimeManagementStats {
 
   const TimeManagementStats({
     required this.losses,
+    this.timeout = 0,
     required this.behind,
     required this.balanced,
     required this.ahead,
@@ -32,6 +38,7 @@ class TimeManagementStats {
   });
 
   double _rate(int count) => losses == 0 ? 0 : count / losses;
+  double get timeoutRate => _rate(timeout);
   double get behindRate => _rate(behind);
   double get balancedRate => _rate(balanced);
   double get aheadRate => _rate(ahead);
@@ -91,9 +98,10 @@ class TimeManagementService {
   }
 
   /// Agrège les défaites de la cadence [timeClass] (null = toutes) dont les
-  /// pendules et le temps initial sont connus.
+  /// pendules et le temps initial sont connus. Les défaites au temps sont
+  /// mises à part ; l'écart moyen les inclut toujours.
   static TimeManagementStats aggregate(List<CountryGame> games, {String? timeClass}) {
-    var losses = 0, behind = 0, balanced = 0, ahead = 0;
+    var losses = 0, timeout = 0, behind = 0, balanced = 0, ahead = 0;
     var totalGap = 0.0, totalLimit = 0.0;
 
     for (final game in games) {
@@ -109,6 +117,10 @@ class TimeManagementService {
       losses++;
       totalGap += gap;
       totalLimit += limit;
+      if (game.lossCause == LossStatsService.timeout) {
+        timeout++;
+        continue;
+      }
       switch (classify(gap, limit)) {
         case TimeGap.behind:
           behind++;
@@ -121,6 +133,7 @@ class TimeManagementService {
 
     return TimeManagementStats(
       losses: losses,
+      timeout: timeout,
       behind: behind,
       balanced: balanced,
       ahead: ahead,

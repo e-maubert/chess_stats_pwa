@@ -6,7 +6,6 @@ import 'app_footer.dart';
 import 'color_stats_card.dart';
 import 'country_stats_card.dart';
 import 'game_phase_card.dart';
-import 'loss_breakdown_card.dart';
 import 'opening_stats_card.dart';
 import 'playing_hours_card.dart';
 import 'rating_history_card.dart';
@@ -54,7 +53,6 @@ class _StatsDisplayState extends State<StatsDisplay> {
     final cards = <Widget>[
       ColorStatsCard(key: _cardKeys[0], games: games),
       RatingHistoryCard(key: _cardKeys[1], games: games),
-      LossBreakdownCard(key: _cardKeys[2], games: games),
       TimeManagementCard(key: _cardKeys[3], games: games),
       GamePhaseCard(key: _cardKeys[7], games: widget.phaseGames, progress: widget.phaseProgress),
       OpeningStatsCard(key: _cardKeys[5], games: games),

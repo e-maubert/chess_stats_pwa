@@ -344,36 +344,6 @@ abstract class AppLocalizations {
   /// **'W {win} · D {draw} · L {loss}'**
   String countryResultRates(String win, String draw, String loss);
 
-  /// No description provided for @lossBreakdown.
-  ///
-  /// In en, this message translates to:
-  /// **'Losses by type'**
-  String get lossBreakdown;
-
-  /// No description provided for @lossByTimeout.
-  ///
-  /// In en, this message translates to:
-  /// **'On time'**
-  String get lossByTimeout;
-
-  /// No description provided for @lossByCheckmate.
-  ///
-  /// In en, this message translates to:
-  /// **'By checkmate'**
-  String get lossByCheckmate;
-
-  /// No description provided for @lossByResignation.
-  ///
-  /// In en, this message translates to:
-  /// **'By resignation'**
-  String get lossByResignation;
-
-  /// No description provided for @lossOther.
-  ///
-  /// In en, this message translates to:
-  /// **'Other'**
-  String get lossOther;
-
   /// No description provided for @noLossData.
   ///
   /// In en, this message translates to:
@@ -397,6 +367,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'When you lose, this is your average clock gap with the opponent at the end of the game:'**
   String get timeGapAverage;
+
+  /// No description provided for @timeTimeout.
+  ///
+  /// In en, this message translates to:
+  /// **'Lost on time'**
+  String get timeTimeout;
 
   /// No description provided for @timeBehind.
   ///

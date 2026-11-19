@@ -1,6 +1,5 @@
-import '../models/country_game.dart';
-import '../models/loss_stats.dart';
-
+/// Cause d'une défaite (temps, mat, abandon), lue dans le résultat
+/// chess.com : sert à repérer les défaites au temps.
 class LossStatsService {
   static const String timeout = 'timeout';
   static const String checkmated = 'checkmated';
@@ -21,38 +20,5 @@ class LossStatsService {
       default:
         return other;
     }
-  }
-
-  /// Compte les défaites par cause. [timeClass] null = toutes les cadences.
-  static LossStats aggregate(List<CountryGame> games, {String? timeClass}) {
-    var timeoutCount = 0;
-    var checkmatedCount = 0;
-    var resignedCount = 0;
-    var otherCount = 0;
-
-    for (final game in games) {
-      if (game.result != 'loss') continue;
-      if (timeClass != null && game.timeClass != timeClass) continue;
-      switch (game.lossCause) {
-        case timeout:
-          timeoutCount++;
-          break;
-        case checkmated:
-          checkmatedCount++;
-          break;
-        case resigned:
-          resignedCount++;
-          break;
-        default:
-          otherCount++;
-      }
-    }
-
-    return LossStats(
-      timeout: timeoutCount,
-      checkmated: checkmatedCount,
-      resigned: resignedCount,
-      other: otherCount,
-    );
   }
 }
