@@ -1002,4 +1002,155 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get ratingTrendSelection =>
       'Points de classement gagnés ou perdus sur les parties sélectionnées';
+
+  @override
+  String get slidesPrevious => 'Précédent';
+
+  @override
+  String get slidesNext => 'Suivant';
+
+  @override
+  String get recapSkip => 'Passer';
+
+  @override
+  String get recapSeeStats => 'Voir toutes les stats';
+
+  @override
+  String get recapIntroLabel => 'Ton mois sur chess.com';
+
+  @override
+  String recapIntroTitle(String username) {
+    return '$username, voici tes 30 derniers jours';
+  }
+
+  @override
+  String get recapIntroHint => 'Touche ou fais glisser pour continuer';
+
+  @override
+  String get recapGamesLabel => 'Parties jouées';
+
+  @override
+  String recapGamesCaption(int wins, int draws, int losses) {
+    return '$wins V · $draws N · $losses D';
+  }
+
+  @override
+  String recapScore(String percent) {
+    return 'Score : $percent';
+  }
+
+  @override
+  String get recapTimeClassLabel => 'Ta cadence préférée';
+
+  @override
+  String get recapTimeClassDaily => 'Correspondance';
+
+  @override
+  String recapGamesCount(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count parties',
+      one: '$count partie',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String recapRatingChange(String change) {
+    return 'Classement : $change sur le mois';
+  }
+
+  @override
+  String recapPeakRating(int rating) {
+    return 'Plus haut : $rating';
+  }
+
+  @override
+  String get recapStreakLabel => 'Plus longue série de victoires';
+
+  @override
+  String get recapStreakCaption => 'victoires d\'affilée';
+
+  @override
+  String get recapStreakCaptionHot => 'victoires d\'affilée. Inarrêtable !';
+
+  @override
+  String get recapOpeningLabel => 'Ton ouverture fétiche';
+
+  @override
+  String recapOpeningCaption(num count, String percent) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count parties',
+      one: '$count partie',
+    );
+    return '$_temp0 · score $percent';
+  }
+
+  @override
+  String get recapBestOpeningLabel => 'Ton arme secrète';
+
+  @override
+  String get recapHourLabel => 'Ton heure préférée pour jouer';
+
+  @override
+  String recapHourValue(int hour) {
+    return '$hour h';
+  }
+
+  @override
+  String get recapNightOwl => 'Un vrai oiseau de nuit !';
+
+  @override
+  String get recapEarlyBird => 'Un lève-tôt !';
+
+  @override
+  String recapBusiestDay(String date, num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count parties',
+      one: '$count partie',
+    );
+    return 'Journée record : $date, $_temp0';
+  }
+
+  @override
+  String get recapOpponentLabel => 'Ton adversaire le plus fréquent';
+
+  @override
+  String recapOpponentCaption(int count, int wins, int draws, int losses) {
+    return 'Affronté $count fois · $wins V, $draws N, $losses D';
+  }
+
+  @override
+  String get recapLossLabel => 'Ton point faible';
+
+  @override
+  String get recapLossTimeout => 'La pendule';
+
+  @override
+  String get recapLossCheckmate => 'Les mats';
+
+  @override
+  String get recapLossResign => 'Les abandons';
+
+  @override
+  String get recapLossOther => 'Autres fins';
+
+  @override
+  String recapLossCaption(String percent) {
+    return '$percent de tes défaites';
+  }
+
+  @override
+  String get recapOutroLabel => 'Voilà ton mois';
+
+  @override
+  String get recapOutroTitle => 'Envie d\'aller plus loin ?';
+
+  @override
+  String get recapEmptyTitle => 'Aucune partie ces 30 derniers jours';
 }

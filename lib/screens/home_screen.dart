@@ -9,7 +9,7 @@ import '../widgets/app_footer.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/recent_players_options.dart';
 import '../widgets/theme_toggle_button.dart';
-import 'stats_screen.dart';
+import 'recap_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -46,7 +46,7 @@ class HomeScreenState extends State<HomeScreen> {
 
     try {
       // Parties déjà stockées : affichées tout de suite, mises à jour
-      // ensuite par l'écran des stats. Sinon, premier téléchargement ici.
+      // ensuite par l'écran du bilan. Sinon, premier téléchargement ici.
       final repository = context.read<GameRepository>();
       final stored = await repository.storedGames(username);
       final games = stored ?? await repository.updateGames(username);
@@ -57,9 +57,10 @@ class HomeScreenState extends State<HomeScreen> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => StatsScreen(
+          // Bilan du dernier mois d'abord, puis la page des stats.
+          builder: (context) => RecapScreen(
             username: username,
-            initialGames: games,
+            games: games,
             upToDate: stored == null,
           ),
         ),

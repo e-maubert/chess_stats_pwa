@@ -554,5 +554,140 @@
         "type": "int"
       }
     }
-  }
+  },
+  "slidesPrevious": "Previous",
+  "slidesNext": "Next",
+  "recapSkip": "Skip",
+  "recapSeeStats": "See all stats",
+  "recapIntroLabel": "Your month on chess.com",
+  "recapIntroTitle": "{username}, here are your last 30 days",
+  "@recapIntroTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "recapIntroHint": "Tap or swipe to continue",
+  "recapGamesLabel": "Games played",
+  "recapGamesCaption": "{wins} W · {draws} D · {losses} L",
+  "@recapGamesCaption": {
+    "placeholders": {
+      "wins": {
+        "type": "int"
+      },
+      "draws": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
+    }
+  },
+  "recapScore": "Score: {percent}",
+  "@recapScore": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "recapTimeClassLabel": "Your favourite time control",
+  "recapTimeClassDaily": "Daily",
+  "recapGamesCount": "{count, plural, one{{count} game} other{{count} games}}",
+  "@recapGamesCount": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "recapRatingChange": "Rating: {change} over the month",
+  "@recapRatingChange": {
+    "placeholders": {
+      "change": {
+        "type": "String"
+      }
+    }
+  },
+  "recapPeakRating": "Peak: {rating}",
+  "@recapPeakRating": {
+    "placeholders": {
+      "rating": {
+        "type": "int"
+      }
+    }
+  },
+  "recapStreakLabel": "Longest winning streak",
+  "recapStreakCaption": "wins in a row",
+  "recapStreakCaptionHot": "wins in a row. Unstoppable!",
+  "recapOpeningLabel": "Your go-to opening",
+  "recapOpeningCaption": "{count, plural, one{{count} game} other{{count} games}} · score {percent}",
+  "@recapOpeningCaption": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "recapBestOpeningLabel": "Your secret weapon",
+  "recapHourLabel": "Your favourite time to play",
+  "recapHourValue": "{hour}:00",
+  "@recapHourValue": {
+    "placeholders": {
+      "hour": {
+        "type": "int"
+      }
+    }
+  },
+  "recapNightOwl": "A true night owl!",
+  "recapEarlyBird": "An early bird!",
+  "recapBusiestDay": "Busiest day: {date}, {count, plural, one{{count} game} other{{count} games}}",
+  "@recapBusiestDay": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "recapOpponentLabel": "Your most-faced opponent",
+  "recapOpponentCaption": "Played {count} times · {wins} W, {draws} D, {losses} L",
+  "@recapOpponentCaption": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "wins": {
+        "type": "int"
+      },
+      "draws": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "int"
+      }
+    }
+  },
+  "recapLossLabel": "Your weak spot",
+  "recapLossTimeout": "The clock",
+  "recapLossCheckmate": "Checkmates",
+  "recapLossResign": "Resigning",
+  "recapLossOther": "Other endings",
+  "recapLossCaption": "{percent} of your losses",
+  "@recapLossCaption": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "recapOutroLabel": "That's your month",
+  "recapOutroTitle": "Want to dig deeper?",
+  "recapEmptyTitle": "No games in the last 30 days"
 }
