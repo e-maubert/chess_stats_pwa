@@ -31,7 +31,7 @@ CountryGame _game(String result, int daysAgo, {String opponent = 'x'}) => Countr
       endTime: _now.subtract(Duration(days: daysAgo)),
     );
 
-Future<void> _pump(WidgetTester tester, List<CountryGame> games) async {
+Future<void> _pump(WidgetTester tester, List<CountryGame> games, {Widget? home}) async {
   final repository = GameRepository(
     store: GameStore(newDatabaseFactoryMemory()),
     source: _EmptySource(),
@@ -43,7 +43,7 @@ Future<void> _pump(WidgetTester tester, List<CountryGame> games) async {
       locale: const Locale('fr'),
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      home: RecapScreen(username: 'hikaru', games: games, upToDate: true),
+      home: home ?? RecapScreen(username: 'hikaru', games: games, upToDate: true),
     ),
   ));
   await tester.pumpAndSettle();
@@ -71,7 +71,12 @@ void main() {
     await _next(tester);
     expect(find.text('Parties jouées'), findsOneWidget);
     expect(find.text('4'), findsOneWidget);
+    expect(find.text('Tranquille : une partie de temps en temps.'), findsOneWidget);
+    await _next(tester);
+    expect(find.text('Ton score'), findsOneWidget);
+    expect(find.textContaining(RegExp(r'^63\s%$')), findsOneWidget);
     expect(find.text('2 V · 1 N · 1 D'), findsOneWidget);
+    expect(find.text('Plus de victoires que de défaites : bien joué !'), findsOneWidget);
     await _next(tester);
     expect(find.text('Ta cadence préférée'), findsOneWidget);
     await _next(tester);
@@ -101,6 +106,32 @@ void main() {
     await tester.pump(const Duration(milliseconds: 50));
     await tester.tap(find.byTooltip('Suivant'));
     await tester.pumpAndSettle();
-    expect(find.text('Ta cadence préférée'), findsOneWidget);
+    expect(find.text('Ton score'), findsOneWidget);
+  });
+
+  testWidgets('bilan revu depuis les stats : « Passer » y ramène', (tester) async {
+    await _pump(
+      tester,
+      const [],
+      home: Builder(
+        builder: (context) => TextButton(
+          onPressed: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => RecapScreen(username: 'hikaru', games: [_game('win', 1)], upToDate: true, replay: true),
+            ),
+          ),
+          child: const Text('page des stats'),
+        ),
+      ),
+    );
+    await tester.tap(find.text('page des stats'));
+    await tester.pumpAndSettle();
+    expect(find.byType(RecapScreen), findsOneWidget);
+
+    await tester.tap(find.text('Passer'));
+    await tester.pumpAndSettle();
+    expect(find.byType(RecapScreen), findsNothing);
+    expect(find.text('page des stats'), findsOneWidget);
   });
 }

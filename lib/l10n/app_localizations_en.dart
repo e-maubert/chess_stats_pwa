@@ -1037,9 +1037,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String recapScore(String percent) {
-    return 'Score: $percent';
-  }
+  String get recapScoreLabel => 'Your score';
+
+  @override
+  String get recapReplay => 'Replay the monthly recap';
 
   @override
   String get recapTimeClassLabel => 'Your favourite time control';

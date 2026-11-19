@@ -23,7 +23,16 @@ class RecapScreen extends StatelessWidget {
   /// [games] viennent d'être téléchargées : pas de mise à jour.
   final bool upToDate;
 
-  const RecapScreen({super.key, required this.username, required this.games, this.upToDate = false});
+  /// Bilan revu depuis la page des stats : en sortir y ramène.
+  final bool replay;
+
+  const RecapScreen({
+    super.key,
+    required this.username,
+    required this.games,
+    this.upToDate = false,
+    this.replay = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +71,12 @@ class RecapScreen extends StatelessWidget {
   }
 
   /// Remplace le bilan par la page des stats : le retour ramène à la
-  /// recherche.
+  /// recherche. Bilan revu depuis les stats : simple retour.
   void _openStats(BuildContext context, RecapViewModel viewModel) {
+    if (replay) {
+      Navigator.pop(context);
+      return;
+    }
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
@@ -100,16 +113,20 @@ class RecapScreen extends StatelessWidget {
       StorySlide(
         label: l10n.recapGamesLabel,
         value: '${recap.games}',
+        details: [_volumePhrase(l10n, recap.games)],
+      ),
+      // 2. Résultats.
+      StorySlide(
+        label: l10n.recapScoreLabel,
+        value: percent(recap.score),
         details: [
-          _volumePhrase(l10n, recap.games),
           l10n.recapGamesCaption(recap.wins, recap.draws, recap.losses),
-          l10n.recapScore(percent(recap.score)),
           _scorePhrase(l10n, recap.score),
         ],
       ),
     ];
 
-    // 2. Cadence et classement.
+    // 3. Cadence et classement.
     if (recap.favoriteTimeClass != null) {
       final change = recap.ratingChange;
       slides.add(StorySlide(
@@ -125,7 +142,7 @@ class RecapScreen extends StatelessWidget {
       ));
     }
 
-    // 3. Série de victoires.
+    // 4. Série de victoires.
     if (recap.longestWinStreak >= 2) {
       slides.add(StorySlide(
         label: l10n.recapStreakLabel,
@@ -134,7 +151,7 @@ class RecapScreen extends StatelessWidget {
       ));
     }
 
-    // 4. Ouvertures.
+    // 5. Ouvertures.
     if (recap.favoriteOpening != null) {
       slides.add(StorySlide(
         label: l10n.recapOpeningLabel,
@@ -150,7 +167,7 @@ class RecapScreen extends StatelessWidget {
       ));
     }
 
-    // 5. Habitudes de jeu.
+    // 6. Habitudes de jeu.
     if (recap.favoriteHour != null) {
       final hour = recap.favoriteHour!;
       slides.add(StorySlide(
@@ -164,7 +181,7 @@ class RecapScreen extends StatelessWidget {
       ));
     }
 
-    // 6. Adversaire le plus affronté.
+    // 7. Adversaire le plus affronté.
     final opponent = recap.topOpponent;
     if (opponent != null) {
       slides.add(StorySlide(
@@ -174,7 +191,7 @@ class RecapScreen extends StatelessWidget {
       ));
     }
 
-    // 7. Point faible : l'ouverture assez jouée la moins réussie.
+    // 8. Point faible : l'ouverture assez jouée la moins réussie.
     if (recap.weakOpening != null) {
       slides.add(StorySlide(
         label: l10n.recapWeakOpeningLabel,

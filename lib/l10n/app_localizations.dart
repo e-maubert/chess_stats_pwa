@@ -1132,11 +1132,17 @@ abstract class AppLocalizations {
   /// **'{wins} W · {draws} D · {losses} L'**
   String recapGamesCaption(int wins, int draws, int losses);
 
-  /// No description provided for @recapScore.
+  /// No description provided for @recapScoreLabel.
   ///
   /// In en, this message translates to:
-  /// **'Score: {percent}'**
-  String recapScore(String percent);
+  /// **'Your score'**
+  String get recapScoreLabel;
+
+  /// No description provided for @recapReplay.
+  ///
+  /// In en, this message translates to:
+  /// **'Replay the monthly recap'**
+  String get recapReplay;
 
   /// No description provided for @recapTimeClassLabel.
   ///

@@ -11,6 +11,7 @@ import '../widgets/period_selector.dart';
 import '../widgets/stats_display.dart';
 import '../widgets/theme_toggle_button.dart';
 import '../widgets/stats_filter_selectors.dart';
+import 'recap_screen.dart';
 
 class StatsScreen extends StatelessWidget {
   final String username;
@@ -86,6 +87,25 @@ class StatsScreen extends StatelessWidget {
               ),
             ),
             actions: [
+              // Revoir le bilan du dernier mois (montré automatiquement
+              // seulement à la première recherche du joueur).
+              IconButton(
+                icon: const Icon(Icons.auto_stories_outlined),
+                tooltip: l10n.recapReplay,
+                onPressed: viewModel.games == null
+                    ? null
+                    : () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => RecapScreen(
+                              username: username,
+                              games: viewModel.games!,
+                              upToDate: true,
+                              replay: true,
+                            ),
+                          ),
+                        ),
+              ),
               IconButton(
                 icon: const Icon(Icons.refresh),
                 onPressed: viewModel.isUpdating ? null : viewModel.update,

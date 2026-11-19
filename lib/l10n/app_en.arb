@@ -584,14 +584,8 @@
       }
     }
   },
-  "recapScore": "Score: {percent}",
-  "@recapScore": {
-    "placeholders": {
-      "percent": {
-        "type": "String"
-      }
-    }
-  },
+  "recapScoreLabel": "Your score",
+  "recapReplay": "Replay the monthly recap",
   "recapTimeClassLabel": "Your favourite time control",
   "recapTimeClassDaily": "Daily",
   "recapGamesCount": "{count, plural, one{{count} game} other{{count} games}}",
