@@ -8,6 +8,7 @@ import '../services/game_repository.dart';
 import '../services/opening_name_service.dart';
 import '../services/recap_service.dart';
 import '../viewmodels/recap_viewmodel.dart';
+import '../widgets/player_app_bar_title.dart';
 import '../widgets/stats_filter_selectors.dart';
 import '../widgets/story_slides.dart';
 import '../widgets/theme_toggle_button.dart';
@@ -49,7 +50,7 @@ class RecapScreen extends StatelessWidget {
           void openStats() => _openStats(context, viewModel);
           return Scaffold(
             appBar: AppBar(
-              title: Text(username, maxLines: 1, overflow: TextOverflow.ellipsis),
+              title: PlayerAppBarTitle(username: username),
               actions: [
                 TextButton(onPressed: openStats, child: Text(l10n.recapSkip)),
                 const ThemeToggleButton(),

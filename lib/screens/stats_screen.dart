@@ -6,8 +6,8 @@ import '../viewmodels/player_games_viewmodel.dart';
 import '../viewmodels/stats_filter_viewmodel.dart';
 import '../viewmodels/stats_period_viewmodel.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
-import '../widgets/app_logo.dart';
 import '../widgets/period_selector.dart';
+import '../widgets/player_app_bar_title.dart';
 import '../widgets/stats_display.dart';
 import '../widgets/theme_toggle_button.dart';
 import '../widgets/stats_filter_selectors.dart';
@@ -53,39 +53,7 @@ class StatsScreen extends StatelessWidget {
           appBar: AppBar(
             // Nom de l'app en petit, puis le pseudo dessous : il a toute la
             // largeur pour lui et ne se fait plus rogner sur mobile.
-            title: Semantics(
-              label: l10n.statsTitle(username),
-              excludeSemantics: true,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const AppLogo(size: 32, decorative: true),
-                  const SizedBox(width: 10),
-                  Flexible(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          l10n.appTitle,
-                          style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                                color: Theme.of(context).colorScheme.onSurfaceVariant,
-                              ),
-                        ),
-                        Text(
-                          username,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            title: PlayerAppBarTitle(username: username),
             actions: [
               // Revoir le bilan du dernier mois (montré automatiquement
               // seulement à la première recherche du joueur).
