@@ -862,6 +862,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'Less than your opponent (gap above 10% of the starting time)';
 
   @override
+  String get ratedFilterLabel => 'Games included';
+
+  @override
+  String get ratedFilterRated => 'Rated games';
+
+  @override
+  String get ratedFilterAll => 'All games';
+
+  @override
   String get colorFilterLabel => 'Color played';
 
   @override

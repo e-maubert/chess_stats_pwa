@@ -52,17 +52,24 @@ class PlayerGamesViewModel extends ChangeNotifier {
   /// Parties de la [period] (les N derniers jours), celles affichées. Même
   /// liste tant que les parties et la période ne changent pas : les cartes
   /// gardent leurs filtres (elles repartent de zéro quand la liste change).
-  List<CountryGame> gamesIn(StatsPeriod period) {
-    if (_displayedSource != _games || _displayedPeriod != period || _displayed == null) {
+  ///
+  /// [ratedOnly] : parties classées seulement.
+  List<CountryGame> gamesIn(StatsPeriod period, {bool ratedOnly = false}) {
+    if (_displayedSource != _games ||
+        _displayedPeriod != period ||
+        _displayedRatedOnly != ratedOnly ||
+        _displayed == null) {
       _displayedSource = _games;
       _displayedPeriod = period;
-      _displayed = StatsPeriodService.filter(_games ?? const [], period, _repository.now);
+      _displayedRatedOnly = ratedOnly;
+      _displayed = StatsPeriodService.filter(_games ?? const [], period, _repository.now, ratedOnly: ratedOnly);
     }
     return _displayed!;
   }
 
   List<CountryGame>? _displayedSource;
   StatsPeriod? _displayedPeriod;
+  bool? _displayedRatedOnly;
   List<CountryGame>? _displayed;
 
   /// Pays des adversaires déjà trouvés (pseudo en minuscules → code pays).
@@ -80,8 +87,8 @@ class PlayerGamesViewModel extends ChangeNotifier {
   /// chargement). Lance la recherche des pays manquants, et seulement pour
   /// cette période : passer à « 3 mois » ne cherche que les nouveaux
   /// adversaires.
-  List<CountryGame>? countryGamesIn(StatsPeriod period) {
-    final games = gamesIn(period);
+  List<CountryGame>? countryGamesIn(StatsPeriod period, {bool ratedOnly = false}) {
+    final games = gamesIn(period, ratedOnly: ratedOnly);
     if (!identical(_countrySource, games) || _countrySourceVersion != _countriesVersion) {
       _countrySource = games;
       _countrySourceVersion = _countriesVersion;
@@ -146,8 +153,8 @@ class PlayerGamesViewModel extends ChangeNotifier {
   /// Parties de la [period] avec leurs phases ; null tant qu'il en manque
   /// (la carte des phases affiche alors l'avancement). Lance l'analyse des
   /// parties manquantes, et seulement pour cette période.
-  List<CountryGame>? phaseGamesIn(StatsPeriod period) {
-    final games = gamesIn(period);
+  List<CountryGame>? phaseGamesIn(StatsPeriod period, {bool ratedOnly = false}) {
+    final games = gamesIn(period, ratedOnly: ratedOnly);
     if (!identical(_phaseSource, games) || _phaseSourceVersion != _phasesVersion) {
       _phaseSource = games;
       _phaseSourceVersion = _phasesVersion;

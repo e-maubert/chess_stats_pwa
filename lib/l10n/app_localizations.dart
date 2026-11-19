@@ -958,6 +958,24 @@ abstract class AppLocalizations {
   /// **'Less than your opponent (gap above 10% of the starting time)'**
   String get phaseClockLegendBehind;
 
+  /// No description provided for @ratedFilterLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Games included'**
+  String get ratedFilterLabel;
+
+  /// No description provided for @ratedFilterRated.
+  ///
+  /// In en, this message translates to:
+  /// **'Rated games'**
+  String get ratedFilterRated;
+
+  /// No description provided for @ratedFilterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All games'**
+  String get ratedFilterAll;
+
   /// No description provided for @colorFilterLabel.
   ///
   /// In en, this message translates to:

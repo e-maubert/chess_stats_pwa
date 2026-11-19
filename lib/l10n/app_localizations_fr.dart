@@ -858,6 +858,15 @@ class AppLocalizationsFr extends AppLocalizations {
       'Moins que l\'adversaire (écart de plus de 10 % du temps initial)';
 
   @override
+  String get ratedFilterLabel => 'Parties prises en compte';
+
+  @override
+  String get ratedFilterRated => 'Parties classées';
+
+  @override
+  String get ratedFilterAll => 'Toutes les parties';
+
+  @override
   String get colorFilterLabel => 'Couleur jouée';
 
   @override

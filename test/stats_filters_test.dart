@@ -43,6 +43,25 @@ void main() {
     expect(find.text('White'), findsOneWidget);
   });
 
+  testWidgets('parties classées par défaut, toutes sur demande', (tester) async {
+    final rated = RatedFilterViewModel();
+    await tester.pumpWidget(ChangeNotifierProvider.value(
+      value: rated,
+      child: MaterialApp(
+        locale: const Locale('fr'),
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const Scaffold(body: RatedSelector()),
+      ),
+    ));
+    expect(rated.ratedOnly, isTrue);
+    expect(find.text('Parties classées'), findsOneWidget);
+
+    await tester.tap(find.text('Toutes les parties'));
+    await tester.pump();
+    expect(rated.ratedOnly, isFalse);
+  });
+
   test('par défaut : toutes cadences, les deux couleurs, toutes ouvertures', () {
     expect(TimeClassViewModel().timeClass, isNull);
     expect(PlayerColorViewModel().color, isNull);

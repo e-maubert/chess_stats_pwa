@@ -37,11 +37,14 @@ class RecapViewModel extends ChangeNotifier {
   PlayerRecap? _recap;
   List<CountryGame>? _recapSource;
 
-  /// Bilan des [period] derniers jours ; null sans partie.
+  /// Bilan des parties classées des [period] derniers jours (toutes s'il
+  /// n'y en a aucune de classée) ; null sans partie.
   PlayerRecap? get recap {
     if (!identical(_recapSource, _games)) {
       _recapSource = _games;
-      _recap = RecapService.build(StatsPeriodService.filter(_games, period, _repository.now));
+      _recap = RecapService.build(
+        StatsPeriodService.preferRated(StatsPeriodService.filter(_games, period, _repository.now)),
+      );
     }
     return _recap;
   }
