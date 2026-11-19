@@ -1002,4 +1002,188 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get ratingTrendSelection =>
       'Points de classement gagnés ou perdus sur les parties sélectionnées';
+
+  @override
+  String get slidesPrevious => 'Précédent';
+
+  @override
+  String get slidesNext => 'Suivant';
+
+  @override
+  String get recapSkip => 'Passer';
+
+  @override
+  String get recapSeeStats => 'Voir toutes les stats';
+
+  @override
+  String get recapIntroLabel => 'Ton mois sur chess.com';
+
+  @override
+  String recapIntroTitle(String username) {
+    return '$username, voici tes 30 derniers jours';
+  }
+
+  @override
+  String get recapIntroHint => 'Touche ou fais glisser pour continuer';
+
+  @override
+  String get recapGamesLabel => 'Parties jouées';
+
+  @override
+  String recapGamesCaption(int wins, int draws, int losses) {
+    return '$wins V · $draws N · $losses D';
+  }
+
+  @override
+  String get recapScoreLabel => 'Ton score';
+
+  @override
+  String get recapReplay => 'Revoir le bilan du mois';
+
+  @override
+  String get recapTimeClassLabel => 'Ta cadence préférée';
+
+  @override
+  String get recapTimeClassDaily => 'Correspondance';
+
+  @override
+  String recapGamesCount(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count parties',
+      one: '$count partie',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String recapRatingChange(String change) {
+    return 'Classement : $change sur le mois';
+  }
+
+  @override
+  String recapPeakRating(int rating) {
+    return 'Plus haut : $rating';
+  }
+
+  @override
+  String get recapStreakLabel => 'Plus longue série de victoires';
+
+  @override
+  String get recapStreakCaption => 'victoires d\'affilée';
+
+  @override
+  String get recapStreakCaptionHot => 'victoires d\'affilée. Inarrêtable !';
+
+  @override
+  String get recapOpeningLabel => 'Ton ouverture fétiche';
+
+  @override
+  String recapOpeningCaption(num count, String percent) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count parties',
+      one: '$count partie',
+    );
+    return '$_temp0 · score $percent';
+  }
+
+  @override
+  String get recapBestOpeningLabel => 'Ton arme secrète';
+
+  @override
+  String get recapHourLabel => 'Ton heure préférée pour jouer';
+
+  @override
+  String recapHourValue(int hour) {
+    return '$hour h';
+  }
+
+  @override
+  String recapBusiestDay(String date, num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count parties',
+      one: '$count partie',
+    );
+    return 'Journée record : $date, $_temp0';
+  }
+
+  @override
+  String get recapOpponentLabel => 'Ton adversaire le plus fréquent';
+
+  @override
+  String recapOpponentCaption(int count, int wins, int draws, int losses) {
+    return 'Affronté $count fois · $wins V, $draws N, $losses D';
+  }
+
+  @override
+  String get recapWeakOpeningLabel => 'L\'ouverture qui te résiste';
+
+  @override
+  String get recapOutroLabel => 'Voilà ton mois';
+
+  @override
+  String get recapOutroTitle => 'Envie d\'aller plus loin ?';
+
+  @override
+  String get recapEmptyTitle => 'Aucune partie ces 30 derniers jours';
+
+  @override
+  String get recapHourEarlyBird => 'Lève-tôt : les échecs avant le café !';
+
+  @override
+  String get recapHourMorning => 'Tu commences la journée par une partie.';
+
+  @override
+  String get recapHourLunch => 'Une partie pendant la pause déjeuner ?';
+
+  @override
+  String get recapHourAfternoon => 'L\'après-midi, c\'est ton moment.';
+
+  @override
+  String get recapHourEvening => 'Ta partie du soir, c\'est sacré.';
+
+  @override
+  String get recapHourNightOwl => 'Un vrai oiseau de nuit !';
+
+  @override
+  String get recapVolumeCasual => 'Tranquille : une partie de temps en temps.';
+
+  @override
+  String recapVolumeRegular(int count) {
+    return 'Un rythme régulier, environ $count par semaine.';
+  }
+
+  @override
+  String get recapVolumeEveryDay => 'Tu joues presque tous les jours !';
+
+  @override
+  String recapVolumeEnthusiast(int count) {
+    return 'Un vrai mordu : $count parties par jour en moyenne.';
+  }
+
+  @override
+  String get recapVolumeNonStop => 'Ton échiquier ne refroidit jamais.';
+
+  @override
+  String get recapScoreDominant => 'Tu écrases la concurrence.';
+
+  @override
+  String get recapScoreWinning =>
+      'Plus de victoires que de défaites : bien joué !';
+
+  @override
+  String get recapScoreBalanced =>
+      'À l\'équilibre : chaque partie se joue à peu de chose.';
+
+  @override
+  String get recapScoreTough => 'Un mois difficile, le prochain sera meilleur.';
+
+  @override
+  String get recapScoreLearning =>
+      'Un mois pour apprendre : chaque défaite est une leçon.';
 }

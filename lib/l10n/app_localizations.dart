@@ -1077,6 +1077,288 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rating points won or lost in the selected games'**
   String get ratingTrendSelection;
+
+  /// No description provided for @slidesPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous'**
+  String get slidesPrevious;
+
+  /// No description provided for @slidesNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get slidesNext;
+
+  /// No description provided for @recapSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get recapSkip;
+
+  /// No description provided for @recapSeeStats.
+  ///
+  /// In en, this message translates to:
+  /// **'See all stats'**
+  String get recapSeeStats;
+
+  /// No description provided for @recapIntroLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your month on chess.com'**
+  String get recapIntroLabel;
+
+  /// No description provided for @recapIntroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'{username}, here are your last 30 days'**
+  String recapIntroTitle(String username);
+
+  /// No description provided for @recapIntroHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap or swipe to continue'**
+  String get recapIntroHint;
+
+  /// No description provided for @recapGamesLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Games played'**
+  String get recapGamesLabel;
+
+  /// No description provided for @recapGamesCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'{wins} W · {draws} D · {losses} L'**
+  String recapGamesCaption(int wins, int draws, int losses);
+
+  /// No description provided for @recapScoreLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your score'**
+  String get recapScoreLabel;
+
+  /// No description provided for @recapReplay.
+  ///
+  /// In en, this message translates to:
+  /// **'Replay the monthly recap'**
+  String get recapReplay;
+
+  /// No description provided for @recapTimeClassLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your favourite time control'**
+  String get recapTimeClassLabel;
+
+  /// No description provided for @recapTimeClassDaily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily'**
+  String get recapTimeClassDaily;
+
+  /// No description provided for @recapGamesCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} game} other{{count} games}}'**
+  String recapGamesCount(num count);
+
+  /// No description provided for @recapRatingChange.
+  ///
+  /// In en, this message translates to:
+  /// **'Rating: {change} over the month'**
+  String recapRatingChange(String change);
+
+  /// No description provided for @recapPeakRating.
+  ///
+  /// In en, this message translates to:
+  /// **'Peak: {rating}'**
+  String recapPeakRating(int rating);
+
+  /// No description provided for @recapStreakLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Longest winning streak'**
+  String get recapStreakLabel;
+
+  /// No description provided for @recapStreakCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'wins in a row'**
+  String get recapStreakCaption;
+
+  /// No description provided for @recapStreakCaptionHot.
+  ///
+  /// In en, this message translates to:
+  /// **'wins in a row. Unstoppable!'**
+  String get recapStreakCaptionHot;
+
+  /// No description provided for @recapOpeningLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your go-to opening'**
+  String get recapOpeningLabel;
+
+  /// No description provided for @recapOpeningCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} game} other{{count} games}} · score {percent}'**
+  String recapOpeningCaption(num count, String percent);
+
+  /// No description provided for @recapBestOpeningLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your secret weapon'**
+  String get recapBestOpeningLabel;
+
+  /// No description provided for @recapHourLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your favourite time to play'**
+  String get recapHourLabel;
+
+  /// No description provided for @recapHourValue.
+  ///
+  /// In en, this message translates to:
+  /// **'{hour}:00'**
+  String recapHourValue(int hour);
+
+  /// No description provided for @recapBusiestDay.
+  ///
+  /// In en, this message translates to:
+  /// **'Busiest day: {date}, {count, plural, one{{count} game} other{{count} games}}'**
+  String recapBusiestDay(String date, num count);
+
+  /// No description provided for @recapOpponentLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your most-faced opponent'**
+  String get recapOpponentLabel;
+
+  /// No description provided for @recapOpponentCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'Played {count} times · {wins} W, {draws} D, {losses} L'**
+  String recapOpponentCaption(int count, int wins, int draws, int losses);
+
+  /// No description provided for @recapWeakOpeningLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'The opening that gives you trouble'**
+  String get recapWeakOpeningLabel;
+
+  /// No description provided for @recapOutroLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'That\'s your month'**
+  String get recapOutroLabel;
+
+  /// No description provided for @recapOutroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Want to dig deeper?'**
+  String get recapOutroTitle;
+
+  /// No description provided for @recapEmptyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'No games in the last 30 days'**
+  String get recapEmptyTitle;
+
+  /// No description provided for @recapHourEarlyBird.
+  ///
+  /// In en, this message translates to:
+  /// **'Early bird: chess before coffee!'**
+  String get recapHourEarlyBird;
+
+  /// No description provided for @recapHourMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'You start the day with a game.'**
+  String get recapHourMorning;
+
+  /// No description provided for @recapHourLunch.
+  ///
+  /// In en, this message translates to:
+  /// **'A game over your lunch break?'**
+  String get recapHourLunch;
+
+  /// No description provided for @recapHourAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Afternoons are your time.'**
+  String get recapHourAfternoon;
+
+  /// No description provided for @recapHourEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Your evening game is sacred.'**
+  String get recapHourEvening;
+
+  /// No description provided for @recapHourNightOwl.
+  ///
+  /// In en, this message translates to:
+  /// **'A true night owl!'**
+  String get recapHourNightOwl;
+
+  /// No description provided for @recapVolumeCasual.
+  ///
+  /// In en, this message translates to:
+  /// **'Easy does it: a game now and then.'**
+  String get recapVolumeCasual;
+
+  /// No description provided for @recapVolumeRegular.
+  ///
+  /// In en, this message translates to:
+  /// **'A steady pace, about {count} a week.'**
+  String recapVolumeRegular(int count);
+
+  /// No description provided for @recapVolumeEveryDay.
+  ///
+  /// In en, this message translates to:
+  /// **'You play almost every day!'**
+  String get recapVolumeEveryDay;
+
+  /// No description provided for @recapVolumeEnthusiast.
+  ///
+  /// In en, this message translates to:
+  /// **'A real enthusiast: {count} games a day on average.'**
+  String recapVolumeEnthusiast(int count);
+
+  /// No description provided for @recapVolumeNonStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Your board never gets cold.'**
+  String get recapVolumeNonStop;
+
+  /// No description provided for @recapScoreDominant.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re crushing the competition.'**
+  String get recapScoreDominant;
+
+  /// No description provided for @recapScoreWinning.
+  ///
+  /// In en, this message translates to:
+  /// **'More wins than losses: well played!'**
+  String get recapScoreWinning;
+
+  /// No description provided for @recapScoreBalanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Evenly matched: every game comes down to the wire.'**
+  String get recapScoreBalanced;
+
+  /// No description provided for @recapScoreTough.
+  ///
+  /// In en, this message translates to:
+  /// **'A tough month, the next one will be better.'**
+  String get recapScoreTough;
+
+  /// No description provided for @recapScoreLearning.
+  ///
+  /// In en, this message translates to:
+  /// **'A month for learning: every loss is a lesson.'**
+  String get recapScoreLearning;
 }
 
 class _AppLocalizationsDelegate

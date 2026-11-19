@@ -1004,4 +1004,187 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get ratingTrendSelection =>
       'Rating points won or lost in the selected games';
+
+  @override
+  String get slidesPrevious => 'Previous';
+
+  @override
+  String get slidesNext => 'Next';
+
+  @override
+  String get recapSkip => 'Skip';
+
+  @override
+  String get recapSeeStats => 'See all stats';
+
+  @override
+  String get recapIntroLabel => 'Your month on chess.com';
+
+  @override
+  String recapIntroTitle(String username) {
+    return '$username, here are your last 30 days';
+  }
+
+  @override
+  String get recapIntroHint => 'Tap or swipe to continue';
+
+  @override
+  String get recapGamesLabel => 'Games played';
+
+  @override
+  String recapGamesCaption(int wins, int draws, int losses) {
+    return '$wins W · $draws D · $losses L';
+  }
+
+  @override
+  String get recapScoreLabel => 'Your score';
+
+  @override
+  String get recapReplay => 'Replay the monthly recap';
+
+  @override
+  String get recapTimeClassLabel => 'Your favourite time control';
+
+  @override
+  String get recapTimeClassDaily => 'Daily';
+
+  @override
+  String recapGamesCount(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count games',
+      one: '$count game',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String recapRatingChange(String change) {
+    return 'Rating: $change over the month';
+  }
+
+  @override
+  String recapPeakRating(int rating) {
+    return 'Peak: $rating';
+  }
+
+  @override
+  String get recapStreakLabel => 'Longest winning streak';
+
+  @override
+  String get recapStreakCaption => 'wins in a row';
+
+  @override
+  String get recapStreakCaptionHot => 'wins in a row. Unstoppable!';
+
+  @override
+  String get recapOpeningLabel => 'Your go-to opening';
+
+  @override
+  String recapOpeningCaption(num count, String percent) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count games',
+      one: '$count game',
+    );
+    return '$_temp0 · score $percent';
+  }
+
+  @override
+  String get recapBestOpeningLabel => 'Your secret weapon';
+
+  @override
+  String get recapHourLabel => 'Your favourite time to play';
+
+  @override
+  String recapHourValue(int hour) {
+    return '$hour:00';
+  }
+
+  @override
+  String recapBusiestDay(String date, num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count games',
+      one: '$count game',
+    );
+    return 'Busiest day: $date, $_temp0';
+  }
+
+  @override
+  String get recapOpponentLabel => 'Your most-faced opponent';
+
+  @override
+  String recapOpponentCaption(int count, int wins, int draws, int losses) {
+    return 'Played $count times · $wins W, $draws D, $losses L';
+  }
+
+  @override
+  String get recapWeakOpeningLabel => 'The opening that gives you trouble';
+
+  @override
+  String get recapOutroLabel => 'That\'s your month';
+
+  @override
+  String get recapOutroTitle => 'Want to dig deeper?';
+
+  @override
+  String get recapEmptyTitle => 'No games in the last 30 days';
+
+  @override
+  String get recapHourEarlyBird => 'Early bird: chess before coffee!';
+
+  @override
+  String get recapHourMorning => 'You start the day with a game.';
+
+  @override
+  String get recapHourLunch => 'A game over your lunch break?';
+
+  @override
+  String get recapHourAfternoon => 'Afternoons are your time.';
+
+  @override
+  String get recapHourEvening => 'Your evening game is sacred.';
+
+  @override
+  String get recapHourNightOwl => 'A true night owl!';
+
+  @override
+  String get recapVolumeCasual => 'Easy does it: a game now and then.';
+
+  @override
+  String recapVolumeRegular(int count) {
+    return 'A steady pace, about $count a week.';
+  }
+
+  @override
+  String get recapVolumeEveryDay => 'You play almost every day!';
+
+  @override
+  String recapVolumeEnthusiast(int count) {
+    return 'A real enthusiast: $count games a day on average.';
+  }
+
+  @override
+  String get recapVolumeNonStop => 'Your board never gets cold.';
+
+  @override
+  String get recapScoreDominant => 'You\'re crushing the competition.';
+
+  @override
+  String get recapScoreWinning => 'More wins than losses: well played!';
+
+  @override
+  String get recapScoreBalanced =>
+      'Evenly matched: every game comes down to the wire.';
+
+  @override
+  String get recapScoreTough => 'A tough month, the next one will be better.';
+
+  @override
+  String get recapScoreLearning =>
+      'A month for learning: every loss is a lesson.';
 }
