@@ -1,17 +1,21 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'screens/home_screen.dart';
+import 'screens/player_route.dart';
 import 'services/changelog_service.dart';
 import 'services/game_repository.dart';
+import 'services/player_link_service.dart';
 import 'services/theme_preference_service.dart';
 import 'theme/app_theme.dart';
 import 'viewmodels/changelog_viewmodel.dart';
 import 'viewmodels/theme_viewmodel.dart';
 
 Future<void> main() async {
+  // Adresses sans « # » : /hikaru plutôt que /#/hikaru (lien à partager).
+  usePathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
   // Thème choisi lors d'une visite précédente, sinon celui du système.
   final themeMode = await ThemePreferenceService().load();
@@ -61,9 +65,26 @@ class MyApp extends StatelessWidget {
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,
           themeMode: themeViewModel.themeMode,
-          home: const HomeScreen(),
+          // `/` : accueil ; `/<pseudo>` : page de ce joueur, au-dessus de
+          // l'accueil (le retour y ramène). Toute autre adresse : accueil.
+          onGenerateInitialRoutes: (initialRoute) {
+            final username = PlayerLinkService.usernameFromPath(initialRoute);
+            return [
+              homeRoute(),
+              if (username != null) _playerLinkRoute(username),
+            ];
+          },
+          onGenerateRoute: (settings) {
+            final username = PlayerLinkService.usernameFromPath(settings.name);
+            return username == null ? homeRoute() : _playerLinkRoute(username);
+          },
         ),
       ),
     );
   }
 }
+
+Route<void> _playerLinkRoute(String username) => MaterialPageRoute(
+      settings: RouteSettings(name: PlayerLinkService.path(username)),
+      builder: (_) => PlayerLinkScreen(username: username),
+    );

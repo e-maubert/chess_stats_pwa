@@ -8,6 +8,7 @@ import '../viewmodels/stats_period_viewmodel.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import '../widgets/period_selector.dart';
 import '../widgets/player_app_bar_title.dart';
+import '../widgets/share_player.dart';
 import '../widgets/stats_display.dart';
 import '../widgets/theme_toggle_button.dart';
 import '../widgets/stats_filter_selectors.dart';
@@ -76,6 +77,7 @@ class StatsScreen extends StatelessWidget {
                           ),
                         ),
               ),
+              SharePlayerButton(username: username),
               IconButton(
                 icon: const Icon(Icons.refresh),
                 onPressed: viewModel.isUpdating ? null : viewModel.update,

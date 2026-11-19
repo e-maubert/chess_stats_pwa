@@ -615,6 +615,42 @@ abstract class AppLocalizations {
   /// **'Version {version} – {date}'**
   String changelogVersionTitle(String version, String date);
 
+  /// No description provided for @changelogV170.
+  ///
+  /// In en, this message translates to:
+  /// **'Share a player\'s stats with a simple link\nStats on rated games, or on all games if you prefer\nLosses on time shown in time management\nA clearer monthly recap'**
+  String get changelogV170;
+
+  /// No description provided for @share.
+  ///
+  /// In en, this message translates to:
+  /// **'Share'**
+  String get share;
+
+  /// No description provided for @shareText.
+  ///
+  /// In en, this message translates to:
+  /// **'{username}\'s stats on Chess Stats'**
+  String shareText(String username);
+
+  /// No description provided for @shareCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Link copied'**
+  String get shareCopied;
+
+  /// No description provided for @shareLinkTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Link to share'**
+  String get shareLinkTitle;
+
+  /// No description provided for @playerLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading games…'**
+  String get playerLoading;
+
   /// Nouveautés de la version 1.6.0, une par ligne.
   ///
   /// In en, this message translates to:

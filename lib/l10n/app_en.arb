@@ -318,6 +318,19 @@
       }
     }
   },
+  "changelogV170": "Share a player's stats with a simple link\nStats on rated games, or on all games if you prefer\nLosses on time shown in time management\nA clearer monthly recap",
+  "share": "Share",
+  "shareText": "{username}'s stats on Chess Stats",
+  "@shareText": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "shareCopied": "Link copied",
+  "shareLinkTitle": "Link to share",
+  "playerLoading": "Loading games…",
   "changelogV160": "Your monthly recap as slides, the first time you look up a player, and to replay from the stats page\nShared filters at the top of the page: time control, colour and opening\nOpening names translated and grouped more accurately\nOne rating curve per time control, and by colour",
   "@changelogV160": {
     "description": "Nouveautés de la version 1.6.0, une par ligne."

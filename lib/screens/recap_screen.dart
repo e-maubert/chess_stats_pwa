@@ -9,7 +9,9 @@ import '../services/opening_name_service.dart';
 import '../services/recap_service.dart';
 import '../theme/app_theme.dart';
 import '../viewmodels/recap_viewmodel.dart';
+import '../services/player_link_service.dart';
 import '../widgets/player_app_bar_title.dart';
+import '../widgets/share_player.dart';
 import '../widgets/stats_filter_selectors.dart';
 import '../widgets/story_slides.dart';
 import '../widgets/theme_toggle_button.dart';
@@ -82,6 +84,7 @@ class RecapScreen extends StatelessWidget {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
+        settings: RouteSettings(name: PlayerLinkService.path(username)),
         builder: (_) => StatsScreen(
           username: username,
           initialGames: viewModel.games,
@@ -101,7 +104,21 @@ class RecapScreen extends StatelessWidget {
     final outro = StorySlide(
       label: recap == null ? null : l10n.recapOutroLabel,
       value: recap == null ? l10n.recapEmptyTitle : l10n.recapOutroTitle,
-      action: FilledButton.tonal(onPressed: openStats, child: Text(l10n.recapSeeStats)),
+      action: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FilledButton.tonal(onPressed: openStats, child: Text(l10n.recapSeeStats)),
+          if (recap != null) ...[
+            const SizedBox(height: 12),
+            // Moment où l'on a envie de partager : lien vers ce joueur.
+            FilledButton.tonalIcon(
+              onPressed: () => sharePlayer(context, username),
+              icon: const Icon(Icons.share_outlined),
+              label: Text(l10n.share),
+            ),
+          ],
+        ],
+      ),
     );
     if (recap == null) return [outro];
 
