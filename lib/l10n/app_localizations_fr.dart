@@ -1101,12 +1101,6 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get recapNightOwl => 'Un vrai oiseau de nuit !';
-
-  @override
-  String get recapEarlyBird => 'Un lève-tôt !';
-
-  @override
   String recapBusiestDay(String date, num count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -1136,4 +1130,59 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get recapEmptyTitle => 'Aucune partie ces 30 derniers jours';
+
+  @override
+  String get recapHourEarlyBird => 'Lève-tôt : les échecs avant le café !';
+
+  @override
+  String get recapHourMorning => 'Tu commences la journée par une partie.';
+
+  @override
+  String get recapHourLunch => 'Une partie pendant la pause déjeuner ?';
+
+  @override
+  String get recapHourAfternoon => 'L\'après-midi, c\'est ton moment.';
+
+  @override
+  String get recapHourEvening => 'Ta partie du soir, c\'est sacré.';
+
+  @override
+  String get recapHourNightOwl => 'Un vrai oiseau de nuit !';
+
+  @override
+  String get recapVolumeCasual => 'Tranquille : une partie de temps en temps.';
+
+  @override
+  String recapVolumeRegular(int count) {
+    return 'Un rythme régulier, environ $count par semaine.';
+  }
+
+  @override
+  String get recapVolumeEveryDay => 'Tu joues presque tous les jours !';
+
+  @override
+  String recapVolumeEnthusiast(int count) {
+    return 'Un vrai mordu : $count parties par jour en moyenne.';
+  }
+
+  @override
+  String get recapVolumeNonStop => 'Ton échiquier ne refroidit jamais.';
+
+  @override
+  String get recapScoreDominant => 'Tu écrases la concurrence.';
+
+  @override
+  String get recapScoreWinning =>
+      'Plus de victoires que de défaites : bien joué !';
+
+  @override
+  String get recapScoreBalanced =>
+      'À l\'équilibre : chaque partie se joue à peu de chose.';
+
+  @override
+  String get recapScoreTough => 'Un mois difficile, le prochain sera meilleur.';
+
+  @override
+  String get recapScoreLearning =>
+      'Un mois pour apprendre : chaque défaite est une leçon.';
 }

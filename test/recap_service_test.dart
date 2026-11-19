@@ -137,4 +137,36 @@ void main() {
     final recap = build([for (var i = 0; i < 6; i++) g('loss', opening: 'Italian-Game')])!;
     expect(recap.weakOpening, isNull);
   });
+
+  test("ambiance de l'heure : un créneau par phrase", () {
+    expect([for (var h = 0; h < 24; h++) RecapService.hourMood(h).name], [
+      for (var h = 0; h < 5; h++) 'nightOwl',
+      for (var h = 5; h < 9; h++) 'earlyBird',
+      for (var h = 9; h < 12; h++) 'morning',
+      for (var h = 12; h < 14; h++) 'lunch',
+      for (var h = 14; h < 18; h++) 'afternoon',
+      for (var h = 18; h < 22; h++) 'evening',
+      for (var h = 22; h < 24; h++) 'nightOwl',
+    ]);
+  });
+
+  test('ambiance du nombre de parties, aux limites', () {
+    expect(RecapService.volumeMood(9), VolumeMood.casual);
+    expect(RecapService.volumeMood(10), VolumeMood.regular);
+    expect(RecapService.volumeMood(49), VolumeMood.regular);
+    expect(RecapService.volumeMood(50), VolumeMood.everyDay);
+    expect(RecapService.volumeMood(200), VolumeMood.enthusiast);
+    expect(RecapService.volumeMood(500), VolumeMood.nonStop);
+    expect(RecapService.perWeek(30, 30), 7);
+    expect(RecapService.perDay(240, 30), 8);
+  });
+
+  test("ambiance du score, d'après le pourcentage arrondi affiché", () {
+    expect(RecapService.scoreMood(0.70), ScoreMood.dominant);
+    expect(RecapService.scoreMood(0.696), ScoreMood.dominant);
+    expect(RecapService.scoreMood(0.55), ScoreMood.winning);
+    expect(RecapService.scoreMood(0.5), ScoreMood.balanced);
+    expect(RecapService.scoreMood(0.44), ScoreMood.tough);
+    expect(RecapService.scoreMood(0.2), ScoreMood.learning);
+  });
 }

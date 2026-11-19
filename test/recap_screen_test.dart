@@ -93,4 +93,14 @@ void main() {
     expect(find.text('Voir toutes les stats'), findsOneWidget);
     expect(tester.widget<StorySlides>(find.byType(StorySlides)).slides, hasLength(1));
   });
+
+  testWidgets('appuis rapides : chacun avance d\'une diapositive', (tester) async {
+    await _pump(tester, [_game('win', 1), _game('win', 2)]);
+
+    await tester.tap(find.byTooltip('Suivant'));
+    await tester.pump(const Duration(milliseconds: 50));
+    await tester.tap(find.byTooltip('Suivant'));
+    await tester.pumpAndSettle();
+    expect(find.text('Ta cadence préférée'), findsOneWidget);
+  });
 }

@@ -1103,12 +1103,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get recapNightOwl => 'A true night owl!';
-
-  @override
-  String get recapEarlyBird => 'An early bird!';
-
-  @override
   String recapBusiestDay(String date, num count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -1138,4 +1132,58 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get recapEmptyTitle => 'No games in the last 30 days';
+
+  @override
+  String get recapHourEarlyBird => 'Early bird: chess before coffee!';
+
+  @override
+  String get recapHourMorning => 'You start the day with a game.';
+
+  @override
+  String get recapHourLunch => 'A game over your lunch break?';
+
+  @override
+  String get recapHourAfternoon => 'Afternoons are your time.';
+
+  @override
+  String get recapHourEvening => 'Your evening game is sacred.';
+
+  @override
+  String get recapHourNightOwl => 'A true night owl!';
+
+  @override
+  String get recapVolumeCasual => 'Easy does it: a game now and then.';
+
+  @override
+  String recapVolumeRegular(int count) {
+    return 'A steady pace, about $count a week.';
+  }
+
+  @override
+  String get recapVolumeEveryDay => 'You play almost every day!';
+
+  @override
+  String recapVolumeEnthusiast(int count) {
+    return 'A real enthusiast: $count games a day on average.';
+  }
+
+  @override
+  String get recapVolumeNonStop => 'Your board never gets cold.';
+
+  @override
+  String get recapScoreDominant => 'You\'re crushing the competition.';
+
+  @override
+  String get recapScoreWinning => 'More wins than losses: well played!';
+
+  @override
+  String get recapScoreBalanced =>
+      'Evenly matched: every game comes down to the wire.';
+
+  @override
+  String get recapScoreTough => 'A tough month, the next one will be better.';
+
+  @override
+  String get recapScoreLearning =>
+      'A month for learning: every loss is a lesson.';
 }

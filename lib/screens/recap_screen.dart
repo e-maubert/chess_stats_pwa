@@ -101,8 +101,10 @@ class RecapScreen extends StatelessWidget {
         label: l10n.recapGamesLabel,
         value: '${recap.games}',
         details: [
+          _volumePhrase(l10n, recap.games),
           l10n.recapGamesCaption(recap.wins, recap.draws, recap.losses),
           l10n.recapScore(percent(recap.score)),
+          _scorePhrase(l10n, recap.score),
         ],
       ),
     ];
@@ -155,8 +157,7 @@ class RecapScreen extends StatelessWidget {
         label: l10n.recapHourLabel,
         value: l10n.recapHourValue(hour),
         details: [
-          if (hour >= 22 || hour < 5) l10n.recapNightOwl,
-          if (hour >= 5 && hour < 9) l10n.recapEarlyBird,
+          _hourPhrase(l10n, hour),
           if (recap.busiestDay != null && recap.busiestDayGames >= 2)
             l10n.recapBusiestDay(DateFormat.MMMMEEEEd(locale).format(recap.busiestDay!), recap.busiestDayGames),
         ],
@@ -184,4 +185,35 @@ class RecapScreen extends StatelessWidget {
 
     return slides..add(outro);
   }
+
+  // Une phrase par ambiance (voir RecapService) : chaque ambiance pourra
+  // aussi avoir sa propre illustration.
+
+  static String _volumePhrase(AppLocalizations l10n, int games) {
+    final days = RecapViewModel.period.days;
+    return switch (RecapService.volumeMood(games)) {
+      VolumeMood.casual => l10n.recapVolumeCasual,
+      VolumeMood.regular => l10n.recapVolumeRegular(RecapService.perWeek(games, days)),
+      VolumeMood.everyDay => l10n.recapVolumeEveryDay,
+      VolumeMood.enthusiast => l10n.recapVolumeEnthusiast(RecapService.perDay(games, days)),
+      VolumeMood.nonStop => l10n.recapVolumeNonStop,
+    };
+  }
+
+  static String _scorePhrase(AppLocalizations l10n, double score) => switch (RecapService.scoreMood(score)) {
+        ScoreMood.dominant => l10n.recapScoreDominant,
+        ScoreMood.winning => l10n.recapScoreWinning,
+        ScoreMood.balanced => l10n.recapScoreBalanced,
+        ScoreMood.tough => l10n.recapScoreTough,
+        ScoreMood.learning => l10n.recapScoreLearning,
+      };
+
+  static String _hourPhrase(AppLocalizations l10n, int hour) => switch (RecapService.hourMood(hour)) {
+        HourMood.earlyBird => l10n.recapHourEarlyBird,
+        HourMood.morning => l10n.recapHourMorning,
+        HourMood.lunch => l10n.recapHourLunch,
+        HourMood.afternoon => l10n.recapHourAfternoon,
+        HourMood.evening => l10n.recapHourEvening,
+        HourMood.nightOwl => l10n.recapHourNightOwl,
+      };
 }

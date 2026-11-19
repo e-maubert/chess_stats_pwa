@@ -643,8 +643,6 @@
       }
     }
   },
-  "recapNightOwl": "A true night owl!",
-  "recapEarlyBird": "An early bird!",
   "recapBusiestDay": "Busiest day: {date}, {count, plural, one{{count} game} other{{count} games}}",
   "@recapBusiestDay": {
     "placeholders": {
@@ -677,5 +675,35 @@
   "recapWeakOpeningLabel": "The opening that gives you trouble",
   "recapOutroLabel": "That's your month",
   "recapOutroTitle": "Want to dig deeper?",
-  "recapEmptyTitle": "No games in the last 30 days"
+  "recapEmptyTitle": "No games in the last 30 days",
+  "recapHourEarlyBird": "Early bird: chess before coffee!",
+  "recapHourMorning": "You start the day with a game.",
+  "recapHourLunch": "A game over your lunch break?",
+  "recapHourAfternoon": "Afternoons are your time.",
+  "recapHourEvening": "Your evening game is sacred.",
+  "recapHourNightOwl": "A true night owl!",
+  "recapVolumeCasual": "Easy does it: a game now and then.",
+  "recapVolumeRegular": "A steady pace, about {count} a week.",
+  "@recapVolumeRegular": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recapVolumeEveryDay": "You play almost every day!",
+  "recapVolumeEnthusiast": "A real enthusiast: {count} games a day on average.",
+  "@recapVolumeEnthusiast": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "recapVolumeNonStop": "Your board never gets cold.",
+  "recapScoreDominant": "You're crushing the competition.",
+  "recapScoreWinning": "More wins than losses: well played!",
+  "recapScoreBalanced": "Evenly matched: every game comes down to the wire.",
+  "recapScoreTough": "A tough month, the next one will be better.",
+  "recapScoreLearning": "A month for learning: every loss is a lesson."
 }

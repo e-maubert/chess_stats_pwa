@@ -49,16 +49,30 @@ class _StorySlidesState extends State<StorySlides> {
     super.dispose();
   }
 
+  /// Diapositive visée : avance d'une diapositive par appui, même pendant
+  /// l'animation de la précédente.
+  int get _target => _controller.hasClients ? (_controller.page ?? _index.toDouble()).round() : _index;
+  int? _pending;
+
+  void _goTo(int index) {
+    _pending = index;
+    _controller.animateToPage(index, duration: _transition, curve: Curves.easeOut).whenComplete(() {
+      if (_pending == index) _pending = null;
+    });
+  }
+
   void _next() {
-    if (_index < widget.slides.length - 1) {
-      _controller.nextPage(duration: _transition, curve: Curves.easeOut);
+    final current = _pending ?? _target;
+    if (current < widget.slides.length - 1) {
+      _goTo(current + 1);
     } else {
       widget.onFinished?.call();
     }
   }
 
   void _previous() {
-    if (_index > 0) _controller.previousPage(duration: _transition, curve: Curves.easeOut);
+    final current = _pending ?? _target;
+    if (current > 0) _goTo(current - 1);
   }
 
   KeyEventResult _onKey(FocusNode node, KeyEvent event) {

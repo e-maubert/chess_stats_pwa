@@ -1216,18 +1216,6 @@ abstract class AppLocalizations {
   /// **'{hour}:00'**
   String recapHourValue(int hour);
 
-  /// No description provided for @recapNightOwl.
-  ///
-  /// In en, this message translates to:
-  /// **'A true night owl!'**
-  String get recapNightOwl;
-
-  /// No description provided for @recapEarlyBird.
-  ///
-  /// In en, this message translates to:
-  /// **'An early bird!'**
-  String get recapEarlyBird;
-
   /// No description provided for @recapBusiestDay.
   ///
   /// In en, this message translates to:
@@ -1269,6 +1257,102 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'No games in the last 30 days'**
   String get recapEmptyTitle;
+
+  /// No description provided for @recapHourEarlyBird.
+  ///
+  /// In en, this message translates to:
+  /// **'Early bird: chess before coffee!'**
+  String get recapHourEarlyBird;
+
+  /// No description provided for @recapHourMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'You start the day with a game.'**
+  String get recapHourMorning;
+
+  /// No description provided for @recapHourLunch.
+  ///
+  /// In en, this message translates to:
+  /// **'A game over your lunch break?'**
+  String get recapHourLunch;
+
+  /// No description provided for @recapHourAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Afternoons are your time.'**
+  String get recapHourAfternoon;
+
+  /// No description provided for @recapHourEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'Your evening game is sacred.'**
+  String get recapHourEvening;
+
+  /// No description provided for @recapHourNightOwl.
+  ///
+  /// In en, this message translates to:
+  /// **'A true night owl!'**
+  String get recapHourNightOwl;
+
+  /// No description provided for @recapVolumeCasual.
+  ///
+  /// In en, this message translates to:
+  /// **'Easy does it: a game now and then.'**
+  String get recapVolumeCasual;
+
+  /// No description provided for @recapVolumeRegular.
+  ///
+  /// In en, this message translates to:
+  /// **'A steady pace, about {count} a week.'**
+  String recapVolumeRegular(int count);
+
+  /// No description provided for @recapVolumeEveryDay.
+  ///
+  /// In en, this message translates to:
+  /// **'You play almost every day!'**
+  String get recapVolumeEveryDay;
+
+  /// No description provided for @recapVolumeEnthusiast.
+  ///
+  /// In en, this message translates to:
+  /// **'A real enthusiast: {count} games a day on average.'**
+  String recapVolumeEnthusiast(int count);
+
+  /// No description provided for @recapVolumeNonStop.
+  ///
+  /// In en, this message translates to:
+  /// **'Your board never gets cold.'**
+  String get recapVolumeNonStop;
+
+  /// No description provided for @recapScoreDominant.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re crushing the competition.'**
+  String get recapScoreDominant;
+
+  /// No description provided for @recapScoreWinning.
+  ///
+  /// In en, this message translates to:
+  /// **'More wins than losses: well played!'**
+  String get recapScoreWinning;
+
+  /// No description provided for @recapScoreBalanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Evenly matched: every game comes down to the wire.'**
+  String get recapScoreBalanced;
+
+  /// No description provided for @recapScoreTough.
+  ///
+  /// In en, this message translates to:
+  /// **'A tough month, the next one will be better.'**
+  String get recapScoreTough;
+
+  /// No description provided for @recapScoreLearning.
+  ///
+  /// In en, this message translates to:
+  /// **'A month for learning: every loss is a lesson.'**
+  String get recapScoreLearning;
 }
 
 class _AppLocalizationsDelegate

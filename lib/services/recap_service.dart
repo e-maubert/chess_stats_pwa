@@ -100,11 +100,103 @@ class PlayerRecap {
   double get score => games > 0 ? (wins + draws / 2) / games : 0;
 }
 
+/// Ambiance de l'heure préférée : une phrase (et, plus tard, une
+/// illustration) par créneau.
+enum HourMood {
+  /// 5 h – 8 h.
+  earlyBird,
+
+  /// 9 h – 11 h.
+  morning,
+
+  /// 12 h – 13 h.
+  lunch,
+
+  /// 14 h – 17 h.
+  afternoon,
+
+  /// 18 h – 21 h.
+  evening,
+
+  /// 22 h – 4 h.
+  nightOwl,
+}
+
+/// Ambiance du nombre de parties sur la période.
+enum VolumeMood {
+  /// 1 à 9 parties.
+  casual,
+
+  /// 10 à 49.
+  regular,
+
+  /// 50 à 199.
+  everyDay,
+
+  /// 200 à 499.
+  enthusiast,
+
+  /// 500 et plus.
+  nonStop,
+}
+
+/// Ambiance du score (victoires + ½ nulles).
+enum ScoreMood {
+  /// 70 % et plus.
+  dominant,
+
+  /// 55 à 69 %.
+  winning,
+
+  /// 45 à 54 %.
+  balanced,
+
+  /// 30 à 44 %.
+  tough,
+
+  /// Moins de 30 %.
+  learning,
+}
+
 /// Calcule le bilan simplifié affiché entre la recherche et la page des
 /// stats.
 class RecapService {
   /// Parties minimum pour qu'une ouverture soit « la plus réussie ».
   static const int minOpeningGames = 5;
+
+  /// Ambiance d'une heure de début (0 à 23).
+  static HourMood hourMood(int hour) {
+    if (hour >= 5 && hour < 9) return HourMood.earlyBird;
+    if (hour >= 9 && hour < 12) return HourMood.morning;
+    if (hour >= 12 && hour < 14) return HourMood.lunch;
+    if (hour >= 14 && hour < 18) return HourMood.afternoon;
+    if (hour >= 18 && hour < 22) return HourMood.evening;
+    return HourMood.nightOwl;
+  }
+
+  /// Ambiance d'un nombre de parties sur la période du bilan.
+  static VolumeMood volumeMood(int games) {
+    if (games < 10) return VolumeMood.casual;
+    if (games < 50) return VolumeMood.regular;
+    if (games < 200) return VolumeMood.everyDay;
+    if (games < 500) return VolumeMood.enthusiast;
+    return VolumeMood.nonStop;
+  }
+
+  /// Ambiance d'un score entre 0 et 1, d'après le pourcentage arrondi
+  /// affiché : la phrase ne contredit jamais le chiffre lu.
+  static ScoreMood scoreMood(double score) {
+    final percent = (score * 100).round();
+    if (percent >= 70) return ScoreMood.dominant;
+    if (percent >= 55) return ScoreMood.winning;
+    if (percent >= 45) return ScoreMood.balanced;
+    if (percent >= 30) return ScoreMood.tough;
+    return ScoreMood.learning;
+  }
+
+  /// Moyenne arrondie de parties par semaine et par jour sur [days] jours.
+  static int perWeek(int games, int days) => (games * 7 / days).round();
+  static int perDay(int games, int days) => (games / days).round();
 
   static const String _unknownOpening = 'Unknown-Opening';
 
