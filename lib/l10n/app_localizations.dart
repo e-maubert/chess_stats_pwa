@@ -639,6 +639,12 @@ abstract class AppLocalizations {
   /// **'Version {version} – {date}'**
   String changelogVersionTitle(String version, String date);
 
+  /// Nouveautés de la version 1.6.0, une par ligne.
+  ///
+  /// In en, this message translates to:
+  /// **'Your monthly recap as slides, the first time you look up a player, and to replay from the stats page\nShared filters at the top of the page: time control, colour and opening\nOpening names translated and grouped more accurately\nOne rating curve per time control, and by colour'**
+  String get changelogV160;
+
   /// Nouveautés de la version 1.5.0, une par ligne.
   ///
   /// In en, this message translates to:

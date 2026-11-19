@@ -647,6 +647,10 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get changelogV160 =>
+      'Votre bilan du mois en diapositives, à la première recherche d\'un joueur, et à revoir depuis la page des stats\nFiltres communs en haut de la page : cadence, couleur et ouverture\nNoms des ouvertures traduits et mieux regroupés\nUne courbe de classement par cadence, et par couleur';
+
+  @override
   String get changelogV150 =>
       'Nouvelle carte « Phases de la partie » : où se jouent vos parties, de l\'ouverture à la finale\nVotre temps restant face à celui de l\'adversaire, d\'un coup d\'œil, à la sortie de l\'ouverture et en finale\nVos résultats en finale selon le matériel et le type de finale\nPage affichée plus vite : les statistiques les plus longues arrivent juste après';
 
