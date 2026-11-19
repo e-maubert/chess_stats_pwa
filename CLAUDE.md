@@ -1,6 +1,6 @@
 # Chess Stats PWA
 
-Application web (PWA) Flutter qui affiche les statistiques d'un joueur chess.com sur une **période glissante** (« 1 mois » = 30 derniers jours, « 3 mois » = 90 derniers jours) : par couleur, par ouverture, par pays des adversaires, et répartition des défaites par cause.
+Application web (PWA) Flutter qui affiche les statistiques d'un joueur chess.com sur une **période glissante** (« 1 mois » = 30 derniers jours, « 3 mois » = 90 derniers jours) : par couleur, par ouverture, par pays des adversaires, et gestion du temps sur les défaites (dont les défaites au temps). Un bilan du mois en diapositives s'affiche à la première recherche de chaque joueur.
 
 L'en-tête de la page des stats porte des filtres communs à toutes les cartes : période, cadence, couleur, ouverture (`viewmodels/stats_filter_viewmodel.dart`, base des cartes `viewmodels/filtered_stats_viewmodel.dart`). Ils ne sont pas mémorisés : remis à 1 mois / toutes cadences / les deux couleurs / toutes ouvertures pour chaque joueur consulté.
 L'interface est en **français** ou en **anglais**, selon la langue du navigateur.
@@ -29,7 +29,7 @@ Point d'entrée : `lib/main.dart` → `screens/home_screen.dart` (recherche) →
 | Dossier | Rôle |
 |---|---|
 | `models/` | Données (`ChessStats`, `CountryGame` = une partie avec pays, cadence, résultat, cause de défaite…) |
-| `services/` | Appels à l'API chess.com, cache, calculs/agrégations (`country_stats_service`, `loss_stats_service`) |
+| `services/` | Appels à l'API chess.com, cache, calculs/agrégations (`country_stats_service`, `time_management_service`, `recap_service`) |
 | `viewmodels/` | État d'écran (filtres de cadence, tri) en `ChangeNotifier` |
 | `screens/`, `widgets/` | Affichage uniquement, aucune logique métier |
 | `theme/` | Thèmes clair et sombre (`AppTheme`) et couleurs de texte adaptées au thème |

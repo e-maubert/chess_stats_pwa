@@ -87,11 +87,6 @@
       }
     }
   },
-  "lossBreakdown": "Losses by type",
-  "lossByTimeout": "On time",
-  "lossByCheckmate": "By checkmate",
-  "lossByResignation": "By resignation",
-  "lossOther": "Other",
   "noLossData": "No losses for this time control",
   "lossCauseValue": "{count} ({percent})",
   "@lossCauseValue": {
@@ -106,6 +101,7 @@
   },
   "timeManagement": "Time management in losses",
   "timeGapAverage": "When you lose, this is your average clock gap with the opponent at the end of the game:",
+  "timeTimeout": "Lost on time",
   "timeBehind": "Behind on the clock",
   "timeBalanced": "Even on the clock",
   "timeAhead": "Ahead on the clock",

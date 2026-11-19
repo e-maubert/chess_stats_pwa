@@ -143,21 +143,6 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
-  String get lossBreakdown => 'Répartition des défaites';
-
-  @override
-  String get lossByTimeout => 'Au temps';
-
-  @override
-  String get lossByCheckmate => 'Par mat';
-
-  @override
-  String get lossByResignation => 'Par abandon';
-
-  @override
-  String get lossOther => 'Autre';
-
-  @override
   String get noLossData => 'Aucune défaite pour cette cadence';
 
   @override
@@ -173,7 +158,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Lorsque vous perdez, voici votre écart de temps moyen avec l\'adversaire en fin de partie :';
 
   @override
-  String get timeBehind => 'En retard au temps';
+  String get timeTimeout => 'Perdu au temps';
+
+  @override
+  String get timeBehind => 'En retard à la pendule';
 
   @override
   String get timeBalanced => 'Temps équilibré';

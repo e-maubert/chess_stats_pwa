@@ -142,21 +142,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get lossBreakdown => 'Losses by type';
-
-  @override
-  String get lossByTimeout => 'On time';
-
-  @override
-  String get lossByCheckmate => 'By checkmate';
-
-  @override
-  String get lossByResignation => 'By resignation';
-
-  @override
-  String get lossOther => 'Other';
-
-  @override
   String get noLossData => 'No losses for this time control';
 
   @override
@@ -170,6 +155,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get timeGapAverage =>
       'When you lose, this is your average clock gap with the opponent at the end of the game:';
+
+  @override
+  String get timeTimeout => 'Lost on time';
 
   @override
   String get timeBehind => 'Behind on the clock';

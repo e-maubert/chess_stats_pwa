@@ -62,7 +62,7 @@ void main() {
     final games = [
       g('loss', 5, 60, lossCause: 'resigned'), // -55 s : en retard
       g('loss', 40, 70, lossCause: 'resigned'), // -30 s : en retard
-      g('loss', 0, 30, lossCause: 'timeout'), // -30 s : en retard
+      g('loss', 0, 30, lossCause: 'timeout'), // perdue au temps
       g('loss', 50, 60, lossCause: 'checkmated'), // -10 s : équilibré
       g('loss', 100, 20, lossCause: 'resigned'), // +80 s : en avance
       g('win', 1, 100), // victoire : ignorée
@@ -74,18 +74,28 @@ void main() {
     test('répartition selon un écart de 10 % du temps initial', () {
       final stats = TimeManagementService.aggregate(games, timeClass: 'blitz');
       expect(stats.losses, 5);
-      expect(stats.behind, 3);
+      expect(stats.timeout, 1);
+      expect(stats.behind, 2);
       expect(stats.balanced, 1);
       expect(stats.ahead, 1);
+      // L'écart moyen inclut la défaite au temps.
       expect(stats.averageGap, closeTo((-55 - 30 - 30 - 10 + 80) / 5, 1e-9));
-      expect(stats.behindRate, closeTo(0.6, 1e-9));
+      expect(stats.behindRate, closeTo(0.4, 1e-9));
+      expect(stats.timeoutRate, closeTo(0.2, 1e-9));
+    });
+
+    test('défaite au temps à part, même à écart équilibré', () {
+      // Les deux pendules presque à zéro : écart de 5 s, sous le seuil.
+      final stats = TimeManagementService.aggregate([g('loss', 0, 5, lossCause: 'timeout')]);
+      expect((stats.timeout, stats.behind, stats.balanced, stats.ahead), (1, 0, 0, 0));
     });
 
     test('toutes cadences : seuil propre à chaque partie', () {
       final stats = TimeManagementService.aggregate(games);
       expect(stats.losses, 6);
       // Bullet 1 min, -18 s : en retard (seuil 6 s).
-      expect(stats.behind, 4);
+      expect(stats.behind, 3);
+      expect(stats.timeout, 1);
       // Seuil moyen : (5 × 18 + 6) / 6.
       expect(stats.averageLimit, closeTo((5 * 18 + 6) / 6, 1e-9));
     });
