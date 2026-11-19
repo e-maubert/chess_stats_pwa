@@ -1246,41 +1246,11 @@ abstract class AppLocalizations {
   /// **'Played {count} times · {wins} W, {draws} D, {losses} L'**
   String recapOpponentCaption(int count, int wins, int draws, int losses);
 
-  /// No description provided for @recapLossLabel.
+  /// No description provided for @recapWeakOpeningLabel.
   ///
   /// In en, this message translates to:
-  /// **'Your weak spot'**
-  String get recapLossLabel;
-
-  /// No description provided for @recapLossTimeout.
-  ///
-  /// In en, this message translates to:
-  /// **'The clock'**
-  String get recapLossTimeout;
-
-  /// No description provided for @recapLossCheckmate.
-  ///
-  /// In en, this message translates to:
-  /// **'Checkmates'**
-  String get recapLossCheckmate;
-
-  /// No description provided for @recapLossResign.
-  ///
-  /// In en, this message translates to:
-  /// **'Resigning'**
-  String get recapLossResign;
-
-  /// No description provided for @recapLossOther.
-  ///
-  /// In en, this message translates to:
-  /// **'Other endings'**
-  String get recapLossOther;
-
-  /// No description provided for @recapLossCaption.
-  ///
-  /// In en, this message translates to:
-  /// **'{percent} of your losses'**
-  String recapLossCaption(String percent);
+  /// **'The opening that gives you trouble'**
+  String get recapWeakOpeningLabel;
 
   /// No description provided for @recapOutroLabel.
   ///

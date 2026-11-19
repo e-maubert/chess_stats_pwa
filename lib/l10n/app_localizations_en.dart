@@ -1128,24 +1128,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get recapLossLabel => 'Your weak spot';
-
-  @override
-  String get recapLossTimeout => 'The clock';
-
-  @override
-  String get recapLossCheckmate => 'Checkmates';
-
-  @override
-  String get recapLossResign => 'Resigning';
-
-  @override
-  String get recapLossOther => 'Other endings';
-
-  @override
-  String recapLossCaption(String percent) {
-    return '$percent of your losses';
-  }
+  String get recapWeakOpeningLabel => 'The opening that gives you trouble';
 
   @override
   String get recapOutroLabel => 'That\'s your month';

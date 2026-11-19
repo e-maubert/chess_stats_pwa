@@ -674,19 +674,7 @@
       }
     }
   },
-  "recapLossLabel": "Your weak spot",
-  "recapLossTimeout": "The clock",
-  "recapLossCheckmate": "Checkmates",
-  "recapLossResign": "Resigning",
-  "recapLossOther": "Other endings",
-  "recapLossCaption": "{percent} of your losses",
-  "@recapLossCaption": {
-    "placeholders": {
-      "percent": {
-        "type": "String"
-      }
-    }
-  },
+  "recapWeakOpeningLabel": "The opening that gives you trouble",
   "recapOutroLabel": "That's your month",
   "recapOutroTitle": "Want to dig deeper?",
   "recapEmptyTitle": "No games in the last 30 days"

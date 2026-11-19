@@ -77,9 +77,12 @@ void main() {
     await _next(tester);
     expect(find.text('Plus longue série de victoires'), findsOneWidget);
 
-    // Dernière diapositive : point faible, puis l'invitation aux stats.
+    // Un seul adversaire affronté plusieurs fois (Bob) ; pas assez de
+    // parties par ouverture pour un point faible. Puis l'invitation aux
+    // stats.
     final slides = tester.widget<StorySlides>(find.byType(StorySlides)).slides;
-    expect(slides[slides.length - 2].label, 'Ton point faible');
+    expect(slides.map((s) => s.label), contains('Ton adversaire le plus fréquent'));
+    expect(slides.map((s) => s.label), isNot(contains("L'ouverture qui te résiste")));
     expect(slides.last.value, 'Envie d\'aller plus loin ?');
   });
 

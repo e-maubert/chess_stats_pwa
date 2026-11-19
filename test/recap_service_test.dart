@@ -120,16 +120,21 @@ void main() {
     expect(build([g('win', opponent: 'a'), g('win', opponent: 'b')])!.topOpponent, isNull);
   });
 
-  test('cause de défaite principale et sa part', () {
+  test('point faible : ouverture assez jouée la moins réussie', () {
     final recap = build([
-      g('loss', lossCause: 'timeout'),
-      g('loss', lossCause: 'timeout'),
-      g('loss', lossCause: 'checkmated'),
-      g('loss', lossCause: 'resigned'),
-      g('win'),
+      for (var i = 0; i < 8; i++) g(i < 6 ? 'win' : 'loss', opening: 'Sicilian-Defense'),
+      for (var i = 0; i < 5; i++) g(i < 1 ? 'win' : 'loss', opening: 'French-Defense'),
+      for (var i = 0; i < 5; i++) g(i < 3 ? 'win' : 'loss', opening: 'Italian-Game'),
+      // Pire encore, mais pas assez jouée.
+      for (var i = 0; i < 3; i++) g('loss', opening: 'Scandinavian-Defense'),
     ])!;
-    expect(recap.mainLossCause, 'timeout');
-    expect(recap.mainLossCauseShare, 0.5);
-    expect(build([g('win')])!.mainLossCause, isNull);
+    expect(recap.weakOpening, 'French-Defense');
+    expect(recap.weakOpeningGames, 5);
+    expect(recap.weakOpeningScore, 0.2);
+  });
+
+  test('pas de point faible avec moins de deux ouvertures assez jouées', () {
+    final recap = build([for (var i = 0; i < 6; i++) g('loss', opening: 'Italian-Game')])!;
+    expect(recap.weakOpening, isNull);
   });
 }

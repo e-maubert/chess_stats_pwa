@@ -562,12 +562,7 @@
   "recapBusiestDay": "Journée record : {date}, {count, plural, one{{count} partie} other{{count} parties}}",
   "recapOpponentLabel": "Ton adversaire le plus fréquent",
   "recapOpponentCaption": "Affronté {count} fois · {wins} V, {draws} N, {losses} D",
-  "recapLossLabel": "Ton point faible",
-  "recapLossTimeout": "La pendule",
-  "recapLossCheckmate": "Les mats",
-  "recapLossResign": "Les abandons",
-  "recapLossOther": "Autres fins",
-  "recapLossCaption": "{percent} de tes défaites",
+  "recapWeakOpeningLabel": "L'ouverture qui te résiste",
   "recapOutroLabel": "Voilà ton mois",
   "recapOutroTitle": "Envie d'aller plus loin ?",
   "recapEmptyTitle": "Aucune partie ces 30 derniers jours"

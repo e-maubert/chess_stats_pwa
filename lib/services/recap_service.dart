@@ -65,10 +65,11 @@ class PlayerRecap {
   /// Adversaire le plus affronté (au moins deux parties).
   final OpponentRecord? topOpponent;
 
-  /// Cause de défaite la plus fréquente ('timeout', 'checkmated',
-  /// 'resigned', 'other') et sa part des défaites.
-  final String? mainLossCause;
-  final double mainLossCauseShare;
+  /// Point faible : famille la moins réussie parmi celles assez jouées
+  /// ([RecapService.minOpeningGames]) ; null s'il y en a moins de deux.
+  final String? weakOpening;
+  final int weakOpeningGames;
+  final double weakOpeningScore;
 
   const PlayerRecap({
     required this.games,
@@ -90,8 +91,9 @@ class PlayerRecap {
     this.busiestDay,
     this.busiestDayGames = 0,
     this.topOpponent,
-    this.mainLossCause,
-    this.mainLossCauseShare = 0,
+    this.weakOpening,
+    this.weakOpeningGames = 0,
+    this.weakOpeningScore = 0,
   });
 
   /// Score comme en tournoi : (victoires + ½ nulles) / parties.
@@ -133,6 +135,16 @@ class RecapService {
       });
     final best = candidates.isEmpty ? null : candidates.first;
     final showBest = best != null && best.name != favorite?.name && scoreOf(best) >= 0.5;
+    // La moins réussie : dernière du classement (à score égal, la plus
+    // jouée), à condition d'en avoir au moins deux à comparer.
+    final weak = candidates.length < 2
+        ? null
+        : candidates.reduce((a, b) {
+            final byScore = scoreOf(a).compareTo(scoreOf(b));
+            if (byScore != 0) return byScore < 0 ? a : b;
+            return a.totalGames >= b.totalGames ? a : b;
+          });
+    final showWeak = weak != null && scoreOf(weak) < scoreOf(best!);
 
     // Ordre chronologique pour la série et le classement.
     final chronological = games.where((g) => g.endTime != null).toList()
@@ -192,11 +204,6 @@ class RecapService {
       }
     }
 
-    // Cause de défaite principale.
-    final lost = games.where((g) => g.result == 'loss' && g.lossCause != null).toList();
-    final byCause = _countBy(lost, (g) => g.lossCause!);
-    final mainCause = _maxKey(byCause);
-
     return PlayerRecap(
       games: games.length,
       wins: count('win'),
@@ -217,8 +224,9 @@ class RecapService {
       busiestDay: busiestDay,
       busiestDayGames: busiestDay == null ? 0 : byDay[busiestDay]!,
       topOpponent: topOpponent,
-      mainLossCause: mainCause,
-      mainLossCauseShare: mainCause == null ? 0 : byCause[mainCause]! / lost.length,
+      weakOpening: showWeak ? weak.name : null,
+      weakOpeningGames: showWeak ? weak.totalGames : 0,
+      weakOpeningScore: showWeak ? scoreOf(weak) : 0,
     );
   }
 

@@ -5,7 +5,6 @@ import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 
 import '../models/country_game.dart';
 import '../services/game_repository.dart';
-import '../services/loss_stats_service.dart';
 import '../services/opening_name_service.dart';
 import '../services/recap_service.dart';
 import '../viewmodels/recap_viewmodel.dart';
@@ -174,17 +173,12 @@ class RecapScreen extends StatelessWidget {
       ));
     }
 
-    // 7. Point faible.
-    if (recap.mainLossCause != null) {
+    // 7. Point faible : l'ouverture assez jouée la moins réussie.
+    if (recap.weakOpening != null) {
       slides.add(StorySlide(
-        label: l10n.recapLossLabel,
-        value: switch (recap.mainLossCause) {
-          LossStatsService.timeout => l10n.recapLossTimeout,
-          LossStatsService.checkmated => l10n.recapLossCheckmate,
-          LossStatsService.resigned => l10n.recapLossResign,
-          _ => l10n.recapLossOther,
-        },
-        details: [l10n.recapLossCaption(percent(recap.mainLossCauseShare))],
+        label: l10n.recapWeakOpeningLabel,
+        value: opening(recap.weakOpening!),
+        details: [l10n.recapOpeningCaption(recap.weakOpeningGames, percent(recap.weakOpeningScore))],
       ));
     }
 
