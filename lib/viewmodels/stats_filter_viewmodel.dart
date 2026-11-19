@@ -52,3 +52,17 @@ class PlayerColorViewModel extends ChoiceFilterViewModel {
 
   String? get color => value;
 }
+
+/// Parties prises en compte : classées seulement (par défaut, les parties
+/// non classées servant souvent d'entraînement) ou toutes.
+class RatedFilterViewModel extends ChangeNotifier {
+  bool _ratedOnly = true;
+
+  bool get ratedOnly => _ratedOnly;
+
+  void select(bool ratedOnly) {
+    if (ratedOnly == _ratedOnly) return;
+    _ratedOnly = ratedOnly;
+    notifyListeners();
+  }
+}

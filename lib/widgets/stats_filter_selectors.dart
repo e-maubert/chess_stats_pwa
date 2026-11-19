@@ -25,7 +25,37 @@ class FilterLabels {
       };
 }
 
-/// En-tête de la page des stats, sous la période : choix de la cadence
+/// En-tête de la page des stats, sous la période : parties classées
+/// seulement (par défaut) ou toutes les parties.
+class RatedSelector extends StatelessWidget {
+  const RatedSelector({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final viewModel = context.watch<RatedFilterViewModel>();
+    return SizedBox(
+      height: filterRowHeight,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
+        child: Center(
+          child: Semantics(
+            label: l10n.ratedFilterLabel,
+            container: true,
+            child: OptionToggle<bool>(
+              options: const [true, false],
+              selected: viewModel.ratedOnly,
+              labelOf: (ratedOnly) => ratedOnly ? l10n.ratedFilterRated : l10n.ratedFilterAll,
+              onChanged: viewModel.select,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// En-tête de la page des stats, sous les parties classées : choix de la cadence
 /// (Toutes / Bullet / Blitz / Rapide), commun à toutes les cartes.
 class TimeClassSelector extends StatelessWidget {
   const TimeClassSelector({super.key});

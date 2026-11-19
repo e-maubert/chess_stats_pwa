@@ -61,6 +61,12 @@ class AppTheme {
     };
   }
 
+  /// Pastilles victoires / nulles / défaites : fond plein et texte blanc,
+  /// lisibles sur n'importe quel fond (diapositives colorées du bilan).
+  static final Color winBadge = Colors.green.shade700;
+  static final Color drawBadge = Colors.blueGrey.shade600;
+  static final Color lossBadge = Colors.red.shade700;
+
   static Color warningText(BuildContext context) =>
       _isDark(context) ? Colors.amber.shade300 : Colors.amber.shade800;
 

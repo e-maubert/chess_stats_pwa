@@ -42,8 +42,10 @@ class StatsScreen extends StatelessWidget {
         ),
         // Filtres de l'en-tête, propres à ce joueur : remis à leur valeur
         // par défaut (1 mois, toutes cadences, les deux couleurs, toutes
-        // ouvertures) pour chaque joueur consulté, jamais mémorisés.
+        // ouvertures, parties classées) pour chaque joueur consulté, jamais
+        // mémorisés.
         ChangeNotifierProvider(create: (_) => StatsPeriodViewModel()),
+        ChangeNotifierProvider(create: (_) => RatedFilterViewModel()),
         ChangeNotifierProvider(create: (_) => TimeClassViewModel()),
         ChangeNotifierProvider(create: (_) => PlayerColorViewModel()),
         ChangeNotifierProvider(create: (_) => OpeningFilterViewModel()),
@@ -81,21 +83,25 @@ class StatsScreen extends StatelessWidget {
               ),
               const ThemeToggleButton(),
             ],
-            // Choix de la période, de la cadence, de la couleur et de
+            // Choix de la période, des parties classées, de la cadence, de la couleur et de
             // l'ouverture, puis barre fine pendant la mise à jour en
             // arrière-plan des parties déjà affichées.
             bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(PeriodSelector.height + 3 * filterRowHeight + 2),
+              preferredSize: const Size.fromHeight(PeriodSelector.height + 4 * filterRowHeight + 2),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   PeriodSelector(now: context.read<GameRepository>().now),
+                  const RatedSelector(),
                   const TimeClassSelector(),
                   const PlayerColorSelector(),
                   OpeningSelector(
                     games: viewModel.games == null
                         ? const []
-                        : viewModel.gamesIn(context.watch<StatsPeriodViewModel>().period),
+                        : viewModel.gamesIn(
+                            context.watch<StatsPeriodViewModel>().period,
+                            ratedOnly: context.watch<RatedFilterViewModel>().ratedOnly,
+                          ),
                   ),
                   SizedBox(
                     height: 2,
@@ -116,6 +122,7 @@ class StatsScreen extends StatelessWidget {
   Widget _body(BuildContext context, PlayerGamesViewModel viewModel, AppLocalizations l10n) {
     if (viewModel.games != null) {
       final period = context.watch<StatsPeriodViewModel>().period;
+      final ratedOnly = context.watch<RatedFilterViewModel>().ratedOnly;
       return Column(
         children: [
           if (viewModel.updateFailed)
@@ -125,9 +132,9 @@ class StatsScreen extends StatelessWidget {
             ),
           Expanded(
             child: StatsDisplay(
-              games: viewModel.gamesIn(period),
-              countryGames: viewModel.countryGamesIn(period),
-              phaseGames: viewModel.phaseGamesIn(period),
+              games: viewModel.gamesIn(period, ratedOnly: ratedOnly),
+              countryGames: viewModel.countryGamesIn(period, ratedOnly: ratedOnly),
+              phaseGames: viewModel.phaseGamesIn(period, ratedOnly: ratedOnly),
               phaseProgress: viewModel.phaseProgress,
             ),
           ),

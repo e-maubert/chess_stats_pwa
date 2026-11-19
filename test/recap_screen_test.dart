@@ -20,7 +20,7 @@ class _EmptySource implements MonthlyGamesSource {
 
 final _now = DateTime.utc(2026, 11, 19, 12);
 
-CountryGame _game(String result, int daysAgo, {String opponent = 'x'}) => CountryGame(
+CountryGame _game(String result, int daysAgo, {String opponent = 'x', bool rated = true}) => CountryGame(
       opponent: opponent,
       timeClass: 'blitz',
       result: result,
@@ -28,6 +28,7 @@ CountryGame _game(String result, int daysAgo, {String opponent = 'x'}) => Countr
       opening: 'Italian-Game',
       lossCause: result == 'loss' ? 'timeout' : null,
       rating: 1500,
+      rated: rated,
       endTime: _now.subtract(Duration(days: daysAgo)),
     );
 
@@ -63,8 +64,9 @@ void main() {
       _game('win', 2, opponent: 'Bob'),
       _game('loss', 3),
       _game('draw', 4),
-      // Hors des 30 derniers jours : ignorée.
+      // Hors des 30 derniers jours, ou non classée : ignorée.
       _game('loss', 40),
+      _game('loss', 5, rated: false),
     ]);
 
     expect(find.text('hikaru, voici tes 30 derniers jours'), findsOneWidget);
@@ -73,9 +75,12 @@ void main() {
     expect(find.text('4'), findsOneWidget);
     expect(find.text('Tranquille : une partie de temps en temps.'), findsOneWidget);
     await _next(tester);
-    expect(find.text('Ton score'), findsOneWidget);
-    expect(find.textContaining(RegExp(r'^63\s%$')), findsOneWidget);
-    expect(find.text('2 V · 1 N · 1 D'), findsOneWidget);
+    expect(find.text('Tes résultats'), findsOneWidget);
+    expect(find.textContaining(RegExp(r'^50\s%$')), findsOneWidget);
+    expect(find.text('de parties gagnées'), findsOneWidget);
+    expect(find.text('2 victoires'), findsOneWidget);
+    expect(find.text('1 nulle'), findsOneWidget);
+    expect(find.text('1 défaite'), findsOneWidget);
     expect(find.text('Plus de victoires que de défaites : bien joué !'), findsOneWidget);
     await _next(tester);
     expect(find.text('Ta cadence préférée'), findsOneWidget);
@@ -89,6 +94,13 @@ void main() {
     expect(slides.map((s) => s.label), contains('Ton adversaire le plus fréquent'));
     expect(slides.map((s) => s.label), isNot(contains("L'ouverture qui te résiste")));
     expect(slides.last.value, 'Envie d\'aller plus loin ?');
+  });
+
+  testWidgets('seulement des parties non classées : bilan sur toutes', (tester) async {
+    await _pump(tester, [_game('win', 1, rated: false), _game('loss', 2, rated: false)]);
+    await _next(tester);
+    expect(find.text('Parties jouées'), findsOneWidget);
+    expect(find.text('2'), findsOneWidget);
   });
 
   testWidgets('sans partie récente : une seule diapositive vers les stats', (tester) async {
@@ -106,7 +118,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 50));
     await tester.tap(find.byTooltip('Suivant'));
     await tester.pumpAndSettle();
-    expect(find.text('Ton score'), findsOneWidget);
+    expect(find.text('Tes résultats'), findsOneWidget);
   });
 
   testWidgets('bilan revu depuis les stats : « Passer » y ramène', (tester) async {

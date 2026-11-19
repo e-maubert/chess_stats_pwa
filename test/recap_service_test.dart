@@ -43,6 +43,7 @@ void main() {
     expect(recap.games, 4);
     expect((recap.wins, recap.draws, recap.losses), (2, 1, 1));
     expect(recap.score, 0.625);
+    expect(recap.winRate, 0.5);
   });
 
   test('cadence favorite, classement de cette cadence seulement', () {
@@ -83,9 +84,9 @@ void main() {
     ])!;
     expect(recap.favoriteOpening, 'Sicilian-Defense');
     expect(recap.favoriteOpeningGames, 6);
-    expect(recap.favoriteOpeningScore, 0.5);
+    expect(recap.favoriteOpeningWinRate, 0.5);
     expect(recap.bestOpening, 'Italian-Game');
-    expect(recap.bestOpeningScore, 0.9);
+    expect(recap.bestOpeningWinRate, 0.8);
   });
 
   test('pas d\'ouverture « la plus réussie » si c\'est la favorite', () {
@@ -130,7 +131,7 @@ void main() {
     ])!;
     expect(recap.weakOpening, 'French-Defense');
     expect(recap.weakOpeningGames, 5);
-    expect(recap.weakOpeningScore, 0.2);
+    expect(recap.weakOpeningWinRate, 0.2);
   });
 
   test('pas de point faible avec moins de deux ouvertures assez jouées', () {

@@ -858,6 +858,15 @@ class AppLocalizationsFr extends AppLocalizations {
       'Moins que l\'adversaire (écart de plus de 10 % du temps initial)';
 
   @override
+  String get ratedFilterLabel => 'Parties prises en compte';
+
+  @override
+  String get ratedFilterRated => 'Parties classées';
+
+  @override
+  String get ratedFilterAll => 'Toutes les parties';
+
+  @override
   String get colorFilterLabel => 'Couleur jouée';
 
   @override
@@ -1022,12 +1031,43 @@ class AppLocalizationsFr extends AppLocalizations {
   String get recapGamesLabel => 'Parties jouées';
 
   @override
-  String recapGamesCaption(int wins, int draws, int losses) {
-    return '$wins V · $draws N · $losses D';
+  String recapWins(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count victoires',
+      one: '$count victoire',
+    );
+    return '$_temp0';
   }
 
   @override
-  String get recapScoreLabel => 'Ton score';
+  String recapDraws(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count nulles',
+      one: '$count nulle',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String recapLosses(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count défaites',
+      one: '$count défaite',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get recapScoreLabel => 'Tes résultats';
+
+  @override
+  String get recapScoreCaption => 'de parties gagnées';
 
   @override
   String get recapReplay => 'Revoir le bilan du mois';
@@ -1079,7 +1119,7 @@ class AppLocalizationsFr extends AppLocalizations {
       other: '$count parties',
       one: '$count partie',
     );
-    return '$_temp0 · score $percent';
+    return '$_temp0 · $percent de victoires';
   }
 
   @override
@@ -1109,7 +1149,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String recapOpponentCaption(int count, int wins, int draws, int losses) {
-    return 'Affronté $count fois · $wins V, $draws N, $losses D';
+    return '$count parties ensemble · $wins V, $draws N, $losses D';
   }
 
   @override
@@ -1155,7 +1195,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String recapVolumeEnthusiast(int count) {
-    return 'Un vrai mordu : $count parties par jour en moyenne.';
+    return 'Accro aux échecs : $count parties par jour en moyenne.';
   }
 
   @override
