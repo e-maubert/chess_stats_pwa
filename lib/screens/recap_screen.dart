@@ -120,7 +120,7 @@ class RecapScreen extends StatelessWidget {
       // 2. Résultats.
       StorySlide(
         label: l10n.recapScoreLabel,
-        value: percent(recap.score),
+        value: percent(recap.winRate),
         caption: l10n.recapScoreCaption,
         highlight: Wrap(
           alignment: WrapAlignment.center,
@@ -166,14 +166,14 @@ class RecapScreen extends StatelessWidget {
       slides.add(StorySlide(
         label: l10n.recapOpeningLabel,
         value: opening(recap.favoriteOpening!),
-        details: [l10n.recapOpeningCaption(recap.favoriteOpeningGames, percent(recap.favoriteOpeningScore))],
+        details: [l10n.recapOpeningCaption(recap.favoriteOpeningGames, percent(recap.favoriteOpeningWinRate))],
       ));
     }
     if (recap.bestOpening != null) {
       slides.add(StorySlide(
         label: l10n.recapBestOpeningLabel,
         value: opening(recap.bestOpening!),
-        details: [l10n.recapOpeningCaption(recap.bestOpeningGames, percent(recap.bestOpeningScore))],
+        details: [l10n.recapOpeningCaption(recap.bestOpeningGames, percent(recap.bestOpeningWinRate))],
       ));
     }
 
@@ -206,7 +206,7 @@ class RecapScreen extends StatelessWidget {
       slides.add(StorySlide(
         label: l10n.recapWeakOpeningLabel,
         value: opening(recap.weakOpening!),
-        details: [l10n.recapOpeningCaption(recap.weakOpeningGames, percent(recap.weakOpeningScore))],
+        details: [l10n.recapOpeningCaption(recap.weakOpeningGames, percent(recap.weakOpeningWinRate))],
       ));
     }
 

@@ -1058,7 +1058,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get recapScoreLabel => 'Tes résultats';
 
   @override
-  String get recapScoreCaption => 'des points gagnés';
+  String get recapScoreCaption => 'de parties gagnées';
 
   @override
   String get recapReplay => 'Revoir le bilan du mois';
@@ -1110,7 +1110,7 @@ class AppLocalizationsFr extends AppLocalizations {
       other: '$count parties',
       one: '$count partie',
     );
-    return '$_temp0 · $percent des points';
+    return '$_temp0 · $percent de victoires';
   }
 
   @override

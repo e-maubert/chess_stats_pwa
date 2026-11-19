@@ -38,14 +38,14 @@ class PlayerRecap {
   /// Famille d'ouvertures la plus jouée (ouvertures inconnues écartées).
   final String? favoriteOpening;
   final int favoriteOpeningGames;
-  final double favoriteOpeningScore;
+  final double favoriteOpeningWinRate;
 
   /// Famille la plus réussie parmi celles assez jouées
   /// ([RecapService.minOpeningGames]), si elle diffère de la plus jouée et
   /// rapporte au moins la moitié des points.
   final String? bestOpening;
   final int bestOpeningGames;
-  final double bestOpeningScore;
+  final double bestOpeningWinRate;
 
   /// Plus longue série de victoires consécutives.
   final int longestWinStreak;
@@ -69,7 +69,7 @@ class PlayerRecap {
   /// ([RecapService.minOpeningGames]) ; null s'il y en a moins de deux.
   final String? weakOpening;
   final int weakOpeningGames;
-  final double weakOpeningScore;
+  final double weakOpeningWinRate;
 
   const PlayerRecap({
     required this.games,
@@ -80,10 +80,10 @@ class PlayerRecap {
     this.favoriteTimeClassGames = 0,
     this.favoriteOpening,
     this.favoriteOpeningGames = 0,
-    this.favoriteOpeningScore = 0,
+    this.favoriteOpeningWinRate = 0,
     this.bestOpening,
     this.bestOpeningGames = 0,
-    this.bestOpeningScore = 0,
+    this.bestOpeningWinRate = 0,
     this.longestWinStreak = 0,
     this.ratingChange,
     this.peakRating,
@@ -93,11 +93,14 @@ class PlayerRecap {
     this.topOpponent,
     this.weakOpening,
     this.weakOpeningGames = 0,
-    this.weakOpeningScore = 0,
+    this.weakOpeningWinRate = 0,
   });
 
   /// Score comme en tournoi : (victoires + ½ nulles) / parties.
   double get score => games > 0 ? (wins + draws / 2) / games : 0;
+
+  /// Part des parties gagnées, celle affichée.
+  double get winRate => games > 0 ? wins / games : 0;
 }
 
 /// Ambiance de l'heure préférée : une phrase (et, plus tard, une
@@ -218,7 +221,10 @@ class RecapService {
 
     // Ouvertures : la plus jouée, puis la plus réussie.
     final openings = OpeningStatsService.aggregate(games).where((o) => o.name != _unknownOpening).toList();
+    // Classement des ouvertures au score (une nulle compte pour moitié),
+    // affichage en part de victoires, plus parlante.
     double scoreOf(OpeningFamilyStats o) => (o.wins + o.draws / 2) / o.totalGames;
+    double winRateOf(OpeningFamilyStats o) => o.wins / o.totalGames;
     final favorite = openings.isEmpty ? null : openings.first;
     final candidates = openings.where((o) => o.totalGames >= minOpeningGames).toList()
       ..sort((a, b) {
@@ -305,10 +311,10 @@ class RecapService {
       favoriteTimeClassGames: favoriteTimeClass == null ? 0 : byTimeClass[favoriteTimeClass]!,
       favoriteOpening: favorite?.name,
       favoriteOpeningGames: favorite?.totalGames ?? 0,
-      favoriteOpeningScore: favorite == null ? 0 : scoreOf(favorite),
+      favoriteOpeningWinRate: favorite == null ? 0 : winRateOf(favorite),
       bestOpening: showBest ? best.name : null,
       bestOpeningGames: showBest ? best.totalGames : 0,
-      bestOpeningScore: showBest ? scoreOf(best) : 0,
+      bestOpeningWinRate: showBest ? winRateOf(best) : 0,
       longestWinStreak: longest,
       ratingChange: ratings.isEmpty ? null : ratings.last - ratings.first,
       peakRating: ratings.isEmpty ? null : ratings.reduce((a, b) => a > b ? a : b),
@@ -318,7 +324,7 @@ class RecapService {
       topOpponent: topOpponent,
       weakOpening: showWeak ? weak.name : null,
       weakOpeningGames: showWeak ? weak.totalGames : 0,
-      weakOpeningScore: showWeak ? scoreOf(weak) : 0,
+      weakOpeningWinRate: showWeak ? winRateOf(weak) : 0,
     );
   }
 

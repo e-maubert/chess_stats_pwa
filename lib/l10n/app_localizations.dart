@@ -1135,7 +1135,7 @@ abstract class AppLocalizations {
   /// No description provided for @recapScoreCaption.
   ///
   /// In en, this message translates to:
-  /// **'of points won'**
+  /// **'of games won'**
   String get recapScoreCaption;
 
   /// No description provided for @recapReplay.
@@ -1201,7 +1201,7 @@ abstract class AppLocalizations {
   /// No description provided for @recapOpeningCaption.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, one{{count} game} other{{count} games}} · {percent} of points'**
+  /// **'{count, plural, one{{count} game} other{{count} games}} · {percent} won'**
   String recapOpeningCaption(num count, String percent);
 
   /// No description provided for @recapBestOpeningLabel.

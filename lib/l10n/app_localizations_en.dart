@@ -1060,7 +1060,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recapScoreLabel => 'Your results';
 
   @override
-  String get recapScoreCaption => 'of points won';
+  String get recapScoreCaption => 'of games won';
 
   @override
   String get recapReplay => 'Replay the monthly recap';
@@ -1112,7 +1112,7 @@ class AppLocalizationsEn extends AppLocalizations {
       other: '$count games',
       one: '$count game',
     );
-    return '$_temp0 · $percent of points';
+    return '$_temp0 · $percent won';
   }
 
   @override

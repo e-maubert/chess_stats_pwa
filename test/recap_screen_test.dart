@@ -74,8 +74,8 @@ void main() {
     expect(find.text('Tranquille : une partie de temps en temps.'), findsOneWidget);
     await _next(tester);
     expect(find.text('Tes résultats'), findsOneWidget);
-    expect(find.textContaining(RegExp(r'^63\s%$')), findsOneWidget);
-    expect(find.text('des points gagnés'), findsOneWidget);
+    expect(find.textContaining(RegExp(r'^50\s%$')), findsOneWidget);
+    expect(find.text('de parties gagnées'), findsOneWidget);
     expect(find.text('2 victoires'), findsOneWidget);
     expect(find.text('1 nulle'), findsOneWidget);
     expect(find.text('1 défaite'), findsOneWidget);

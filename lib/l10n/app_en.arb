@@ -595,7 +595,7 @@
     }
   },
   "recapScoreLabel": "Your results",
-  "recapScoreCaption": "of points won",
+  "recapScoreCaption": "of games won",
   "recapReplay": "Replay the monthly recap",
   "recapTimeClassLabel": "Your favourite time control",
   "recapTimeClassDaily": "Daily",
@@ -627,7 +627,7 @@
   "recapStreakCaption": "wins in a row",
   "recapStreakCaptionHot": "wins in a row. Unstoppable!",
   "recapOpeningLabel": "Your go-to opening",
-  "recapOpeningCaption": "{count, plural, one{{count} game} other{{count} games}} · {percent} of points",
+  "recapOpeningCaption": "{count, plural, one{{count} game} other{{count} games}} · {percent} won",
   "@recapOpeningCaption": {
     "placeholders": {
       "count": {
