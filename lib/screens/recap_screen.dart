@@ -7,6 +7,7 @@ import '../models/country_game.dart';
 import '../services/game_repository.dart';
 import '../services/opening_name_service.dart';
 import '../services/recap_service.dart';
+import '../theme/app_theme.dart';
 import '../viewmodels/recap_viewmodel.dart';
 import '../widgets/player_app_bar_title.dart';
 import '../widgets/stats_filter_selectors.dart';
@@ -120,10 +121,18 @@ class RecapScreen extends StatelessWidget {
       StorySlide(
         label: l10n.recapScoreLabel,
         value: percent(recap.score),
-        details: [
-          l10n.recapGamesCaption(recap.wins, recap.draws, recap.losses),
-          _scorePhrase(l10n, recap.score),
-        ],
+        caption: l10n.recapScoreCaption,
+        highlight: Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            _ResultBadge(l10n.recapWins(recap.wins), AppTheme.winBadge),
+            _ResultBadge(l10n.recapDraws(recap.draws), AppTheme.drawBadge),
+            _ResultBadge(l10n.recapLosses(recap.losses), AppTheme.lossBadge),
+          ],
+        ),
+        details: [_scorePhrase(l10n, recap.score)],
       ),
     ];
 
@@ -234,4 +243,24 @@ class RecapScreen extends StatelessWidget {
         HourMood.evening => l10n.recapHourEvening,
         HourMood.nightOwl => l10n.recapHourNightOwl,
       };
+}
+
+/// Nombre de victoires, nulles ou défaites dans une pastille colorée.
+class _ResultBadge extends StatelessWidget {
+  final String text;
+  final Color color;
+
+  const _ResultBadge(this.text, this.color);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(16)),
+      child: Text(
+        text,
+        style: Theme.of(context).textTheme.titleSmall?.copyWith(color: Colors.white, fontWeight: FontWeight.w600),
+      ),
+    );
+  }
 }

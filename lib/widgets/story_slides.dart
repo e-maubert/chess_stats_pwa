@@ -3,15 +3,25 @@ import 'package:flutter/services.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 
 /// Une diapositive : un petit titre, une grande valeur (chiffre ou nom),
+/// sa légende ([caption], ex. l'unité), un élément visuel ([highlight]),
 /// puis quelques lignes de détail. [action] (ex. un bouton) s'affiche
 /// dessous.
 class StorySlide {
   final String? label;
   final String value;
+  final String? caption;
+  final Widget? highlight;
   final List<String> details;
   final Widget? action;
 
-  const StorySlide({this.label, required this.value, this.details = const [], this.action});
+  const StorySlide({
+    this.label,
+    required this.value,
+    this.caption,
+    this.highlight,
+    this.details = const [],
+    this.action,
+  });
 }
 
 /// Diapositives plein écran façon « bilan de l'année » : barre
@@ -234,6 +244,16 @@ class _SlideContent extends StatelessWidget {
                       ?.copyWith(color: color, fontWeight: FontWeight.w900),
                   textAlign: TextAlign.center,
                 ),
+                if (slide.caption != null)
+                  Text(
+                    slide.caption!,
+                    style: text.titleMedium?.copyWith(color: color, fontWeight: FontWeight.w600),
+                    textAlign: TextAlign.center,
+                  ),
+                if (slide.highlight != null) ...[
+                  const SizedBox(height: 16),
+                  slide.highlight!,
+                ],
                 for (final detail in slide.details) ...[
                   const SizedBox(height: 12),
                   Text(

@@ -570,21 +570,32 @@
   },
   "recapIntroHint": "Tap or swipe to continue",
   "recapGamesLabel": "Games played",
-  "recapGamesCaption": "{wins} W · {draws} D · {losses} L",
-  "@recapGamesCaption": {
+  "recapWins": "{count, plural, one{{count} win} other{{count} wins}}",
+  "@recapWins": {
     "placeholders": {
-      "wins": {
-        "type": "int"
-      },
-      "draws": {
-        "type": "int"
-      },
-      "losses": {
-        "type": "int"
+      "count": {
+        "type": "num"
       }
     }
   },
-  "recapScoreLabel": "Your score",
+  "recapDraws": "{count, plural, one{{count} draw} other{{count} draws}}",
+  "@recapDraws": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "recapLosses": "{count, plural, one{{count} loss} other{{count} losses}}",
+  "@recapLosses": {
+    "placeholders": {
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "recapScoreLabel": "Your results",
+  "recapScoreCaption": "of points won",
   "recapReplay": "Replay the monthly recap",
   "recapTimeClassLabel": "Your favourite time control",
   "recapTimeClassDaily": "Daily",
@@ -616,7 +627,7 @@
   "recapStreakCaption": "wins in a row",
   "recapStreakCaptionHot": "wins in a row. Unstoppable!",
   "recapOpeningLabel": "Your go-to opening",
-  "recapOpeningCaption": "{count, plural, one{{count} game} other{{count} games}} · score {percent}",
+  "recapOpeningCaption": "{count, plural, one{{count} game} other{{count} games}} · {percent} of points",
   "@recapOpeningCaption": {
     "placeholders": {
       "count": {
@@ -649,7 +660,7 @@
     }
   },
   "recapOpponentLabel": "Your most-faced opponent",
-  "recapOpponentCaption": "Played {count} times · {wins} W, {draws} D, {losses} L",
+  "recapOpponentCaption": "{count} games together · {wins} W, {draws} D, {losses} L",
   "@recapOpponentCaption": {
     "placeholders": {
       "count": {

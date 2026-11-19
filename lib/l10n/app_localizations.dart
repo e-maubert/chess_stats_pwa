@@ -1108,17 +1108,35 @@ abstract class AppLocalizations {
   /// **'Games played'**
   String get recapGamesLabel;
 
-  /// No description provided for @recapGamesCaption.
+  /// No description provided for @recapWins.
   ///
   /// In en, this message translates to:
-  /// **'{wins} W · {draws} D · {losses} L'**
-  String recapGamesCaption(int wins, int draws, int losses);
+  /// **'{count, plural, one{{count} win} other{{count} wins}}'**
+  String recapWins(num count);
+
+  /// No description provided for @recapDraws.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} draw} other{{count} draws}}'**
+  String recapDraws(num count);
+
+  /// No description provided for @recapLosses.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, one{{count} loss} other{{count} losses}}'**
+  String recapLosses(num count);
 
   /// No description provided for @recapScoreLabel.
   ///
   /// In en, this message translates to:
-  /// **'Your score'**
+  /// **'Your results'**
   String get recapScoreLabel;
+
+  /// No description provided for @recapScoreCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'of points won'**
+  String get recapScoreCaption;
 
   /// No description provided for @recapReplay.
   ///
@@ -1183,7 +1201,7 @@ abstract class AppLocalizations {
   /// No description provided for @recapOpeningCaption.
   ///
   /// In en, this message translates to:
-  /// **'{count, plural, one{{count} game} other{{count} games}} · score {percent}'**
+  /// **'{count, plural, one{{count} game} other{{count} games}} · {percent} of points'**
   String recapOpeningCaption(num count, String percent);
 
   /// No description provided for @recapBestOpeningLabel.
@@ -1219,7 +1237,7 @@ abstract class AppLocalizations {
   /// No description provided for @recapOpponentCaption.
   ///
   /// In en, this message translates to:
-  /// **'Played {count} times · {wins} W, {draws} D, {losses} L'**
+  /// **'{count} games together · {wins} W, {draws} D, {losses} L'**
   String recapOpponentCaption(int count, int wins, int draws, int losses);
 
   /// No description provided for @recapWeakOpeningLabel.

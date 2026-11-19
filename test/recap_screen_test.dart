@@ -73,9 +73,12 @@ void main() {
     expect(find.text('4'), findsOneWidget);
     expect(find.text('Tranquille : une partie de temps en temps.'), findsOneWidget);
     await _next(tester);
-    expect(find.text('Ton score'), findsOneWidget);
+    expect(find.text('Tes résultats'), findsOneWidget);
     expect(find.textContaining(RegExp(r'^63\s%$')), findsOneWidget);
-    expect(find.text('2 V · 1 N · 1 D'), findsOneWidget);
+    expect(find.text('des points gagnés'), findsOneWidget);
+    expect(find.text('2 victoires'), findsOneWidget);
+    expect(find.text('1 nulle'), findsOneWidget);
+    expect(find.text('1 défaite'), findsOneWidget);
     expect(find.text('Plus de victoires que de défaites : bien joué !'), findsOneWidget);
     await _next(tester);
     expect(find.text('Ta cadence préférée'), findsOneWidget);
@@ -106,7 +109,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 50));
     await tester.tap(find.byTooltip('Suivant'));
     await tester.pumpAndSettle();
-    expect(find.text('Ton score'), findsOneWidget);
+    expect(find.text('Tes résultats'), findsOneWidget);
   });
 
   testWidgets('bilan revu depuis les stats : « Passer » y ramène', (tester) async {

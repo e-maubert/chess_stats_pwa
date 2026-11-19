@@ -1024,12 +1024,43 @@ class AppLocalizationsEn extends AppLocalizations {
   String get recapGamesLabel => 'Games played';
 
   @override
-  String recapGamesCaption(int wins, int draws, int losses) {
-    return '$wins W · $draws D · $losses L';
+  String recapWins(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count wins',
+      one: '$count win',
+    );
+    return '$_temp0';
   }
 
   @override
-  String get recapScoreLabel => 'Your score';
+  String recapDraws(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count draws',
+      one: '$count draw',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String recapLosses(num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count losses',
+      one: '$count loss',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get recapScoreLabel => 'Your results';
+
+  @override
+  String get recapScoreCaption => 'of points won';
 
   @override
   String get recapReplay => 'Replay the monthly recap';
@@ -1081,7 +1112,7 @@ class AppLocalizationsEn extends AppLocalizations {
       other: '$count games',
       one: '$count game',
     );
-    return '$_temp0 · score $percent';
+    return '$_temp0 · $percent of points';
   }
 
   @override
@@ -1111,7 +1142,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String recapOpponentCaption(int count, int wins, int draws, int losses) {
-    return 'Played $count times · $wins W, $draws D, $losses L';
+    return '$count games together · $wins W, $draws D, $losses L';
   }
 
   @override
