@@ -21,3 +21,10 @@
   for = "/manifest.json"
   [headers.values]
     Cache-Control = "no-cache"
+
+# Adresses des joueurs (/hikaru) : servies par l'app. Les fichiers qui
+# existent (manifest.json, icônes, code...) restent servis tels quels.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

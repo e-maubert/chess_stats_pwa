@@ -635,6 +635,27 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get changelogV170 =>
+      'Partagez les stats d\'un joueur avec un simple lien\nStatistiques sur les parties classées, ou sur toutes au choix\nDéfaites au temps visibles dans la gestion du temps\nBilan du mois plus clair';
+
+  @override
+  String get share => 'Partager';
+
+  @override
+  String shareText(String username) {
+    return 'Les stats de $username sur Chess Stats';
+  }
+
+  @override
+  String get shareCopied => 'Lien copié';
+
+  @override
+  String get shareLinkTitle => 'Lien à partager';
+
+  @override
+  String get playerLoading => 'Chargement des parties…';
+
+  @override
   String get changelogV160 =>
       'Votre bilan du mois en diapositives, à la première recherche d\'un joueur, et à revoir depuis la page des stats\nFiltres communs en haut de la page : cadence, couleur et ouverture\nNoms des ouvertures traduits et mieux regroupés\nUne courbe de classement par cadence, et par couleur';
 

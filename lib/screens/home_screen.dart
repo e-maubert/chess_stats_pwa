@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/game_repository.dart';
 import '../services/game_store.dart';
-import '../services/recap_seen_service.dart';
+import '../services/player_open_service.dart';
 import '../viewmodels/recent_players_viewmodel.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import '../services/layout_service.dart';
@@ -10,11 +10,16 @@ import '../widgets/app_footer.dart';
 import '../widgets/app_logo.dart';
 import '../widgets/recent_players_options.dart';
 import '../widgets/theme_toggle_button.dart';
-import 'recap_screen.dart';
-import 'stats_screen.dart';
+import 'player_route.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  /// Pseudo pré-rempli (lien vers un joueur introuvable).
+  final String? initialUsername;
+
+  /// Afficher tout de suite le message « joueur introuvable ».
+  final bool initialError;
+
+  const HomeScreen({Key? key, this.initialUsername, this.initialError = false}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => HomeScreenState();
@@ -24,13 +29,24 @@ class HomeScreenState extends State<HomeScreen> {
   final _usernameController = TextEditingController();
   final _usernameFocusNode = FocusNode();
   late final RecentPlayersViewModel _recentPlayers;
-  final _recapSeen = RecapSeenService();
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
     _recentPlayers = RecentPlayersViewModel(context.read<GameRepository>())..load();
+    if (widget.initialUsername != null) _usernameController.text = widget.initialUsername!;
+    if (widget.initialError) WidgetsBinding.instance.addPostFrameCallback((_) => _showError());
+  }
+
+  void _showError() {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(AppLocalizations.of(context)!.errorFetchingStats),
+        backgroundColor: Colors.red,
+      ),
+    );
   }
 
   @override
@@ -50,33 +66,15 @@ class HomeScreenState extends State<HomeScreen> {
     try {
       // Parties déjà stockées : affichées tout de suite, mises à jour
       // ensuite par l'écran suivant. Sinon, premier téléchargement ici.
-      final repository = context.read<GameRepository>();
-      final stored = await repository.storedGames(username);
-      final games = stored ?? await repository.updateGames(username);
-      // Bilan du dernier mois seulement à la première recherche du joueur
-      // sur cet appareil ; ensuite, directement la page des stats.
-      final showRecap = !await _recapSeen.hasSeen(username);
-      if (showRecap) await _recapSeen.markSeen(username);
+      // Bilan du mois seulement à la première recherche du joueur.
+      final opening = await PlayerOpenService(context.read<GameRepository>()).open(username);
       if (!mounted) return;
 
       _usernameFocusNode.unfocus();
       // Au retour, le joueur consulté apparaît en tête des joueurs proposés.
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => showRecap
-              ? RecapScreen(username: username, games: games, upToDate: stored == null)
-              : StatsScreen(username: username, initialGames: games, upToDate: stored == null),
-        ),
-      ).then((_) => _recentPlayers.load());
+      Navigator.push(context, playerRoute(opening)).then((_) => _recentPlayers.load());
     } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(AppLocalizations.of(context)!.errorFetchingStats),
-          backgroundColor: Colors.red,
-        ),
-      );
+      _showError();
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);

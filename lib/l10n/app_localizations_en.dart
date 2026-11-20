@@ -640,6 +640,27 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get changelogV170 =>
+      'Share a player\'s stats with a simple link\nStats on rated games, or on all games if you prefer\nLosses on time shown in time management\nA clearer monthly recap';
+
+  @override
+  String get share => 'Share';
+
+  @override
+  String shareText(String username) {
+    return '$username\'s stats on Chess Stats';
+  }
+
+  @override
+  String get shareCopied => 'Link copied';
+
+  @override
+  String get shareLinkTitle => 'Link to share';
+
+  @override
+  String get playerLoading => 'Loading games…';
+
+  @override
   String get changelogV160 =>
       'Your monthly recap as slides, the first time you look up a player, and to replay from the stats page\nShared filters at the top of the page: time control, colour and opening\nOpening names translated and grouped more accurately\nOne rating curve per time control, and by colour';
 

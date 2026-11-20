@@ -26,6 +26,8 @@ Aucun problème (« No issues found! »). Une modification ne doit **pas en ajou
 
 Point d'entrée : `lib/main.dart` → `screens/home_screen.dart` (recherche) → `screens/stats_screen.dart` → `widgets/stats_display.dart` (page principale des stats).
 
+Adresses : `/` = accueil, `/<pseudo>` = page du joueur (lien à partager, bouton de partage dans les stats et en fin de bilan). Routes dans `main.dart` et `screens/player_route.dart`, analyse de l'adresse dans `services/player_link_service.dart`. Netlify renvoie toute adresse inconnue vers `index.html` (`netlify.toml`).
+
 | Dossier | Rôle |
 |---|---|
 | `models/` | Données (`ChessStats`, `CountryGame` = une partie avec pays, cadence, résultat, cause de défaite…) |
