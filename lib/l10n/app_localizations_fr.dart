@@ -1518,4 +1518,173 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get changelogV190 =>
       'Nouveau : « Comment battre ce joueur », ses points faibles et des conseils en diapositives\nSa forme du moment illustrée par une pièce d\'échecs\nDes conseils d\'ouverture sur les coups que tu choisis\nAccueil : « Afficher les statistiques » ou « Comment battre ce joueur »';
+
+  @override
+  String get scoutAnalyzing => 'Analyse des parties…';
+
+  @override
+  String get scoutNotEnough => 'Pas assez de parties pour conclure';
+
+  @override
+  String get scoutPhaseLabel => 'Où ton adversaire craque';
+
+  @override
+  String get scoutPhaseExplain =>
+      'Parties classées selon la phase où elles se terminent.';
+
+  @override
+  String get scoutPhaseTipOpening =>
+      'Mets la pression dès l\'ouverture : c\'est là que ton adversaire gagne le moins.';
+
+  @override
+  String get scoutPhaseTipMiddlegame =>
+      'Garde des pièces et complique le milieu de partie : c\'est là que ton adversaire gagne le moins.';
+
+  @override
+  String get scoutPhaseTipEndgame =>
+      'Simplifie et vise la finale : c\'est là que ton adversaire gagne le moins.';
+
+  @override
+  String get scoutPhaseTipNone =>
+      'Aucune phase nettement plus fragile : son niveau est régulier du début à la fin.';
+
+  @override
+  String get scoutTimeLabel => 'Sa gestion du temps';
+
+  @override
+  String get scoutTimeSlow => 'Lent';
+
+  @override
+  String get scoutTimeBalanced => 'Équilibré';
+
+  @override
+  String get scoutTimeFast => 'Rapide';
+
+  @override
+  String scoutTimeMiddlegame(String gap) {
+    return 'Fin de l\'ouverture : $gap du temps initial par rapport à son adversaire';
+  }
+
+  @override
+  String scoutTimeEndgame(String gap) {
+    return 'Entrée en finale : $gap du temps initial';
+  }
+
+  @override
+  String scoutTimeTimeouts(String percent) {
+    return '$percent de ses défaites au temps';
+  }
+
+  @override
+  String get scoutTimeTipSlow =>
+      'Joue vite et garde la pression à la pendule : le temps est son point faible.';
+
+  @override
+  String get scoutTimeTipBalanced =>
+      'Gestion du temps équilibrée : pas de piège à la pendule, tout se jouera sur l\'échiquier.';
+
+  @override
+  String get scoutTimeTipFast =>
+      'Ton adversaire joue vite : prends ton temps et cherche des positions complexes.';
+
+  @override
+  String get scoutTiltLabel => 'Après une défaite';
+
+  @override
+  String get scoutTiltTilts => 'Ça le déstabilise';
+
+  @override
+  String get scoutTiltSteady => 'Rien ne change';
+
+  @override
+  String get scoutTiltResilient => 'Ça le motive';
+
+  @override
+  String get scoutTiltAfterRow => 'Juste après une défaite';
+
+  @override
+  String get scoutTiltUsualRow => 'D\'habitude';
+
+  @override
+  String get scoutTiltExplain =>
+      'Parties commencées moins d\'une heure après une défaite.';
+
+  @override
+  String get scoutTiltTipTilts =>
+      'Si tu gagnes, propose vite une revanche : juste après une défaite, ton adversaire gagne beaucoup moins.';
+
+  @override
+  String get scoutTiltTipResilient =>
+      'Méfie-toi de la revanche : juste après une défaite, ton adversaire gagne encore plus.';
+
+  @override
+  String get scoutTiltTipSteady =>
+      'Une défaite ne change rien à son jeu : pas d\'effet revanche à attendre.';
+
+  @override
+  String get scoutHoursLabel => 'Selon l\'heure';
+
+  @override
+  String get scoutHoursCaption => 'son moment le plus fragile';
+
+  @override
+  String get scoutHoursExplain =>
+      'Heure de début des parties, à l\'heure de ton appareil.';
+
+  @override
+  String get scoutDayPartMorning => 'Le matin';
+
+  @override
+  String get scoutDayPartAfternoon => 'L\'après-midi';
+
+  @override
+  String get scoutDayPartEvening => 'Le soir';
+
+  @override
+  String get scoutDayPartNight => 'La nuit';
+
+  @override
+  String get scoutDayPartMorningRow => 'Matin (5 h – 12 h)';
+
+  @override
+  String get scoutDayPartAfternoonRow => 'Après-midi (12 h – 18 h)';
+
+  @override
+  String get scoutDayPartEveningRow => 'Soir (18 h – 22 h)';
+
+  @override
+  String get scoutDayPartNightRow => 'Nuit (22 h – 5 h)';
+
+  @override
+  String scoutHoursTipMorning(String percent) {
+    return 'Si tu peux, joue-le le matin : seulement $percent de victoires pour ton adversaire.';
+  }
+
+  @override
+  String scoutHoursTipAfternoon(String percent) {
+    return 'Si tu peux, joue-le l\'après-midi : seulement $percent de victoires pour ton adversaire.';
+  }
+
+  @override
+  String scoutHoursTipEvening(String percent) {
+    return 'Si tu peux, joue-le le soir : seulement $percent de victoires pour ton adversaire.';
+  }
+
+  @override
+  String scoutHoursTipNight(String percent) {
+    return 'Si tu peux, joue-le la nuit : seulement $percent de victoires pour ton adversaire.';
+  }
+
+  @override
+  String get scoutHoursTipNone => 'L\'heure ne change rien à son niveau.';
+
+  @override
+  String get scoutPhaseNone => 'Aucune phase fragile';
+
+  @override
+  String get scoutHoursNone => 'Aucun moment fragile';
+
+  @override
+  String get changelogV1100 =>
+      '« Comment battre ce joueur » : la phase où ton adversaire craque\nSa gestion du temps et sa réaction après une défaite\nSes moments de la journée les plus fragiles\nUn plan de jeu plus complet';
 }

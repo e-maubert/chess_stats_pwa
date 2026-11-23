@@ -7,6 +7,19 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   final now = DateTime(2026, 11, 23, 12);
 
+  /// Conseils d'ouverture, de cadence et de forme du plan de jeu (les
+  /// parties de test, une par heure, font aussi réagir l'après-défaite).
+  const openingTips = {
+    ScoutingTip.cadence,
+    ScoutingTip.whiteTarget,
+    ScoutingTip.whiteAvoid,
+    ScoutingTip.blackTarget,
+    ScoutingTip.blackAvoid,
+    ScoutingTip.form,
+  };
+  List<ScoutingTip> openingPlan(ScoutingReport report) =>
+      ScoutingService.plan(report).where(openingTips.contains).toList();
+
   /// [count] parties identiques, une par heure en remontant depuis
   /// [daysAgo] jours.
   List<CountryGame> games(
@@ -137,7 +150,7 @@ void main() {
       expect(report.cadence.weakestResults.games, 12);
       expect(report.cadence.weakestResults.winRate, 0);
       expect(report.cadence.byWinRate, isTrue);
-      expect(report.plan.first, ScoutingTip.cadence);
+      expect(ScoutingService.plan(report).first, ScoutingTip.cadence);
     });
 
     test('trop peu de parties : comparaison au classement, signalée', () {
@@ -148,7 +161,7 @@ void main() {
       expect(report.cadence.kind, CadenceCase.otherFewGames);
       expect(report.cadence.weakest, 'rapid');
       expect(report.cadence.byWinRate, isFalse);
-      expect(report.plan, isNot(contains(ScoutingTip.cadence)));
+      expect(ScoutingService.plan(report), isNot(contains(ScoutingTip.cadence)));
     });
 
     test("autre cadence sur moins de 3 parties : on n'en dit rien", () {
@@ -158,7 +171,7 @@ void main() {
       ], now)!;
       expect(report.cadence.kind, CadenceCase.focusOnly);
       expect(report.cadence.weakest, 'blitz');
-      expect(report.plan, isNot(contains(ScoutingTip.cadence)));
+      expect(ScoutingService.plan(report), isNot(contains(ScoutingTip.cadence)));
     });
 
     test('une seule cadence', () {
@@ -194,7 +207,7 @@ void main() {
       expect(white.target?.move, 'e6');
       expect(white.target?.games, 8);
       expect(white.avoid?.move, 'd5');
-      expect(report.plan, contains(ScoutingTip.whiteTarget));
+      expect(ScoutingService.plan(report), contains(ScoutingTip.whiteTarget));
     });
 
     test("avec les noirs : premier coup de l'adversaire", () {
@@ -208,7 +221,7 @@ void main() {
       expect(black.mainMove, isNull);
       expect(black.target?.move, 'd4');
       expect(black.avoid?.move, 'e4');
-      expect(report.plan, [ScoutingTip.blackTarget, ScoutingTip.form]);
+      expect(openingPlan(report), [ScoutingTip.blackTarget, ScoutingTip.form]);
     });
 
     test('à éviter : un gros échantillon passe devant un 100 % sur peu de parties', () {
@@ -240,10 +253,10 @@ void main() {
       expect(report.white.target, isNull);
       expect(report.white.avoid, isNull);
       expect(report.black.target, isNull);
-      expect(report.plan, [ScoutingTip.form]);
+      expect(openingPlan(report), [ScoutingTip.form]);
     });
 
-    test('plan de jeu limité à 3 conseils', () {
+    test("plan de jeu : cadence et ouvertures d'abord, 4 conseils au plus", () {
       final report = ScoutingService.build([
         ...games(20, moves: ['e4', 'c5'], result: 'loss'),
         ...games(10, moves: ['e4', 'e5'], result: 'win', daysAgo: 3),
@@ -251,7 +264,8 @@ void main() {
         ...games(12, timeClass: 'rapid', result: 'loss'),
         ...games(20, timeClass: 'rapid', result: 'loss', daysAgo: 2),
       ], now)!;
-      expect(report.plan, [ScoutingTip.cadence, ScoutingTip.whiteTarget, ScoutingTip.blackTarget]);
+      expect(ScoutingService.plan(report).take(3), [ScoutingTip.cadence, ScoutingTip.whiteTarget, ScoutingTip.blackTarget]);
+      expect(ScoutingService.plan(report).length, lessThanOrEqualTo(ScoutingService.planSize));
     });
   });
 

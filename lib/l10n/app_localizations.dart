@@ -1743,6 +1743,288 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'New: “How to beat this player”, their weak spots and tips in slides\nTheir current form shown as a chess piece\nOpening tips on the moves you choose\nHome: “Show stats” or “How to beat this player”'**
   String get changelogV190;
+
+  /// No description provided for @scoutAnalyzing.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyzing games…'**
+  String get scoutAnalyzing;
+
+  /// No description provided for @scoutNotEnough.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough games to tell'**
+  String get scoutNotEnough;
+
+  /// No description provided for @scoutPhaseLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Where your opponent cracks'**
+  String get scoutPhaseLabel;
+
+  /// No description provided for @scoutPhaseExplain.
+  ///
+  /// In en, this message translates to:
+  /// **'Games grouped by the phase in which they end.'**
+  String get scoutPhaseExplain;
+
+  /// No description provided for @scoutPhaseTipOpening.
+  ///
+  /// In en, this message translates to:
+  /// **'Put on pressure from the opening: that\'s where your opponent wins least.'**
+  String get scoutPhaseTipOpening;
+
+  /// No description provided for @scoutPhaseTipMiddlegame.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep pieces on and complicate the middlegame: that\'s where your opponent wins least.'**
+  String get scoutPhaseTipMiddlegame;
+
+  /// No description provided for @scoutPhaseTipEndgame.
+  ///
+  /// In en, this message translates to:
+  /// **'Simplify and head for the endgame: that\'s where your opponent wins least.'**
+  String get scoutPhaseTipEndgame;
+
+  /// No description provided for @scoutPhaseTipNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No clearly weaker phase: their level is steady from start to finish.'**
+  String get scoutPhaseTipNone;
+
+  /// No description provided for @scoutTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Time management'**
+  String get scoutTimeLabel;
+
+  /// No description provided for @scoutTimeSlow.
+  ///
+  /// In en, this message translates to:
+  /// **'Slow'**
+  String get scoutTimeSlow;
+
+  /// No description provided for @scoutTimeBalanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Balanced'**
+  String get scoutTimeBalanced;
+
+  /// No description provided for @scoutTimeFast.
+  ///
+  /// In en, this message translates to:
+  /// **'Fast'**
+  String get scoutTimeFast;
+
+  /// No description provided for @scoutTimeMiddlegame.
+  ///
+  /// In en, this message translates to:
+  /// **'End of the opening: {gap} of the starting time compared with their opponent'**
+  String scoutTimeMiddlegame(String gap);
+
+  /// No description provided for @scoutTimeEndgame.
+  ///
+  /// In en, this message translates to:
+  /// **'Entering the endgame: {gap} of the starting time'**
+  String scoutTimeEndgame(String gap);
+
+  /// No description provided for @scoutTimeTimeouts.
+  ///
+  /// In en, this message translates to:
+  /// **'{percent} of their losses on time'**
+  String scoutTimeTimeouts(String percent);
+
+  /// No description provided for @scoutTimeTipSlow.
+  ///
+  /// In en, this message translates to:
+  /// **'Play fast and keep the clock pressure on: time is their weak spot.'**
+  String get scoutTimeTipSlow;
+
+  /// No description provided for @scoutTimeTipBalanced.
+  ///
+  /// In en, this message translates to:
+  /// **'Balanced time management: no clock trap, it will all be decided on the board.'**
+  String get scoutTimeTipBalanced;
+
+  /// No description provided for @scoutTimeTipFast.
+  ///
+  /// In en, this message translates to:
+  /// **'Your opponent plays fast: take your time and look for complex positions.'**
+  String get scoutTimeTipFast;
+
+  /// No description provided for @scoutTiltLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'After a loss'**
+  String get scoutTiltLabel;
+
+  /// No description provided for @scoutTiltTilts.
+  ///
+  /// In en, this message translates to:
+  /// **'It rattles them'**
+  String get scoutTiltTilts;
+
+  /// No description provided for @scoutTiltSteady.
+  ///
+  /// In en, this message translates to:
+  /// **'No change'**
+  String get scoutTiltSteady;
+
+  /// No description provided for @scoutTiltResilient.
+  ///
+  /// In en, this message translates to:
+  /// **'It fires them up'**
+  String get scoutTiltResilient;
+
+  /// No description provided for @scoutTiltAfterRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Right after a loss'**
+  String get scoutTiltAfterRow;
+
+  /// No description provided for @scoutTiltUsualRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Usually'**
+  String get scoutTiltUsualRow;
+
+  /// No description provided for @scoutTiltExplain.
+  ///
+  /// In en, this message translates to:
+  /// **'Games started less than an hour after a loss.'**
+  String get scoutTiltExplain;
+
+  /// No description provided for @scoutTiltTipTilts.
+  ///
+  /// In en, this message translates to:
+  /// **'If you win, offer a rematch right away: just after a loss, your opponent wins much less.'**
+  String get scoutTiltTipTilts;
+
+  /// No description provided for @scoutTiltTipResilient.
+  ///
+  /// In en, this message translates to:
+  /// **'Beware the rematch: just after a loss, your opponent wins even more.'**
+  String get scoutTiltTipResilient;
+
+  /// No description provided for @scoutTiltTipSteady.
+  ///
+  /// In en, this message translates to:
+  /// **'A loss doesn\'t change their game: no rematch effect to expect.'**
+  String get scoutTiltTipSteady;
+
+  /// No description provided for @scoutHoursLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'By time of day'**
+  String get scoutHoursLabel;
+
+  /// No description provided for @scoutHoursCaption.
+  ///
+  /// In en, this message translates to:
+  /// **'their weakest time of day'**
+  String get scoutHoursCaption;
+
+  /// No description provided for @scoutHoursExplain.
+  ///
+  /// In en, this message translates to:
+  /// **'Game start time, in your device\'s time zone.'**
+  String get scoutHoursExplain;
+
+  /// No description provided for @scoutDayPartMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'In the morning'**
+  String get scoutDayPartMorning;
+
+  /// No description provided for @scoutDayPartAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'In the afternoon'**
+  String get scoutDayPartAfternoon;
+
+  /// No description provided for @scoutDayPartEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'In the evening'**
+  String get scoutDayPartEvening;
+
+  /// No description provided for @scoutDayPartNight.
+  ///
+  /// In en, this message translates to:
+  /// **'At night'**
+  String get scoutDayPartNight;
+
+  /// No description provided for @scoutDayPartMorningRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Morning (5 am – 12 pm)'**
+  String get scoutDayPartMorningRow;
+
+  /// No description provided for @scoutDayPartAfternoonRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Afternoon (12 pm – 6 pm)'**
+  String get scoutDayPartAfternoonRow;
+
+  /// No description provided for @scoutDayPartEveningRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Evening (6 pm – 10 pm)'**
+  String get scoutDayPartEveningRow;
+
+  /// No description provided for @scoutDayPartNightRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Night (10 pm – 5 am)'**
+  String get scoutDayPartNightRow;
+
+  /// No description provided for @scoutHoursTipMorning.
+  ///
+  /// In en, this message translates to:
+  /// **'If you can, play them in the morning: only {percent} wins for your opponent.'**
+  String scoutHoursTipMorning(String percent);
+
+  /// No description provided for @scoutHoursTipAfternoon.
+  ///
+  /// In en, this message translates to:
+  /// **'If you can, play them in the afternoon: only {percent} wins for your opponent.'**
+  String scoutHoursTipAfternoon(String percent);
+
+  /// No description provided for @scoutHoursTipEvening.
+  ///
+  /// In en, this message translates to:
+  /// **'If you can, play them in the evening: only {percent} wins for your opponent.'**
+  String scoutHoursTipEvening(String percent);
+
+  /// No description provided for @scoutHoursTipNight.
+  ///
+  /// In en, this message translates to:
+  /// **'If you can, play them at night: only {percent} wins for your opponent.'**
+  String scoutHoursTipNight(String percent);
+
+  /// No description provided for @scoutHoursTipNone.
+  ///
+  /// In en, this message translates to:
+  /// **'Time of day makes no difference to their level.'**
+  String get scoutHoursTipNone;
+
+  /// No description provided for @scoutPhaseNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No weak phase'**
+  String get scoutPhaseNone;
+
+  /// No description provided for @scoutHoursNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No weak time of day'**
+  String get scoutHoursNone;
+
+  /// No description provided for @changelogV1100.
+  ///
+  /// In en, this message translates to:
+  /// **'“How to beat this player”: the phase where your opponent cracks\nTheir time management and how they react after a loss\nTheir weakest times of day\nA fuller game plan'**
+  String get changelogV1100;
 }
 
 class _AppLocalizationsDelegate

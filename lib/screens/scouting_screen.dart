@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 
 import '../models/country_game.dart';
+import '../models/game_phase_summary.dart';
 import '../services/game_repository.dart';
 import '../services/opening_move_names.dart';
 import '../services/opening_name_service.dart';
@@ -67,7 +69,7 @@ class ScoutingScreen extends StatelessWidget {
                   // Nouvelle série de diapositives quand le rapport change
                   // (parties mises à jour).
                   key: ObjectKey(viewModel.report),
-                  slides: _slides(context, l10n, viewModel.report, openStats),
+                  slides: _slides(context, l10n, viewModel, openStats),
                   onFinished: openStats,
                 ),
               ),
@@ -95,12 +97,19 @@ class ScoutingScreen extends StatelessWidget {
   }
 
   List<StorySlide> _slides(
-      BuildContext context, AppLocalizations l10n, ScoutingReport? report, VoidCallback openStats) {
+      BuildContext context, AppLocalizations l10n, ScoutingViewModel viewModel, VoidCallback openStats) {
+    final report = viewModel.report;
     final percentFormat = NumberFormat.percentPattern(Localizations.localeOf(context).toString());
     String percent(double value) => percentFormat.format(value);
     String opening(String family) =>
         l10n.openingFamilyName(OpeningNameService.key(family), OpeningNameService.fallback(family));
     String timeClass(String value) => FilterLabels.timeClass(value, l10n);
+
+    // Lignes « nom, barre des résultats, parties et taux de victoire ».
+    Widget resultsList(List<(String, GameResults)> rows) => _ResultsList(
+          rows: rows,
+          results: (results) => l10n.scoutOpeningResults(results.games, percent(results.winRate)),
+        );
 
     final seeStats = FilledButton.tonal(onPressed: openStats, child: Text(l10n.scoutSeeStats));
     if (report == null) {
@@ -123,8 +132,7 @@ class ScoutingScreen extends StatelessWidget {
     // Notation des coups : « 1.d4 » pour les blancs, « 1…e6 » pour les noirs,
     // suivie du nom de l'ouverture quand il est connu (« 1…e6 (défense
     // Horwitz) »).
-    String named(String move, String? family) =>
-        family == null ? move : l10n.scoutMoveWithName(move, opening(family));
+    String named(String move, String? family) => family == null ? move : l10n.scoutMoveWithName(move, opening(family));
     String whiteMove(String move) => named('1.$move', OpeningMoveNames.firstMove(move));
     String blackMove(String first, String move) => named('1…$move', OpeningMoveNames.reply(first, move));
 
@@ -137,10 +145,12 @@ class ScoutingScreen extends StatelessWidget {
       final target = repertoire.target;
       final avoid = repertoire.avoid;
       if (target != null) {
-        return l10n.scoutReplyTarget(move, blackMove(main.move, target.move), percent(target.results.winRate), target.games);
+        return l10n.scoutReplyTarget(
+            move, blackMove(main.move, target.move), percent(target.results.winRate), target.games);
       }
       if (avoid != null) {
-        return l10n.scoutReplyAvoid(move, blackMove(main.move, avoid.move), percent(avoid.results.winRate), avoid.games);
+        return l10n.scoutReplyAvoid(
+            move, blackMove(main.move, avoid.move), percent(avoid.results.winRate), avoid.games);
       }
       return l10n.scoutReplyNone(move);
     }
@@ -150,8 +160,10 @@ class ScoutingScreen extends StatelessWidget {
       final repertoire = report.black;
       final target = repertoire.target;
       final avoid = repertoire.avoid;
-      if (target != null) return l10n.scoutFirstMoveTarget(whiteMove(target.move), percent(target.results.winRate), target.games);
-      if (avoid != null) return l10n.scoutFirstMoveAvoid(whiteMove(avoid.move), percent(avoid.results.winRate), avoid.games);
+      if (target != null)
+        return l10n.scoutFirstMoveTarget(whiteMove(target.move), percent(target.results.winRate), target.games);
+      if (avoid != null)
+        return l10n.scoutFirstMoveAvoid(whiteMove(avoid.move), percent(avoid.results.winRate), avoid.games);
       return repertoire.games > 0 ? l10n.scoutFirstMoveNone : null;
     }
 
@@ -161,17 +173,155 @@ class ScoutingScreen extends StatelessWidget {
             label: label,
             value: opening(repertoire.top.first.family),
             caption: l10n.scoutOpeningFavorite,
-            highlight: _OpeningList(
-              records: repertoire.top,
-              name: (record) => opening(record.family),
-              results: (record) => l10n.scoutOpeningResults(record.games, percent(record.results.winRate)),
-            ),
+            highlight: resultsList([
+              for (final (index, record) in repertoire.top.indexed)
+                ('${index + 1}. ${opening(record.family)}', record.results),
+            ]),
             details: [
               l10n.scoutOpeningGames(repertoire.games),
               if (repertoire.mainMove != null)
                 l10n.scoutMainMove(whiteMove(repertoire.mainMove!.move), percent(repertoire.mainMoveShare)),
             ],
             tip: tip,
+          );
+
+    // Diapos qui attendent le calcul des phases.
+    final phasesReady = viewModel.phasesReady;
+    final phase = viewModel.phaseInsight;
+    final time = viewModel.timeInsight;
+    StorySlide analyzing(String label) => StorySlide(
+          label: label,
+          value: l10n.scoutAnalyzing,
+          smallValue: true,
+          highlight: _AnalysisProgress(progress: viewModel.phaseProgress),
+        );
+    StorySlide notEnough(String label) => StorySlide(label: label, value: l10n.scoutNotEnough, smallValue: true);
+
+    String phaseName(GamePhase value) => switch (value) {
+          GamePhase.opening => l10n.phaseOpening,
+          GamePhase.middlegame => l10n.phaseMiddlegame,
+          GamePhase.endgame => l10n.phaseEndgame,
+        };
+    String phaseTip(PhaseInsight insight) => !insight.notable
+        ? l10n.scoutPhaseTipNone
+        : switch (insight.weakest!) {
+            GamePhase.opening => l10n.scoutPhaseTipOpening,
+            GamePhase.middlegame => l10n.scoutPhaseTipMiddlegame,
+            GamePhase.endgame => l10n.scoutPhaseTipEndgame,
+          };
+    String timeTip(TimeInsight insight) => switch (insight.profile) {
+          TimeProfile.slow => l10n.scoutTimeTipSlow,
+          TimeProfile.balanced => l10n.scoutTimeTipBalanced,
+          TimeProfile.fast => l10n.scoutTimeTipFast,
+        };
+    String? tiltTip(TiltInsight insight) => switch (insight.kind) {
+          TiltKind.tilts => l10n.scoutTiltTipTilts,
+          TiltKind.resilient => l10n.scoutTiltTipResilient,
+          TiltKind.steady => l10n.scoutTiltTipSteady,
+          TiltKind.unknown => null,
+        };
+    String dayPartRow(DayPart part) => switch (part) {
+          DayPart.morning => l10n.scoutDayPartMorningRow,
+          DayPart.afternoon => l10n.scoutDayPartAfternoonRow,
+          DayPart.evening => l10n.scoutDayPartEveningRow,
+          DayPart.night => l10n.scoutDayPartNightRow,
+        };
+    String hoursTip(HoursInsight insight) {
+      if (!insight.notable) return l10n.scoutHoursTipNone;
+      final rate = percent(insight.byPart[insight.weakest!]!.winRate);
+      return switch (insight.weakest!) {
+        DayPart.morning => l10n.scoutHoursTipMorning(rate),
+        DayPart.afternoon => l10n.scoutHoursTipAfternoon(rate),
+        DayPart.evening => l10n.scoutHoursTipEvening(rate),
+        DayPart.night => l10n.scoutHoursTipNight(rate),
+      };
+    }
+
+    String gap(double value) => value > 0 ? '+${percent(value)}' : percent(value);
+
+    // 5. Phase où il gagne le moins.
+    final StorySlide phaseSlide;
+    if (!phasesReady) {
+      phaseSlide = analyzing(l10n.scoutPhaseLabel);
+    } else if (phase == null || phase.weakest == null) {
+      phaseSlide = notEnough(l10n.scoutPhaseLabel);
+    } else {
+      phaseSlide = StorySlide(
+        label: l10n.scoutPhaseLabel,
+        // Écart trop faible avec son habitude : pas de phase « fragile ».
+        value: phase.notable ? phaseName(phase.weakest!) : l10n.scoutPhaseNone,
+        highlight: resultsList([
+          for (final value in GamePhase.values)
+            if (phase.byPhase[value]!.games > 0) (phaseName(value), phase.byPhase[value]!),
+        ]),
+        details: [l10n.scoutPhaseExplain],
+        tip: phaseTip(phase),
+      );
+    }
+
+    // 6. Gestion du temps.
+    final StorySlide timeSlide;
+    if (!phasesReady) {
+      timeSlide = analyzing(l10n.scoutTimeLabel);
+    } else if (time == null) {
+      timeSlide = notEnough(l10n.scoutTimeLabel);
+    } else {
+      timeSlide = StorySlide(
+        label: l10n.scoutTimeLabel,
+        value: switch (time.profile) {
+          TimeProfile.slow => l10n.scoutTimeSlow,
+          TimeProfile.balanced => l10n.scoutTimeBalanced,
+          TimeProfile.fast => l10n.scoutTimeFast,
+        },
+        details: [
+          l10n.scoutTimeMiddlegame(gap(time.gapAtMiddlegame)),
+          if (time.gapAtEndgame != null) l10n.scoutTimeEndgame(gap(time.gapAtEndgame!)),
+          if (time.losses > 0) l10n.scoutTimeTimeouts(percent(time.timeoutShare)),
+        ],
+        tip: timeTip(time),
+      );
+    }
+
+    // 7. Réaction après une défaite.
+    final tilt = report.tilt;
+    final tiltSlide = tilt.kind == TiltKind.unknown
+        ? notEnough(l10n.scoutTiltLabel)
+        : StorySlide(
+            label: l10n.scoutTiltLabel,
+            value: switch (tilt.kind) {
+              TiltKind.tilts => l10n.scoutTiltTilts,
+              TiltKind.resilient => l10n.scoutTiltResilient,
+              _ => l10n.scoutTiltSteady,
+            },
+            highlight: resultsList([
+              (l10n.scoutTiltAfterRow, tilt.afterLoss),
+              (l10n.scoutTiltUsualRow, tilt.overall),
+            ]),
+            details: [l10n.scoutTiltExplain],
+            tip: tiltTip(tilt),
+          );
+
+    // 8. Selon l'heure (bonus).
+    final hours = report.hours;
+    final hoursSlide = hours.weakest == null
+        ? notEnough(l10n.scoutHoursLabel)
+        : StorySlide(
+            label: l10n.scoutHoursLabel,
+            value: !hours.notable
+                ? l10n.scoutHoursNone
+                : switch (hours.weakest!) {
+                    DayPart.morning => l10n.scoutDayPartMorning,
+                    DayPart.afternoon => l10n.scoutDayPartAfternoon,
+                    DayPart.evening => l10n.scoutDayPartEvening,
+                    DayPart.night => l10n.scoutDayPartNight,
+                  },
+            caption: hours.notable ? l10n.scoutHoursCaption : null,
+            highlight: resultsList([
+              for (final part in DayPart.values)
+                if (hours.byPart[part]!.games > 0) (dayPartRow(part), hours.byPart[part]!),
+            ]),
+            details: [l10n.scoutHoursExplain],
+            tip: hoursTip(hours),
           );
 
     final cadenceTip = l10n.scoutCadenceTipOther(weakest);
@@ -181,6 +331,10 @@ class ScoutingScreen extends StatelessWidget {
           ScoutingTip.cadence => cadenceTip,
           ScoutingTip.whiteTarget || ScoutingTip.whiteAvoid => l10n.scoutPlanAsBlack(white!),
           ScoutingTip.blackTarget || ScoutingTip.blackAvoid => l10n.scoutPlanAsWhite(black!),
+          ScoutingTip.phase => phaseTip(phase!),
+          ScoutingTip.time => timeTip(time!),
+          ScoutingTip.tilt => tiltTip(report.tilt)!,
+          ScoutingTip.hours => hoursTip(report.hours),
           ScoutingTip.form => formTip(),
         };
 
@@ -201,8 +355,7 @@ class ScoutingScreen extends StatelessWidget {
             CadenceCase.focusOnly => null,
             CadenceCase.same => l10n.scoutCadenceSame(percent(cadence.weakestResults.winRate)),
             CadenceCase.other => cadence.byWinRate
-                ? l10n.scoutCadenceOther(
-                    weakest, percent(cadence.weakestResults.winRate), cadence.weakestResults.games)
+                ? l10n.scoutCadenceOther(weakest, percent(cadence.weakestResults.winRate), cadence.weakestResults.games)
                 : l10n.scoutCadenceOtherRating(weakest, cadence.weakestResults.games),
             CadenceCase.otherFewGames => l10n.scoutCadenceFewGames(weakest, cadence.weakestResults.games),
           }
@@ -239,11 +392,18 @@ class ScoutingScreen extends StatelessWidget {
       // 3. et 4. Ouvertures : à quoi s'attendre, et le coup à jouer.
       if (whiteSlide != null) whiteSlide,
       if (blackSlide != null) blackSlide,
+      // 5. à 8. Phase, temps, réaction après une défaite, heure.
+      phaseSlide,
+      timeSlide,
+      tiltSlide,
+      hoursSlide,
       // Plan de jeu.
       StorySlide(
         label: l10n.scoutPlanLabel,
         value: l10n.scoutPlanTitle,
-        highlight: _TipList(tips: [for (final tip in report.plan) planTip(tip)]),
+        highlight: _TipList(tips: [
+          for (final tip in ScoutingService.plan(report, phase: phase, time: time)) planTip(tip),
+        ]),
         action: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -261,44 +421,60 @@ class ScoutingScreen extends StatelessWidget {
   }
 }
 
-/// Les 3 ouvertures les plus jouées, numérotées : nom, puis barre des
-/// résultats (victoires, nulles, défaites) avec parties et taux de victoire.
-class _OpeningList extends StatelessWidget {
-  final List<OpeningRecord> records;
-  final String Function(OpeningRecord record) name;
-  final String Function(OpeningRecord record) results;
+/// Lignes de résultats : nom, barre (victoires, nulles, défaites), puis
+/// parties et taux de victoire.
+class _ResultsList extends StatelessWidget {
+  final List<(String, GameResults)> rows;
+  final String Function(GameResults results) results;
 
-  const _OpeningList({required this.records, required this.name, required this.results});
+  const _ResultsList({required this.rows, required this.results});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        for (final (index, record) in records.indexed)
+        for (final (name, row) in rows)
           Padding(
             padding: const EdgeInsets.only(top: 10),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(
-                  '${index + 1}. ${name(record)}',
-                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-                  textAlign: TextAlign.center,
-                ),
+                Text(name,
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600), textAlign: TextAlign.center),
                 const SizedBox(height: 4),
-                ResultBar(
-                  wins: record.results.wins,
-                  draws: record.results.draws,
-                  losses: record.results.losses,
-                  width: 180,
-                ),
+                ResultBar(wins: row.wins, draws: row.draws, losses: row.losses, width: 180),
                 const SizedBox(height: 2),
-                Text(results(record), style: const TextStyle(fontSize: 13), textAlign: TextAlign.center),
+                Text(results(row), style: const TextStyle(fontSize: 13), textAlign: TextAlign.center),
               ],
             ),
           ),
       ],
+    );
+  }
+}
+
+/// Avancement du calcul des phases des parties.
+class _AnalysisProgress extends StatelessWidget {
+  final ValueListenable<double> progress;
+
+  const _AnalysisProgress({required this.progress});
+
+  @override
+  Widget build(BuildContext context) {
+    final color = DefaultTextStyle.of(context).style.color;
+    return SizedBox(
+      width: 180,
+      child: ValueListenableBuilder<double>(
+        valueListenable: progress,
+        builder: (context, value, _) => LinearProgressIndicator(
+          value: value,
+          color: color,
+          backgroundColor: color?.withValues(alpha: 0.25),
+          minHeight: 6,
+          borderRadius: BorderRadius.circular(3),
+        ),
+      ),
     );
   }
 }

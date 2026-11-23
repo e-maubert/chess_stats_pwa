@@ -95,6 +95,20 @@ void main() {
     expect(find.text('Quand ton adversaire a les noirs'), findsOneWidget);
     expect(find.textContaining('Aucun premier coup ne ressort'), findsOneWidget);
 
+    // Phases inconnues (parties de test sans coups) : pas de conclusion.
+    await _next(tester);
+    expect(find.text('Où ton adversaire craque'), findsOneWidget);
+    expect(find.text('Pas assez de parties pour conclure'), findsOneWidget);
+
+    await _next(tester);
+    expect(find.text('Sa gestion du temps'), findsOneWidget);
+
+    await _next(tester);
+    expect(find.text('Après une défaite'), findsOneWidget);
+
+    await _next(tester);
+    expect(find.text("Selon l'heure"), findsOneWidget);
+
     await _next(tester);
     expect(find.text('Ton plan de jeu'), findsOneWidget);
     expect(find.textContaining('Avec les noirs — Contre 1.d4, réponds 1…e6'), findsOneWidget);

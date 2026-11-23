@@ -1,6 +1,10 @@
 import '../models/country_game.dart';
+import '../models/game_phase_summary.dart';
 import '../models/stats_period.dart';
+import 'game_phase_stats_service.dart';
+import 'loss_stats_service.dart';
 import 'opening_stats_service.dart';
+import 'playing_hours_service.dart';
 import 'stats_period_service.dart';
 
 /// Victoires, nulles et défaites du joueur analysé sur un ensemble de
@@ -181,8 +185,101 @@ enum ScoutingTip {
   /// Quand il a les noirs : ne pas ouvrir par [ColorRepertoire.avoid].
   blackAvoid,
 
+  /// Phase où il perd le plus ([PhaseInsight.weakest]).
+  phase,
+
+  /// Sa gestion du temps, s'il est lent ou rapide ([TimeInsight.profile]).
+  time,
+
+  /// Sa réaction après une défaite ([TiltInsight.kind]).
+  tilt,
+
+  /// Le moment de la journée où il gagne le moins ([HoursInsight.weakest]).
+  hours,
+
   /// Conseil lié à sa forme du moment.
   form,
+}
+
+/// Résultats selon la phase où la partie s'est terminée.
+class PhaseInsight {
+  final Map<GamePhase, GameResults> byPhase;
+
+  /// Phase assez jouée ([ScoutingService.minPhaseGames]) où il gagne le
+  /// moins ; null s'il y en a moins de deux à comparer.
+  final GamePhase? weakest;
+
+  /// [weakest] nettement sous son taux de victoire habituel
+  /// ([ScoutingService.notableGap]) : conseil du plan de jeu.
+  final bool notable;
+
+  const PhaseInsight({required this.byPhase, this.weakest, this.notable = false});
+}
+
+/// Rythme de jeu par rapport à ses adversaires.
+enum TimeProfile { slow, balanced, fast }
+
+/// Gestion du temps : temps restant par rapport à l'adversaire à la sortie
+/// de l'ouverture et à l'entrée en finale (en part du temps initial :
+/// -0,1 = 10 % du temps initial de moins), et défaites au temps.
+class TimeInsight {
+  final TimeProfile profile;
+  final double gapAtMiddlegame;
+  final double? gapAtEndgame;
+
+  /// Part des défaites perdues au temps.
+  final double timeoutShare;
+  final int losses;
+
+  const TimeInsight({
+    required this.profile,
+    required this.gapAtMiddlegame,
+    this.gapAtEndgame,
+    required this.timeoutShare,
+    required this.losses,
+  });
+}
+
+/// Réaction après une défaite.
+enum TiltKind {
+  /// Il gagne nettement moins dans la partie qui suit une défaite.
+  tilts,
+
+  /// Il gagne autant qu'à son habitude.
+  steady,
+
+  /// Il gagne plus : une défaite le remobilise.
+  resilient,
+
+  /// Trop peu de parties jouées juste après une défaite.
+  unknown,
+}
+
+/// Parties jouées dans l'heure qui suit une défaite, comparées à
+/// l'ensemble.
+class TiltInsight {
+  final TiltKind kind;
+  final GameResults afterLoss;
+  final GameResults overall;
+
+  const TiltInsight({required this.kind, required this.afterLoss, required this.overall});
+}
+
+/// Moments de la journée (heure de début, heure de l'appareil).
+enum DayPart { morning, afternoon, evening, night }
+
+/// Résultats selon le moment de la journée.
+class HoursInsight {
+  final Map<DayPart, GameResults> byPart;
+
+  /// Moment assez joué ([ScoutingService.minHoursGames]) où il gagne le
+  /// moins ; null s'il y en a moins de deux à comparer.
+  final DayPart? weakest;
+
+  /// [weakest] nettement sous son taux de victoire habituel.
+  final bool notable;
+
+  const HoursInsight({required this.byPart, this.weakest, this.notable = false});
 }
 
 /// « Comment battre ce joueur » : ses points faibles dans sa cadence
@@ -193,27 +290,31 @@ class ScoutingReport {
   /// Cadence analysée : la plus jouée.
   final String timeClass;
 
-  /// Parties analysées (cadence [timeClass], période [period]).
-  final int games;
+  /// Parties analysées (cadence [timeClass], période [period]), de la
+  /// plus ancienne à la plus récente : leurs phases sont calculées ensuite
+  /// pour [ScoutingService.phases] et [ScoutingService.time].
+  final List<CountryGame> analyzed;
 
   final PlayerForm form;
   final CadenceInsight cadence;
   final ColorRepertoire white;
   final ColorRepertoire black;
-
-  /// Les conseils les plus forts, 3 au plus.
-  final List<ScoutingTip> plan;
+  final TiltInsight tilt;
+  final HoursInsight hours;
 
   const ScoutingReport({
     required this.period,
     required this.timeClass,
-    required this.games,
+    required this.analyzed,
     required this.form,
     required this.cadence,
     required this.white,
     required this.black,
-    required this.plan,
+    required this.tilt,
+    required this.hours,
   });
+
+  int get games => analyzed.length;
 }
 
 class ScoutingService {
@@ -236,11 +337,34 @@ class ScoutingService {
   /// Parties récentes prises pour le score de forme.
   static const int recentGames = 20;
 
+  /// Parties minimum par phase, par moment de la journée, et juste après
+  /// une défaite, pour en tirer un conseil.
+  static const int minPhaseGames = 8;
+  static const int minHoursGames = 10;
+  static const int minTiltGames = 8;
+
+  /// Parties chronométrées minimum pour juger la gestion du temps.
+  static const int minClockGames = 10;
+
+  /// Écart minimum (en points de taux de victoire) avec son habitude pour
+  /// qu'une phase ou un moment de la journée fasse un conseil ; le double
+  /// pour l'après-défaite.
+  static const double notableGap = 0.05;
+
+  /// Délai maximum entre une défaite et le début de la partie suivante pour
+  /// parler de réaction à chaud.
+  static const Duration tiltWindow = Duration(hours: 1);
+
+  /// Conseils au plus dans le plan de jeu.
+  static const int planSize = 4;
+
   static const String _unknownOpening = 'Unknown-Opening';
 
   /// Rapport sur les parties [games] du joueur à la date [now] ; null s'il
   /// n'a aucune partie de bullet, blitz ou rapide sur 3 mois.
-  static ScoutingReport? build(List<CountryGame> games, DateTime now) {
+  /// [hourOf] donne l'heure de début d'une partie (par défaut l'heure de
+  /// l'appareil, voir PlayingHoursService.localHour).
+  static ScoutingReport? build(List<CountryGame> games, DateTime now, {int? Function(CountryGame)? hourOf}) {
     List<CountryGame> inPeriod(StatsPeriod period) => StatsPeriodService.preferRated(
           StatsPeriodService.filter(games, period, now).where((g) => timeClasses.contains(g.timeClass)).toList(),
         );
@@ -268,12 +392,142 @@ class ScoutingService {
     return ScoutingReport(
       period: period,
       timeClass: focus,
-      games: focusGames.length,
+      analyzed: focusGames,
       form: form,
       cadence: cadence,
       white: white,
       black: black,
-      plan: _plan(cadence, white, black),
+      tilt: _tilt(focusGames),
+      hours: _hours(focusGames, hourOf ?? PlayingHoursService.localHour),
+    );
+  }
+
+  /// Résultats selon la phase de fin de partie, sur les parties [games]
+  /// dont les phases sont connues ; null si aucune ne l'est.
+  static PhaseInsight? phases(List<CountryGame> games) {
+    final withPhases = games.where((g) => g.phases != null).toList();
+    if (withPhases.isEmpty) return null;
+    final byPhase = {
+      for (final phase in GamePhase.values) phase: GameResults.of(withPhases.where((g) => g.phases!.endPhase == phase)),
+    };
+    final weakest = _weakest(byPhase, minPhaseGames);
+    return PhaseInsight(
+      byPhase: byPhase,
+      weakest: weakest,
+      notable: weakest != null && _isNotable(byPhase[weakest]!, GameResults.of(withPhases)),
+    );
+  }
+
+  /// Gestion du temps sur les parties [games] dont les phases sont
+  /// connues ; null s'il y a trop peu de parties chronométrées.
+  static TimeInsight? time(List<CountryGame> games) {
+    final stats = GamePhaseStatsService.aggregate(games);
+    final middle = stats.atMiddlegame;
+    final end = stats.atEndgame;
+    if (middle == null || middle.games < minClockGames) return null;
+    final gapMiddle = middle.player - middle.opponent;
+    final gapEnd = end == null || end.games < minPhaseGames ? null : end.player - end.opponent;
+    final losses = games.where((g) => g.result == 'loss').toList();
+    final timeouts = losses.where((g) => g.lossCause == LossStatsService.timeout).length;
+    final timeoutShare = losses.isEmpty ? 0.0 : timeouts / losses.length;
+
+    final gap = gapEnd ?? gapMiddle;
+    final TimeProfile profile;
+    if (gap <= -0.10 || timeoutShare >= 0.3) {
+      profile = TimeProfile.slow;
+    } else if (gap >= 0.10 && timeoutShare < 0.15) {
+      profile = TimeProfile.fast;
+    } else {
+      profile = TimeProfile.balanced;
+    }
+    return TimeInsight(
+      profile: profile,
+      gapAtMiddlegame: gapMiddle,
+      gapAtEndgame: gapEnd,
+      timeoutShare: timeoutShare,
+      losses: losses.length,
+    );
+  }
+
+  /// Les conseils les plus forts pour le plan de jeu, [planSize] au plus :
+  /// d'abord les plus concrets (cadence, coups d'ouverture), puis phase,
+  /// temps, réaction après une défaite, moment de la journée et forme.
+  /// [phase] et [time] restent null tant que les phases ne sont pas
+  /// calculées.
+  static List<ScoutingTip> plan(ScoutingReport report, {PhaseInsight? phase, TimeInsight? time}) => [
+        if (report.cadence.kind == CadenceCase.other) ScoutingTip.cadence,
+        if (report.white.target != null)
+          ScoutingTip.whiteTarget
+        else if (report.white.avoid != null)
+          ScoutingTip.whiteAvoid,
+        if (report.black.target != null)
+          ScoutingTip.blackTarget
+        else if (report.black.avoid != null)
+          ScoutingTip.blackAvoid,
+        if (phase != null && phase.notable) ScoutingTip.phase,
+        if (time != null && time.profile != TimeProfile.balanced) ScoutingTip.time,
+        if (report.tilt.kind == TiltKind.tilts || report.tilt.kind == TiltKind.resilient) ScoutingTip.tilt,
+        if (report.hours.notable) ScoutingTip.hours,
+        ScoutingTip.form,
+      ].take(planSize).toList();
+
+  /// Clé assez jouée ([minGames]) au plus faible taux de victoire ; null
+  /// s'il y en a moins de deux à comparer.
+  static K? _weakest<K>(Map<K, GameResults> results, int minGames) {
+    final candidates = results.entries.where((e) => e.value.games >= minGames).toList();
+    if (candidates.length < 2) return null;
+    return candidates.reduce((a, b) => b.value.winRate < a.value.winRate ? b : a).key;
+  }
+
+  static bool _isNotable(GameResults part, GameResults overall) => part.winRate <= overall.winRate - notableGap;
+
+  /// Parties commencées dans l'heure qui suit une défaite ([chronological] :
+  /// de la plus ancienne à la plus récente).
+  static TiltInsight _tilt(List<CountryGame> chronological) {
+    final after = <CountryGame>[];
+    for (var i = 1; i < chronological.length; i++) {
+      final previous = chronological[i - 1];
+      if (previous.result != 'loss') continue;
+      final game = chronological[i];
+      final start = game.startTime ?? game.endTime!;
+      if (start.difference(previous.endTime!) <= tiltWindow) after.add(game);
+    }
+    final afterLoss = GameResults.of(after);
+    final overall = GameResults.of(chronological);
+    final TiltKind kind;
+    if (afterLoss.games < minTiltGames) {
+      kind = TiltKind.unknown;
+    } else if (afterLoss.winRate <= overall.winRate - 2 * notableGap) {
+      kind = TiltKind.tilts;
+    } else if (afterLoss.winRate >= overall.winRate + notableGap) {
+      kind = TiltKind.resilient;
+    } else {
+      kind = TiltKind.steady;
+    }
+    return TiltInsight(kind: kind, afterLoss: afterLoss, overall: overall);
+  }
+
+  /// Moment de la journée d'une heure de début : matin 5 h - 12 h,
+  /// après-midi 12 h - 18 h, soirée 18 h - 22 h, nuit 22 h - 5 h.
+  static DayPart dayPart(int hour) {
+    if (hour >= 5 && hour < 12) return DayPart.morning;
+    if (hour >= 12 && hour < 18) return DayPart.afternoon;
+    if (hour >= 18 && hour < 22) return DayPart.evening;
+    return DayPart.night;
+  }
+
+  static HoursInsight _hours(List<CountryGame> games, int? Function(CountryGame) hourOf) {
+    final groups = {for (final part in DayPart.values) part: <CountryGame>[]};
+    for (final game in games) {
+      final hour = hourOf(game);
+      if (hour != null) groups[dayPart(hour)]!.add(game);
+    }
+    final byPart = {for (final entry in groups.entries) entry.key: GameResults.of(entry.value)};
+    final weakest = _weakest(byPart, minHoursGames);
+    return HoursInsight(
+      byPart: byPart,
+      weakest: weakest,
+      notable: weakest != null && _isNotable(byPart[weakest]!, GameResults.of(games)),
     );
   }
 
@@ -436,11 +690,4 @@ class ScoutingService {
     }
     return [for (final entry in groups.entries) MoveRecord(entry.key, GameResults.of(entry.value))];
   }
-
-  static List<ScoutingTip> _plan(CadenceInsight cadence, ColorRepertoire white, ColorRepertoire black) => [
-        if (cadence.kind == CadenceCase.other) ScoutingTip.cadence,
-        if (white.target != null) ScoutingTip.whiteTarget else if (white.avoid != null) ScoutingTip.whiteAvoid,
-        if (black.target != null) ScoutingTip.blackTarget else if (black.avoid != null) ScoutingTip.blackAvoid,
-        ScoutingTip.form,
-      ].take(3).toList();
 }
