@@ -640,6 +640,10 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get changelogV180 =>
+      'Filters grouped in a menu, each with its own title\nSummary of your chosen filters always visible on mobile\nA lighter top bar on mobile and tablet\nOn desktop, filters stay visible on the left';
+
+  @override
   String get changelogV170 =>
       'Share a player\'s stats with a simple link\nStats on rated games, or on all games if you prefer\nLosses on time shown in time management\nA clearer monthly recap';
 
@@ -1240,4 +1244,25 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get recapScoreLearning =>
       'A month for learning: every loss is a lesson.';
+
+  @override
+  String get filtersTitle => 'Filters';
+
+  @override
+  String get filtersOpen => 'Open menu';
+
+  @override
+  String get filtersReset => 'Reset';
+
+  @override
+  String get filtersDone => 'See stats';
+
+  @override
+  String get periodLabel => 'Period';
+
+  @override
+  String get menuTitle => 'Menu';
+
+  @override
+  String get menuMoreSection => 'More';
 }

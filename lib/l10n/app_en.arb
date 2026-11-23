@@ -318,6 +318,7 @@
       }
     }
   },
+  "changelogV180": "Filters grouped in a menu, each with its own title\nSummary of your chosen filters always visible on mobile\nA lighter top bar on mobile and tablet\nOn desktop, filters stay visible on the left",
   "changelogV170": "Share a player's stats with a simple link\nStats on rated games, or on all games if you prefer\nLosses on time shown in time management\nA clearer monthly recap",
   "share": "Share",
   "shareText": "{username}'s stats on Chess Stats",
@@ -726,5 +727,12 @@
   "recapScoreWinning": "More wins than losses: well played!",
   "recapScoreBalanced": "Evenly matched: every game comes down to the wire.",
   "recapScoreTough": "A tough month, the next one will be better.",
-  "recapScoreLearning": "A month for learning: every loss is a lesson."
+  "recapScoreLearning": "A month for learning: every loss is a lesson.",
+  "filtersTitle": "Filters",
+  "filtersOpen": "Open menu",
+  "filtersReset": "Reset",
+  "filtersDone": "See stats",
+  "periodLabel": "Period",
+  "menuTitle": "Menu",
+  "menuMoreSection": "More"
 }

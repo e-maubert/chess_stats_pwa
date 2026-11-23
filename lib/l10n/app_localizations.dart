@@ -615,6 +615,12 @@ abstract class AppLocalizations {
   /// **'Version {version} – {date}'**
   String changelogVersionTitle(String version, String date);
 
+  /// No description provided for @changelogV180.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters grouped in a menu, each with its own title\nSummary of your chosen filters always visible on mobile\nA lighter top bar on mobile and tablet\nOn desktop, filters stay visible on the left'**
+  String get changelogV180;
+
   /// No description provided for @changelogV170.
   ///
   /// In en, this message translates to:
@@ -1413,6 +1419,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'A month for learning: every loss is a lesson.'**
   String get recapScoreLearning;
+
+  /// No description provided for @filtersTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters'**
+  String get filtersTitle;
+
+  /// No description provided for @filtersOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'Open menu'**
+  String get filtersOpen;
+
+  /// No description provided for @filtersReset.
+  ///
+  /// In en, this message translates to:
+  /// **'Reset'**
+  String get filtersReset;
+
+  /// No description provided for @filtersDone.
+  ///
+  /// In en, this message translates to:
+  /// **'See stats'**
+  String get filtersDone;
+
+  /// No description provided for @periodLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Period'**
+  String get periodLabel;
+
+  /// No description provided for @menuTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Menu'**
+  String get menuTitle;
+
+  /// No description provided for @menuMoreSection.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get menuMoreSection;
 }
 
 class _AppLocalizationsDelegate

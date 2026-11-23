@@ -3,17 +3,16 @@ import 'package:provider/provider.dart';
 import '../models/country_game.dart';
 import '../services/game_repository.dart';
 import '../services/layout_service.dart';
-import '../viewmodels/collapsible_header.dart';
 import '../viewmodels/player_games_viewmodel.dart';
 import '../viewmodels/stats_filter_viewmodel.dart';
 import '../viewmodels/stats_period_viewmodel.dart';
+import '../viewmodels/theme_viewmodel.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
-import '../widgets/period_selector.dart';
 import '../widgets/player_app_bar_title.dart';
 import '../widgets/share_player.dart';
 import '../widgets/stats_display.dart';
 import '../widgets/theme_toggle_button.dart';
-import '../widgets/stats_filter_selectors.dart';
+import '../widgets/stats_filter_panel.dart';
 import 'recap_screen.dart';
 
 class StatsScreen extends StatelessWidget {
@@ -31,7 +30,6 @@ class StatsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -42,7 +40,7 @@ class StatsScreen extends StatelessWidget {
             upToDate: upToDate,
           ),
         ),
-        // Filtres de l'en-tête, propres à ce joueur : remis à leur valeur
+        // Filtres de la page, propres à ce joueur : remis à leur valeur
         // par défaut (1 mois, toutes cadences, les deux couleurs, toutes
         // ouvertures, parties classées) pour chaque joueur consulté, jamais
         // mémorisés.
@@ -57,92 +55,78 @@ class StatsScreen extends StatelessWidget {
   }
 }
 
-/// Page des stats avec ses filtres dans l'en-tête. Sur mobile (une seule
-/// colonne de cartes), les filtres se replient quand on fait défiler les
-/// stats vers le bas et reviennent quand on remonte.
-class _StatsScaffold extends StatefulWidget {
+/// Page des stats et ses filtres : panneau fixe à gauche sur grand écran ;
+/// sur mobile et tablette, tiroir glissant ouvert par le bouton en haut à
+/// gauche (menu : filtres puis section « Plus ») ou par le résumé des
+/// filtres sous la barre du haut.
+class _StatsScaffold extends StatelessWidget {
   final String username;
 
   const _StatsScaffold({required this.username});
 
-  @override
-  State<_StatsScaffold> createState() => _StatsScaffoldState();
-}
-
-class _StatsScaffoldState extends State<_StatsScaffold> with SingleTickerProviderStateMixin {
-  /// Hauteur des filtres dépliés (période, parties classées, cadence,
-  /// couleur, ouverture).
-  static const double _filtersHeight = PeriodSelector.height + 4 * filterRowHeight;
-
-  /// 1 = filtres affichés, 0 = repliés.
-  late final AnimationController _filters = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 200),
-    value: 1,
-  );
-
-  @override
-  void dispose() {
-    _filters.dispose();
-    super.dispose();
-  }
-
-  bool _onScroll(ScrollUpdateNotification notification) {
-    if (notification.depth != 0 || notification.metrics.axis != Axis.vertical) return false;
-    final visible = _filters.status == AnimationStatus.forward || _filters.status == AnimationStatus.completed;
-    final next = CollapsibleHeader.visibleAfterScroll(
-      visible: visible,
-      scrollDelta: notification.scrollDelta ?? 0,
-      pixels: notification.metrics.pixels,
-    );
-    if (next != visible) next ? _filters.forward() : _filters.reverse();
-    return false;
-  }
+  /// Largeur du panneau des filtres fixe (grand écran).
+  static const double _panelWidth = 300;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final username = widget.username;
-    final collapsible = LayoutService.columnCount(MediaQuery.sizeOf(context).width) == 1;
-    if (!collapsible && _filters.value < 1) _filters.value = 1;
+    final width = MediaQuery.sizeOf(context).width;
+    final wide = LayoutService.columnCount(width) > 1;
+    final canPop = Navigator.of(context).canPop();
 
     return Consumer<PlayerGamesViewModel>(
-      builder: (context, viewModel, child) => AnimatedBuilder(
-        animation: _filters,
-        // Contenu construit une fois : l'animation ne fait que changer la
-        // hauteur de l'en-tête.
-        child: NotificationListener<ScrollUpdateNotification>(
-          onNotification: collapsible ? _onScroll : null,
-          child: _body(context, viewModel, l10n),
-        ),
-        builder: (context, body) {
-          final shown = Curves.easeInOut.transform(_filters.value);
-          return Scaffold(
-            appBar: AppBar(
-              // Nom de l'app en petit, puis le pseudo dessous : il a toute la
-              // largeur pour lui et ne se fait plus rogner sur mobile.
-              title: PlayerAppBarTitle(username: username),
-              actions: [
-                // Revoir le bilan du dernier mois (montré automatiquement
-                // seulement à la première recherche du joueur).
-                IconButton(
-                  icon: const Icon(Icons.auto_stories_outlined),
-                  tooltip: l10n.recapReplay,
-                  onPressed: viewModel.games == null
-                      ? null
-                      : () => Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => RecapScreen(
-                                username: username,
-                                games: viewModel.games!,
-                                upToDate: true,
-                                replay: true,
-                              ),
-                            ),
-                          ),
+      builder: (context, viewModel, child) {
+        final now = context.read<GameRepository>().now;
+        final periodGames = viewModel.games == null
+            ? const <CountryGame>[]
+            : viewModel.gamesIn(
+                context.watch<StatsPeriodViewModel>().period,
+                ratedOnly: context.watch<RatedFilterViewModel>().ratedOnly,
+              );
+        final body = _body(context, viewModel, l10n);
+        final progress = SizedBox(
+          height: 2,
+          child: viewModel.isUpdating && viewModel.games != null ? const LinearProgressIndicator(minHeight: 2) : null,
+        );
+
+        return Scaffold(
+          drawer: wide
+              ? null
+              : Drawer(
+                  width: width * 0.88 < 360 ? width * 0.88 : 360,
+                  child: SafeArea(
+                    child: Builder(
+                      builder: (context) => StatsFilterPanel(
+                        games: periodGames,
+                        now: now,
+                        title: l10n.menuTitle,
+                        onDone: () => Navigator.of(context).pop(),
+                        more: _menuActions(context, viewModel, l10n),
+                      ),
+                    ),
+                  ),
                 ),
-                SharePlayerButton(username: username),
+          appBar: AppBar(
+            // Sur mobile et tablette : retour (si on vient de la recherche)
+            // puis bouton des filtres, en haut à gauche.
+            automaticallyImplyLeading: wide,
+            leadingWidth: !wide && canPop ? 96 : null,
+            leading: wide
+                ? null
+                : Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [if (canPop) const BackButton(), const StatsFilterButton()],
+                  ),
+            // Nom de l'app en petit, puis le pseudo dessous : il a toute la
+            // largeur pour lui et ne se fait plus rogner sur mobile.
+            title: PlayerAppBarTitle(username: username),
+            // Sur mobile et tablette, seul le partage reste dans la barre :
+            // bilan, mise à jour et thème sont dans la section « Plus » du
+            // menu.
+            actions: [
+              if (wide) _recapButton(context, viewModel, l10n),
+              SharePlayerButton(username: username),
+              if (wide) ...[
                 IconButton(
                   icon: const Icon(Icons.refresh),
                   onPressed: viewModel.isUpdating ? null : viewModel.update,
@@ -150,55 +134,86 @@ class _StatsScaffoldState extends State<_StatsScaffold> with SingleTickerProvide
                 ),
                 const ThemeToggleButton(),
               ],
-              // Choix de la période, des parties classées, de la cadence, de la couleur et de
-              // l'ouverture, puis barre fine pendant la mise à jour en
-              // arrière-plan des parties déjà affichées.
-              bottom: PreferredSize(
-                preferredSize: Size.fromHeight(_filtersHeight * shown + 2),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    if (shown > 0)
-                      ClipRect(
-                        child: Align(
-                          alignment: Alignment.bottomCenter,
-                          heightFactor: shown,
-                          child: Opacity(
-                            opacity: shown,
-                            child: Column(
-                              children: [
-                                PeriodSelector(now: context.read<GameRepository>().now),
-                                const RatedSelector(),
-                                const TimeClassSelector(),
-                                const PlayerColorSelector(),
-                                OpeningSelector(
-                                  games: viewModel.games == null
-                                      ? const []
-                                      : viewModel.gamesIn(
-                                          context.watch<StatsPeriodViewModel>().period,
-                                          ratedOnly: context.watch<RatedFilterViewModel>().ratedOnly,
-                                        ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    SizedBox(
-                      height: 2,
-                      child: viewModel.isUpdating && viewModel.games != null
-                          ? const LinearProgressIndicator(minHeight: 2)
-                          : null,
-                    ),
-                  ],
-                ),
+            ],
+            // Résumé des filtres (mobile et tablette), puis barre fine pendant
+            // la mise à jour en arrière-plan des parties déjà affichées.
+            bottom: PreferredSize(
+              preferredSize: Size.fromHeight((wide ? 0 : StatsFilterSummary.height) + 2),
+              child: Column(
+                children: [if (!wide) const StatsFilterSummary(), progress],
               ),
             ),
-            body: body,
-          );
-        },
-      ),
+          ),
+          body: wide
+              ? Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(
+                      width: _panelWidth,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          border: Border(right: BorderSide(color: Theme.of(context).colorScheme.outlineVariant)),
+                        ),
+                        child: StatsFilterPanel(games: periodGames, now: now),
+                      ),
+                    ),
+                    Expanded(child: body),
+                  ],
+                )
+              : body,
+        );
+      },
     );
+  }
+
+  /// Revoir le bilan du dernier mois (montré automatiquement seulement à la
+  /// première recherche du joueur).
+  void _openRecap(NavigatorState navigator, PlayerGamesViewModel viewModel) => navigator.push(
+        MaterialPageRoute(
+          builder: (_) => RecapScreen(username: username, games: viewModel.games!, upToDate: true, replay: true),
+        ),
+      );
+
+  Widget _recapButton(BuildContext context, PlayerGamesViewModel viewModel, AppLocalizations l10n) => IconButton(
+        icon: const Icon(Icons.auto_stories_outlined),
+        tooltip: l10n.recapReplay,
+        onPressed: viewModel.games == null ? null : () => _openRecap(Navigator.of(context), viewModel),
+      );
+
+  /// Section « Plus » du menu (mobile et tablette) : bilan, mise à jour,
+  /// thème. [context] est celui du tiroir, refermé avant l'action.
+  List<Widget> _menuActions(BuildContext context, PlayerGamesViewModel viewModel, AppLocalizations l10n) {
+    final brightness = Theme.of(context).brightness;
+    final isDark = brightness == Brightness.dark;
+    final navigator = Navigator.of(context);
+    void closeThen(VoidCallback action) {
+      navigator.pop();
+      action();
+    }
+
+    return [
+      ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: const Icon(Icons.auto_stories_outlined),
+        title: Text(l10n.recapReplay),
+        enabled: viewModel.games != null,
+        onTap: () => closeThen(() => _openRecap(navigator, viewModel)),
+      ),
+      ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: const Icon(Icons.refresh),
+        title: Text(l10n.refresh),
+        enabled: !viewModel.isUpdating,
+        onTap: () => closeThen(viewModel.update),
+      ),
+      ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: Icon(isDark ? Icons.light_mode : Icons.dark_mode),
+        title: Text(isDark ? l10n.switchToLightMode : l10n.switchToDarkMode),
+        // Le menu reste ouvert : on voit le thème changer.
+        onTap: () => context.read<ThemeViewModel>().toggle(brightness),
+      ),
+    ];
   }
 
   Widget _body(BuildContext context, PlayerGamesViewModel viewModel, AppLocalizations l10n) {
