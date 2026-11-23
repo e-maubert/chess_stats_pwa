@@ -2,25 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 
-/// Une diapositive : un petit titre, une grande valeur (chiffre ou nom),
-/// sa légende ([caption], ex. l'unité), un élément visuel ([highlight]),
-/// puis quelques lignes de détail. [action] (ex. un bouton) s'affiche
-/// dessous.
+/// Une diapositive : une illustration ([illustration]), un petit titre,
+/// une grande valeur (chiffre ou nom), sa légende ([caption], ex. l'unité),
+/// un élément visuel ([highlight], dont les textes prennent la couleur de
+/// la diapositive), quelques lignes de détail, puis un conseil mis en avant
+/// ([tip]). [action] (ex. un bouton) s'affiche dessous.
 class StorySlide {
+  final Widget? illustration;
   final String? label;
   final String value;
   final String? caption;
   final Widget? highlight;
   final List<String> details;
+  final String? tip;
   final Widget? action;
 
+  /// Valeur plus petite que le titre, pour une courte précision sous
+  /// celui-ci plutôt qu'un chiffre phare.
+  final bool smallValue;
+
   const StorySlide({
+    this.illustration,
     this.label,
     required this.value,
     this.caption,
     this.highlight,
     this.details = const [],
+    this.tip,
     this.action,
+    this.smallValue = false,
   });
 }
 
@@ -129,8 +139,7 @@ class _StorySlidesState extends State<StorySlides> {
                   LayoutBuilder(
                     builder: (context, constraints) => GestureDetector(
                       behavior: HitTestBehavior.opaque,
-                      onTapUp: (details) =>
-                          details.localPosition.dx < constraints.maxWidth / 3 ? _previous() : _next(),
+                      onTapUp: (details) => details.localPosition.dx < constraints.maxWidth / 3 ? _previous() : _next(),
                       child: PageView.builder(
                         controller: _controller,
                         itemCount: widget.slides.length,
@@ -231,6 +240,10 @@ class _SlideContent extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                if (slide.illustration != null) ...[
+                  slide.illustration!,
+                  const SizedBox(height: 20),
+                ],
                 if (slide.label != null)
                   Text(
                     slide.label!,
@@ -240,7 +253,11 @@ class _SlideContent extends StatelessWidget {
                 const SizedBox(height: 16),
                 Text(
                   slide.value,
-                  style: (slide.value.length <= 6 ? text.displayLarge : text.displaySmall)
+                  style: (slide.smallValue
+                          ? text.titleMedium
+                          : slide.value.length <= 6
+                              ? text.displayLarge
+                              : text.displaySmall)
                       ?.copyWith(color: color, fontWeight: FontWeight.w900),
                   textAlign: TextAlign.center,
                 ),
@@ -252,7 +269,10 @@ class _SlideContent extends StatelessWidget {
                   ),
                 if (slide.highlight != null) ...[
                   const SizedBox(height: 16),
-                  slide.highlight!,
+                  DefaultTextStyle.merge(
+                    style: TextStyle(color: color),
+                    child: IconTheme.merge(data: IconThemeData(color: color), child: slide.highlight!),
+                  ),
                 ],
                 for (final detail in slide.details) ...[
                   const SizedBox(height: 12),
@@ -262,6 +282,10 @@ class _SlideContent extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                 ],
+                if (slide.tip != null) ...[
+                  const SizedBox(height: 20),
+                  _Tip(text: slide.tip!, color: color),
+                ],
                 if (slide.action != null) ...[
                   const SizedBox(height: 32),
                   slide.action!,
@@ -270,6 +294,39 @@ class _SlideContent extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Conseil mis en avant : ampoule et texte dans un encadré translucide.
+class _Tip extends StatelessWidget {
+  final String text;
+  final Color color;
+
+  const _Tip({required this.text, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: color.withValues(alpha: 0.35)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(Icons.lightbulb_outline, color: color),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              text,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: color, fontWeight: FontWeight.w600),
+            ),
+          ),
+        ],
       ),
     );
   }

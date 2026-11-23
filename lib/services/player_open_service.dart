@@ -27,8 +27,7 @@ class PlayerOpenService {
   final GameRepository _repository;
   final RecapSeenService _recapSeen;
 
-  PlayerOpenService(this._repository, {RecapSeenService? recapSeen})
-      : _recapSeen = recapSeen ?? RecapSeenService();
+  PlayerOpenService(this._repository, {RecapSeenService? recapSeen}) : _recapSeen = recapSeen ?? RecapSeenService();
 
   /// Parties déjà stockées (affichées tout de suite, mises à jour ensuite),
   /// sinon premier téléchargement. Échoue si le joueur est introuvable.
@@ -39,5 +38,13 @@ class PlayerOpenService {
     final showRecap = !await _recapSeen.hasSeen(username);
     if (showRecap) await _recapSeen.markSeen(username);
     return PlayerOpening(username: username, games: games, upToDate: stored == null, showRecap: showRecap);
+  }
+
+  /// Parties du joueur pour « Comment battre ce joueur » : déjà stockées
+  /// (mises à jour ensuite), sinon téléchargées. Ne touche pas au bilan du
+  /// mois. Échoue si le joueur est introuvable.
+  Future<({List<CountryGame> games, bool upToDate})> loadGames(String username) async {
+    final stored = await _repository.storedGames(username);
+    return (games: stored ?? await _repository.updateGames(username), upToDate: stored == null);
   }
 }

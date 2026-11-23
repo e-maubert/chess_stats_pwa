@@ -6,8 +6,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 /// Lance l'app avec un navigateur simulé dans la langue [browser] et renvoie
 /// la langue retenue, le titre de l'écran d'accueil et les traductions.
-Future<({String language, String title, AppLocalizations l10n})> launch(
-    WidgetTester tester, Locale browser) async {
+Future<({String language, String title, AppLocalizations l10n})> launch(WidgetTester tester, Locale browser) async {
   tester.platformDispatcher.localesTestValue = [browser];
   addTearDown(tester.platformDispatcher.clearLocalesTestValue);
 
@@ -29,7 +28,8 @@ void main() {
     // Le nom de l'appli ne se traduit pas.
     expect(app.title, 'Chess Stats');
     expect(app.l10n.statsTitle('hikaru'), 'Chess Stats : hikaru');
-    expect(find.text('Rechercher'), findsOneWidget);
+    expect(find.text('Afficher les statistiques'), findsOneWidget);
+    expect(find.text('Comment battre ce joueur'), findsOneWidget);
   });
 
   testWidgets('navigateur en anglais : app en anglais', (tester) async {
@@ -37,7 +37,8 @@ void main() {
     expect(app.language, 'en');
     expect(app.title, 'Chess Stats');
     expect(app.l10n.statsTitle('hikaru'), 'Chess Stats: hikaru');
-    expect(find.text('Search'), findsOneWidget);
+    expect(find.text('Show stats'), findsOneWidget);
+    expect(find.text('How to beat this player'), findsOneWidget);
   });
 
   testWidgets('autre langue : app en anglais', (tester) async {

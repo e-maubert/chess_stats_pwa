@@ -11,6 +11,7 @@ import '../widgets/app_logo.dart';
 import '../widgets/recent_players_options.dart';
 import '../widgets/theme_toggle_button.dart';
 import 'player_route.dart';
+import 'scouting_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   /// Pseudo pré-rempli (lien vers un joueur introuvable).
@@ -29,7 +30,9 @@ class HomeScreenState extends State<HomeScreen> {
   final _usernameController = TextEditingController();
   final _usernameFocusNode = FocusNode();
   late final RecentPlayersViewModel _recentPlayers;
-  bool _isLoading = false;
+
+  /// Bouton en cours de chargement (null = aucun).
+  _HomeAction? _loading;
 
   @override
   void initState() {
@@ -57,27 +60,38 @@ class HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
-  Future<void> _searchUser() async {
-    final username = _usernameController.text.trim();
-    if (username.isEmpty) return;
+  Future<void> _searchUser() => _open(_HomeAction.stats);
 
-    setState(() => _isLoading = true);
+  Future<void> _open(_HomeAction action) async {
+    final username = _usernameController.text.trim();
+    if (username.isEmpty || _loading != null) return;
+
+    setState(() => _loading = action);
 
     try {
-      // Parties déjà stockées : affichées tout de suite, mises à jour
-      // ensuite par l'écran suivant. Sinon, premier téléchargement ici.
-      // Bilan du mois seulement à la première recherche du joueur.
-      final opening = await PlayerOpenService(context.read<GameRepository>()).open(username);
+      final service = PlayerOpenService(context.read<GameRepository>());
+      final Route<void> route;
+      if (action == _HomeAction.stats) {
+        // Parties déjà stockées : affichées tout de suite, mises à jour
+        // ensuite par l'écran suivant. Sinon, premier téléchargement ici.
+        // Bilan du mois seulement à la première recherche du joueur.
+        route = playerRoute(await service.open(username));
+      } else {
+        final loaded = await service.loadGames(username);
+        route = MaterialPageRoute(
+          builder: (_) => ScoutingScreen(username: username, games: loaded.games, upToDate: loaded.upToDate),
+        );
+      }
       if (!mounted) return;
 
       _usernameFocusNode.unfocus();
       // Au retour, le joueur consulté apparaît en tête des joueurs proposés.
-      Navigator.push(context, playerRoute(opening)).then((_) => _recentPlayers.load());
+      Navigator.push(context, route).then((_) => _recentPlayers.load());
     } catch (e) {
       _showError();
     } finally {
       if (mounted) {
-        setState(() => _isLoading = false);
+        setState(() => _loading = null);
       }
     }
   }
@@ -161,16 +175,27 @@ class HomeScreenState extends State<HomeScreen> {
         ),
         const SizedBox(height: 16),
         ElevatedButton(
-          onPressed: _isLoading ? null : _searchUser,
-          child: _isLoading
-              ? const SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                )
-              : Text(l10n.search),
+          onPressed: _loading != null ? null : _searchUser,
+          child: _loading == _HomeAction.stats ? const _ButtonSpinner() : Text(l10n.showStats),
+        ),
+        const SizedBox(height: 8),
+        OutlinedButton.icon(
+          onPressed: _loading != null ? null : () => _open(_HomeAction.scout),
+          icon: _loading == _HomeAction.scout ? const _ButtonSpinner() : const Icon(Icons.emoji_objects_outlined),
+          label: Text(l10n.scoutButton),
         ),
       ],
     );
   }
+}
+
+/// Boutons de l'accueil : stats du joueur, ou « Comment battre ce joueur ».
+enum _HomeAction { stats, scout }
+
+class _ButtonSpinner extends StatelessWidget {
+  const _ButtonSpinner();
+
+  @override
+  Widget build(BuildContext context) =>
+      const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2));
 }
