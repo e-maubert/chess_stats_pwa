@@ -18,4 +18,10 @@ class StatsPeriodViewModel extends ChangeNotifier {
     _period = period;
     notifyListeners();
   }
+
+  /// Retour à la période par défaut.
+  void reset() => select(defaultPeriod);
+
+  /// Période modifiée par rapport à celle par défaut.
+  bool get isActive => _period != defaultPeriod;
 }

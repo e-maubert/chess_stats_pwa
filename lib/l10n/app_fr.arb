@@ -297,6 +297,7 @@
       }
     }
   },
+  "changelogV180": "Filtres regroupés dans un menu, avec un titre pour chacun\nRésumé des filtres choisis toujours visible sur mobile\nBarre du haut allégée sur mobile et tablette\nSur ordinateur, les filtres restent visibles à gauche",
   "changelogV170": "Partagez les stats d'un joueur avec un simple lien\nStatistiques sur les parties classées, ou sur toutes au choix\nDéfaites au temps visibles dans la gestion du temps\nBilan du mois plus clair",
   "share": "Partager",
   "shareText": "Les stats de {username} sur Chess Stats",
@@ -592,5 +593,12 @@
   "recapScoreWinning": "Plus de victoires que de défaites : bien joué !",
   "recapScoreBalanced": "À l'équilibre : chaque partie se joue à peu de chose.",
   "recapScoreTough": "Un mois difficile, le prochain sera meilleur.",
-  "recapScoreLearning": "Un mois pour apprendre : chaque défaite est une leçon."
+  "recapScoreLearning": "Un mois pour apprendre : chaque défaite est une leçon.",
+  "filtersTitle": "Filtres",
+  "filtersOpen": "Ouvrir le menu",
+  "filtersReset": "Réinitialiser",
+  "filtersDone": "Voir les stats",
+  "periodLabel": "Période",
+  "menuTitle": "Menu",
+  "menuMoreSection": "Plus"
 }

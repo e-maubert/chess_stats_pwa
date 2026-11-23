@@ -19,6 +19,12 @@ class ChoiceFilterViewModel extends ChangeNotifier {
     _value = value;
     notifyListeners();
   }
+
+  /// Retour à la valeur par défaut (pas de filtre).
+  void reset() => select(null);
+
+  /// Filtre modifié par rapport à sa valeur par défaut.
+  bool get isActive => _value != null;
 }
 
 /// Cadence choisie (null = toutes les parties, par défaut).
@@ -65,4 +71,10 @@ class RatedFilterViewModel extends ChangeNotifier {
     _ratedOnly = ratedOnly;
     notifyListeners();
   }
+
+  /// Retour à la valeur par défaut (parties classées seulement).
+  void reset() => select(true);
+
+  /// Filtre modifié par rapport à sa valeur par défaut.
+  bool get isActive => !_ratedOnly;
 }
