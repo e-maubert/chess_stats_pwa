@@ -1520,4 +1520,174 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelogV190 =>
       'New: “How to beat this player”, their weak spots and tips in slides\nTheir current form shown as a chess piece\nOpening tips on the moves you choose\nHome: “Show stats” or “How to beat this player”';
+
+  @override
+  String get scoutAnalyzing => 'Analyzing games…';
+
+  @override
+  String get scoutNotEnough => 'Not enough games to tell';
+
+  @override
+  String get scoutPhaseLabel => 'Where your opponent cracks';
+
+  @override
+  String get scoutPhaseExplain =>
+      'Games grouped by the phase in which they end.';
+
+  @override
+  String get scoutPhaseTipOpening =>
+      'Put on pressure from the opening: that\'s where your opponent wins least.';
+
+  @override
+  String get scoutPhaseTipMiddlegame =>
+      'Keep pieces on and complicate the middlegame: that\'s where your opponent wins least.';
+
+  @override
+  String get scoutPhaseTipEndgame =>
+      'Simplify and head for the endgame: that\'s where your opponent wins least.';
+
+  @override
+  String get scoutPhaseTipNone =>
+      'No clearly weaker phase: their level is steady from start to finish.';
+
+  @override
+  String get scoutTimeLabel => 'Time management';
+
+  @override
+  String get scoutTimeSlow => 'Slow';
+
+  @override
+  String get scoutTimeBalanced => 'Balanced';
+
+  @override
+  String get scoutTimeFast => 'Fast';
+
+  @override
+  String scoutTimeMiddlegame(String gap) {
+    return 'End of the opening: $gap of the starting time compared with their opponent';
+  }
+
+  @override
+  String scoutTimeEndgame(String gap) {
+    return 'Entering the endgame: $gap of the starting time';
+  }
+
+  @override
+  String scoutTimeTimeouts(String percent) {
+    return '$percent of their losses on time';
+  }
+
+  @override
+  String get scoutTimeTipSlow =>
+      'Play fast and keep the clock pressure on: time is their weak spot.';
+
+  @override
+  String get scoutTimeTipBalanced =>
+      'Balanced time management: no clock trap, it will all be decided on the board.';
+
+  @override
+  String get scoutTimeTipFast =>
+      'Your opponent plays fast: take your time and look for complex positions.';
+
+  @override
+  String get scoutTiltLabel => 'After a loss';
+
+  @override
+  String get scoutTiltTilts => 'It rattles them';
+
+  @override
+  String get scoutTiltSteady => 'No change';
+
+  @override
+  String get scoutTiltResilient => 'It fires them up';
+
+  @override
+  String get scoutTiltAfterRow => 'Right after a loss';
+
+  @override
+  String get scoutTiltUsualRow => 'Usually';
+
+  @override
+  String get scoutTiltExplain =>
+      'Games started less than an hour after a loss.';
+
+  @override
+  String get scoutTiltTipTilts =>
+      'If you win, offer a rematch right away: just after a loss, your opponent wins much less.';
+
+  @override
+  String get scoutTiltTipResilient =>
+      'Beware the rematch: just after a loss, your opponent wins even more.';
+
+  @override
+  String get scoutTiltTipSteady =>
+      'A loss doesn\'t change their game: no rematch effect to expect.';
+
+  @override
+  String get scoutHoursLabel => 'By time of day';
+
+  @override
+  String get scoutHoursCaption => 'their weakest time of day';
+
+  @override
+  String get scoutHoursExplain =>
+      'Game start time, in your device\'s time zone.';
+
+  @override
+  String get scoutDayPartMorning => 'In the morning';
+
+  @override
+  String get scoutDayPartAfternoon => 'In the afternoon';
+
+  @override
+  String get scoutDayPartEvening => 'In the evening';
+
+  @override
+  String get scoutDayPartNight => 'At night';
+
+  @override
+  String get scoutDayPartMorningRow => 'Morning (5 am – 12 pm)';
+
+  @override
+  String get scoutDayPartAfternoonRow => 'Afternoon (12 pm – 6 pm)';
+
+  @override
+  String get scoutDayPartEveningRow => 'Evening (6 pm – 10 pm)';
+
+  @override
+  String get scoutDayPartNightRow => 'Night (10 pm – 5 am)';
+
+  @override
+  String scoutHoursTipMorning(String percent) {
+    return 'If you can, play them in the morning: only $percent wins for your opponent.';
+  }
+
+  @override
+  String scoutHoursTipAfternoon(String percent) {
+    return 'If you can, play them in the afternoon: only $percent wins for your opponent.';
+  }
+
+  @override
+  String scoutHoursTipEvening(String percent) {
+    return 'If you can, play them in the evening: only $percent wins for your opponent.';
+  }
+
+  @override
+  String scoutHoursTipNight(String percent) {
+    return 'If you can, play them at night: only $percent wins for your opponent.';
+  }
+
+  @override
+  String get scoutHoursTipNone =>
+      'Time of day makes no difference to their level.';
+
+  @override
+  String get scoutPhaseNone => 'No weak phase';
+
+  @override
+  String get scoutHoursNone => 'No weak time of day';
+
+  @override
+  String get changelogV1100 =>
+      '“How to beat this player”: the phase where your opponent cracks\nTheir time management and how they react after a loss\nTheir weakest times of day\nA fuller game plan';
 }

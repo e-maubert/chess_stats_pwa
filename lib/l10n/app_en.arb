@@ -1010,5 +1010,101 @@
       }
     }
   },
-  "changelogV190": "New: “How to beat this player”, their weak spots and tips in slides\nTheir current form shown as a chess piece\nOpening tips on the moves you choose\nHome: “Show stats” or “How to beat this player”"
+  "changelogV190": "New: “How to beat this player”, their weak spots and tips in slides\nTheir current form shown as a chess piece\nOpening tips on the moves you choose\nHome: “Show stats” or “How to beat this player”",
+  "scoutAnalyzing": "Analyzing games…",
+  "scoutNotEnough": "Not enough games to tell",
+  "scoutPhaseLabel": "Where your opponent cracks",
+  "scoutPhaseExplain": "Games grouped by the phase in which they end.",
+  "scoutPhaseTipOpening": "Put on pressure from the opening: that's where your opponent wins least.",
+  "scoutPhaseTipMiddlegame": "Keep pieces on and complicate the middlegame: that's where your opponent wins least.",
+  "scoutPhaseTipEndgame": "Simplify and head for the endgame: that's where your opponent wins least.",
+  "scoutPhaseTipNone": "No clearly weaker phase: their level is steady from start to finish.",
+  "scoutTimeLabel": "Time management",
+  "scoutTimeSlow": "Slow",
+  "scoutTimeBalanced": "Balanced",
+  "scoutTimeFast": "Fast",
+  "scoutTimeMiddlegame": "End of the opening: {gap} of the starting time compared with their opponent",
+  "scoutTimeEndgame": "Entering the endgame: {gap} of the starting time",
+  "scoutTimeTimeouts": "{percent} of their losses on time",
+  "scoutTimeTipSlow": "Play fast and keep the clock pressure on: time is their weak spot.",
+  "scoutTimeTipBalanced": "Balanced time management: no clock trap, it will all be decided on the board.",
+  "scoutTimeTipFast": "Your opponent plays fast: take your time and look for complex positions.",
+  "scoutTiltLabel": "After a loss",
+  "scoutTiltTilts": "It rattles them",
+  "scoutTiltSteady": "No change",
+  "scoutTiltResilient": "It fires them up",
+  "scoutTiltAfterRow": "Right after a loss",
+  "scoutTiltUsualRow": "Usually",
+  "scoutTiltExplain": "Games started less than an hour after a loss.",
+  "scoutTiltTipTilts": "If you win, offer a rematch right away: just after a loss, your opponent wins much less.",
+  "scoutTiltTipResilient": "Beware the rematch: just after a loss, your opponent wins even more.",
+  "scoutTiltTipSteady": "A loss doesn't change their game: no rematch effect to expect.",
+  "scoutHoursLabel": "By time of day",
+  "scoutHoursCaption": "their weakest time of day",
+  "scoutHoursExplain": "Game start time, in your device's time zone.",
+  "scoutDayPartMorning": "In the morning",
+  "scoutDayPartAfternoon": "In the afternoon",
+  "scoutDayPartEvening": "In the evening",
+  "scoutDayPartNight": "At night",
+  "scoutDayPartMorningRow": "Morning (5 am – 12 pm)",
+  "scoutDayPartAfternoonRow": "Afternoon (12 pm – 6 pm)",
+  "scoutDayPartEveningRow": "Evening (6 pm – 10 pm)",
+  "scoutDayPartNightRow": "Night (10 pm – 5 am)",
+  "scoutHoursTipMorning": "If you can, play them in the morning: only {percent} wins for your opponent.",
+  "scoutHoursTipAfternoon": "If you can, play them in the afternoon: only {percent} wins for your opponent.",
+  "scoutHoursTipEvening": "If you can, play them in the evening: only {percent} wins for your opponent.",
+  "scoutHoursTipNight": "If you can, play them at night: only {percent} wins for your opponent.",
+  "scoutHoursTipNone": "Time of day makes no difference to their level.",
+  "@scoutTimeMiddlegame": {
+    "placeholders": {
+      "gap": {
+        "type": "String"
+      }
+    }
+  },
+  "@scoutTimeEndgame": {
+    "placeholders": {
+      "gap": {
+        "type": "String"
+      }
+    }
+  },
+  "@scoutTimeTimeouts": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "@scoutHoursTipMorning": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "@scoutHoursTipAfternoon": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "@scoutHoursTipEvening": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "@scoutHoursTipNight": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "scoutPhaseNone": "No weak phase",
+  "scoutHoursNone": "No weak time of day",
+  "changelogV1100": "“How to beat this player”: the phase where your opponent cracks\nTheir time management and how they react after a loss\nTheir weakest times of day\nA fuller game plan"
 }
