@@ -56,6 +56,8 @@ class ChessApiService implements MonthlyGamesSource {
     // Pendule absente pour une couleur qui n'a pas joué : temps initial.
     final whiteClock = clocks.white ?? baseTime?.toDouble();
     final blackClock = clocks.black ?? baseTime?.toDouble();
+    final standard = (game['rules'] ?? 'chess') == 'chess';
+    final moveText = GamePhaseService.moveText(game['pgn'] as String?);
     return CountryGame(
       opponent: opponentUsername,
       timeClass: game['time_class']?.toString() ?? '',
@@ -79,7 +81,8 @@ class ChessApiService implements MonthlyGamesSource {
       url: game['url'] as String?,
       // Coups gardés pour calculer les phases après l'affichage ; pas pour
       // les variantes (Chess960…), dont la position de départ diffère.
-      moves: (game['rules'] ?? 'chess') == 'chess' ? GamePhaseService.moveText(game['pgn'] as String?) : null,
+      moves: standard ? moveText : null,
+      openingMoves: standard ? GamePhaseService.firstMoves(moveText) : null,
     );
   }
 

@@ -14,6 +14,7 @@ import '../widgets/stats_display.dart';
 import '../widgets/theme_toggle_button.dart';
 import '../widgets/stats_filter_panel.dart';
 import 'recap_screen.dart';
+import 'scouting_screen.dart';
 
 class StatsScreen extends StatelessWidget {
   final String username;
@@ -124,7 +125,10 @@ class _StatsScaffold extends StatelessWidget {
             // bilan, mise à jour et thème sont dans la section « Plus » du
             // menu.
             actions: [
-              if (wide) _recapButton(context, viewModel, l10n),
+              if (wide) ...[
+                _scoutButton(context, viewModel, l10n),
+                _recapButton(context, viewModel, l10n),
+              ],
               SharePlayerButton(username: username),
               if (wide) ...[
                 IconButton(
@@ -174,13 +178,27 @@ class _StatsScaffold extends StatelessWidget {
         ),
       );
 
+  /// « Comment battre ce joueur », sur les parties déjà affichées.
+  void _openScouting(NavigatorState navigator, PlayerGamesViewModel viewModel) => navigator.push(
+        MaterialPageRoute(
+          builder: (_) => ScoutingScreen(username: username, games: viewModel.games!, upToDate: true, fromStats: true),
+        ),
+      );
+
+  Widget _scoutButton(BuildContext context, PlayerGamesViewModel viewModel, AppLocalizations l10n) => IconButton(
+        icon: const Icon(Icons.emoji_objects_outlined),
+        tooltip: l10n.scoutButton,
+        onPressed: viewModel.games == null ? null : () => _openScouting(Navigator.of(context), viewModel),
+      );
+
   Widget _recapButton(BuildContext context, PlayerGamesViewModel viewModel, AppLocalizations l10n) => IconButton(
         icon: const Icon(Icons.auto_stories_outlined),
         tooltip: l10n.recapReplay,
         onPressed: viewModel.games == null ? null : () => _openRecap(Navigator.of(context), viewModel),
       );
 
-  /// Section « Plus » du menu (mobile et tablette) : bilan, mise à jour,
+  /// Section « Plus » du menu (mobile et tablette) : comment le battre,
+  /// bilan, mise à jour,
   /// thème. [context] est celui du tiroir, refermé avant l'action.
   List<Widget> _menuActions(BuildContext context, PlayerGamesViewModel viewModel, AppLocalizations l10n) {
     final brightness = Theme.of(context).brightness;
@@ -192,6 +210,13 @@ class _StatsScaffold extends StatelessWidget {
     }
 
     return [
+      ListTile(
+        contentPadding: EdgeInsets.zero,
+        leading: const Icon(Icons.emoji_objects_outlined),
+        title: Text(l10n.scoutButton),
+        enabled: viewModel.games != null,
+        onTap: () => closeThen(() => _openScouting(navigator, viewModel)),
+      ),
       ListTile(
         contentPadding: EdgeInsets.zero,
         leading: const Icon(Icons.auto_stories_outlined),

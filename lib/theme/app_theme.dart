@@ -67,6 +67,19 @@ class AppTheme {
   static final Color drawBadge = Colors.blueGrey.shade600;
   static final Color lossBadge = Colors.red.shade700;
 
+  /// Couleur de chaque niveau de forme (FormLevel, du pire au meilleur) :
+  /// rouge, orange, gris-bleu, vert, puis or « légendaire ». Pièce dessinée
+  /// sur un disque clair : lisible dans les deux thèmes.
+  static final List<Color> _formColors = [
+    Colors.red.shade600,
+    Colors.orange.shade600,
+    Colors.blueGrey.shade300,
+    Colors.green.shade500,
+    const Color(0xFFE0B23A),
+  ];
+
+  static Color formColor(int levelIndex) => _formColors[levelIndex];
+
   static Color warningText(BuildContext context) =>
       _isDark(context) ? Colors.amber.shade300 : Colors.amber.shade800;
 

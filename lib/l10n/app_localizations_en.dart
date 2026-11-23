@@ -1007,6 +1007,16 @@ class AppLocalizationsEn extends AppLocalizations {
         'ThreeKnights': 'Three Knights Game',
         'VeresovAttack': 'Veresov Attack',
         'TorreAttack': 'Torre Attack',
+        'OpenGame': 'Open Game',
+        'ClosedGame': 'Closed Game',
+        'HorwitzDefense': 'Horwitz Defense',
+        'EnglundGambit': 'Englund Gambit',
+        'NimzowitschDefense': 'Nimzowitsch Defense',
+        'OldBenoni': 'Old Benoni Defense',
+        'ReversedSicilian': 'Reversed Sicilian',
+        'SymmetricalEnglish': 'Symmetrical English',
+        'AngloIndian': 'Anglo-Indian Defense',
+        'KingsFianchetto': 'King\'s Fianchetto Opening',
         'other': '$fallback',
       },
     );
@@ -1265,4 +1275,249 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get menuMoreSection => 'More';
+
+  @override
+  String get showStats => 'Show stats';
+
+  @override
+  String get scoutButton => 'How to beat this player';
+
+  @override
+  String get scoutIntroLabel => 'How to beat';
+
+  @override
+  String get scoutEmpty => 'Not enough games to analyze this player';
+
+  @override
+  String get scoutSeeStats => 'See their stats';
+
+  @override
+  String get scoutFormLabel => 'Current form';
+
+  @override
+  String get scoutFormCollapse => 'In crisis';
+
+  @override
+  String get scoutFormSlump => 'Struggling';
+
+  @override
+  String get scoutFormSteady => 'Steady';
+
+  @override
+  String get scoutFormGood => 'In form';
+
+  @override
+  String get scoutFormLegendary => 'Legendary';
+
+  @override
+  String scoutFormRating(String change, int rating, String timeClass) {
+    return '$change points over these games ($timeClass: $rating)';
+  }
+
+  @override
+  String scoutFormScore(String percent, int games) {
+    String _temp0 = intl.Intl.pluralLogic(
+      games,
+      locale: localeName,
+      other: '$percent wins over their last $games games',
+      one: '$percent wins in their last game',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get scoutFormTipCollapse =>
+      'Your opponent is in crisis: put on pressure from the opening, confidence is low.';
+
+  @override
+  String get scoutFormTipSlump =>
+      'Going through a rough patch: impose your game and pose problems early.';
+
+  @override
+  String get scoutFormTipSteady =>
+      'Steady form: nothing to exploit here, it will all be decided on the board.';
+
+  @override
+  String get scoutFormTipGood =>
+      'Your opponent is confident: play solid and don\'t hand over the initiative.';
+
+  @override
+  String get scoutFormTipLegendary =>
+      'Legendary streak: expect a tough game, stay solid and pounce on any mistake.';
+
+  @override
+  String scoutCadenceTipSame(String timeClass) {
+    return 'Challenge them in $timeClass: that\'s where their score is lowest.';
+  }
+
+  @override
+  String scoutCadenceTipOther(String timeClass) {
+    return 'If you can choose the time control, play $timeClass.';
+  }
+
+  @override
+  String scoutCadenceTipFewGames(String timeClass) {
+    return 'If you can choose the time control, give $timeClass a try.';
+  }
+
+  @override
+  String get scoutWhiteLabel => 'When your opponent has white';
+
+  @override
+  String get scoutBlackLabel => 'When your opponent has black';
+
+  @override
+  String get scoutOpeningFavorite => 'their #1 opening';
+
+  @override
+  String scoutOpeningGames(int games) {
+    String _temp0 = intl.Intl.pluralLogic(
+      games,
+      locale: localeName,
+      other: '$games games with this color',
+      one: '1 game with this color',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get scoutPlanLabel => 'Your game plan';
+
+  @override
+  String get scoutPlanTitle => 'Key points';
+
+  @override
+  String scoutPlanAsBlack(String tip) {
+    return 'With black — $tip';
+  }
+
+  @override
+  String scoutPlanAsWhite(String tip) {
+    return 'With white — $tip';
+  }
+
+  @override
+  String scoutIntroBase(int games, String timeClass, int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      games,
+      locale: localeName,
+      other:
+          'We analyze their $games $timeClass games from the last $days days: their main time control.',
+      one:
+          'We analyze their only $timeClass game from the last $days days: their main time control.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get scoutCadenceSingle =>
+      'No other time control played over the period.';
+
+  @override
+  String scoutCadenceSame(String percent) {
+    return 'It\'s also their least successful one ($percent wins).';
+  }
+
+  @override
+  String scoutCadenceOther(String timeClass, String percent, int games) {
+    return 'Their least successful time control is $timeClass: $percent wins over $games games.';
+  }
+
+  @override
+  String scoutCadenceOtherRating(String timeClass, int games) {
+    String _temp0 = intl.Intl.pluralLogic(
+      games,
+      locale: localeName,
+      other: 'Their lowest rating is in $timeClass ($games games).',
+      one: 'Their lowest rating is in $timeClass (1 game).',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String scoutCadenceFewGames(String timeClass, int games) {
+    String _temp0 = intl.Intl.pluralLogic(
+      games,
+      locale: localeName,
+      other:
+          '$timeClass seems harder for them, but from only $games games: to be confirmed.',
+      one:
+          '$timeClass seems harder for them, but from a single game: to be confirmed.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String scoutMainMove(String move, String percent) {
+    return 'First move: $move in $percent of their games.';
+  }
+
+  @override
+  String scoutReplyTarget(
+      String move, String reply, String percent, int games) {
+    return 'Against $move, reply $reply: only $percent wins for your opponent ($games games).';
+  }
+
+  @override
+  String scoutReplyAvoid(String move, String reply, String percent, int games) {
+    return 'Against $move, avoid $reply: $percent wins for your opponent ($games games).';
+  }
+
+  @override
+  String scoutReplyNone(String move) {
+    return 'No reply to $move stands out yet: play the one you know best.';
+  }
+
+  @override
+  String scoutFirstMoveTarget(String move, String percent, int games) {
+    return 'Open with $move: only $percent wins for your opponent ($games games).';
+  }
+
+  @override
+  String scoutFirstMoveAvoid(String move, String percent, int games) {
+    return 'Avoid opening with $move: $percent wins for your opponent ($games games).';
+  }
+
+  @override
+  String get scoutFirstMoveNone =>
+      'No first move stands out yet: play what you know best.';
+
+  @override
+  String scoutMoveWithName(String move, String name) {
+    return '$move ($name)';
+  }
+
+  @override
+  String scoutIntroTitle(String username) {
+    return 'How to beat $username';
+  }
+
+  @override
+  String scoutIntroTimeClass(String timeClass) {
+    String _temp0 = intl.Intl.selectLogic(
+      timeClass,
+      {
+        'bullet': 'in bullet',
+        'blitz': 'in blitz',
+        'rapid': 'in rapid',
+        'other': 'in $timeClass',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String scoutOpeningResults(int games, String percent) {
+    String _temp0 = intl.Intl.pluralLogic(
+      games,
+      locale: localeName,
+      other: '$games games · $percent wins',
+      one: '1 game · $percent wins',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get changelogV190 =>
+      'New: “How to beat this player”, their weak spots and tips in slides\nTheir current form shown as a chess piece\nOpening tips on the moves you choose\nHome: “Show stats” or “How to beat this player”';
 }

@@ -80,6 +80,17 @@ class GamePhaseService {
     return text.isEmpty ? null : text;
   }
 
+  /// Les [plies] premiers demi-coups (notation SAN, ex. ['d4', 'e6']) de
+  /// [moveText] ; null s'il n'y en a aucun.
+  static List<String>? firstMoves(String? moveText, {int plies = 2}) {
+    if (moveText == null) return null;
+    final moves = [
+      for (final match in _move.allMatches(moveText))
+        if (!_result.hasMatch(match.group(1)!)) match.group(1)!,
+    ].take(plies).toList();
+    return moves.isEmpty ? null : moves;
+  }
+
   /// Résumé des phases de [game] vu du joueur ; null si ses coups sont
   /// inconnus.
   static GamePhaseSummary? summarize(CountryGame game) {

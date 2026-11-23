@@ -545,7 +545,7 @@
     }
   },
   "ratingTrendNotEnough": "Not enough rated games to compute the trend",
-  "openingFamilyName": "{family, select, QueensPawn{Queen's Pawn Game} QueensGambit{Queen's Gambit} SicilianDefense{Sicilian Defense} RuyLopez{Ruy Lopez} EnglishOpening{English Opening} FrenchDefense{French Defense} DutchDefense{Dutch Defense} KingsGambit{King's Gambit} CaroKann{Caro-Kann Defense} ViennaGame{Vienna Game} TwoKnights{Two Knights Defense} GiuocoPiano{Giuoco Piano} ItalianGame{Italian Game} AlekhinesDefense{Alekhine's Defense} RetiOpening{Réti Opening} RetiAccepted{Réti Accepted} PircDefense{Pirc Defense} KingsPawn{King's Pawn Game} FourKnights{Four Knights Game} PetrovDefense{Petrov's Defense} PetrovsDefense{Petrov's Defense} KingsKnights{King's Knight Opening} KingsIndian{King's Indian} QueensIndian{Queen's Indian Defense} NimzoIndian{Nimzo-Indian Defense} BogoIndian{Bogo-Indian Defense} IndianGame{Indian Game} CenterGame{Center Game} BishopsOpening{Bishop's Opening} BirdsOpening{Bird's Opening} ScotchGame{Scotch Game} ScandinavianDefense{Scandinavian Defense} RobatschDefense{Modern Defense (Robatsch)} ModernDefense{Modern Defense} PhilidorDefense{Philidor Defense} NimzowitschLarsen{Nimzowitsch-Larsen Attack} AnderssenOpening{Anderssen's Opening} LondonSystem{London System} ColleSystem{Colle System} TrompowskyAttack{Trompowsky Attack} GrunfeldDefense{Grünfeld Defense} SlavDefense{Slav Defense} SemiSlav{Semi-Slav Defense} CatalanOpening{Catalan Opening} BenoniDefense{Benoni Defense} BenkoGambit{Benko Gambit} OwensDefense{Owen's Defense} PolishOpening{Polish Opening} ZukertortOpening{Zukertort Opening} PonzianiOpening{Ponziani Opening} EvansGambit{Evans Gambit} DanishGambit{Danish Gambit} UnknownOpening{Unknown opening} UncommonOpening{Uncommon Opening} KingsIndianAttack{King's Indian Attack} BudapestGambit{Budapest Gambit} OldIndian{Old Indian Defense} KingsKnight{King's Knight Opening} ThreeKnights{Three Knights Game} VeresovAttack{Veresov Attack} TorreAttack{Torre Attack} other{{fallback}}}",
+  "openingFamilyName": "{family, select, QueensPawn{Queen's Pawn Game} QueensGambit{Queen's Gambit} SicilianDefense{Sicilian Defense} RuyLopez{Ruy Lopez} EnglishOpening{English Opening} FrenchDefense{French Defense} DutchDefense{Dutch Defense} KingsGambit{King's Gambit} CaroKann{Caro-Kann Defense} ViennaGame{Vienna Game} TwoKnights{Two Knights Defense} GiuocoPiano{Giuoco Piano} ItalianGame{Italian Game} AlekhinesDefense{Alekhine's Defense} RetiOpening{Réti Opening} RetiAccepted{Réti Accepted} PircDefense{Pirc Defense} KingsPawn{King's Pawn Game} FourKnights{Four Knights Game} PetrovDefense{Petrov's Defense} PetrovsDefense{Petrov's Defense} KingsKnights{King's Knight Opening} KingsIndian{King's Indian} QueensIndian{Queen's Indian Defense} NimzoIndian{Nimzo-Indian Defense} BogoIndian{Bogo-Indian Defense} IndianGame{Indian Game} CenterGame{Center Game} BishopsOpening{Bishop's Opening} BirdsOpening{Bird's Opening} ScotchGame{Scotch Game} ScandinavianDefense{Scandinavian Defense} RobatschDefense{Modern Defense (Robatsch)} ModernDefense{Modern Defense} PhilidorDefense{Philidor Defense} NimzowitschLarsen{Nimzowitsch-Larsen Attack} AnderssenOpening{Anderssen's Opening} LondonSystem{London System} ColleSystem{Colle System} TrompowskyAttack{Trompowsky Attack} GrunfeldDefense{Grünfeld Defense} SlavDefense{Slav Defense} SemiSlav{Semi-Slav Defense} CatalanOpening{Catalan Opening} BenoniDefense{Benoni Defense} BenkoGambit{Benko Gambit} OwensDefense{Owen's Defense} PolishOpening{Polish Opening} ZukertortOpening{Zukertort Opening} PonzianiOpening{Ponziani Opening} EvansGambit{Evans Gambit} DanishGambit{Danish Gambit} UnknownOpening{Unknown opening} UncommonOpening{Uncommon Opening} KingsIndianAttack{King's Indian Attack} BudapestGambit{Budapest Gambit} OldIndian{Old Indian Defense} KingsKnight{King's Knight Opening} ThreeKnights{Three Knights Game} VeresovAttack{Veresov Attack} TorreAttack{Torre Attack} OpenGame{Open Game} ClosedGame{Closed Game} HorwitzDefense{Horwitz Defense} EnglundGambit{Englund Gambit} NimzowitschDefense{Nimzowitsch Defense} OldBenoni{Old Benoni Defense} ReversedSicilian{Reversed Sicilian} SymmetricalEnglish{Symmetrical English} AngloIndian{Anglo-Indian Defense} KingsFianchetto{King's Fianchetto Opening} other{{fallback}}}",
   "@openingFamilyName": {
     "description": "Nom d'une famille d'ouvertures ; family = famille sans tirets (ex. SicilianDefense), fallback = nom anglais lisible si la famille n'est pas connue.",
     "placeholders": {
@@ -734,5 +734,281 @@
   "filtersDone": "See stats",
   "periodLabel": "Period",
   "menuTitle": "Menu",
-  "menuMoreSection": "More"
+  "menuMoreSection": "More",
+  "showStats": "Show stats",
+  "scoutButton": "How to beat this player",
+  "scoutIntroLabel": "How to beat",
+  "scoutEmpty": "Not enough games to analyze this player",
+  "scoutSeeStats": "See their stats",
+  "scoutFormLabel": "Current form",
+  "scoutFormCollapse": "In crisis",
+  "scoutFormSlump": "Struggling",
+  "scoutFormSteady": "Steady",
+  "scoutFormGood": "In form",
+  "scoutFormLegendary": "Legendary",
+  "scoutFormRating": "{change} points over these games ({timeClass}: {rating})",
+  "@scoutFormRating": {
+    "placeholders": {
+      "change": {
+        "type": "String"
+      },
+      "rating": {
+        "type": "int"
+      },
+      "timeClass": {
+        "type": "String"
+      }
+    }
+  },
+  "scoutFormScore": "{games, plural, =1{{percent} wins in their last game} other{{percent} wins over their last {games} games}}",
+  "@scoutFormScore": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      },
+      "games": {
+        "type": "int"
+      }
+    }
+  },
+  "scoutFormTipCollapse": "Your opponent is in crisis: put on pressure from the opening, confidence is low.",
+  "scoutFormTipSlump": "Going through a rough patch: impose your game and pose problems early.",
+  "scoutFormTipSteady": "Steady form: nothing to exploit here, it will all be decided on the board.",
+  "scoutFormTipGood": "Your opponent is confident: play solid and don't hand over the initiative.",
+  "scoutFormTipLegendary": "Legendary streak: expect a tough game, stay solid and pounce on any mistake.",
+  "scoutCadenceTipSame": "Challenge them in {timeClass}: that's where their score is lowest.",
+  "@scoutCadenceTipSame": {
+    "placeholders": {
+      "timeClass": {
+        "type": "String"
+      }
+    }
+  },
+  "scoutCadenceTipOther": "If you can choose the time control, play {timeClass}.",
+  "@scoutCadenceTipOther": {
+    "placeholders": {
+      "timeClass": {
+        "type": "String"
+      }
+    }
+  },
+  "scoutCadenceTipFewGames": "If you can choose the time control, give {timeClass} a try.",
+  "@scoutCadenceTipFewGames": {
+    "placeholders": {
+      "timeClass": {
+        "type": "String"
+      }
+    }
+  },
+  "scoutWhiteLabel": "When your opponent has white",
+  "scoutBlackLabel": "When your opponent has black",
+  "scoutOpeningFavorite": "their #1 opening",
+  "scoutOpeningGames": "{games, plural, =1{1 game with this color} other{{games} games with this color}}",
+  "@scoutOpeningGames": {
+    "placeholders": {
+      "games": {
+        "type": "int"
+      }
+    }
+  },
+  "scoutPlanLabel": "Your game plan",
+  "scoutPlanTitle": "Key points",
+  "scoutPlanAsBlack": "With black — {tip}",
+  "@scoutPlanAsBlack": {
+    "placeholders": {
+      "tip": {
+        "type": "String"
+      }
+    }
+  },
+  "scoutPlanAsWhite": "With white — {tip}",
+  "@scoutPlanAsWhite": {
+    "placeholders": {
+      "tip": {
+        "type": "String"
+      }
+    }
+  },
+  "scoutIntroBase": "{games, plural, =1{We analyze their only {timeClass} game from the last {days} days: their main time control.} other{We analyze their {games} {timeClass} games from the last {days} days: their main time control.}}",
+  "@scoutIntroBase": {
+    "placeholders": {
+      "games": {
+        "type": "int"
+      },
+      "timeClass": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "scoutCadenceSingle": "No other time control played over the period.",
+  "scoutCadenceSame": "It's also their least successful one ({percent} wins).",
+  "@scoutCadenceSame": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "scoutCadenceOther": "Their least successful time control is {timeClass}: {percent} wins over {games} games.",
+  "@scoutCadenceOther": {
+    "placeholders": {
+      "timeClass": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      },
+      "games": {
+        "type": "int"
+      }
+    }
+  },
+  "scoutCadenceOtherRating": "{games, plural, =1{Their lowest rating is in {timeClass} (1 game).} other{Their lowest rating is in {timeClass} ({games} games).}}",
+  "@scoutCadenceOtherRating": {
+    "placeholders": {
+      "timeClass": {
+        "type": "String"
+      },
+      "games": {
+        "type": "int"
+      }
+    }
+  },
+  "scoutCadenceFewGames": "{games, plural, =1{{timeClass} seems harder for them, but from a single game: to be confirmed.} other{{timeClass} seems harder for them, but from only {games} games: to be confirmed.}}",
+  "@scoutCadenceFewGames": {
+    "placeholders": {
+      "timeClass": {
+        "type": "String"
+      },
+      "games": {
+        "type": "int"
+      }
+    }
+  },
+  "scoutMainMove": "First move: {move} in {percent} of their games.",
+  "@scoutMainMove": {
+    "placeholders": {
+      "move": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "scoutReplyTarget": "Against {move}, reply {reply}: only {percent} wins for your opponent ({games} games).",
+  "@scoutReplyTarget": {
+    "placeholders": {
+      "move": {
+        "type": "String"
+      },
+      "reply": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      },
+      "games": {
+        "type": "int"
+      }
+    }
+  },
+  "scoutReplyAvoid": "Against {move}, avoid {reply}: {percent} wins for your opponent ({games} games).",
+  "@scoutReplyAvoid": {
+    "placeholders": {
+      "move": {
+        "type": "String"
+      },
+      "reply": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      },
+      "games": {
+        "type": "int"
+      }
+    }
+  },
+  "scoutReplyNone": "No reply to {move} stands out yet: play the one you know best.",
+  "@scoutReplyNone": {
+    "placeholders": {
+      "move": {
+        "type": "String"
+      }
+    }
+  },
+  "scoutFirstMoveTarget": "Open with {move}: only {percent} wins for your opponent ({games} games).",
+  "@scoutFirstMoveTarget": {
+    "placeholders": {
+      "move": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      },
+      "games": {
+        "type": "int"
+      }
+    }
+  },
+  "scoutFirstMoveAvoid": "Avoid opening with {move}: {percent} wins for your opponent ({games} games).",
+  "@scoutFirstMoveAvoid": {
+    "placeholders": {
+      "move": {
+        "type": "String"
+      },
+      "percent": {
+        "type": "String"
+      },
+      "games": {
+        "type": "int"
+      }
+    }
+  },
+  "scoutFirstMoveNone": "No first move stands out yet: play what you know best.",
+  "scoutMoveWithName": "{move} ({name})",
+  "@scoutMoveWithName": {
+    "description": "A move followed by the name of the opening it leads to, e.g. \"1…e6 (Horwitz Defense)\"",
+    "placeholders": {
+      "move": {
+        "type": "String"
+      },
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "scoutIntroTitle": "How to beat {username}",
+  "scoutIntroTimeClass": "{timeClass, select, bullet{in bullet} blitz{in blitz} rapid{in rapid} other{in {timeClass}}}",
+  "@scoutIntroTitle": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "@scoutIntroTimeClass": {
+    "description": "Time control analyzed, under the player name; timeClass = chess.com code (bullet, blitz, rapid)",
+    "placeholders": {
+      "timeClass": {
+        "type": "String"
+      }
+    }
+  },
+  "scoutOpeningResults": "{games, plural, =1{1 game · {percent} wins} other{{games} games · {percent} wins}}",
+  "@scoutOpeningResults": {
+    "placeholders": {
+      "games": {
+        "type": "int"
+      },
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "changelogV190": "New: “How to beat this player”, their weak spots and tips in slides\nTheir current form shown as a chess piece\nOpening tips on the moves you choose\nHome: “Show stats” or “How to beat this player”"
 }

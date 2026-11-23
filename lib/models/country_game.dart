@@ -59,6 +59,11 @@ class CountryGame {
   /// gardés seulement jusqu'au calcul de [phases] : null ensuite.
   final String? moves;
 
+  /// Deux premiers demi-coups (SAN, ex. ['d4', 'e6']), gardés après le
+  /// calcul des phases : premier coup des blancs et réponse des noirs, pour
+  /// « Comment battre ce joueur ». null si inconnus.
+  final List<String>? openingMoves;
+
   /// Phases de la partie, calculées après l'affichage des stats (voir
   /// PlayerGamesViewModel.phaseGamesIn) ; null tant qu'elles ne le sont pas.
   final GamePhaseSummary? phases;
@@ -80,6 +85,7 @@ class CountryGame {
     this.baseTime,
     this.url,
     this.moves,
+    this.openingMoves,
     this.phases,
   });
 
@@ -108,6 +114,7 @@ class CountryGame {
         baseTime: baseTime,
         url: url,
         moves: moves,
+        openingMoves: openingMoves,
         phases: phases,
       );
 
@@ -129,6 +136,7 @@ class CountryGame {
       'baseTime': baseTime,
       'url': url,
       'moves': moves,
+      'openingMoves': openingMoves,
       'phases': phases?.toJson(),
     };
   }
@@ -155,6 +163,7 @@ class CountryGame {
       baseTime: json['baseTime'] as int?,
       url: json['url'] as String?,
       moves: json['moves'] as String?,
+      openingMoves: (json['openingMoves'] as List?)?.cast<String>(),
       phases: json['phases'] == null
           ? null
           : GamePhaseSummary.fromJson(Map<String, dynamic>.from(json['phases'] as Map)),

@@ -20,6 +20,6 @@ void main() {
   });
 
   test('famille inconnue : nom anglais lisible', () {
-    expect(name('fr', 'Kings-Fianchetto'), 'Kings Fianchetto');
+    expect(name('fr', 'Mieses-Opening'), 'Mieses Opening');
   });
 }

@@ -1087,7 +1087,7 @@ abstract class AppLocalizations {
   /// Nom d'une famille d'ouvertures ; family = famille sans tirets (ex. SicilianDefense), fallback = nom anglais lisible si la famille n'est pas connue.
   ///
   /// In en, this message translates to:
-  /// **'{family, select, QueensPawn{Queen\'s Pawn Game} QueensGambit{Queen\'s Gambit} SicilianDefense{Sicilian Defense} RuyLopez{Ruy Lopez} EnglishOpening{English Opening} FrenchDefense{French Defense} DutchDefense{Dutch Defense} KingsGambit{King\'s Gambit} CaroKann{Caro-Kann Defense} ViennaGame{Vienna Game} TwoKnights{Two Knights Defense} GiuocoPiano{Giuoco Piano} ItalianGame{Italian Game} AlekhinesDefense{Alekhine\'s Defense} RetiOpening{Réti Opening} RetiAccepted{Réti Accepted} PircDefense{Pirc Defense} KingsPawn{King\'s Pawn Game} FourKnights{Four Knights Game} PetrovDefense{Petrov\'s Defense} PetrovsDefense{Petrov\'s Defense} KingsKnights{King\'s Knight Opening} KingsIndian{King\'s Indian} QueensIndian{Queen\'s Indian Defense} NimzoIndian{Nimzo-Indian Defense} BogoIndian{Bogo-Indian Defense} IndianGame{Indian Game} CenterGame{Center Game} BishopsOpening{Bishop\'s Opening} BirdsOpening{Bird\'s Opening} ScotchGame{Scotch Game} ScandinavianDefense{Scandinavian Defense} RobatschDefense{Modern Defense (Robatsch)} ModernDefense{Modern Defense} PhilidorDefense{Philidor Defense} NimzowitschLarsen{Nimzowitsch-Larsen Attack} AnderssenOpening{Anderssen\'s Opening} LondonSystem{London System} ColleSystem{Colle System} TrompowskyAttack{Trompowsky Attack} GrunfeldDefense{Grünfeld Defense} SlavDefense{Slav Defense} SemiSlav{Semi-Slav Defense} CatalanOpening{Catalan Opening} BenoniDefense{Benoni Defense} BenkoGambit{Benko Gambit} OwensDefense{Owen\'s Defense} PolishOpening{Polish Opening} ZukertortOpening{Zukertort Opening} PonzianiOpening{Ponziani Opening} EvansGambit{Evans Gambit} DanishGambit{Danish Gambit} UnknownOpening{Unknown opening} UncommonOpening{Uncommon Opening} KingsIndianAttack{King\'s Indian Attack} BudapestGambit{Budapest Gambit} OldIndian{Old Indian Defense} KingsKnight{King\'s Knight Opening} ThreeKnights{Three Knights Game} VeresovAttack{Veresov Attack} TorreAttack{Torre Attack} other{{fallback}}}'**
+  /// **'{family, select, QueensPawn{Queen\'s Pawn Game} QueensGambit{Queen\'s Gambit} SicilianDefense{Sicilian Defense} RuyLopez{Ruy Lopez} EnglishOpening{English Opening} FrenchDefense{French Defense} DutchDefense{Dutch Defense} KingsGambit{King\'s Gambit} CaroKann{Caro-Kann Defense} ViennaGame{Vienna Game} TwoKnights{Two Knights Defense} GiuocoPiano{Giuoco Piano} ItalianGame{Italian Game} AlekhinesDefense{Alekhine\'s Defense} RetiOpening{Réti Opening} RetiAccepted{Réti Accepted} PircDefense{Pirc Defense} KingsPawn{King\'s Pawn Game} FourKnights{Four Knights Game} PetrovDefense{Petrov\'s Defense} PetrovsDefense{Petrov\'s Defense} KingsKnights{King\'s Knight Opening} KingsIndian{King\'s Indian} QueensIndian{Queen\'s Indian Defense} NimzoIndian{Nimzo-Indian Defense} BogoIndian{Bogo-Indian Defense} IndianGame{Indian Game} CenterGame{Center Game} BishopsOpening{Bishop\'s Opening} BirdsOpening{Bird\'s Opening} ScotchGame{Scotch Game} ScandinavianDefense{Scandinavian Defense} RobatschDefense{Modern Defense (Robatsch)} ModernDefense{Modern Defense} PhilidorDefense{Philidor Defense} NimzowitschLarsen{Nimzowitsch-Larsen Attack} AnderssenOpening{Anderssen\'s Opening} LondonSystem{London System} ColleSystem{Colle System} TrompowskyAttack{Trompowsky Attack} GrunfeldDefense{Grünfeld Defense} SlavDefense{Slav Defense} SemiSlav{Semi-Slav Defense} CatalanOpening{Catalan Opening} BenoniDefense{Benoni Defense} BenkoGambit{Benko Gambit} OwensDefense{Owen\'s Defense} PolishOpening{Polish Opening} ZukertortOpening{Zukertort Opening} PonzianiOpening{Ponziani Opening} EvansGambit{Evans Gambit} DanishGambit{Danish Gambit} UnknownOpening{Unknown opening} UncommonOpening{Uncommon Opening} KingsIndianAttack{King\'s Indian Attack} BudapestGambit{Budapest Gambit} OldIndian{Old Indian Defense} KingsKnight{King\'s Knight Opening} ThreeKnights{Three Knights Game} VeresovAttack{Veresov Attack} TorreAttack{Torre Attack} OpenGame{Open Game} ClosedGame{Closed Game} HorwitzDefense{Horwitz Defense} EnglundGambit{Englund Gambit} NimzowitschDefense{Nimzowitsch Defense} OldBenoni{Old Benoni Defense} ReversedSicilian{Reversed Sicilian} SymmetricalEnglish{Symmetrical English} AngloIndian{Anglo-Indian Defense} KingsFianchetto{King\'s Fianchetto Opening} other{{fallback}}}'**
   String openingFamilyName(String family, String fallback);
 
   /// No description provided for @openingFilterLabel.
@@ -1461,6 +1461,288 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'More'**
   String get menuMoreSection;
+
+  /// No description provided for @showStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Show stats'**
+  String get showStats;
+
+  /// No description provided for @scoutButton.
+  ///
+  /// In en, this message translates to:
+  /// **'How to beat this player'**
+  String get scoutButton;
+
+  /// No description provided for @scoutIntroLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'How to beat'**
+  String get scoutIntroLabel;
+
+  /// No description provided for @scoutEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough games to analyze this player'**
+  String get scoutEmpty;
+
+  /// No description provided for @scoutSeeStats.
+  ///
+  /// In en, this message translates to:
+  /// **'See their stats'**
+  String get scoutSeeStats;
+
+  /// No description provided for @scoutFormLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Current form'**
+  String get scoutFormLabel;
+
+  /// No description provided for @scoutFormCollapse.
+  ///
+  /// In en, this message translates to:
+  /// **'In crisis'**
+  String get scoutFormCollapse;
+
+  /// No description provided for @scoutFormSlump.
+  ///
+  /// In en, this message translates to:
+  /// **'Struggling'**
+  String get scoutFormSlump;
+
+  /// No description provided for @scoutFormSteady.
+  ///
+  /// In en, this message translates to:
+  /// **'Steady'**
+  String get scoutFormSteady;
+
+  /// No description provided for @scoutFormGood.
+  ///
+  /// In en, this message translates to:
+  /// **'In form'**
+  String get scoutFormGood;
+
+  /// No description provided for @scoutFormLegendary.
+  ///
+  /// In en, this message translates to:
+  /// **'Legendary'**
+  String get scoutFormLegendary;
+
+  /// No description provided for @scoutFormRating.
+  ///
+  /// In en, this message translates to:
+  /// **'{change} points over these games ({timeClass}: {rating})'**
+  String scoutFormRating(String change, int rating, String timeClass);
+
+  /// No description provided for @scoutFormScore.
+  ///
+  /// In en, this message translates to:
+  /// **'{games, plural, =1{{percent} wins in their last game} other{{percent} wins over their last {games} games}}'**
+  String scoutFormScore(String percent, int games);
+
+  /// No description provided for @scoutFormTipCollapse.
+  ///
+  /// In en, this message translates to:
+  /// **'Your opponent is in crisis: put on pressure from the opening, confidence is low.'**
+  String get scoutFormTipCollapse;
+
+  /// No description provided for @scoutFormTipSlump.
+  ///
+  /// In en, this message translates to:
+  /// **'Going through a rough patch: impose your game and pose problems early.'**
+  String get scoutFormTipSlump;
+
+  /// No description provided for @scoutFormTipSteady.
+  ///
+  /// In en, this message translates to:
+  /// **'Steady form: nothing to exploit here, it will all be decided on the board.'**
+  String get scoutFormTipSteady;
+
+  /// No description provided for @scoutFormTipGood.
+  ///
+  /// In en, this message translates to:
+  /// **'Your opponent is confident: play solid and don\'t hand over the initiative.'**
+  String get scoutFormTipGood;
+
+  /// No description provided for @scoutFormTipLegendary.
+  ///
+  /// In en, this message translates to:
+  /// **'Legendary streak: expect a tough game, stay solid and pounce on any mistake.'**
+  String get scoutFormTipLegendary;
+
+  /// No description provided for @scoutCadenceTipSame.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenge them in {timeClass}: that\'s where their score is lowest.'**
+  String scoutCadenceTipSame(String timeClass);
+
+  /// No description provided for @scoutCadenceTipOther.
+  ///
+  /// In en, this message translates to:
+  /// **'If you can choose the time control, play {timeClass}.'**
+  String scoutCadenceTipOther(String timeClass);
+
+  /// No description provided for @scoutCadenceTipFewGames.
+  ///
+  /// In en, this message translates to:
+  /// **'If you can choose the time control, give {timeClass} a try.'**
+  String scoutCadenceTipFewGames(String timeClass);
+
+  /// No description provided for @scoutWhiteLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'When your opponent has white'**
+  String get scoutWhiteLabel;
+
+  /// No description provided for @scoutBlackLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'When your opponent has black'**
+  String get scoutBlackLabel;
+
+  /// No description provided for @scoutOpeningFavorite.
+  ///
+  /// In en, this message translates to:
+  /// **'their #1 opening'**
+  String get scoutOpeningFavorite;
+
+  /// No description provided for @scoutOpeningGames.
+  ///
+  /// In en, this message translates to:
+  /// **'{games, plural, =1{1 game with this color} other{{games} games with this color}}'**
+  String scoutOpeningGames(int games);
+
+  /// No description provided for @scoutPlanLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Your game plan'**
+  String get scoutPlanLabel;
+
+  /// No description provided for @scoutPlanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Key points'**
+  String get scoutPlanTitle;
+
+  /// No description provided for @scoutPlanAsBlack.
+  ///
+  /// In en, this message translates to:
+  /// **'With black — {tip}'**
+  String scoutPlanAsBlack(String tip);
+
+  /// No description provided for @scoutPlanAsWhite.
+  ///
+  /// In en, this message translates to:
+  /// **'With white — {tip}'**
+  String scoutPlanAsWhite(String tip);
+
+  /// No description provided for @scoutIntroBase.
+  ///
+  /// In en, this message translates to:
+  /// **'{games, plural, =1{We analyze their only {timeClass} game from the last {days} days: their main time control.} other{We analyze their {games} {timeClass} games from the last {days} days: their main time control.}}'**
+  String scoutIntroBase(int games, String timeClass, int days);
+
+  /// No description provided for @scoutCadenceSingle.
+  ///
+  /// In en, this message translates to:
+  /// **'No other time control played over the period.'**
+  String get scoutCadenceSingle;
+
+  /// No description provided for @scoutCadenceSame.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s also their least successful one ({percent} wins).'**
+  String scoutCadenceSame(String percent);
+
+  /// No description provided for @scoutCadenceOther.
+  ///
+  /// In en, this message translates to:
+  /// **'Their least successful time control is {timeClass}: {percent} wins over {games} games.'**
+  String scoutCadenceOther(String timeClass, String percent, int games);
+
+  /// No description provided for @scoutCadenceOtherRating.
+  ///
+  /// In en, this message translates to:
+  /// **'{games, plural, =1{Their lowest rating is in {timeClass} (1 game).} other{Their lowest rating is in {timeClass} ({games} games).}}'**
+  String scoutCadenceOtherRating(String timeClass, int games);
+
+  /// No description provided for @scoutCadenceFewGames.
+  ///
+  /// In en, this message translates to:
+  /// **'{games, plural, =1{{timeClass} seems harder for them, but from a single game: to be confirmed.} other{{timeClass} seems harder for them, but from only {games} games: to be confirmed.}}'**
+  String scoutCadenceFewGames(String timeClass, int games);
+
+  /// No description provided for @scoutMainMove.
+  ///
+  /// In en, this message translates to:
+  /// **'First move: {move} in {percent} of their games.'**
+  String scoutMainMove(String move, String percent);
+
+  /// No description provided for @scoutReplyTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Against {move}, reply {reply}: only {percent} wins for your opponent ({games} games).'**
+  String scoutReplyTarget(String move, String reply, String percent, int games);
+
+  /// No description provided for @scoutReplyAvoid.
+  ///
+  /// In en, this message translates to:
+  /// **'Against {move}, avoid {reply}: {percent} wins for your opponent ({games} games).'**
+  String scoutReplyAvoid(String move, String reply, String percent, int games);
+
+  /// No description provided for @scoutReplyNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No reply to {move} stands out yet: play the one you know best.'**
+  String scoutReplyNone(String move);
+
+  /// No description provided for @scoutFirstMoveTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Open with {move}: only {percent} wins for your opponent ({games} games).'**
+  String scoutFirstMoveTarget(String move, String percent, int games);
+
+  /// No description provided for @scoutFirstMoveAvoid.
+  ///
+  /// In en, this message translates to:
+  /// **'Avoid opening with {move}: {percent} wins for your opponent ({games} games).'**
+  String scoutFirstMoveAvoid(String move, String percent, int games);
+
+  /// No description provided for @scoutFirstMoveNone.
+  ///
+  /// In en, this message translates to:
+  /// **'No first move stands out yet: play what you know best.'**
+  String get scoutFirstMoveNone;
+
+  /// A move followed by the name of the opening it leads to, e.g. "1…e6 (Horwitz Defense)"
+  ///
+  /// In en, this message translates to:
+  /// **'{move} ({name})'**
+  String scoutMoveWithName(String move, String name);
+
+  /// No description provided for @scoutIntroTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'How to beat {username}'**
+  String scoutIntroTitle(String username);
+
+  /// Time control analyzed, under the player name; timeClass = chess.com code (bullet, blitz, rapid)
+  ///
+  /// In en, this message translates to:
+  /// **'{timeClass, select, bullet{in bullet} blitz{in blitz} rapid{in rapid} other{in {timeClass}}}'**
+  String scoutIntroTimeClass(String timeClass);
+
+  /// No description provided for @scoutOpeningResults.
+  ///
+  /// In en, this message translates to:
+  /// **'{games, plural, =1{1 game · {percent} wins} other{{games} games · {percent} wins}}'**
+  String scoutOpeningResults(int games, String percent);
+
+  /// No description provided for @changelogV190.
+  ///
+  /// In en, this message translates to:
+  /// **'New: “How to beat this player”, their weak spots and tips in slides\nTheir current form shown as a chess piece\nOpening tips on the moves you choose\nHome: “Show stats” or “How to beat this player”'**
+  String get changelogV190;
 }
 
 class _AppLocalizationsDelegate
