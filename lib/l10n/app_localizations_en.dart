@@ -656,6 +656,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String shareRecapText(String username) {
+    return '$username\'s monthly recap on Chess Stats';
+  }
+
+  @override
+  String shareScoutText(String username) {
+    return 'How to beat $username on Chess Stats';
+  }
+
+  @override
   String get shareCopied => 'Link copied';
 
   @override
@@ -1690,4 +1700,8 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelogV1100 =>
       '“How to beat this player”: the phase where your opponent cracks\nTheir time management and how they react after a loss\nTheir weakest times of day\nA fuller game plan';
+
+  @override
+  String get changelogV1110 =>
+      'Share the monthly recap or “How to beat this player” with their own link\nA shared stats link opens the stats straight away\nThe monthly recap starts on its own only when you search for a player';
 }

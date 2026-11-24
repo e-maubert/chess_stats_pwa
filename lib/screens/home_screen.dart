@@ -11,7 +11,6 @@ import '../widgets/app_logo.dart';
 import '../widgets/recent_players_options.dart';
 import '../widgets/theme_toggle_button.dart';
 import 'player_route.dart';
-import 'scouting_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   /// Pseudo pré-rempli (lien vers un joueur introuvable).
@@ -78,9 +77,7 @@ class HomeScreenState extends State<HomeScreen> {
         route = playerRoute(await service.open(username));
       } else {
         final loaded = await service.loadGames(username);
-        route = MaterialPageRoute(
-          builder: (_) => ScoutingScreen(username: username, games: loaded.games, upToDate: loaded.upToDate),
-        );
+        route = scoutRoute(username, loaded.games, upToDate: loaded.upToDate);
       }
       if (!mounted) return;
 

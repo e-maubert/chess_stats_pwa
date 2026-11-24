@@ -639,6 +639,18 @@ abstract class AppLocalizations {
   /// **'{username}\'s stats on Chess Stats'**
   String shareText(String username);
 
+  /// No description provided for @shareRecapText.
+  ///
+  /// In en, this message translates to:
+  /// **'{username}\'s monthly recap on Chess Stats'**
+  String shareRecapText(String username);
+
+  /// No description provided for @shareScoutText.
+  ///
+  /// In en, this message translates to:
+  /// **'How to beat {username} on Chess Stats'**
+  String shareScoutText(String username);
+
   /// No description provided for @shareCopied.
   ///
   /// In en, this message translates to:
@@ -2025,6 +2037,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'“How to beat this player”: the phase where your opponent cracks\nTheir time management and how they react after a loss\nTheir weakest times of day\nA fuller game plan'**
   String get changelogV1100;
+
+  /// No description provided for @changelogV1110.
+  ///
+  /// In en, this message translates to:
+  /// **'Share the monthly recap or “How to beat this player” with their own link\nA shared stats link opens the stats straight away\nThe monthly recap starts on its own only when you search for a player'**
+  String get changelogV1110;
 }
 
 class _AppLocalizationsDelegate

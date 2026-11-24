@@ -301,6 +301,8 @@
   "changelogV170": "Partagez les stats d'un joueur avec un simple lien\nStatistiques sur les parties classées, ou sur toutes au choix\nDéfaites au temps visibles dans la gestion du temps\nBilan du mois plus clair",
   "share": "Partager",
   "shareText": "Les stats de {username} sur Chess Stats",
+  "shareRecapText": "Le bilan du mois de {username} sur Chess Stats",
+  "shareScoutText": "Comment battre {username} sur Chess Stats",
   "shareCopied": "Lien copié",
   "shareLinkTitle": "Lien à partager",
   "playerLoading": "Chargement des parties…",
@@ -694,5 +696,6 @@
   "scoutHoursTipNone": "L'heure ne change rien à son niveau.",
   "scoutPhaseNone": "Aucune phase fragile",
   "scoutHoursNone": "Aucun moment fragile",
-  "changelogV1100": "« Comment battre ce joueur » : la phase où ton adversaire craque\nSa gestion du temps et sa réaction après une défaite\nSes moments de la journée les plus fragiles\nUn plan de jeu plus complet"
+  "changelogV1100": "« Comment battre ce joueur » : la phase où ton adversaire craque\nSa gestion du temps et sa réaction après une défaite\nSes moments de la journée les plus fragiles\nUn plan de jeu plus complet",
+  "changelogV1110": "Partage le bilan du mois ou « Comment battre ce joueur » avec leur propre lien\nUn lien vers des stats ouvre directement les stats\nLe bilan du mois ne se lance tout seul qu'après une recherche"
 }

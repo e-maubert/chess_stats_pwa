@@ -410,7 +410,7 @@ class ScoutingScreen extends StatelessWidget {
             seeStats,
             const SizedBox(height: 12),
             FilledButton.tonalIcon(
-              onPressed: () => sharePlayer(context, username),
+              onPressed: () => sharePlayer(context, username, page: PlayerPage.scout),
               icon: const Icon(Icons.share_outlined),
               label: Text(l10n.share),
             ),

@@ -110,9 +110,9 @@ class RecapScreen extends StatelessWidget {
           FilledButton.tonal(onPressed: openStats, child: Text(l10n.recapSeeStats)),
           if (recap != null) ...[
             const SizedBox(height: 12),
-            // Moment où l'on a envie de partager : lien vers ce joueur.
+            // Moment où l'on a envie de partager : lien vers ce bilan.
             FilledButton.tonalIcon(
-              onPressed: () => sharePlayer(context, username),
+              onPressed: () => sharePlayer(context, username, page: PlayerPage.recap),
               icon: const Icon(Icons.share_outlined),
               label: Text(l10n.share),
             ),
