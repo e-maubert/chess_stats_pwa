@@ -18,12 +18,21 @@ class ScoutingViewModel extends ChangeNotifier {
   final GameRepository _repository;
   final String username;
 
+  /// Cadence choisie (adresse `/<pseudo>/scout/<cadence>`) ; null = la plus
+  /// jouée.
+  final String? timeClass;
+
   List<CountryGame> _games;
   bool _upToDate;
   bool _disposed = false;
 
-  ScoutingViewModel(this._repository, this.username, {required List<CountryGame> games, bool upToDate = false})
-      : _games = games,
+  ScoutingViewModel(
+    this._repository,
+    this.username, {
+    required List<CountryGame> games,
+    bool upToDate = false,
+    this.timeClass,
+  })  : _games = games,
         _upToDate = upToDate {
     _repository.markViewed(username);
     if (!upToDate) _update();
@@ -40,9 +49,18 @@ class ScoutingViewModel extends ChangeNotifier {
   ScoutingReport? get report {
     if (!identical(_reportSource, _games)) {
       _reportSource = _games;
-      _report = ScoutingService.build(_games, _repository.now);
+      _report = ScoutingService.build(_games, _repository.now, timeClass: timeClass);
+      _choosable = ScoutingService.choosableTimeClasses(_games, _repository.now);
     }
     return _report;
+  }
+
+  List<String> _choosable = const [];
+
+  /// Cadences qu'on peut choisir d'analyser (assez de parties).
+  List<String> get choosableTimeClasses {
+    report;
+    return _choosable;
   }
 
   /// Phases calculées (identité de la partie → résumé ; null si ses coups

@@ -283,12 +283,16 @@ class HoursInsight {
 }
 
 /// « Comment battre ce joueur » : ses points faibles dans sa cadence
-/// principale, sur le dernier mois (ou 3 mois s'il a trop peu joué).
+/// principale (ou celle choisie), sur le dernier mois (ou 3 mois s'il a
+/// trop peu joué).
 class ScoutingReport {
   final StatsPeriod period;
 
-  /// Cadence analysée : la plus jouée.
+  /// Cadence analysée : la plus jouée, ou celle choisie.
   final String timeClass;
+
+  /// [timeClass] est sa cadence la plus jouée sur [period].
+  final bool isMain;
 
   /// Parties analysées (cadence [timeClass], période [period]), de la
   /// plus ancienne à la plus récente : leurs phases sont calculées ensuite
@@ -305,6 +309,7 @@ class ScoutingReport {
   const ScoutingReport({
     required this.period,
     required this.timeClass,
+    this.isMain = true,
     required this.analyzed,
     required this.form,
     required this.cadence,
@@ -362,22 +367,29 @@ class ScoutingService {
 
   /// Rapport sur les parties [games] du joueur à la date [now] ; null s'il
   /// n'a aucune partie de bullet, blitz ou rapide sur 3 mois.
+  /// [timeClass] : cadence à analyser (null = la plus jouée) ; null si
+  /// elle a moins de [minHintGames] parties sur 3 mois.
   /// [hourOf] donne l'heure de début d'une partie (par défaut l'heure de
   /// l'appareil, voir PlayingHoursService.localHour).
-  static ScoutingReport? build(List<CountryGame> games, DateTime now, {int? Function(CountryGame)? hourOf}) {
-    List<CountryGame> inPeriod(StatsPeriod period) => StatsPeriodService.preferRated(
-          StatsPeriodService.filter(games, period, now).where((g) => timeClasses.contains(g.timeClass)).toList(),
-        );
+  static ScoutingReport? build(
+    List<CountryGame> games,
+    DateTime now, {
+    String? timeClass,
+    int? Function(CountryGame)? hourOf,
+  }) {
+    List<CountryGame> inPeriod(StatsPeriod period) => _pool(games, period, now);
+    int count(List<CountryGame> pool, String? timeClass) => pool.where((g) => g.timeClass == timeClass).length;
 
     var period = StatsPeriod.oneMonth;
     var pool = inPeriod(period);
-    var focus = _mostPlayed(pool);
-    if (focus == null || pool.where((g) => g.timeClass == focus).length < minFocusGames) {
+    var focus = timeClass ?? _mostPlayed(pool);
+    if (focus == null || count(pool, focus) < minFocusGames) {
       period = StatsPeriod.threeMonths;
       pool = inPeriod(period);
-      focus = _mostPlayed(pool);
+      focus = timeClass ?? _mostPlayed(pool);
     }
     if (focus == null) return null;
+    if (timeClass != null && count(pool, focus) < minHintGames) return null;
 
     final focusGames = [
       for (final game in pool)
@@ -392,6 +404,7 @@ class ScoutingService {
     return ScoutingReport(
       period: period,
       timeClass: focus,
+      isMain: focus == _mostPlayed(pool),
       analyzed: focusGames,
       form: form,
       cadence: cadence,
@@ -553,6 +566,22 @@ class ScoutingService {
   }
 
   static int _chronological(CountryGame a, CountryGame b) => a.endTime!.compareTo(b.endTime!);
+
+  /// Cadences qu'on peut choisir d'analyser : au moins [minHintGames]
+  /// parties sur 3 mois, dans l'ordre de [timeClasses].
+  static List<String> choosableTimeClasses(List<CountryGame> games, DateTime now) {
+    final pool = _pool(games, StatsPeriod.threeMonths, now);
+    return [
+      for (final timeClass in timeClasses)
+        if (pool.where((g) => g.timeClass == timeClass).length >= minHintGames) timeClass,
+    ];
+  }
+
+  /// Parties de bullet, blitz ou rapide sur [period] (classées s'il y en a).
+  static List<CountryGame> _pool(List<CountryGame> games, StatsPeriod period, DateTime now) =>
+      StatsPeriodService.preferRated(
+        StatsPeriodService.filter(games, period, now).where((g) => timeClasses.contains(g.timeClass)).toList(),
+      );
 
   /// Cadence la plus jouée (à égalité : ordre de [timeClasses]).
   static String? _mostPlayed(List<CountryGame> games) {

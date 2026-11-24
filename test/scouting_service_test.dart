@@ -71,6 +71,37 @@ void main() {
       final report = ScoutingService.build([...games(25), ...games(40, timeClass: 'bullet', rated: false)], now)!;
       expect(report.timeClass, 'blitz');
     });
+
+    test('cadence choisie : analysée même si elle est moins jouée', () {
+      final all = [...games(30), ...games(22, timeClass: 'bullet', result: 'checkmated')];
+      expect(ScoutingService.build(all, now)!.isMain, isTrue);
+
+      final report = ScoutingService.build(all, now, timeClass: 'bullet')!;
+      expect(report.timeClass, 'bullet');
+      expect(report.isMain, isFalse);
+      expect(report.period, StatsPeriod.oneMonth);
+      expect(report.games, 22);
+      expect(report.analyzed.every((g) => g.timeClass == 'bullet'), isTrue);
+    });
+
+    test('cadence choisie peu jouée sur un mois : 3 mois ; moins de 3 parties : pas de rapport', () {
+      final all = [...games(30), ...games(5, timeClass: 'rapid'), ...games(10, timeClass: 'rapid', daysAgo: 50)];
+      final report = ScoutingService.build(all, now, timeClass: 'rapid')!;
+      expect(report.period, StatsPeriod.threeMonths);
+      expect(report.games, 15);
+
+      expect(ScoutingService.build([...games(30), ...games(2, timeClass: 'bullet')], now, timeClass: 'bullet'), isNull);
+    });
+
+    test('cadences proposées au choix : au moins 3 parties sur 3 mois', () {
+      final all = [
+        ...games(30),
+        ...games(2, timeClass: 'bullet'),
+        ...games(3, timeClass: 'rapid', daysAgo: 60),
+        ...games(10, timeClass: 'daily'),
+      ];
+      expect(ScoutingService.choosableTimeClasses(all, now), ['blitz', 'rapid']);
+    });
   });
 
   group('forme du moment', () {

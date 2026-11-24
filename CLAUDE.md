@@ -26,7 +26,7 @@ Aucun problème (« No issues found! »). Une modification ne doit **pas en ajou
 
 Point d'entrée : `lib/main.dart` → `screens/home_screen.dart` (recherche) → `screens/stats_screen.dart` → `widgets/stats_display.dart` (page principale des stats).
 
-Adresses : `/` = accueil, `/<pseudo>` = stats du joueur, `/<pseudo>/recap` = son bilan, `/<pseudo>/scout` = « Comment battre ce joueur » (liens à partager : bouton de partage dans les stats et en fin de chaque diaporama ; diaporama ouvert par lien = au-dessus des stats). Le bilan ne s'ouvre tout seul qu'après une recherche (première recherche du joueur sur l'appareil), jamais à l'ouverture d'un lien. Routes dans `main.dart` et `screens/player_route.dart`, analyse de l'adresse dans `services/player_link_service.dart`. Netlify renvoie toute adresse inconnue vers `index.html` (`netlify.toml`).
+Adresses : `/` = accueil, `/<pseudo>` = stats du joueur, `/<pseudo>/recap` = son bilan, `/<pseudo>/scout` = « Comment battre ce joueur » dans sa cadence la plus jouée, `/<pseudo>/scout/<bullet|blitz|rapid>` = dans cette cadence (choix et raccourci vers sa cadence la plus faible sur la 1re diapo) (liens à partager : bouton de partage dans les stats et en fin de chaque diaporama ; diaporama ouvert par lien = au-dessus des stats). Le bilan ne s'ouvre tout seul qu'après une recherche (première recherche du joueur sur l'appareil), jamais à l'ouverture d'un lien. Routes dans `main.dart` et `screens/player_route.dart`, analyse de l'adresse dans `services/player_link_service.dart`. Netlify renvoie toute adresse inconnue vers `index.html` (`netlify.toml`).
 
 | Dossier | Rôle |
 |---|---|

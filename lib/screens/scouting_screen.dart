@@ -16,10 +16,12 @@ import '../widgets/form_piece.dart';
 import '../widgets/player_app_bar_title.dart';
 import '../widgets/result_badges.dart';
 import '../widgets/result_bar.dart';
+import '../widgets/option_toggle.dart';
 import '../widgets/share_player.dart';
 import '../widgets/stats_filter_selectors.dart';
 import '../widgets/story_slides.dart';
 import '../widgets/theme_toggle_button.dart';
+import 'player_route.dart';
 import 'stats_screen.dart';
 
 /// « Comment battre ce joueur », en diapositives : cadence analysée (et la
@@ -37,19 +39,28 @@ class ScoutingScreen extends StatelessWidget {
   /// Ouvert depuis la page des stats : en sortir y ramène.
   final bool fromStats;
 
+  /// Cadence choisie ; null = la plus jouée.
+  final String? timeClass;
+
   const ScoutingScreen({
     super.key,
     required this.username,
     required this.games,
     this.upToDate = false,
     this.fromStats = false,
+    this.timeClass,
   });
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) =>
-          ScoutingViewModel(context.read<GameRepository>(), username, games: games, upToDate: upToDate),
+      create: (context) => ScoutingViewModel(
+        context.read<GameRepository>(),
+        username,
+        games: games,
+        upToDate: upToDate,
+        timeClass: timeClass,
+      ),
       child: Consumer<ScoutingViewModel>(
         builder: (context, viewModel, _) {
           final l10n = AppLocalizations.of(context)!;
@@ -96,6 +107,20 @@ class ScoutingScreen extends StatelessWidget {
     );
   }
 
+  /// Même page dans la cadence [value], à sa propre adresse.
+  void _openTimeClass(BuildContext context, ScoutingViewModel viewModel, String value) {
+    Navigator.pushReplacement(
+      context,
+      scoutRoute(
+        username,
+        viewModel.games,
+        upToDate: viewModel.upToDate,
+        fromStats: fromStats,
+        timeClass: value,
+      ),
+    );
+  }
+
   List<StorySlide> _slides(
       BuildContext context, AppLocalizations l10n, ScoutingViewModel viewModel, VoidCallback openStats) {
     final report = viewModel.report;
@@ -112,8 +137,41 @@ class ScoutingScreen extends StatelessWidget {
         );
 
     final seeStats = FilledButton.tonal(onPressed: openStats, child: Text(l10n.scoutSeeStats));
+
+    // Choix de la cadence analysée (au moins deux cadences assez jouées).
+    final choosable = viewModel.choosableTimeClasses;
+    final analyzedTimeClass = report?.timeClass ?? this.timeClass;
+    final Widget? timeClassChoice = choosable.length < 2
+        ? null
+        // Fond du thème sous le sélecteur : lisible sur la couleur vive
+        // de la diapo, en clair comme en sombre (comme les boutons).
+        : Material(
+            color: Theme.of(context).colorScheme.surface,
+            shape: const StadiumBorder(),
+            child: OptionToggle<String>(
+              options: choosable,
+              selected: choosable.contains(analyzedTimeClass) ? analyzedTimeClass! : choosable.first,
+              labelOf: timeClass,
+              onChanged: (value) {
+                if (value != analyzedTimeClass) _openTimeClass(context, viewModel, value);
+              },
+            ),
+          );
+
     if (report == null) {
-      return [StorySlide(label: l10n.scoutIntroLabel, value: l10n.scoutEmpty, action: seeStats)];
+      return [
+        StorySlide(
+          label: l10n.scoutIntroLabel,
+          value: l10n.scoutEmpty,
+          action: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (timeClassChoice != null) ...[timeClassChoice, const SizedBox(height: 12)],
+              seeStats,
+            ],
+          ),
+        ),
+      ];
     }
 
     final focus = timeClass(report.timeClass);
@@ -349,11 +407,15 @@ class ScoutingScreen extends StatelessWidget {
         value: l10n.scoutIntroTimeClass(report.timeClass),
         smallValue: true,
         details: [
-          l10n.scoutIntroBase(report.games, focus, report.period.days),
+          report.isMain
+              ? l10n.scoutIntroBase(report.games, focus, report.period.days)
+              : l10n.scoutIntroBaseChosen(report.games, focus, report.period.days),
           if (switch (cadence.kind) {
             CadenceCase.single => l10n.scoutCadenceSingle,
             CadenceCase.focusOnly => null,
-            CadenceCase.same => l10n.scoutCadenceSame(percent(cadence.weakestResults.winRate)),
+            CadenceCase.same => report.isMain
+                ? l10n.scoutCadenceSame(percent(cadence.weakestResults.winRate))
+                : l10n.scoutCadenceSameChosen(percent(cadence.weakestResults.winRate)),
             CadenceCase.other => cadence.byWinRate
                 ? l10n.scoutCadenceOther(weakest, percent(cadence.weakestResults.winRate), cadence.weakestResults.games)
                 : l10n.scoutCadenceOtherRating(weakest, cadence.weakestResults.games),
@@ -368,6 +430,17 @@ class ScoutingScreen extends StatelessWidget {
           CadenceCase.other => cadenceTip,
           CadenceCase.otherFewGames => l10n.scoutCadenceTipFewGames(weakest),
         },
+        // Cadence analysée au choix ; raccourci vers sa cadence la plus
+        // faible quand ce n'est pas celle analysée.
+        action: _introAction(
+          analyzeWeakest: cadence.weakest != report.timeClass && choosable.contains(cadence.weakest)
+              ? FilledButton.tonal(
+                  onPressed: () => _openTimeClass(context, viewModel, cadence.weakest),
+                  child: Text(l10n.scoutAnalyzeTimeClass(cadence.weakest)),
+                )
+              : null,
+          timeClassChoice: timeClassChoice,
+        ),
       ),
       // 2. Forme du moment.
       StorySlide(
@@ -410,7 +483,7 @@ class ScoutingScreen extends StatelessWidget {
             seeStats,
             const SizedBox(height: 12),
             FilledButton.tonalIcon(
-              onPressed: () => sharePlayer(context, username, page: PlayerPage.scout),
+              onPressed: () => sharePlayer(context, username, page: PlayerPage.scout, timeClass: this.timeClass),
               icon: const Icon(Icons.share_outlined),
               label: Text(l10n.share),
             ),
@@ -419,6 +492,20 @@ class ScoutingScreen extends StatelessWidget {
       ),
     ];
   }
+}
+
+/// Actions de la diapo de présentation : bouton vers la cadence la plus
+/// faible, puis choix de la cadence ; null s'il n'y a ni l'un ni l'autre.
+Widget? _introAction({Widget? analyzeWeakest, Widget? timeClassChoice}) {
+  if (analyzeWeakest == null && timeClassChoice == null) return null;
+  return Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      if (analyzeWeakest != null) analyzeWeakest,
+      if (analyzeWeakest != null && timeClassChoice != null) const SizedBox(height: 12),
+      if (timeClassChoice != null) timeClassChoice,
+    ],
+  );
 }
 
 /// Lignes de résultats : nom, barre (victoires, nulles, défaites), puis

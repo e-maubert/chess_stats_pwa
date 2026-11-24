@@ -32,12 +32,25 @@ Route<void> recapRoute(String username, List<CountryGame> games, {required bool 
       builder: (_) => RecapScreen(username: username, games: games, upToDate: upToDate, replay: fromStats),
     );
 
-/// « Comment battre ce joueur », à l'adresse `/<pseudo>/scout`.
+/// « Comment battre ce joueur », à l'adresse `/<pseudo>/scout` (cadence la
+/// plus jouée) ou `/<pseudo>/scout/<cadence>` ([timeClass] choisie).
 /// [fromStats] : ouvert au-dessus de la page des stats, en sortir y ramène.
-Route<void> scoutRoute(String username, List<CountryGame> games, {required bool upToDate, bool fromStats = false}) =>
+Route<void> scoutRoute(
+  String username,
+  List<CountryGame> games, {
+  required bool upToDate,
+  bool fromStats = false,
+  String? timeClass,
+}) =>
     MaterialPageRoute(
-      settings: RouteSettings(name: PlayerLinkService.path(username, page: PlayerPage.scout)),
-      builder: (_) => ScoutingScreen(username: username, games: games, upToDate: upToDate, fromStats: fromStats),
+      settings: RouteSettings(name: PlayerLinkService.path(username, page: PlayerPage.scout, timeClass: timeClass)),
+      builder: (_) => ScoutingScreen(
+        username: username,
+        games: games,
+        upToDate: upToDate,
+        fromStats: fromStats,
+        timeClass: timeClass,
+      ),
     );
 
 /// Accueil, à l'adresse `/`.
@@ -81,7 +94,8 @@ class _PlayerLinkScreenState extends State<PlayerLinkScreen> {
         case PlayerPage.recap:
           navigator.push(recapRoute(link.username, loaded.games, upToDate: true, fromStats: true));
         case PlayerPage.scout:
-          navigator.push(scoutRoute(link.username, loaded.games, upToDate: true, fromStats: true));
+          navigator.push(
+              scoutRoute(link.username, loaded.games, upToDate: true, fromStats: true, timeClass: link.timeClass));
       }
     } catch (_) {
       if (!mounted) return;
