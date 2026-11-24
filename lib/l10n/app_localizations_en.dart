@@ -1738,5 +1738,5 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get changelogV1120 =>
-      '“How to beat this player”: choose the time control to analyze\nA shortcut to their least successful time control\nA link to share for each time control';
+      '“How to beat this player”: choose the time control to analyze\nA shortcut to their least successful time control\nA link to share for each time control\nShorter slideshow when there are too few games to conclude';
 }

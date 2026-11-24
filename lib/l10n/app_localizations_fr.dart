@@ -1735,5 +1735,5 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get changelogV1120 =>
-      '« Comment battre ce joueur » : choisis la cadence à analyser\nUn raccourci vers sa cadence la moins réussie\nUn lien à partager pour chaque cadence';
+      '« Comment battre ce joueur » : choisis la cadence à analyser\nUn raccourci vers sa cadence la moins réussie\nUn lien à partager pour chaque cadence\nDiaporama plus court quand il y a trop peu de parties pour conclure';
 }

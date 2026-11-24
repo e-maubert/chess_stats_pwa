@@ -701,5 +701,5 @@
   "scoutIntroBaseChosen": "{games, plural, =1{On analyse sa seule partie de {timeClass} des {days} derniers jours.} other{On analyse ses {games} parties de {timeClass} des {days} derniers jours.}}",
   "scoutAnalyzeTimeClass": "{timeClass, select, bullet{Analyser le bullet} blitz{Analyser le blitz} rapid{Analyser le rapide} other{Analyser le {timeClass}}}",
   "scoutCadenceSameChosen": "C'est sa cadence la moins réussie ({percent} de victoires).",
-  "changelogV1120": "« Comment battre ce joueur » : choisis la cadence à analyser\nUn raccourci vers sa cadence la moins réussie\nUn lien à partager pour chaque cadence"
+  "changelogV1120": "« Comment battre ce joueur » : choisis la cadence à analyser\nUn raccourci vers sa cadence la moins réussie\nUn lien à partager pour chaque cadence\nDiaporama plus court quand il y a trop peu de parties pour conclure"
 }
