@@ -47,11 +47,14 @@ class StorySlides extends StatefulWidget {
   /// Appelé quand on avance depuis la dernière diapositive.
   final VoidCallback? onFinished;
 
+  /// Appelé à chaque diapositive affichée, avec sa position.
+  final ValueChanged<int>? onPageChanged;
+
   /// Largeur maximale : sur ordinateur, les diapositives gardent un format
   /// de téléphone au centre de l'écran.
   static const double maxWidth = 520;
 
-  const StorySlides({super.key, required this.slides, this.onFinished});
+  const StorySlides({super.key, required this.slides, this.onFinished, this.onPageChanged});
 
   @override
   State<StorySlides> createState() => _StorySlidesState();
@@ -143,7 +146,10 @@ class _StorySlidesState extends State<StorySlides> {
                       child: PageView.builder(
                         controller: _controller,
                         itemCount: widget.slides.length,
-                        onPageChanged: (index) => setState(() => _index = index),
+                        onPageChanged: (index) {
+                          setState(() => _index = index);
+                          widget.onPageChanged?.call(index);
+                        },
                         itemBuilder: (context, index) => _SlideContent(
                           slide: widget.slides[index],
                           color: _colors(scheme, index).$2,

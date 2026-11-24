@@ -320,6 +320,14 @@ class ScoutingReport {
   });
 
   int get games => analyzed.length;
+
+  /// Assez de parties pour espérer une conclusion sur la phase où il
+  /// craque ([ScoutingService.phases]) ; sinon, inutile d'attendre le
+  /// calcul des phases : la diapo n'est pas proposée.
+  bool get phasesPossible => games >= ScoutingService.minPhaseGames;
+
+  /// Idem pour la gestion du temps ([ScoutingService.time]).
+  bool get timePossible => games >= ScoutingService.minClockGames;
 }
 
 class ScoutingService {

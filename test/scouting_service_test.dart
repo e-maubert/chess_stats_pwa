@@ -93,6 +93,20 @@ void main() {
       expect(ScoutingService.build([...games(30), ...games(2, timeClass: 'bullet')], now, timeClass: 'bullet'), isNull);
     });
 
+    test('phase et gestion du temps proposées seulement avec assez de parties', () {
+      final few = ScoutingService.build(games(7), now)!;
+      expect(few.phasesPossible, isFalse);
+      expect(few.timePossible, isFalse);
+
+      final some = ScoutingService.build(games(9), now)!;
+      expect(some.phasesPossible, isTrue);
+      expect(some.timePossible, isFalse);
+
+      final many = ScoutingService.build(games(10), now)!;
+      expect(many.phasesPossible, isTrue);
+      expect(many.timePossible, isTrue);
+    });
+
     test('cadences proposées au choix : au moins 3 parties sur 3 mois', () {
       final all = [
         ...games(30),

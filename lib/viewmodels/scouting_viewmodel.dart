@@ -95,6 +95,16 @@ class ScoutingViewModel extends ChangeNotifier {
 
   bool get phasesReady => analyzedWithPhases != null;
 
+  /// Position de la diapo la plus loin atteinte : une diapo sans
+  /// conclusion connue après le calcul des phases n'est retirée que si on
+  /// ne l'a pas encore vue (pas de décalage de la diapo affichée).
+  int get furthestSlide => _furthestSlide;
+  int _furthestSlide = 0;
+
+  void slideReached(int index) {
+    if (index > _furthestSlide) _furthestSlide = index;
+  }
+
   /// Rejoue les parties analysées par tranches de 12 ms (l'affichage reste
   /// fluide), puis enregistre les phases trouvées.
   Future<void> _analyzePhases() async {

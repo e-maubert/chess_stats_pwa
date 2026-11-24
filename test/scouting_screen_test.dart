@@ -95,21 +95,18 @@ void main() {
     expect(find.text('Quand ton adversaire a les noirs'), findsOneWidget);
     expect(find.textContaining('Aucun premier coup ne ressort'), findsOneWidget);
 
-    // Phases inconnues (parties de test sans coups) : pas de conclusion.
-    await _next(tester);
-    expect(find.text('Où ton adversaire craque'), findsOneWidget);
-    expect(find.text('Pas assez de parties pour conclure'), findsOneWidget);
-
-    await _next(tester);
-    expect(find.text('Sa gestion du temps'), findsOneWidget);
-
-    await _next(tester);
-    expect(find.text('Après une défaite'), findsOneWidget);
-
-    await _next(tester);
-    expect(find.text("Selon l'heure"), findsOneWidget);
-
-    await _next(tester);
+    // Habitudes : seules les diapos avec une conclusion s'affichent. Phases
+    // inconnues (parties de test sans coups) : ni phase ni gestion du temps.
+    final habits = <String>[];
+    for (var i = 0; i < 6 && find.text('Ton plan de jeu').evaluate().isEmpty; i++) {
+      await _next(tester);
+      expect(find.text('Pas assez de parties pour conclure'), findsNothing);
+      for (final label in ['Où ton adversaire craque', 'Sa gestion du temps', 'Après une défaite', "Selon l'heure"]) {
+        if (find.text(label).evaluate().isNotEmpty) habits.add(label);
+      }
+    }
+    expect(habits, isNot(contains('Où ton adversaire craque')));
+    expect(habits, isNot(contains('Sa gestion du temps')));
     expect(find.text('Ton plan de jeu'), findsOneWidget);
     expect(find.textContaining('Avec les noirs — Contre 1.d4, réponds 1…e6'), findsOneWidget);
     expect(find.text('Voir ses statistiques'), findsOneWidget);
