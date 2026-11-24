@@ -2043,6 +2043,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Share the monthly recap or “How to beat this player” with their own link\nA shared stats link opens the stats straight away\nThe monthly recap starts on its own only when you search for a player'**
   String get changelogV1110;
+
+  /// No description provided for @scoutIntroBaseChosen.
+  ///
+  /// In en, this message translates to:
+  /// **'{games, plural, =1{We analyze their only {timeClass} game from the last {days} days.} other{We analyze their {games} {timeClass} games from the last {days} days.}}'**
+  String scoutIntroBaseChosen(int games, String timeClass, int days);
+
+  /// No description provided for @scoutAnalyzeTimeClass.
+  ///
+  /// In en, this message translates to:
+  /// **'{timeClass, select, bullet{Analyze bullet} blitz{Analyze blitz} rapid{Analyze rapid} other{Analyze {timeClass}}}'**
+  String scoutAnalyzeTimeClass(String timeClass);
+
+  /// No description provided for @scoutCadenceSameChosen.
+  ///
+  /// In en, this message translates to:
+  /// **'It\'s their least successful time control ({percent} wins).'**
+  String scoutCadenceSameChosen(String percent);
+
+  /// No description provided for @changelogV1120.
+  ///
+  /// In en, this message translates to:
+  /// **'“How to beat this player”: choose the time control to analyze\nA shortcut to their least successful time control\nA link to share for each time control'**
+  String get changelogV1120;
 }
 
 class _AppLocalizationsDelegate

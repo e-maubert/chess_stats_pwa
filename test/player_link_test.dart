@@ -42,14 +42,19 @@ class _Source implements MonthlyGamesSource {
 void main() {
   group('PlayerLinkService', () {
     test('joueur et page tirés de l\'adresse, pseudo en minuscules', () {
-      expect(PlayerLinkService.fromPath('/Hikaru'), (username: 'hikaru', page: PlayerPage.stats));
-      expect(PlayerLinkService.fromPath('/tarantino_girl/'), (username: 'tarantino_girl', page: PlayerPage.stats));
-      expect(PlayerLinkService.fromPath('/Hikaru/recap'), (username: 'hikaru', page: PlayerPage.recap));
-      expect(PlayerLinkService.fromPath('/hikaru/Scout/'), (username: 'hikaru', page: PlayerPage.scout));
+      expect(PlayerLinkService.fromPath('/Hikaru'), (username: 'hikaru', page: PlayerPage.stats, timeClass: null));
+      expect(PlayerLinkService.fromPath('/tarantino_girl/'), (username: 'tarantino_girl', page: PlayerPage.stats, timeClass: null));
+      expect(PlayerLinkService.fromPath('/Hikaru/recap'), (username: 'hikaru', page: PlayerPage.recap, timeClass: null));
+      expect(PlayerLinkService.fromPath('/hikaru/Scout/'), (username: 'hikaru', page: PlayerPage.scout, timeClass: null));
       expect(PlayerLinkService.fromPath('/'), isNull);
       expect(PlayerLinkService.fromPath('/a/b'), isNull);
       expect(PlayerLinkService.fromPath('/hikaru/inconnue'), isNull);
       expect(PlayerLinkService.fromPath('/hikaru/recap/x'), isNull);
+      expect(PlayerLinkService.fromPath('/hikaru/scout/Bullet'),
+          (username: 'hikaru', page: PlayerPage.scout, timeClass: 'bullet'));
+      expect(PlayerLinkService.fromPath('/hikaru/scout/daily'), isNull);
+      expect(PlayerLinkService.fromPath('/hikaru/recap/blitz'), isNull);
+      expect(PlayerLinkService.fromPath('/hikaru/blitz'), isNull);
       expect(PlayerLinkService.fromPath('/manifest.json'), isNull);
       expect(PlayerLinkService.fromPath(null), isNull);
     });
@@ -64,6 +69,9 @@ void main() {
           'https://chess-stats-test.netlify.app/bob/recap');
       expect(PlayerLinkService.link('bob', page: PlayerPage.scout, base: base).toString(),
           'https://chess-stats-test.netlify.app/bob/scout');
+      expect(PlayerLinkService.link('bob', page: PlayerPage.scout, timeClass: 'rapid', base: base).toString(),
+          'https://chess-stats-test.netlify.app/bob/scout/rapid');
+      expect(PlayerLinkService.path('bob', timeClass: 'rapid'), '/bob');
     });
   });
 
@@ -135,6 +143,12 @@ void main() {
       await tester.pump(const Duration(seconds: 1));
       expect(find.byType(ScoutingScreen), findsNothing);
       expect(find.byType(StatsScreen), findsOneWidget);
+    });
+
+    testWidgets('/<pseudo>/scout/<cadence> : cette cadence, au-dessus des stats', (tester) async {
+      await open(tester, '/hikaru/scout/blitz');
+      expect(tester.widget<ScoutingScreen>(find.byType(ScoutingScreen)).timeClass, 'blitz');
+      expect(find.text('en blitz'), findsOneWidget);
     });
 
     testWidgets('joueur introuvable : accueil, pseudo pré-rempli et message', (tester) async {

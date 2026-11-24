@@ -5,11 +5,17 @@ import '../services/player_link_service.dart';
 import '../services/share_service.dart';
 
 /// Partage le lien vers une page de [username] (stats, bilan ou comment le
-/// battre) ; « Lien copié » quand il n'y a pas de menu de partage.
-Future<void> sharePlayer(BuildContext context, String username, {PlayerPage page = PlayerPage.stats}) async {
+/// battre, dans la cadence [timeClass]) ; « Lien copié » quand il n'y a
+/// pas de menu de partage.
+Future<void> sharePlayer(
+  BuildContext context,
+  String username, {
+  PlayerPage page = PlayerPage.stats,
+  String? timeClass,
+}) async {
   final l10n = AppLocalizations.of(context)!;
   final messenger = ScaffoldMessenger.of(context);
-  final url = PlayerLinkService.link(username, page: page);
+  final url = PlayerLinkService.link(username, page: page, timeClass: timeClass);
   final text = switch (page) {
     PlayerPage.stats => l10n.shareText(username),
     PlayerPage.recap => l10n.shareRecapText(username),
