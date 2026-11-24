@@ -65,18 +65,19 @@ class MyApp extends StatelessWidget {
           theme: AppTheme.light,
           darkTheme: AppTheme.dark,
           themeMode: themeViewModel.themeMode,
-          // `/` : accueil ; `/<pseudo>` : page de ce joueur, au-dessus de
-          // l'accueil (le retour y ramène). Toute autre adresse : accueil.
+          // `/` : accueil ; `/<pseudo>` (stats), `/<pseudo>/recap` (bilan),
+          // `/<pseudo>/scout` (comment le battre) : page du joueur, au-dessus
+          // de l'accueil (le retour y ramène). Toute autre adresse : accueil.
           onGenerateInitialRoutes: (initialRoute) {
-            final username = PlayerLinkService.usernameFromPath(initialRoute);
+            final link = PlayerLinkService.fromPath(initialRoute);
             return [
               homeRoute(),
-              if (username != null) _playerLinkRoute(username),
+              if (link != null) _playerLinkRoute(link),
             ];
           },
           onGenerateRoute: (settings) {
-            final username = PlayerLinkService.usernameFromPath(settings.name);
-            return username == null ? homeRoute() : _playerLinkRoute(username);
+            final link = PlayerLinkService.fromPath(settings.name);
+            return link == null ? homeRoute() : _playerLinkRoute(link);
           },
         ),
       ),
@@ -84,7 +85,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-Route<void> _playerLinkRoute(String username) => MaterialPageRoute(
-      settings: RouteSettings(name: PlayerLinkService.path(username)),
-      builder: (_) => PlayerLinkScreen(username: username),
+Route<void> _playerLinkRoute(PlayerLink link) => MaterialPageRoute(
+      settings: RouteSettings(name: PlayerLinkService.path(link.username, page: link.page)),
+      builder: (_) => PlayerLinkScreen(link: link),
     );

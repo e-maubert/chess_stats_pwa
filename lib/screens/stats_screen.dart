@@ -13,8 +13,7 @@ import '../widgets/share_player.dart';
 import '../widgets/stats_display.dart';
 import '../widgets/theme_toggle_button.dart';
 import '../widgets/stats_filter_panel.dart';
-import 'recap_screen.dart';
-import 'scouting_screen.dart';
+import 'player_route.dart';
 
 class StatsScreen extends StatelessWidget {
   final String username;
@@ -172,18 +171,12 @@ class _StatsScaffold extends StatelessWidget {
 
   /// Revoir le bilan du dernier mois (montré automatiquement seulement à la
   /// première recherche du joueur).
-  void _openRecap(NavigatorState navigator, PlayerGamesViewModel viewModel) => navigator.push(
-        MaterialPageRoute(
-          builder: (_) => RecapScreen(username: username, games: viewModel.games!, upToDate: true, replay: true),
-        ),
-      );
+  void _openRecap(NavigatorState navigator, PlayerGamesViewModel viewModel) =>
+      navigator.push(recapRoute(username, viewModel.games!, upToDate: true, fromStats: true));
 
   /// « Comment battre ce joueur », sur les parties déjà affichées.
-  void _openScouting(NavigatorState navigator, PlayerGamesViewModel viewModel) => navigator.push(
-        MaterialPageRoute(
-          builder: (_) => ScoutingScreen(username: username, games: viewModel.games!, upToDate: true, fromStats: true),
-        ),
-      );
+  void _openScouting(NavigatorState navigator, PlayerGamesViewModel viewModel) =>
+      navigator.push(scoutRoute(username, viewModel.games!, upToDate: true, fromStats: true));
 
   Widget _scoutButton(BuildContext context, PlayerGamesViewModel viewModel, AppLocalizations l10n) => IconButton(
         icon: const Icon(Icons.emoji_objects_outlined),

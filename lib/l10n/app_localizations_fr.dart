@@ -651,6 +651,16 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String shareRecapText(String username) {
+    return 'Le bilan du mois de $username sur Chess Stats';
+  }
+
+  @override
+  String shareScoutText(String username) {
+    return 'Comment battre $username sur Chess Stats';
+  }
+
+  @override
   String get shareCopied => 'Lien copié';
 
   @override
@@ -1687,4 +1697,8 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get changelogV1100 =>
       '« Comment battre ce joueur » : la phase où ton adversaire craque\nSa gestion du temps et sa réaction après une défaite\nSes moments de la journée les plus fragiles\nUn plan de jeu plus complet';
+
+  @override
+  String get changelogV1110 =>
+      'Partage le bilan du mois ou « Comment battre ce joueur » avec leur propre lien\nUn lien vers des stats ouvre directement les stats\nLe bilan du mois ne se lance tout seul qu\'après une recherche';
 }
