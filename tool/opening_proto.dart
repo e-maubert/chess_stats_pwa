@@ -34,9 +34,15 @@ final File cacheFile = File('build/proto_eval_cache.json');
 final Map<String, dynamic> cache = {};
 int cloudHits = 0, cloudMisses = 0;
 
-Future<void> main(List<String> players) async {
+/// `--all` : analyser toutes les parties de l'ouverture, pas seulement les
+/// défaites.
+bool allGames = false;
+
+Future<void> main(List<String> args) async {
+  allGames = args.contains('--all');
+  final players = args.where((a) => !a.startsWith('--')).toList();
   if (cacheFile.existsSync()) cache.addAll(json.decode(cacheFile.readAsStringSync()) as Map<String, dynamic>);
-  final out = StringBuffer();
+  final out = StringBuffer(allGames ? 'Mode : toutes les parties de l\'ouverture\n' : 'Mode : défaites seulement\n');
   for (final player in players) {
     out.writeln(await analyzePlayer(player));
   }
@@ -75,16 +81,18 @@ Future<String> analyzePlayer(String player) async {
       out.writeln('Pas assez de défaites.');
       continue;
     }
-    final lines = [for (final g in losses) GamePhaseService.firstMoves(g.moves, plies: maxPlies) ?? const <String>[]];
+    final analyzed = allGames ? inOpening : losses;
+    final lines = [for (final g in analyzed) GamePhaseService.firstMoves(g.moves, plies: maxPlies) ?? const <String>[]];
+    final lost = [for (final g in analyzed) g.result == 'loss'];
     out.writeln(await mainLineReport(lines, color == 'white'));
-    out.writeln(await recurringReport(lines, color == 'white'));
+    out.writeln(await recurringReport(lines, lost, color == 'white'));
   }
   return out.toString();
 }
 
 /// A : séquence la plus jouée et perte de chaque coup du joueur.
 Future<String> mainLineReport(List<List<String>> lines, bool white) async {
-  final out = StringBuffer('\n### A. Séquence la plus jouée dans les défaites\n');
+  final out = StringBuffer('\n### A. Séquence la plus jouée dans ${allGames ? 'les parties' : 'les défaites'}\n');
   final line = <String>[];
   final counts = <int>[];
   var following = lines;
@@ -113,7 +121,7 @@ Future<String> mainLineReport(List<List<String>> lines, bool white) async {
     final eval = await moveLoss(fenBefore, board.fen, line[ply], white);
     rows.add('$number **${line[ply]}** (${counts[ply]}) ${eval.describe()}');
     if (eval.loss != null && eval.loss! >= minLoss && (worst == null || eval.loss! > (worst['loss'] as int))) {
-      worst = {'loss': eval.loss!, 'text': '$number ${line[ply]} → ${eval.describe()}, ${counts[ply]} défaites'};
+      worst = {'loss': eval.loss!, 'text': '$number ${line[ply]} → ${eval.describe()}, ${counts[ply]} ${allGames ? 'parties' : 'défaites'}'};
     }
   }
   out.writeln(rows.join('  \n'));
@@ -122,16 +130,18 @@ Future<String> mainLineReport(List<List<String>> lines, bool white) async {
 }
 
 /// B : positions récurrentes où le joueur rejoue le même coup.
-Future<String> recurringReport(List<List<String>> lines, bool white) async {
+Future<String> recurringReport(List<List<String>> lines, List<bool> lost, bool white) async {
   final out = StringBuffer('\n### B. Erreurs récurrentes (position atteinte ≥ $minGames fois, même coup)\n');
   final reached = <String, Map<String, int>>{}; // FEN -> coup -> nombre
+  final lossesOf = <String, int>{}; // FEN + coup -> défaites
   final plyOf = <String, int>{};
-  for (final l in lines) {
+  for (final (index, l) in lines.indexed) {
     final board = Chess();
     for (var ply = 0; ply < l.length; ply++) {
       if (ply.isEven == white) {
         final key = board.fen;
         reached.putIfAbsent(key, () => {}).update(l[ply], (n) => n + 1, ifAbsent: () => 1);
+        if (lost[index]) lossesOf.update('$key|${l[ply]}', (n) => n + 1, ifAbsent: () => 1);
         plyOf[key] = ply;
       }
       if (!board.move(l[ply])) break;
@@ -145,7 +155,7 @@ Future<String> recurringReport(List<List<String>> lines, bool white) async {
       final eval = await moveLoss(fen, board.fen, move, white);
       if (eval.loss == null || eval.loss! < minLoss) continue;
       final ply = plyOf[fen]!;
-      found.add((eval.loss! * n, '${ply ~/ 2 + 1}.${ply.isEven ? '' : '..'} $move ($n fois) ${eval.describe()}'));
+      found.add((eval.loss! * n, '${ply ~/ 2 + 1}.${ply.isEven ? '' : '..'} $move ($n fois, ${lossesOf['$fen|$move'] ?? 0} défaites) ${eval.describe()}'));
     }
   }
   found.sort((a, b) => b.$1.compareTo(a.$1));
