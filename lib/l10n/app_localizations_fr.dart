@@ -1738,6 +1738,10 @@ class AppLocalizationsFr extends AppLocalizations {
       '« Comment battre ce joueur » : choisis la cadence à analyser\nUn raccourci vers sa cadence la moins réussie\nUn lien à partager pour chaque cadence\nDiaporama plus court quand il y a trop peu de parties pour conclure';
 
   @override
+  String get changelogV1130 =>
+      'Nouvel onglet « Axes d\'amélioration », à côté des stats\n« Améliorer son ouverture » : le coup que tu répètes et qui te coûte l\'avantage, avec le meilleur coup à jouer\nUn échiquier aux couleurs de l\'app pour voir la position en un coup d\'œil\nRien à corriger ? L\'app te dit que ton ouverture tient la route';
+
+  @override
   String get tabStats => 'Stats';
 
   @override

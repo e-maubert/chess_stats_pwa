@@ -2068,6 +2068,12 @@ abstract class AppLocalizations {
   /// **'“How to beat this player”: choose the time control to analyze\nA shortcut to their least successful time control\nA link to share for each time control\nShorter slideshow when there are too few games to conclude'**
   String get changelogV1120;
 
+  /// No description provided for @changelogV1130.
+  ///
+  /// In en, this message translates to:
+  /// **'New “Improvement areas” tab, next to the stats\n“Improve your opening”: the move you keep repeating that costs you the advantage, and the better move to play\nA board in the app\'s colours to see the position at a glance\nNothing to fix? The app tells you your opening holds up'**
+  String get changelogV1130;
+
   /// No description provided for @tabStats.
   ///
   /// In en, this message translates to:
