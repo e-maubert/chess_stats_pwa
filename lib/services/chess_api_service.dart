@@ -82,7 +82,7 @@ class ChessApiService implements MonthlyGamesSource {
       // Coups gardés pour calculer les phases après l'affichage ; pas pour
       // les variantes (Chess960…), dont la position de départ diffère.
       moves: standard ? moveText : null,
-      openingMoves: standard ? GamePhaseService.firstMoves(moveText) : null,
+      openingMoves: standard ? GamePhaseService.firstMoves(moveText, plies: CountryGame.openingPlies) : null,
     );
   }
 

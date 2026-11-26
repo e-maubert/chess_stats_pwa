@@ -39,7 +39,9 @@ class GameStore {
   /// 2 : coups (`moves`) et phases (`phases`) des parties.
   /// 3 : ouverture (`opening`) = famille ECO exacte (EcoService).
   /// 4 : premiers coups (`openingMoves`), pour « Comment battre ce joueur ».
-  static const int schemaVersion = 4;
+  /// 5 : 24 premiers demi-coups (`openingMoves`), pour « Améliorer son
+  ///     ouverture ».
+  static const int schemaVersion = 5;
   static const String defaultName = 'chess_stats_games.db';
 
   final DatabaseFactory _factory;

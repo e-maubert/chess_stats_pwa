@@ -100,7 +100,7 @@ class _StatsDisplayState extends State<StatsDisplay> {
         children: [
           for (final (index, card) in cards.indexed) ...[
             if (index > 0) const SizedBox(height: _gap),
-            _StatsFrame(padding: wide ? 20 : 14, child: card),
+            StatsFrame(padding: wide ? 20 : 14, child: card),
           ],
         ],
       );
@@ -108,11 +108,11 @@ class _StatsDisplayState extends State<StatsDisplay> {
 
 /// Encadré d'une catégorie de stats : fond légèrement teinté, bord fin et
 /// coins arrondis, pour bien voir où chaque catégorie commence et finit.
-class _StatsFrame extends StatelessWidget {
+class StatsFrame extends StatelessWidget {
   final double padding;
   final Widget child;
 
-  const _StatsFrame({required this.padding, required this.child});
+  const StatsFrame({super.key, required this.padding, required this.child});
 
   @override
   Widget build(BuildContext context) {

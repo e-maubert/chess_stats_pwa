@@ -1739,4 +1739,112 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelogV1120 =>
       '“How to beat this player”: choose the time control to analyze\nA shortcut to their least successful time control\nA link to share for each time control\nShorter slideshow when there are too few games to conclude';
+
+  @override
+  String get tabStats => 'Stats';
+
+  @override
+  String get tabImprovement => 'Improvement areas';
+
+  @override
+  String get improvementFiltersNote =>
+      'Filters don\'t apply here yet: the analysis covers your most played time control over the last 3 months (rated games).';
+
+  @override
+  String get improvementFiltersSummary => 'Most played time control · 3 months';
+
+  @override
+  String get openingImprovementTitle => 'Improve your opening';
+
+  @override
+  String openingImprovementScope(String timeClass) {
+    return '$timeClass · last 3 months · rated games';
+  }
+
+  @override
+  String get openingImprovementIntro =>
+      'In your most played opening with each colour, we look for a move you keep repeating that gives away your advantage, and the move to play instead.';
+
+  @override
+  String get openingImprovementNoGames =>
+      'No rated games over the last 3 months.';
+
+  @override
+  String get openingImprovementError =>
+      'The position analysis is unavailable for now. Try again in a minute.';
+
+  @override
+  String get openingImprovementSource =>
+      'Engine evaluations: Lichess cloud database.';
+
+  @override
+  String openingImprovementLoading(String percent) {
+    return 'Analysing your openings… $percent';
+  }
+
+  @override
+  String get openingImprovementNoColorGames => 'No games with this colour.';
+
+  @override
+  String openingImprovementColorHeader(
+      String color, String opening, num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count games',
+      one: '$count game',
+    );
+    return '$color: $opening ($_temp0)';
+  }
+
+  @override
+  String get openingImprovementNotEnough =>
+      'Not enough games in this opening to spot a repeated move.';
+
+  @override
+  String get openingImprovementSolid =>
+      'Your opening holds up: no repeated move gives away your advantage.';
+
+  @override
+  String get sanPieceLetters => 'NBRQK';
+
+  @override
+  String openingImprovementBoardLabel(String move, String best) {
+    return 'Board: your move $move (red arrow), better move $best (green arrow)';
+  }
+
+  @override
+  String get openingImprovementAtStart => 'On your very first move:';
+
+  @override
+  String openingImprovementAfter(String line) {
+    return 'After $line:';
+  }
+
+  @override
+  String openingImprovementYouPlay(String move) {
+    return 'You often play $move';
+  }
+
+  @override
+  String openingImprovementRepeats(int count, num losses) {
+    String _temp0 = intl.Intl.pluralLogic(
+      losses,
+      locale: localeName,
+      other: '$losses losses',
+      one: '$losses loss',
+      zero: 'no losses',
+    );
+    return '$count times, $_temp0';
+  }
+
+  @override
+  String openingImprovementBetter(String move) {
+    return 'Better: $move';
+  }
+
+  @override
+  String openingImprovementEval(String before, String after) {
+    return 'Engine evaluation: $before before your move, $after after.';
+  }
 }
