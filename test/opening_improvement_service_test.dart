@@ -82,6 +82,19 @@ void main() {
       expect(found.where((c) => c.san == 'Bc4' && c.ply == 4), isEmpty);
     });
 
+    test('version par lots : même résultat', () async {
+      final games = [
+        for (var i = 0; i < 45; i++)
+          _game(i.isEven ? scotch : ['e4', 'e5', 'Nf3', 'Nc6', 'Bc4'], result: i % 3 == 0 ? 'loss' : 'win'),
+      ];
+      String describe(List<OpeningCandidate> list) =>
+          list.map((c) => '${c.ply} ${c.san} ${c.count} ${c.losses} ${c.fen}').join('\n');
+      expect(
+        describe(await OpeningImprovementService.candidatesAsync(games, white: true, batch: 7)),
+        describe(OpeningImprovementService.candidates(games, white: true)),
+      );
+    });
+
     test('positions identiques atteintes par des chemins différents regroupées', () {
       final games = [
         _game(['e4', 'e5', 'Nf3', 'Nc6', 'Bc4']),
@@ -142,6 +155,37 @@ void main() {
       final fen = _fenAfter(['e4', 'e5', 'Nf3', 'Nc6', 'Bc4', 'Bc5']);
       expect(OpeningImprovementService.moveFromUci(fen, 'e1h1')!.san, 'O-O');
       expect(OpeningImprovementService.moveFromUci(fen, 'e1g1')!.san, 'O-O');
+    });
+  });
+
+  group('findSan', () {
+    test('retrouve chaque coup légal à partir de sa notation', () {
+      const fens = [
+        'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+        // Cavaliers et tours qui peuvent aller sur la même case, roques.
+        'r3k2r/pppq1ppp/2n2n2/3pp3/3PP3/2N2N2/PPPQ1PPP/R3K2R w KQkq - 0 8',
+        // Promotions (avec et sans prise), échec.
+        '1r2k3/P1P5/8/8/8/8/5p2/4K1R1 w - - 0 1',
+        '4k3/8/8/8/8/8/1p6/R3K3 b Q - 0 1',
+        // Prise en passant.
+        'rnbqkbnr/ppp1p1pp/8/3pPp2/8/8/PPPP1PPP/RNBQKBNR w KQkq f6 0 3',
+      ];
+      for (final fen in fens) {
+        final board = Chess.fromFEN(fen);
+        for (final move in board.generate_moves()) {
+          final san = board.move_to_san(move);
+          final found = OpeningImprovementService.findSan(board, san);
+          expect(found, isNotNull, reason: '$fen $san');
+          expect((found!.from, found.to, found.promotion), (move.from, move.to, move.promotion), reason: '$fen $san');
+        }
+      }
+    });
+
+    test('coup illégal ou ambigu : null', () {
+      final board = Chess();
+      expect(OpeningImprovementService.findSan(board, 'e5'), isNull);
+      expect(OpeningImprovementService.findSan(board, 'Nd2'), isNull);
+      expect(OpeningImprovementService.findSan(board, 'O-O'), isNull);
     });
   });
 

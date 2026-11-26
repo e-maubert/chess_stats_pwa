@@ -104,29 +104,25 @@ class OpeningImprovementService {
   /// Coups rejoués au moins [minRepeats] fois dans une même position, les
   /// plus fréquents d'abord.
   static List<OpeningCandidate> candidates(List<CountryGame> games, {required bool white}) {
-    final groups = <String, _Group>{};
-    for (final game in games) {
-      final moves = game.openingMoves ?? const <String>[];
-      final lost = game.result == 'loss';
-      final board = Chess();
-      for (var ply = 0; ply < moves.length; ply++) {
-        if (ply.isEven == white) {
-          final fen = board.fen;
-          final group = groups.putIfAbsent(
-              '${_positionKey(fen)}|${moves[ply]}', () => _Group(fen, moves[ply], ply, moves.sublist(0, ply)));
-          group.count++;
-          if (lost) group.losses++;
-        }
-        if (!board.move(moves[ply])) break;
-      }
+    final collector = _CandidateCollector(white);
+    games.forEach(collector.add);
+    return collector.result();
+  }
+
+  /// Comme [candidates], en rendant la main à l'interface toutes les
+  /// [batch] parties : le web n'a qu'un fil d'exécution, un long calcul
+  /// d'un seul tenant gèlerait la page.
+  static Future<List<OpeningCandidate>> candidatesAsync(
+    List<CountryGame> games, {
+    required bool white,
+    int batch = 8,
+  }) async {
+    final collector = _CandidateCollector(white);
+    for (final (index, game) in games.indexed) {
+      if (index > 0 && index % batch == 0) await Future<void>.delayed(Duration.zero);
+      collector.add(game);
     }
-    final result = [
-      for (final g in groups.values)
-        if (g.count >= minRepeats)
-          OpeningCandidate(fen: g.fen, san: g.san, ply: g.ply, line: g.line, count: g.count, losses: g.losses),
-    ];
-    result.sort((a, b) => b.count != a.count ? b.count.compareTo(a.count) : a.ply.compareTo(b.ply));
-    return result;
+    return collector.result();
   }
 
   /// Coup de [candidates] à corriger en premier : perte d'au moins
@@ -170,13 +166,10 @@ class OpeningImprovementService {
   /// est illégal.
   static ({String from, String to, String san, String fenAfter})? moveFromSan(String fen, String san) {
     final board = Chess.fromFEN(fen);
-    for (final m in board.moves({'verbose': true})) {
-      if (m['san'] == san) {
-        board.move(san);
-        return (from: m['from'] as String, to: m['to'] as String, san: san, fenAfter: board.fen);
-      }
-    }
-    return null;
+    final move = findSan(board, san);
+    if (move == null) return null;
+    board.move(move);
+    return (from: move.fromAlgebraic, to: move.toAlgebraic, san: san, fenAfter: board.fen);
   }
 
   /// Coup UCI de Lichess (ex. `g1f3`, roque `e1h1`) joué depuis [fen] ;
@@ -192,12 +185,54 @@ class OpeningImprovementService {
       to = castles[uci.substring(0, 4)]!;
     }
     final promotion = uci.length > 4 ? uci[4] : null;
-    for (final m in board.moves({'verbose': true})) {
-      if (m['from'] == from && m['to'] == to && (promotion == null || m['promotion'] == promotion)) {
-        return moveFromSan(fen, m['san'] as String);
+    for (final m in board.generate_moves()) {
+      if (m.fromAlgebraic == from && m.toAlgebraic == to && (promotion == null || m.promotion?.name == promotion)) {
+        // Notation calculée pour ce seul coup (coûteuse avec le paquet
+        // `chess`).
+        final san = board.move_to_san(m);
+        board.move(m);
+        return (from: from, to: to, san: san, fenAfter: board.fen);
       }
     }
     return null;
+  }
+
+  /// Coup légal de [board] noté [san] (ex. `Nbd7`, `exd5`, `e8=Q+`, `O-O`) ;
+  /// null s'il n'y en a pas exactement un. Lit la notation au lieu de
+  /// calculer celle de chaque coup légal (ce que fait `Chess.move`, très
+  /// lent : le calcul de toutes les positions d'une ouverture gelait la
+  /// page plusieurs secondes).
+  static Move? findSan(Chess board, String san) {
+    var text = san.replaceAll(RegExp(r'[+#!?]'), '');
+    final moves = board.generate_moves();
+    if (text == 'O-O' || text == 'O-O-O' || text == '0-0' || text == '0-0-0') {
+      final flag = text.length == 3 ? Chess.BITS_KSIDE_CASTLE : Chess.BITS_QSIDE_CASTLE;
+      final castles = moves.where((m) => m.flags & flag != 0).toList();
+      return castles.length == 1 ? castles.single : null;
+    }
+    String? promotion;
+    final equals = text.indexOf('=');
+    if (equals >= 0 && equals + 1 < text.length) {
+      promotion = text[equals + 1].toLowerCase();
+      text = text.substring(0, equals);
+    }
+    var piece = 'p';
+    if (text.isNotEmpty && 'NBRQK'.contains(text[0])) {
+      piece = text[0].toLowerCase();
+      text = text.substring(1);
+    }
+    text = text.replaceAll('x', '');
+    if (text.length < 2) return null;
+    final to = text.substring(text.length - 2);
+    final hint = text.substring(0, text.length - 2);
+    final found = moves.where((m) {
+      if (m.piece.name != piece || m.toAlgebraic != to) return false;
+      if ((m.promotion?.name) != promotion) return false;
+      final from = m.fromAlgebraic;
+      // Désambiguïsation : colonne et/ou rangée de départ.
+      return hint.split('').every(from.contains);
+    }).toList();
+    return found.length == 1 ? found.single : null;
   }
 
   /// Coup numéroté (ex. `3.d5`, `2...Nc6`) ; [letters] remplace les lettres
@@ -235,6 +270,63 @@ class OpeningImprovementService {
     }
     if (counts.isEmpty) return null;
     return counts.entries.reduce((a, b) => b.value > a.value ? b : a).key;
+  }
+}
+
+/// Regroupe les coups du joueur par (position, coup). Les positions déjà
+/// calculées pour un début de partie sont réutilisées : les parties d'une
+/// même ouverture partagent leurs premiers coups, et rejouer un coup avec
+/// le paquet `chess` est coûteux.
+class _CandidateCollector {
+  final bool white;
+  final Map<String, _Group> _groups = {};
+
+  /// Début de partie (coups séparés par des espaces) → position obtenue.
+  final Map<String, String> _fenAfter = {};
+
+  _CandidateCollector(this.white);
+
+  static final String _startFen = Chess().fen;
+
+  void add(CountryGame game) {
+    final moves = game.openingMoves ?? const <String>[];
+    final lost = game.result == 'loss';
+    var fen = _startFen;
+    var prefix = '';
+    // Échiquier tenu à jour seulement quand une position n'est pas connue.
+    Chess? board;
+    for (var ply = 0; ply < moves.length; ply++) {
+      final move = moves[ply];
+      if (ply.isEven == white) {
+        final group = _groups.putIfAbsent('${OpeningImprovementService._positionKey(fen)}|$move',
+            () => _Group(fen, move, ply, moves.sublist(0, ply)));
+        group.count++;
+        if (lost) group.losses++;
+      }
+      prefix = '$prefix $move';
+      final known = _fenAfter[prefix];
+      if (known != null) {
+        fen = known;
+        board = null;
+        continue;
+      }
+      board ??= Chess.fromFEN(fen);
+      final legal = OpeningImprovementService.findSan(board, move);
+      if (legal == null) break;
+      board.move(legal);
+      fen = board.fen;
+      _fenAfter[prefix] = fen;
+    }
+  }
+
+  List<OpeningCandidate> result() {
+    final result = [
+      for (final g in _groups.values)
+        if (g.count >= OpeningImprovementService.minRepeats)
+          OpeningCandidate(fen: g.fen, san: g.san, ply: g.ply, line: g.line, count: g.count, losses: g.losses),
+    ];
+    result.sort((a, b) => b.count != a.count ? b.count.compareTo(a.count) : a.ply.compareTo(b.ply));
+    return result;
   }
 }
 

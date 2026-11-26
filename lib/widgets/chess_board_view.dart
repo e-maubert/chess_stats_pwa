@@ -28,10 +28,10 @@ class ChessBoardView extends StatelessWidget {
     this.semanticLabel,
   });
 
-  /// Couleurs des cases (fixes : l'échiquier est lisible dans les deux
-  /// thèmes).
-  static const Color lightSquare = Color(0xFFF0D9B5);
-  static const Color darkSquare = Color(0xFFB58863);
+  /// Couleurs des cases, celles de l'échiquier du logo (fixes :
+  /// l'échiquier est lisible dans les deux thèmes).
+  static const Color lightSquare = Color(0xFFEDE6D6);
+  static const Color darkSquare = Color(0xFF3F6DB3);
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +57,9 @@ class _BoardPainter extends CustomPainter {
   final List<BoardArrow> arrows;
 
   _BoardPainter(this.fen, this.flipped, this.arrows);
+
+  /// Décalage vertical des pièces vers le bas, en fraction de case.
+  static const double _glyphDrop = 0.11;
 
   /// Symboles pleins (♚…♟) pour les deux camps, suivis du sélecteur
   /// « texte » pour éviter un rendu en émoji.
@@ -124,7 +127,10 @@ class _BoardPainter extends CustomPainter {
         }
         final glyph = '${_glyphs[char.toLowerCase()] ?? ''}︎';
         final white = char.toUpperCase() == char;
-        final center = _origin(file, 7 - row, square) + Offset(square / 2, square / 2);
+        // Les symboles sont dessinés plus haut que le centre de leur ligne
+        // de texte : on les descend pour les centrer dans la case (mesuré
+        // avec la police de secours de Flutter web, Noto Sans Symbols 2).
+        final center = _origin(file, 7 - row, square) + Offset(square / 2, square * (0.5 + _glyphDrop));
         final style = TextStyle(fontSize: square * 0.78, height: 1);
         // Contour, puis remplissage : pièces blanches claires bordées de
         // noir, pièces noires pleines.

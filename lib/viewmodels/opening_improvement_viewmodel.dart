@@ -87,10 +87,16 @@ class OpeningImprovementViewModel extends ChangeNotifier {
       OpeningImprovementService.mainOpening(inClass, white: true),
       OpeningImprovementService.mainOpening(inClass, white: false),
     ];
-    final candidates = [
-      for (final o in openings)
-        o == null ? const <OpeningCandidate>[] : OpeningImprovementService.candidates(o.games, white: o.white),
-    ];
+    // Laisse d'abord l'interface afficher le chargement, puis calcule les
+    // positions par petits lots (sans geler la page).
+    await Future<void>.delayed(Duration.zero);
+    final candidates = <List<OpeningCandidate>>[];
+    for (final o in openings) {
+      candidates.add(o == null
+          ? const <OpeningCandidate>[]
+          : await OpeningImprovementService.candidatesAsync(o.games, white: o.white));
+      if (run != _run || _disposed) return;
+    }
     final total = candidates[0].length + candidates[1].length;
     try {
       final results = <ColorImprovement?>[];
