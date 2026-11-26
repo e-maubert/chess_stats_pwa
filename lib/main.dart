@@ -6,6 +6,8 @@ import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'screens/player_route.dart';
 import 'services/changelog_service.dart';
+import 'services/eval_store.dart';
+import 'services/game_database_factory.dart';
 import 'services/game_repository.dart';
 import 'services/player_link_service.dart';
 import 'services/position_evaluator.dart';
@@ -53,9 +55,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<GameRepository>(create: (_) => repository ?? GameRepository.local()),
-        // Évaluations de positions (« Améliorer son ouverture »), gardées pour
-        // la session.
-        Provider<PositionEvaluator>(create: (_) => CloudEvalService()),
+        // Évaluations de positions (« Améliorer son ouverture »), gardées dans
+        // le stockage local.
+        Provider<PositionEvaluator>(create: (_) => CloudEvalService(store: EvalStore(gameDatabaseFactory))),
         ChangeNotifierProvider(create: (_) => ThemeViewModel(initialThemeMode)),
         ChangeNotifierProvider(create: (_) => ChangelogViewModel(lastSeenVersion)),
       ],
