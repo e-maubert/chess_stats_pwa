@@ -651,6 +651,16 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String shareRecapText(String username) {
+    return 'Le bilan du mois de $username sur Chess Stats';
+  }
+
+  @override
+  String shareScoutText(String username) {
+    return 'Comment battre $username sur Chess Stats';
+  }
+
+  @override
   String get shareCopied => 'Lien copié';
 
   @override
@@ -1687,4 +1697,43 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get changelogV1100 =>
       '« Comment battre ce joueur » : la phase où ton adversaire craque\nSa gestion du temps et sa réaction après une défaite\nSes moments de la journée les plus fragiles\nUn plan de jeu plus complet';
+
+  @override
+  String get changelogV1110 =>
+      'Partage le bilan du mois ou « Comment battre ce joueur » avec leur propre lien\nUn lien vers des stats ouvre directement les stats\nLe bilan du mois ne se lance tout seul qu\'après une recherche';
+
+  @override
+  String scoutIntroBaseChosen(int games, String timeClass, int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      games,
+      locale: localeName,
+      other:
+          'On analyse ses $games parties de $timeClass des $days derniers jours.',
+      one: 'On analyse sa seule partie de $timeClass des $days derniers jours.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String scoutAnalyzeTimeClass(String timeClass) {
+    String _temp0 = intl.Intl.selectLogic(
+      timeClass,
+      {
+        'bullet': 'Analyser le bullet',
+        'blitz': 'Analyser le blitz',
+        'rapid': 'Analyser le rapide',
+        'other': 'Analyser le $timeClass',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String scoutCadenceSameChosen(String percent) {
+    return 'C\'est sa cadence la moins réussie ($percent de victoires).';
+  }
+
+  @override
+  String get changelogV1120 =>
+      '« Comment battre ce joueur » : choisis la cadence à analyser\nUn raccourci vers sa cadence la moins réussie\nUn lien à partager pour chaque cadence\nDiaporama plus court quand il y a trop peu de parties pour conclure';
 }

@@ -7,14 +7,15 @@ L'interface est en **français** ou en **anglais**, selon la langue du navigateu
 
 ## Commandes
 
-Flutter n'est pas dans le PATH : utiliser le chemin complet.
-
 ```
-C:\src\flutter\bin\flutter.bat analyze
-C:\src\flutter\bin\flutter.bat test
+flutter analyze
+flutter test
+flutter gen-l10n
 ```
 
-- Lancer l'app : configuration `flutter-web` de `.claude/launch.json` (http://localhost:8080), via `preview_start`, pas via Bash.
+Si Flutter n'est pas dans le PATH du poste, utiliser son chemin complet (précisé dans le `CLAUDE.local.md` du poste s'il existe).
+
+- Lancer l'app : configuration `flutter-web` de `.claude/launch.json` (http://localhost:8080), via `preview_start`, pas via Bash. Le chemin de Flutter y est celui du poste d'Etienne : sur un autre poste, l'adapter localement sans commiter ce changement.
 - Le serveur ne recompile pas sur un simple rechargement du navigateur : après une modification, l'arrêter puis le relancer.
 - Compte de test pratique : `hikaru` (beaucoup de parties). Pour vérifier des chiffres, comparer avec l'API publique `https://api.chess.com/pub/player/<pseudo>/games/<AAAA>/<MM>`.
 
@@ -26,7 +27,7 @@ Aucun problème (« No issues found! »). Une modification ne doit **pas en ajou
 
 Point d'entrée : `lib/main.dart` → `screens/home_screen.dart` (recherche) → `screens/stats_screen.dart` → `widgets/stats_display.dart` (page principale des stats).
 
-Adresses : `/` = accueil, `/<pseudo>` = page du joueur (lien à partager, bouton de partage dans les stats et en fin de bilan). Routes dans `main.dart` et `screens/player_route.dart`, analyse de l'adresse dans `services/player_link_service.dart`. Netlify renvoie toute adresse inconnue vers `index.html` (`netlify.toml`).
+Adresses : `/` = accueil, `/<pseudo>` = stats du joueur, `/<pseudo>/recap` = son bilan, `/<pseudo>/scout` = « Comment battre ce joueur » dans sa cadence la plus jouée, `/<pseudo>/scout/<bullet|blitz|rapid>` = dans cette cadence (choix et raccourci vers sa cadence la plus faible sur la 1re diapo) (liens à partager : bouton de partage dans les stats et en fin de chaque diaporama ; diaporama ouvert par lien = au-dessus des stats). Le bilan ne s'ouvre tout seul qu'après une recherche (première recherche du joueur sur l'appareil), jamais à l'ouverture d'un lien. Routes dans `main.dart` et `screens/player_route.dart`, analyse de l'adresse dans `services/player_link_service.dart`. Netlify renvoie toute adresse inconnue vers `index.html` (`netlify.toml`).
 
 | Dossier | Rôle |
 |---|---|
@@ -46,7 +47,7 @@ Adresses : `/` = accueil, `/<pseudo>` = page du joueur (lien à partager, bouton
 
 Un seul système : fichiers **`.arb`** (`lib/l10n/app_en.arb`, `lib/l10n/app_fr.arb`) et classe générée `AppLocalizations` (`AppLocalizations.of(context)!`).
 - La langue suit celle du navigateur ; une langue non prise en charge retombe sur l'anglais (première de `preferred-supported-locales` dans `l10n.yaml`). `main.dart` n'impose aucune `locale`.
-- Après une modification des `.arb`, régénérer : `C:\src\flutter\bin\flutter.bat gen-l10n` (les fichiers générés sont versionnés).
+- Après une modification des `.arb`, régénérer : `flutter gen-l10n` (les fichiers générés sont versionnés).
 - Ajouter une langue : créer `lib/l10n/app_<code>.arb` avec toutes les clés de `app_en.arb`, puis régénérer.
 
 Règles :
@@ -57,56 +58,26 @@ Règles :
 
 Dans `test/`. Mettre la logique testable (agrégations, tri, filtres) dans `services/` ou `viewmodels/` et la couvrir par un test.
 
-## Mise en ligne (version de test, Netlify)
+## Design
 
-Netlify n'a pas Flutter : on compile en local et on envoie le dossier `build/web` (config : `netlify.toml`).
-Uniquement à la demande de l'utilisateur, depuis `main`.
+- Sources du logo et des icônes dans `design/` (SVG), PNG régénérés par `tool/generate_icons.ps1` (PowerShell).
+- Toute modification visuelle doit rester lisible en thème clair **et** sombre, sur mobile comme sur grand écran (voir « Thème » plus haut).
+- Couleurs et styles centralisés dans `theme/` (`AppTheme`) : y ajouter une couleur plutôt que la mettre en dur dans un widget.
 
-Site : https://chess-stats-test.netlify.app (le dossier y est relié par `.netlify/state.json`, non versionné).
+## Travail à plusieurs (Git / GitHub)
 
-```
-rm -rf build/web
-C:\src\flutter\bin\flutter.bat build web --release
-export PATH="/c/Users/etien/AppData/Roaming/nvm/v22.23.4:$PATH"   # Bash
-npx --yes netlify-cli@27.17.0 deploy --prod --dir build/web
-```
+Le projet est sur GitHub (`e-maubert/chess_stats_pwa`) et partagé entre plusieurs personnes, chacune avec son Claude.
 
-- Toujours supprimer `build/web` avant de compiler : un build incrémental peut oublier des fichiers de `web/` (ex. `manifest.json`).
-- `netlify-cli` exige Node ≥ 22.13. Le Node par défaut du poste est le 16 (à ne pas changer avec `nvm use`) : préfixer le `PATH` par le Node 22 installé via nvm, seulement pour la commande.
-- Si l'outil n'est plus connecté : `npx netlify-cli login` (connexion dans le navigateur, faite par l'utilisateur). Équipe Netlify : slug `etienne-maubert`.
-- Logo et icônes : sources dans `design/`, PNG régénérés par `tool/generate_icons.ps1`.
+- **Au début de chaque tâche** : `git fetch --prune`, puis regarder les branches distantes et les Pull Requests ouvertes (`gh pr list`) pour savoir ce qui est en cours et éviter de toucher aux mêmes fichiers.
+- Jamais de commit direct sur `main` (= prod). Une branche par changement, partie d'un `origin/main` à jour : `fix/…` bug, `feat/…` évolution, `chore/…` maintenance, `design/…` visuel.
+- **Ne jamais modifier, rebaser ni supprimer la branche de quelqu'un d'autre.**
+- Fin d'un changement : pousser la branche et ouvrir une **Pull Request** vers `main` (seulement quand l'utilisateur le demande). Le merge se fait sur GitHub, par une personne, jamais par Claude.
+- Avant d'ouvrir une PR : `flutter analyze` (aucun nouveau problème) et `flutter test` passent ; décrire dans la PR ce qui change pour l'utilisateur, avec une capture si c'est visible.
+- **Numéro de version** (`pubspec.yaml`), **nouveautés** (`changelogV<version>` dans les `.arb`) et `GameStore.schemaVersion` : ne les changer que si la PR le nécessite vraiment, et vérifier juste avant le merge qu'une autre PR ne les a pas déjà incrémentés.
+- Nouveautés d'une version : 3 à 5 puces courtes et un peu vagues, centrées sur ce que l'utilisateur voit, sans détail technique. En FR et en EN.
 
-## Modes de travail
+## Mise en ligne (Netlify)
 
-Deux modes. **Par défaut : mode perso.** Le mode démo / agence ne s'applique que si l'utilisateur le demande (« mode démo », « mode agence », ou en demandant de passer par les agents ou par Trello).
+Site de test : https://chess-stats-test.netlify.app. Netlify n'a pas Flutter : on compile en local et on envoie le dossier `build/web` (config : `netlify.toml`).
 
-### Mode perso (par défaut)
-
-Le but est de consommer peu de tokens.
-- Développer directement dans la conversation, où le contexte est déjà chargé. Pas d'agent `developpeur-trello` ni `relecteur-code`.
-- Pas de suivi Trello obligatoire. Si une carte existe pour le changement, y laisser un seul commentaire court à la fin (branche, ce qui a été fait) et la déplacer.
-- Vérifier une seule fois : `flutter analyze` + `flutter test`, et l'app dans le navigateur seulement si le changement est visible et pas couvert par un test. Limiter les captures d'écran.
-- Relecture uniquement sur un changement délicat (stockage, calculs de stats) : `/code-review` sur la branche, pas d'agent relecteur.
-
-### Mode démo / agence (agents + Trello)
-
-Pour montrer les agents, ou quand des humains suivent le projet. Les rôles sont décrits plus bas.
-- Une seule vérification complète par étape : le relecteur ne relance le navigateur que pour les critères visuels non couverts par un test, et la session principale ne refait pas les vérifications des agents (elle contrôle seulement que les branches existent et que `analyze` / `test` passent).
-- Modèles : `developpeur-trello` hérite du modèle de la session ; `reception-client` et `relecteur-code` tournent sur Sonnet (champ `model` de `.claude/agents/`).
-
-## Workflow des agents (Trello, mode démo / agence)
-
-Tableau « Retours client – Chess Stats » : https://trello.com/b/xJvUOeeJ/retours-client-chess-stats
-Colonnes : **À faire → En cours → En relecture → Livré**.
-
-| Agent | Rôle |
-|---|---|
-| `reception-client` | Mails client → cartes dans « À faire » (besoin, priorité, points ambigus, checklist « Critères d'acceptation »), brouillon de réponse. Ne touche pas au code. |
-| `developpeur-trello` | Développe les cartes de « À faire » et celles renvoyées dans « En cours », puis les passe dans « En relecture ». Pose ses questions en commentaire si la demande est ambiguë. |
-| `relecteur-code` | Relit les cartes de « En relecture », coche les critères vérifiés, puis « Livré » ou renvoi dans « En cours ». Ne modifie jamais le code. |
-
-Les instructions détaillées sont dans `.claude/agents/`. Les décisions du client se trouvent dans les commentaires des cartes : les lire avant de développer.
-
-Git : jamais de commit direct sur `main` (= prod). Une branche par carte ou par changement (`fix/…` bug, `feat/…` évolution, `chore/…` maintenance), fusionnée dans `main` uniquement à la demande de l'utilisateur. Aucun `git push` sans demande.
-
-Étiquettes : rouge = bug, bleue = évolution (l'outil Trello ne peut ni créer ni renommer d'étiquette).
+**Seul Etienne déploie**, depuis `main`, en regroupant plusieurs fonctionnalités (crédits Netlify limités). Ne jamais déployer ni proposer de déployer après chaque changement : vérifier en local avec `preview_start`.

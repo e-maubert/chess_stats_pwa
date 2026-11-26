@@ -329,6 +329,22 @@
       }
     }
   },
+  "shareRecapText": "{username}'s monthly recap on Chess Stats",
+  "@shareRecapText": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
+  "shareScoutText": "How to beat {username} on Chess Stats",
+  "@shareScoutText": {
+    "placeholders": {
+      "username": {
+        "type": "String"
+      }
+    }
+  },
   "shareCopied": "Link copied",
   "shareLinkTitle": "Link to share",
   "playerLoading": "Loading games…",
@@ -1106,5 +1122,37 @@
   },
   "scoutPhaseNone": "No weak phase",
   "scoutHoursNone": "No weak time of day",
-  "changelogV1100": "“How to beat this player”: the phase where your opponent cracks\nTheir time management and how they react after a loss\nTheir weakest times of day\nA fuller game plan"
+  "changelogV1100": "“How to beat this player”: the phase where your opponent cracks\nTheir time management and how they react after a loss\nTheir weakest times of day\nA fuller game plan",
+  "changelogV1110": "Share the monthly recap or “How to beat this player” with their own link\nA shared stats link opens the stats straight away\nThe monthly recap starts on its own only when you search for a player",
+  "scoutIntroBaseChosen": "{games, plural, =1{We analyze their only {timeClass} game from the last {days} days.} other{We analyze their {games} {timeClass} games from the last {days} days.}}",
+  "@scoutIntroBaseChosen": {
+    "placeholders": {
+      "games": {
+        "type": "int"
+      },
+      "timeClass": {
+        "type": "String"
+      },
+      "days": {
+        "type": "int"
+      }
+    }
+  },
+  "scoutAnalyzeTimeClass": "{timeClass, select, bullet{Analyze bullet} blitz{Analyze blitz} rapid{Analyze rapid} other{Analyze {timeClass}}}",
+  "@scoutAnalyzeTimeClass": {
+    "placeholders": {
+      "timeClass": {
+        "type": "String"
+      }
+    }
+  },
+  "scoutCadenceSameChosen": "It's their least successful time control ({percent} wins).",
+  "@scoutCadenceSameChosen": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "changelogV1120": "“How to beat this player”: choose the time control to analyze\nA shortcut to their least successful time control\nA link to share for each time control\nShorter slideshow when there are too few games to conclude"
 }

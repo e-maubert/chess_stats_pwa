@@ -656,6 +656,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String shareRecapText(String username) {
+    return '$username\'s monthly recap on Chess Stats';
+  }
+
+  @override
+  String shareScoutText(String username) {
+    return 'How to beat $username on Chess Stats';
+  }
+
+  @override
   String get shareCopied => 'Link copied';
 
   @override
@@ -1690,4 +1700,43 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get changelogV1100 =>
       '“How to beat this player”: the phase where your opponent cracks\nTheir time management and how they react after a loss\nTheir weakest times of day\nA fuller game plan';
+
+  @override
+  String get changelogV1110 =>
+      'Share the monthly recap or “How to beat this player” with their own link\nA shared stats link opens the stats straight away\nThe monthly recap starts on its own only when you search for a player';
+
+  @override
+  String scoutIntroBaseChosen(int games, String timeClass, int days) {
+    String _temp0 = intl.Intl.pluralLogic(
+      games,
+      locale: localeName,
+      other:
+          'We analyze their $games $timeClass games from the last $days days.',
+      one: 'We analyze their only $timeClass game from the last $days days.',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String scoutAnalyzeTimeClass(String timeClass) {
+    String _temp0 = intl.Intl.selectLogic(
+      timeClass,
+      {
+        'bullet': 'Analyze bullet',
+        'blitz': 'Analyze blitz',
+        'rapid': 'Analyze rapid',
+        'other': 'Analyze $timeClass',
+      },
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String scoutCadenceSameChosen(String percent) {
+    return 'It\'s their least successful time control ($percent wins).';
+  }
+
+  @override
+  String get changelogV1120 =>
+      '“How to beat this player”: choose the time control to analyze\nA shortcut to their least successful time control\nA link to share for each time control\nShorter slideshow when there are too few games to conclude';
 }

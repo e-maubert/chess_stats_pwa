@@ -3,11 +3,13 @@ import 'package:chess_stats_pwa/models/country_game.dart';
 import 'package:chess_stats_pwa/models/year_month.dart';
 import 'package:chess_stats_pwa/screens/home_screen.dart';
 import 'package:chess_stats_pwa/screens/recap_screen.dart';
+import 'package:chess_stats_pwa/screens/scouting_screen.dart';
 import 'package:chess_stats_pwa/screens/stats_screen.dart';
 import 'package:chess_stats_pwa/services/game_repository.dart';
 import 'package:chess_stats_pwa/services/game_store.dart';
 import 'package:chess_stats_pwa/services/monthly_games_source.dart';
 import 'package:chess_stats_pwa/services/player_link_service.dart';
+import 'package:chess_stats_pwa/services/recap_seen_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -39,13 +41,22 @@ class _Source implements MonthlyGamesSource {
 
 void main() {
   group('PlayerLinkService', () {
-    test('pseudo tiré de l\'adresse, en minuscules', () {
-      expect(PlayerLinkService.usernameFromPath('/Hikaru'), 'hikaru');
-      expect(PlayerLinkService.usernameFromPath('/tarantino_girl/'), 'tarantino_girl');
-      expect(PlayerLinkService.usernameFromPath('/'), isNull);
-      expect(PlayerLinkService.usernameFromPath('/a/b'), isNull);
-      expect(PlayerLinkService.usernameFromPath('/manifest.json'), isNull);
-      expect(PlayerLinkService.usernameFromPath(null), isNull);
+    test('joueur et page tirés de l\'adresse, pseudo en minuscules', () {
+      expect(PlayerLinkService.fromPath('/Hikaru'), (username: 'hikaru', page: PlayerPage.stats, timeClass: null));
+      expect(PlayerLinkService.fromPath('/tarantino_girl/'), (username: 'tarantino_girl', page: PlayerPage.stats, timeClass: null));
+      expect(PlayerLinkService.fromPath('/Hikaru/recap'), (username: 'hikaru', page: PlayerPage.recap, timeClass: null));
+      expect(PlayerLinkService.fromPath('/hikaru/Scout/'), (username: 'hikaru', page: PlayerPage.scout, timeClass: null));
+      expect(PlayerLinkService.fromPath('/'), isNull);
+      expect(PlayerLinkService.fromPath('/a/b'), isNull);
+      expect(PlayerLinkService.fromPath('/hikaru/inconnue'), isNull);
+      expect(PlayerLinkService.fromPath('/hikaru/recap/x'), isNull);
+      expect(PlayerLinkService.fromPath('/hikaru/scout/Bullet'),
+          (username: 'hikaru', page: PlayerPage.scout, timeClass: 'bullet'));
+      expect(PlayerLinkService.fromPath('/hikaru/scout/daily'), isNull);
+      expect(PlayerLinkService.fromPath('/hikaru/recap/blitz'), isNull);
+      expect(PlayerLinkService.fromPath('/hikaru/blitz'), isNull);
+      expect(PlayerLinkService.fromPath('/manifest.json'), isNull);
+      expect(PlayerLinkService.fromPath(null), isNull);
     });
 
     test('lien complet sur le site ouvert', () {
@@ -54,6 +65,13 @@ void main() {
           'https://chess-stats-test.netlify.app/magnuscarlsen');
       expect(PlayerLinkService.link('bob', base: Uri.parse('http://localhost:8080/')).toString(),
           'http://localhost:8080/bob');
+      expect(PlayerLinkService.link('Bob', page: PlayerPage.recap, base: base).toString(),
+          'https://chess-stats-test.netlify.app/bob/recap');
+      expect(PlayerLinkService.link('bob', page: PlayerPage.scout, base: base).toString(),
+          'https://chess-stats-test.netlify.app/bob/scout');
+      expect(PlayerLinkService.link('bob', page: PlayerPage.scout, timeClass: 'rapid', base: base).toString(),
+          'https://chess-stats-test.netlify.app/bob/scout/rapid');
+      expect(PlayerLinkService.path('bob', timeClass: 'rapid'), '/bob');
     });
   });
 
@@ -78,15 +96,9 @@ void main() {
       await tester.pumpAndSettle();
     }
 
-    testWidgets('/<pseudo> : bilan du joueur, puis retour à l\'accueil', (tester) async {
+    testWidgets('/<pseudo> : stats sans bilan, partage, puis retour à l\'accueil', (tester) async {
       await open(tester, '/Hikaru');
-      expect(find.byType(RecapScreen), findsOneWidget);
-
-      // La page des stats charge en continu (indicateurs animés) : pas de
-      // pumpAndSettle.
-      await tester.tap(find.text('Passer'));
-      await tester.pump();
-      await tester.pump(const Duration(seconds: 1));
+      expect(find.byType(RecapScreen), findsNothing);
       expect(find.byType(StatsScreen), findsOneWidget);
       expect(find.byTooltip('Partager'), findsOneWidget);
 
@@ -107,6 +119,36 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(seconds: 1));
       expect(find.byType(HomeScreen), findsOneWidget);
+    });
+
+    testWidgets('/<pseudo>/recap : bilan au-dessus des stats, compté comme vu', (tester) async {
+      await open(tester, '/hikaru/recap');
+      expect(find.byType(RecapScreen), findsOneWidget);
+      expect(await RecapSeenService().hasSeen('hikaru'), isTrue);
+
+      await tester.tap(find.text('Passer'));
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 1));
+      expect(find.byType(RecapScreen), findsNothing);
+      expect(find.byType(StatsScreen), findsOneWidget);
+    });
+
+    testWidgets('/<pseudo>/scout : comment le battre au-dessus des stats', (tester) async {
+      await open(tester, '/hikaru/scout');
+      expect(find.byType(ScoutingScreen), findsOneWidget);
+      expect(await RecapSeenService().hasSeen('hikaru'), isFalse);
+
+      tester.state<NavigatorState>(find.byType(Navigator).first).pop();
+      await tester.pump();
+      await tester.pump(const Duration(seconds: 1));
+      expect(find.byType(ScoutingScreen), findsNothing);
+      expect(find.byType(StatsScreen), findsOneWidget);
+    });
+
+    testWidgets('/<pseudo>/scout/<cadence> : cette cadence, au-dessus des stats', (tester) async {
+      await open(tester, '/hikaru/scout/blitz');
+      expect(tester.widget<ScoutingScreen>(find.byType(ScoutingScreen)).timeClass, 'blitz');
+      expect(find.text('en blitz'), findsOneWidget);
     });
 
     testWidgets('joueur introuvable : accueil, pseudo pré-rempli et message', (tester) async {

@@ -4,13 +4,24 @@ import 'package:chess_stats_pwa/l10n/app_localizations.dart';
 import '../services/player_link_service.dart';
 import '../services/share_service.dart';
 
-/// Partage le lien vers la page de [username] ; « Lien copié » quand il n'y
-/// a pas de menu de partage.
-Future<void> sharePlayer(BuildContext context, String username) async {
+/// Partage le lien vers une page de [username] (stats, bilan ou comment le
+/// battre, dans la cadence [timeClass]) ; « Lien copié » quand il n'y a
+/// pas de menu de partage.
+Future<void> sharePlayer(
+  BuildContext context,
+  String username, {
+  PlayerPage page = PlayerPage.stats,
+  String? timeClass,
+}) async {
   final l10n = AppLocalizations.of(context)!;
   final messenger = ScaffoldMessenger.of(context);
-  final url = PlayerLinkService.link(username);
-  final outcome = await ShareService.share(text: l10n.shareText(username), url: url);
+  final url = PlayerLinkService.link(username, page: page, timeClass: timeClass);
+  final text = switch (page) {
+    PlayerPage.stats => l10n.shareText(username),
+    PlayerPage.recap => l10n.shareRecapText(username),
+    PlayerPage.scout => l10n.shareScoutText(username),
+  };
+  final outcome = await ShareService.share(text: text, url: url);
   switch (outcome) {
     case ShareOutcome.shared:
       break;
