@@ -1741,6 +1741,10 @@ class AppLocalizationsEn extends AppLocalizations {
       '“How to beat this player”: choose the time control to analyze\nA shortcut to their least successful time control\nA link to share for each time control\nShorter slideshow when there are too few games to conclude';
 
   @override
+  String get changelogV1130 =>
+      'New “Improvement areas” tab, next to the stats\n“Improve your opening”: the move you keep repeating that costs you the advantage, and the better move to play\nA board in the app\'s colours to see the position at a glance\nNothing to fix? The app tells you your opening holds up';
+
+  @override
   String get tabStats => 'Stats';
 
   @override

@@ -702,6 +702,7 @@
   "scoutAnalyzeTimeClass": "{timeClass, select, bullet{Analyser le bullet} blitz{Analyser le blitz} rapid{Analyser le rapide} other{Analyser le {timeClass}}}",
   "scoutCadenceSameChosen": "C'est sa cadence la moins réussie ({percent} de victoires).",
   "changelogV1120": "« Comment battre ce joueur » : choisis la cadence à analyser\nUn raccourci vers sa cadence la moins réussie\nUn lien à partager pour chaque cadence\nDiaporama plus court quand il y a trop peu de parties pour conclure",
+  "changelogV1130": "Nouvel onglet « Axes d'amélioration », à côté des stats\n« Améliorer son ouverture » : le coup que tu répètes et qui te coûte l'avantage, avec le meilleur coup à jouer\nUn échiquier aux couleurs de l'app pour voir la position en un coup d'œil\nRien à corriger ? L'app te dit que ton ouverture tient la route",
   "tabStats": "Stats",
   "tabImprovement": "Axes d'amélioration",
   "improvementFiltersNote": "Les filtres ne s'appliquent pas encore ici : l'analyse porte sur ta cadence la plus jouée, sur les 3 derniers mois (parties classées).",
