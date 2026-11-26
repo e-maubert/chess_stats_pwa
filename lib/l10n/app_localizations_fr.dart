@@ -1736,4 +1736,113 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get changelogV1120 =>
       '« Comment battre ce joueur » : choisis la cadence à analyser\nUn raccourci vers sa cadence la moins réussie\nUn lien à partager pour chaque cadence\nDiaporama plus court quand il y a trop peu de parties pour conclure';
+
+  @override
+  String get tabStats => 'Stats';
+
+  @override
+  String get tabImprovement => 'Axes d\'amélioration';
+
+  @override
+  String get improvementFiltersNote =>
+      'Les filtres ne s\'appliquent pas encore ici : l\'analyse porte sur ta cadence la plus jouée, sur les 3 derniers mois (parties classées).';
+
+  @override
+  String get improvementFiltersSummary => 'Cadence la plus jouée · 3 mois';
+
+  @override
+  String get openingImprovementTitle => 'Améliorer son ouverture';
+
+  @override
+  String openingImprovementScope(String timeClass) {
+    return '$timeClass · 3 derniers mois · parties classées';
+  }
+
+  @override
+  String get openingImprovementIntro =>
+      'Dans ton ouverture la plus jouée avec chaque couleur, on cherche un coup que tu répètes et qui te fait perdre l\'avantage, et le coup à jouer à la place.';
+
+  @override
+  String get openingImprovementNoGames =>
+      'Aucune partie classée sur les 3 derniers mois.';
+
+  @override
+  String get openingImprovementError =>
+      'L\'analyse des positions est indisponible pour le moment. Réessaie dans une minute.';
+
+  @override
+  String get openingImprovementSource =>
+      'Évaluations du moteur : base cloud de Lichess.';
+
+  @override
+  String openingImprovementLoading(String percent) {
+    return 'Analyse de tes ouvertures… $percent';
+  }
+
+  @override
+  String get openingImprovementNoColorGames =>
+      'Aucune partie avec cette couleur.';
+
+  @override
+  String openingImprovementColorHeader(
+      String color, String opening, num count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count parties',
+      one: '$count partie',
+    );
+    return '$color : $opening ($_temp0)';
+  }
+
+  @override
+  String get openingImprovementNotEnough =>
+      'Pas assez de parties dans cette ouverture pour repérer un coup répété.';
+
+  @override
+  String get openingImprovementSolid =>
+      'Ton ouverture tient la route : aucun coup répété ne te fait perdre l\'avantage.';
+
+  @override
+  String get sanPieceLetters => 'CFTDR';
+
+  @override
+  String openingImprovementBoardLabel(String move, String best) {
+    return 'Échiquier : ton coup $move (flèche rouge), meilleur coup $best (flèche verte)';
+  }
+
+  @override
+  String get openingImprovementAtStart => 'Dès ton premier coup :';
+
+  @override
+  String openingImprovementAfter(String line) {
+    return 'Après $line :';
+  }
+
+  @override
+  String openingImprovementYouPlay(String move) {
+    return 'Tu joues souvent $move';
+  }
+
+  @override
+  String openingImprovementRepeats(int count, num losses) {
+    String _temp0 = intl.Intl.pluralLogic(
+      losses,
+      locale: localeName,
+      other: 'dont $losses défaites',
+      one: 'dont $losses défaite',
+      zero: 'aucune défaite',
+    );
+    return '$count fois, $_temp0';
+  }
+
+  @override
+  String openingImprovementBetter(String move) {
+    return 'Mieux : $move';
+  }
+
+  @override
+  String openingImprovementEval(String before, String after) {
+    return 'Évaluation du moteur : $before avant ton coup, $after après.';
+  }
 }

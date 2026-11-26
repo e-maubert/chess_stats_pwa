@@ -8,6 +8,7 @@ import 'screens/player_route.dart';
 import 'services/changelog_service.dart';
 import 'services/game_repository.dart';
 import 'services/player_link_service.dart';
+import 'services/position_evaluator.dart';
 import 'services/theme_preference_service.dart';
 import 'theme/app_theme.dart';
 import 'viewmodels/changelog_viewmodel.dart';
@@ -52,6 +53,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider<GameRepository>(create: (_) => repository ?? GameRepository.local()),
+        // Évaluations de positions (« Améliorer son ouverture »), gardées pour
+        // la session.
+        Provider<PositionEvaluator>(create: (_) => CloudEvalService()),
         ChangeNotifierProvider(create: (_) => ThemeViewModel(initialThemeMode)),
         ChangeNotifierProvider(create: (_) => ChangelogViewModel(lastSeenVersion)),
       ],

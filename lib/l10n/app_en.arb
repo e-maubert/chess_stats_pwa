@@ -1154,5 +1154,106 @@
       }
     }
   },
-  "changelogV1120": "“How to beat this player”: choose the time control to analyze\nA shortcut to their least successful time control\nA link to share for each time control\nShorter slideshow when there are too few games to conclude"
+  "changelogV1120": "“How to beat this player”: choose the time control to analyze\nA shortcut to their least successful time control\nA link to share for each time control\nShorter slideshow when there are too few games to conclude",
+  "tabStats": "Stats",
+  "tabImprovement": "Improvement areas",
+  "improvementFiltersNote": "Filters don't apply here yet: the analysis covers your most played time control over the last 3 months (rated games).",
+  "improvementFiltersSummary": "Most played time control · 3 months",
+  "openingImprovementTitle": "Improve your opening",
+  "openingImprovementScope": "{timeClass} · last 3 months · rated games",
+  "@openingImprovementScope": {
+    "placeholders": {
+      "timeClass": {
+        "type": "String"
+      }
+    }
+  },
+  "openingImprovementIntro": "In your most played opening with each colour, we look for a move you keep repeating that gives away your advantage, and the move to play instead.",
+  "openingImprovementNoGames": "No rated games over the last 3 months.",
+  "openingImprovementError": "The position analysis is unavailable for now. Try again in a minute.",
+  "openingImprovementSource": "Engine evaluations: Lichess cloud database.",
+  "openingImprovementLoading": "Analysing your openings… {percent}",
+  "@openingImprovementLoading": {
+    "placeholders": {
+      "percent": {
+        "type": "String"
+      }
+    }
+  },
+  "openingImprovementNoColorGames": "No games with this colour.",
+  "openingImprovementColorHeader": "{color}: {opening} ({count, plural, one{{count} game} other{{count} games}})",
+  "@openingImprovementColorHeader": {
+    "placeholders": {
+      "color": {
+        "type": "String"
+      },
+      "opening": {
+        "type": "String"
+      },
+      "count": {
+        "type": "num"
+      }
+    }
+  },
+  "openingImprovementNotEnough": "Not enough games in this opening to spot a repeated move.",
+  "openingImprovementSolid": "Your opening holds up: no repeated move gives away your advantage.",
+  "sanPieceLetters": "NBRQK",
+  "openingImprovementBoardLabel": "Board: your move {move} (red arrow), better move {best} (green arrow)",
+  "@openingImprovementBoardLabel": {
+    "placeholders": {
+      "move": {
+        "type": "String"
+      },
+      "best": {
+        "type": "String"
+      }
+    }
+  },
+  "openingImprovementAtStart": "On your very first move:",
+  "openingImprovementAfter": "After {line}:",
+  "@openingImprovementAfter": {
+    "placeholders": {
+      "line": {
+        "type": "String"
+      }
+    }
+  },
+  "openingImprovementYouPlay": "You often play {move}",
+  "@openingImprovementYouPlay": {
+    "placeholders": {
+      "move": {
+        "type": "String"
+      }
+    }
+  },
+  "openingImprovementRepeats": "{count} times, {losses, plural, =0{no losses} one{{losses} loss} other{{losses} losses}}",
+  "@openingImprovementRepeats": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      },
+      "losses": {
+        "type": "num"
+      }
+    }
+  },
+  "openingImprovementBetter": "Better: {move}",
+  "@openingImprovementBetter": {
+    "placeholders": {
+      "move": {
+        "type": "String"
+      }
+    }
+  },
+  "openingImprovementEval": "Engine evaluation: {before} before your move, {after} after.",
+  "@openingImprovementEval": {
+    "placeholders": {
+      "before": {
+        "type": "String"
+      },
+      "after": {
+        "type": "String"
+      }
+    }
+  }
 }

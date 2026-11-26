@@ -3,11 +3,15 @@ import 'package:provider/provider.dart';
 import '../models/country_game.dart';
 import '../services/game_repository.dart';
 import '../services/layout_service.dart';
+import '../services/position_evaluator.dart';
+import '../viewmodels/opening_improvement_viewmodel.dart';
 import '../viewmodels/player_games_viewmodel.dart';
 import '../viewmodels/stats_filter_viewmodel.dart';
 import '../viewmodels/stats_period_viewmodel.dart';
+import '../viewmodels/stats_tab_viewmodel.dart';
 import '../viewmodels/theme_viewmodel.dart';
 import 'package:chess_stats_pwa/l10n/app_localizations.dart';
+import '../widgets/improvement_display.dart';
 import '../widgets/player_app_bar_title.dart';
 import '../widgets/share_player.dart';
 import '../widgets/stats_display.dart';
@@ -49,6 +53,10 @@ class StatsScreen extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => TimeClassViewModel()),
         ChangeNotifierProvider(create: (_) => PlayerColorViewModel()),
         ChangeNotifierProvider(create: (_) => OpeningFilterViewModel()),
+        // Onglet affiché, et analyse des axes d'amélioration (lancée à la
+        // première ouverture de l'onglet).
+        ChangeNotifierProvider(create: (_) => StatsTabViewModel()),
+        ChangeNotifierProvider(create: (context) => OpeningImprovementViewModel(context.read<PositionEvaluator>())),
       ],
       child: _StatsScaffold(username: username),
     );
@@ -89,81 +97,96 @@ class _StatsScaffold extends StatelessWidget {
           child: viewModel.isUpdating && viewModel.games != null ? const LinearProgressIndicator(minHeight: 2) : null,
         );
 
-        return Scaffold(
-          drawer: wide
-              ? null
-              : Drawer(
-                  width: width * 0.88 < 360 ? width * 0.88 : 360,
-                  child: SafeArea(
-                    child: Builder(
-                      builder: (context) => StatsFilterPanel(
-                        games: periodGames,
-                        now: now,
-                        title: l10n.menuTitle,
-                        onDone: () => Navigator.of(context).pop(),
-                        more: _menuActions(context, viewModel, l10n),
+        final tab = context.watch<StatsTabViewModel>().tab;
+        return DefaultTabController(
+          length: StatsTab.values.length,
+          initialIndex: tab.index,
+          child: Scaffold(
+            drawer: wide
+                ? null
+                : Drawer(
+                    width: width * 0.88 < 360 ? width * 0.88 : 360,
+                    child: SafeArea(
+                      child: Builder(
+                        builder: (context) => StatsFilterPanel(
+                          games: periodGames,
+                          now: now,
+                          title: l10n.menuTitle,
+                          onDone: () => Navigator.of(context).pop(),
+                          more: _menuActions(context, viewModel, l10n),
+                        ),
                       ),
                     ),
                   ),
-                ),
-          appBar: AppBar(
-            // Sur mobile et tablette : retour (si on vient de la recherche)
-            // puis bouton des filtres, en haut à gauche.
-            automaticallyImplyLeading: wide,
-            leadingWidth: !wide && canPop ? 96 : null,
-            leading: wide
-                ? null
-                : Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [if (canPop) const BackButton(), const StatsFilterButton()],
+            appBar: AppBar(
+              // Sur mobile et tablette : retour (si on vient de la recherche)
+              // puis bouton des filtres, en haut à gauche.
+              automaticallyImplyLeading: wide,
+              leadingWidth: !wide && canPop ? 96 : null,
+              leading: wide
+                  ? null
+                  : Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [if (canPop) const BackButton(), const StatsFilterButton()],
+                    ),
+              // Nom de l'app en petit, puis le pseudo dessous : il a toute la
+              // largeur pour lui et ne se fait plus rogner sur mobile.
+              title: PlayerAppBarTitle(username: username),
+              // Sur mobile et tablette, seul le partage reste dans la barre :
+              // bilan, mise à jour et thème sont dans la section « Plus » du
+              // menu.
+              actions: [
+                if (wide) ...[
+                  _scoutButton(context, viewModel, l10n),
+                  _recapButton(context, viewModel, l10n),
+                ],
+                SharePlayerButton(username: username),
+                if (wide) ...[
+                  IconButton(
+                    icon: const Icon(Icons.refresh),
+                    onPressed: viewModel.isUpdating ? null : viewModel.update,
+                    tooltip: l10n.refresh,
                   ),
-            // Nom de l'app en petit, puis le pseudo dessous : il a toute la
-            // largeur pour lui et ne se fait plus rogner sur mobile.
-            title: PlayerAppBarTitle(username: username),
-            // Sur mobile et tablette, seul le partage reste dans la barre :
-            // bilan, mise à jour et thème sont dans la section « Plus » du
-            // menu.
-            actions: [
-              if (wide) ...[
-                _scoutButton(context, viewModel, l10n),
-                _recapButton(context, viewModel, l10n),
+                  const ThemeToggleButton(),
+                ],
               ],
-              SharePlayerButton(username: username),
-              if (wide) ...[
-                IconButton(
-                  icon: const Icon(Icons.refresh),
-                  onPressed: viewModel.isUpdating ? null : viewModel.update,
-                  tooltip: l10n.refresh,
+              // Résumé des filtres (mobile et tablette), puis barre fine pendant
+              // la mise à jour en arrière-plan des parties déjà affichées.
+              // Onglets (stats, axes d'amélioration), résumé des filtres (mobile
+              // et tablette), puis barre fine pendant la mise à jour en
+              // arrière-plan des parties déjà affichées.
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(kTextTabBarHeight + (wide ? 0 : StatsFilterSummary.height) + 2),
+                child: Column(
+                  children: [
+                    TabBar(
+                      onTap: (index) => context.read<StatsTabViewModel>().select(StatsTab.values[index]),
+                      tabs: [Tab(text: l10n.tabStats), Tab(text: l10n.tabImprovement)],
+                    ),
+                    if (!wide) const StatsFilterSummary(),
+                    progress,
+                  ],
                 ),
-                const ThemeToggleButton(),
-              ],
-            ],
-            // Résumé des filtres (mobile et tablette), puis barre fine pendant
-            // la mise à jour en arrière-plan des parties déjà affichées.
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight((wide ? 0 : StatsFilterSummary.height) + 2),
-              child: Column(
-                children: [if (!wide) const StatsFilterSummary(), progress],
               ),
             ),
-          ),
-          body: wide
-              ? Row(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SizedBox(
-                      width: _panelWidth,
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          border: Border(right: BorderSide(color: Theme.of(context).colorScheme.outlineVariant)),
+            body: wide
+                ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SizedBox(
+                        width: _panelWidth,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            border: Border(right: BorderSide(color: Theme.of(context).colorScheme.outlineVariant)),
+                          ),
+                          child: StatsFilterPanel(games: periodGames, now: now),
                         ),
-                        child: StatsFilterPanel(games: periodGames, now: now),
                       ),
-                    ),
-                    Expanded(child: body),
-                  ],
-                )
-              : body,
+                      Expanded(child: body),
+                    ],
+                  )
+                : body,
+          ),
         );
       },
     );
@@ -235,6 +258,9 @@ class _StatsScaffold extends StatelessWidget {
   }
 
   Widget _body(BuildContext context, PlayerGamesViewModel viewModel, AppLocalizations l10n) {
+    if (viewModel.games != null && context.watch<StatsTabViewModel>().tab == StatsTab.improvement) {
+      return ImprovementDisplay(games: viewModel.games!);
+    }
     if (viewModel.games != null) {
       final period = context.watch<StatsPeriodViewModel>().period;
       final ratedOnly = context.watch<RatedFilterViewModel>().ratedOnly;

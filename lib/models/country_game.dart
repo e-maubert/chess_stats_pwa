@@ -59,10 +59,14 @@ class CountryGame {
   /// gardés seulement jusqu'au calcul de [phases] : null ensuite.
   final String? moves;
 
-  /// Deux premiers demi-coups (SAN, ex. ['d4', 'e6']), gardés après le
-  /// calcul des phases : premier coup des blancs et réponse des noirs, pour
-  /// « Comment battre ce joueur ». null si inconnus.
+  /// Premiers demi-coups (SAN, ex. ['d4', 'e6', …], au plus
+  /// [openingPlies]), gardés après le calcul des phases : pour « Comment
+  /// battre ce joueur » (les deux premiers) et « Améliorer son ouverture ».
+  /// null si inconnus.
   final List<String>? openingMoves;
+
+  /// Nombre de demi-coups gardés dans [openingMoves] (12 coups).
+  static const int openingPlies = 24;
 
   /// Phases de la partie, calculées après l'affichage des stats (voir
   /// PlayerGamesViewModel.phaseGamesIn) ; null tant qu'elles ne le sont pas.

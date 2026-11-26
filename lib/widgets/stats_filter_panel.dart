@@ -7,6 +7,7 @@ import '../services/opening_name_service.dart';
 import '../viewmodels/stats_filter_viewmodel.dart';
 import '../viewmodels/stats_filters.dart';
 import '../viewmodels/stats_period_viewmodel.dart';
+import '../viewmodels/stats_tab_viewmodel.dart';
 import 'period_selector.dart';
 import 'stats_filter_selectors.dart';
 
@@ -19,6 +20,10 @@ StatsFilters _filters(BuildContext context) => StatsFilters(
       color: context.read<PlayerColorViewModel>(),
       opening: context.read<OpeningFilterViewModel>(),
     );
+
+/// Onglet « Axes d'amélioration » affiché (false hors de la page d'un
+/// joueur).
+bool _improvementTab(BuildContext context) => context.watch<StatsTabViewModel?>()?.tab == StatsTab.improvement;
 
 /// Panneau des filtres de la page des stats, un titre par filtre : fixe à
 /// gauche sur grand écran, dans le tiroir glissant (menu) sur mobile et
@@ -61,6 +66,9 @@ class StatsFilterPanel extends StatelessWidget {
     context.watch<PlayerColorViewModel>();
     context.watch<OpeningFilterViewModel>();
     final filters = _filters(context);
+    // Onglet « Axes d'amélioration » : filtres affichés mais pas encore
+    // utilisés (analyse de la cadence la plus jouée sur 3 mois).
+    final disabled = _improvementTab(context);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -85,11 +93,33 @@ class StatsFilterPanel extends StatelessWidget {
           child: ListView(
             padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
             children: [
-              _FilterSection(label: l10n.periodLabel, child: PeriodSelector(now: now)),
-              _FilterSection(label: l10n.ratedFilterLabel, child: const RatedSelector()),
-              _FilterSection(label: l10n.timeClassLabel, child: const TimeClassSelector()),
-              _FilterSection(label: l10n.colorFilterLabel, child: const PlayerColorSelector()),
-              _FilterSection(label: l10n.openingFilterLabel, child: OpeningSelector(games: games)),
+              if (disabled)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 16),
+                  child: Text(
+                    l10n.improvementFiltersNote,
+                    style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                  ),
+                ),
+              IgnorePointer(
+                ignoring: disabled,
+                child: Opacity(
+                  opacity: disabled ? 0.38 : 1,
+                  child: ExcludeSemantics(
+                    excluding: disabled,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        _FilterSection(label: l10n.periodLabel, child: PeriodSelector(now: now)),
+                        _FilterSection(label: l10n.ratedFilterLabel, child: const RatedSelector()),
+                        _FilterSection(label: l10n.timeClassLabel, child: const TimeClassSelector()),
+                        _FilterSection(label: l10n.colorFilterLabel, child: const PlayerColorSelector()),
+                        _FilterSection(label: l10n.openingFilterLabel, child: OpeningSelector(games: games)),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               if (more.isNotEmpty) ...[
                 const Divider(height: 8),
                 const SizedBox(height: 12),
@@ -113,7 +143,7 @@ class StatsFilterPanel extends StatelessWidget {
               TextButton.icon(
                 icon: const Icon(Icons.restart_alt),
                 label: Text(l10n.filtersReset),
-                onPressed: filters.activeCount == 0 ? null : filters.resetAll,
+                onPressed: disabled || filters.activeCount == 0 ? null : filters.resetAll,
               ),
               const Spacer(),
               if (onDone != null) FilledButton(onPressed: onDone, child: Text(l10n.filtersDone)),
@@ -194,16 +224,18 @@ class StatsFilterSummary extends StatelessWidget {
     final color = context.watch<PlayerColorViewModel>().color;
     final opening = context.watch<OpeningFilterViewModel>().opening;
 
-    final parts = [
-      PeriodSelector.labelOf(period, l10n),
-      if (!ratedOnly) l10n.ratedFilterAll,
-      if (timeClass != null) FilterLabels.timeClass(timeClass, l10n),
-      if (color != null) FilterLabels.color(color, l10n),
-      if (opening != null)
-        opening == OpeningFilterService.others
-            ? l10n.openingFilterOthers
-            : l10n.openingFamilyName(OpeningNameService.key(opening), OpeningNameService.fallback(opening)),
-    ];
+    final parts = _improvementTab(context)
+        ? [l10n.improvementFiltersSummary]
+        : [
+            PeriodSelector.labelOf(period, l10n),
+            if (!ratedOnly) l10n.ratedFilterAll,
+            if (timeClass != null) FilterLabels.timeClass(timeClass, l10n),
+            if (color != null) FilterLabels.color(color, l10n),
+            if (opening != null)
+              opening == OpeningFilterService.others
+                  ? l10n.openingFilterOthers
+                  : l10n.openingFamilyName(OpeningNameService.key(opening), OpeningNameService.fallback(opening)),
+          ];
 
     return SizedBox(
       height: height,

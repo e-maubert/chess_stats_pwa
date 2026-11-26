@@ -2067,6 +2067,144 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'“How to beat this player”: choose the time control to analyze\nA shortcut to their least successful time control\nA link to share for each time control\nShorter slideshow when there are too few games to conclude'**
   String get changelogV1120;
+
+  /// No description provided for @tabStats.
+  ///
+  /// In en, this message translates to:
+  /// **'Stats'**
+  String get tabStats;
+
+  /// No description provided for @tabImprovement.
+  ///
+  /// In en, this message translates to:
+  /// **'Improvement areas'**
+  String get tabImprovement;
+
+  /// No description provided for @improvementFiltersNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Filters don\'t apply here yet: the analysis covers your most played time control over the last 3 months (rated games).'**
+  String get improvementFiltersNote;
+
+  /// No description provided for @improvementFiltersSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Most played time control · 3 months'**
+  String get improvementFiltersSummary;
+
+  /// No description provided for @openingImprovementTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Improve your opening'**
+  String get openingImprovementTitle;
+
+  /// No description provided for @openingImprovementScope.
+  ///
+  /// In en, this message translates to:
+  /// **'{timeClass} · last 3 months · rated games'**
+  String openingImprovementScope(String timeClass);
+
+  /// No description provided for @openingImprovementIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'In your most played opening with each colour, we look for a move you keep repeating that gives away your advantage, and the move to play instead.'**
+  String get openingImprovementIntro;
+
+  /// No description provided for @openingImprovementNoGames.
+  ///
+  /// In en, this message translates to:
+  /// **'No rated games over the last 3 months.'**
+  String get openingImprovementNoGames;
+
+  /// No description provided for @openingImprovementError.
+  ///
+  /// In en, this message translates to:
+  /// **'The position analysis is unavailable for now. Try again in a minute.'**
+  String get openingImprovementError;
+
+  /// No description provided for @openingImprovementSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Engine evaluations: Lichess cloud database.'**
+  String get openingImprovementSource;
+
+  /// No description provided for @openingImprovementLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Analysing your openings… {percent}'**
+  String openingImprovementLoading(String percent);
+
+  /// No description provided for @openingImprovementNoColorGames.
+  ///
+  /// In en, this message translates to:
+  /// **'No games with this colour.'**
+  String get openingImprovementNoColorGames;
+
+  /// No description provided for @openingImprovementColorHeader.
+  ///
+  /// In en, this message translates to:
+  /// **'{color}: {opening} ({count, plural, one{{count} game} other{{count} games}})'**
+  String openingImprovementColorHeader(String color, String opening, num count);
+
+  /// No description provided for @openingImprovementNotEnough.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough games in this opening to spot a repeated move.'**
+  String get openingImprovementNotEnough;
+
+  /// No description provided for @openingImprovementSolid.
+  ///
+  /// In en, this message translates to:
+  /// **'Your opening holds up: no repeated move gives away your advantage.'**
+  String get openingImprovementSolid;
+
+  /// No description provided for @sanPieceLetters.
+  ///
+  /// In en, this message translates to:
+  /// **'NBRQK'**
+  String get sanPieceLetters;
+
+  /// No description provided for @openingImprovementBoardLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Board: your move {move} (red arrow), better move {best} (green arrow)'**
+  String openingImprovementBoardLabel(String move, String best);
+
+  /// No description provided for @openingImprovementAtStart.
+  ///
+  /// In en, this message translates to:
+  /// **'On your very first move:'**
+  String get openingImprovementAtStart;
+
+  /// No description provided for @openingImprovementAfter.
+  ///
+  /// In en, this message translates to:
+  /// **'After {line}:'**
+  String openingImprovementAfter(String line);
+
+  /// No description provided for @openingImprovementYouPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'You often play {move}'**
+  String openingImprovementYouPlay(String move);
+
+  /// No description provided for @openingImprovementRepeats.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} times, {losses, plural, =0{no losses} one{{losses} loss} other{{losses} losses}}'**
+  String openingImprovementRepeats(int count, num losses);
+
+  /// No description provided for @openingImprovementBetter.
+  ///
+  /// In en, this message translates to:
+  /// **'Better: {move}'**
+  String openingImprovementBetter(String move);
+
+  /// No description provided for @openingImprovementEval.
+  ///
+  /// In en, this message translates to:
+  /// **'Engine evaluation: {before} before your move, {after} after.'**
+  String openingImprovementEval(String before, String after);
 }
 
 class _AppLocalizationsDelegate
