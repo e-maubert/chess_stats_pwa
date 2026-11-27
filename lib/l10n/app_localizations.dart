@@ -826,6 +826,72 @@ abstract class AppLocalizations {
   /// **'No hour has enough games yet to rate your performance ({minGames} minimum).'**
   String playingHoursNoneJudged(int minGames);
 
+  /// No description provided for @playingDays.
+  ///
+  /// In en, this message translates to:
+  /// **'Playing days'**
+  String get playingDays;
+
+  /// No description provided for @playingDaysHint.
+  ///
+  /// In en, this message translates to:
+  /// **'One square per day (by the local start time of the games), one column per week. The last column sums up each day of the week. Tap a square to see the details.'**
+  String get playingDaysHint;
+
+  /// Titre de la colonne finale (moyenne de chaque ligne), très court.
+  ///
+  /// In en, this message translates to:
+  /// **'Avg'**
+  String get playingDaysAverageHeader;
+
+  /// Bulle de la colonne finale, ex. Tous les lundis.
+  ///
+  /// In en, this message translates to:
+  /// **'All {weekday}s'**
+  String playingDaysWeekdayTitle(String weekday);
+
+  /// Bulle de la colonne finale en mode Activité ; average est déjà formaté (ex. 3,5).
+  ///
+  /// In en, this message translates to:
+  /// **'{average} games per day on average · {games} in total'**
+  String playingDaysAverageDetail(String average, int games);
+
+  /// No description provided for @playingDaysBest.
+  ///
+  /// In en, this message translates to:
+  /// **'Best day:'**
+  String get playingDaysBest;
+
+  /// No description provided for @playingDaysWorst.
+  ///
+  /// In en, this message translates to:
+  /// **'Weakest day:'**
+  String get playingDaysWorst;
+
+  /// No description provided for @playingDaysWeekendBetter.
+  ///
+  /// In en, this message translates to:
+  /// **'You play better at the weekend: {weekend}% vs {week}% on weekdays.'**
+  String playingDaysWeekendBetter(int weekend, int week);
+
+  /// No description provided for @playingDaysWeekBetter.
+  ///
+  /// In en, this message translates to:
+  /// **'You play better on weekdays: {week}% vs {weekend}% at the weekend.'**
+  String playingDaysWeekBetter(int weekend, int week);
+
+  /// No description provided for @playingDaysEven.
+  ///
+  /// In en, this message translates to:
+  /// **'Your results are about the same whatever the day of the week.'**
+  String get playingDaysEven;
+
+  /// No description provided for @playingDaysNoneJudged.
+  ///
+  /// In en, this message translates to:
+  /// **'Not enough games yet on each day of the week to compare them ({minGames} minimum per day).'**
+  String playingDaysNoneJudged(int minGames);
+
   /// No description provided for @gamePhases.
   ///
   /// In en, this message translates to:

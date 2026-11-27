@@ -478,6 +478,66 @@
       }
     }
   },
+  "playingDays": "Playing days",
+  "playingDaysHint": "One square per day (by the local start time of the games), one column per week. The last column sums up each day of the week. Tap a square to see the details.",
+  "playingDaysAverageHeader": "Avg",
+  "@playingDaysAverageHeader": {
+    "description": "Titre de la colonne finale (moyenne de chaque ligne), très court."
+  },
+  "playingDaysWeekdayTitle": "All {weekday}s",
+  "@playingDaysWeekdayTitle": {
+    "description": "Bulle de la colonne finale, ex. Tous les lundis.",
+    "placeholders": {
+      "weekday": {
+        "type": "String"
+      }
+    }
+  },
+  "playingDaysAverageDetail": "{average} games per day on average · {games} in total",
+  "@playingDaysAverageDetail": {
+    "description": "Bulle de la colonne finale en mode Activité ; average est déjà formaté (ex. 3,5).",
+    "placeholders": {
+      "average": {
+        "type": "String"
+      },
+      "games": {
+        "type": "int"
+      }
+    }
+  },
+  "playingDaysBest": "Best day:",
+  "playingDaysWorst": "Weakest day:",
+  "playingDaysWeekendBetter": "You play better at the weekend: {weekend}% vs {week}% on weekdays.",
+  "@playingDaysWeekendBetter": {
+    "placeholders": {
+      "weekend": {
+        "type": "int"
+      },
+      "week": {
+        "type": "int"
+      }
+    }
+  },
+  "playingDaysWeekBetter": "You play better on weekdays: {week}% vs {weekend}% at the weekend.",
+  "@playingDaysWeekBetter": {
+    "placeholders": {
+      "weekend": {
+        "type": "int"
+      },
+      "week": {
+        "type": "int"
+      }
+    }
+  },
+  "playingDaysEven": "Your results are about the same whatever the day of the week.",
+  "playingDaysNoneJudged": "Not enough games yet on each day of the week to compare them ({minGames} minimum per day).",
+  "@playingDaysNoneJudged": {
+    "placeholders": {
+      "minGames": {
+        "type": "int"
+      }
+    }
+  },
   "gamePhases": "Game phases",
   "gamePhasesLoading": "Analysing your games… {percent}",
   "@gamePhasesLoading": {

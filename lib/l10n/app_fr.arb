@@ -436,6 +436,66 @@
       }
     }
   },
+  "playingDays": "Jours de jeu",
+  "playingDaysHint": "Une case par jour (selon l’heure locale de début des parties), une colonne par semaine. La dernière colonne résume chaque jour de la semaine. Touchez une case pour voir le détail.",
+  "playingDaysAverageHeader": "Moy.",
+  "@playingDaysAverageHeader": {
+    "description": "Titre de la colonne finale (moyenne de chaque ligne), très court."
+  },
+  "playingDaysWeekdayTitle": "Tous les {weekday}s",
+  "@playingDaysWeekdayTitle": {
+    "description": "Bulle de la colonne finale, ex. Tous les lundis.",
+    "placeholders": {
+      "weekday": {
+        "type": "String"
+      }
+    }
+  },
+  "playingDaysAverageDetail": "{average} parties par jour en moyenne · {games} au total",
+  "@playingDaysAverageDetail": {
+    "description": "Bulle de la colonne finale en mode Activité ; average est déjà formaté (ex. 3,5).",
+    "placeholders": {
+      "average": {
+        "type": "String"
+      },
+      "games": {
+        "type": "int"
+      }
+    }
+  },
+  "playingDaysBest": "Meilleur jour :",
+  "playingDaysWorst": "Moins bon jour :",
+  "playingDaysWeekendBetter": "Vous jouez mieux le week-end : {weekend} % contre {week} % en semaine.",
+  "@playingDaysWeekendBetter": {
+    "placeholders": {
+      "weekend": {
+        "type": "int"
+      },
+      "week": {
+        "type": "int"
+      }
+    }
+  },
+  "playingDaysWeekBetter": "Vous jouez mieux en semaine : {week} % contre {weekend} % le week-end.",
+  "@playingDaysWeekBetter": {
+    "placeholders": {
+      "weekend": {
+        "type": "int"
+      },
+      "week": {
+        "type": "int"
+      }
+    }
+  },
+  "playingDaysEven": "Vos résultats sont à peu près les mêmes quel que soit le jour de la semaine.",
+  "playingDaysNoneJudged": "Pas encore assez de parties par jour de la semaine pour les comparer ({minGames} minimum par jour).",
+  "@playingDaysNoneJudged": {
+    "placeholders": {
+      "minGames": {
+        "type": "int"
+      }
+    }
+  },
   "gamePhases": "Phases de la partie",
   "gamePhasesLoading": "Analyse de vos parties… {percent}",
   "@gamePhasesLoading": {
