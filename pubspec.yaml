@@ -1,7 +1,7 @@
 name: chess_stats_pwa
 description: A Chess.com statistics PWA built with Flutter
 publish_to: 'none'
-version: 1.13.0+15
+version: 1.14.0+16
 
 environment:
   sdk: '>=3.0.0 <4.0.0'

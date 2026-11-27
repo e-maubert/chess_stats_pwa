@@ -1216,6 +1216,7 @@
   },
   "changelogV1120": "“How to beat this player”: choose the time control to analyze\nA shortcut to their least successful time control\nA link to share for each time control\nShorter slideshow when there are too few games to conclude",
   "changelogV1130": "New “Improvement areas” tab, next to the stats\n“Improve your opening”: the move you keep repeating that costs you the advantage, and the better move to play\nA board in the app's colours to see the position at a glance\nNothing to fix? The app tells you your opening holds up",
+  "changelogV1140": "New “Playing days” card: your games day by day, calendar style\nFind out whether you play better at the weekend or on weekdays\n“Improve your opening”: replay the moves up to the position to fix\nMuch faster opening analysis from your second visit",
   "tabStats": "Stats",
   "tabImprovement": "Improvement areas",
   "improvementFiltersNote": "Filters don't apply here yet: the analysis covers your most played time control over the last 3 months (rated games).",
@@ -1316,5 +1317,11 @@
         "type": "String"
       }
     }
-  }
+  },
+  "openingReplayStart": "Starting position",
+  "openingReplayPrevious": "Previous move",
+  "openingReplayNext": "Next move",
+  "openingReplayPlay": "Replay the opening",
+  "openingReplayPause": "Pause",
+  "openingReplayMistake": "Position to improve"
 }

@@ -2140,6 +2140,12 @@ abstract class AppLocalizations {
   /// **'New “Improvement areas” tab, next to the stats\n“Improve your opening”: the move you keep repeating that costs you the advantage, and the better move to play\nA board in the app\'s colours to see the position at a glance\nNothing to fix? The app tells you your opening holds up'**
   String get changelogV1130;
 
+  /// No description provided for @changelogV1140.
+  ///
+  /// In en, this message translates to:
+  /// **'New “Playing days” card: your games day by day, calendar style\nFind out whether you play better at the weekend or on weekdays\n“Improve your opening”: replay the moves up to the position to fix\nMuch faster opening analysis from your second visit'**
+  String get changelogV1140;
+
   /// No description provided for @tabStats.
   ///
   /// In en, this message translates to:
@@ -2277,6 +2283,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Engine evaluation: {before} before your move, {after} after.'**
   String openingImprovementEval(String before, String after);
+
+  /// No description provided for @openingReplayStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Starting position'**
+  String get openingReplayStart;
+
+  /// No description provided for @openingReplayPrevious.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous move'**
+  String get openingReplayPrevious;
+
+  /// No description provided for @openingReplayNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next move'**
+  String get openingReplayNext;
+
+  /// No description provided for @openingReplayPlay.
+  ///
+  /// In en, this message translates to:
+  /// **'Replay the opening'**
+  String get openingReplayPlay;
+
+  /// No description provided for @openingReplayPause.
+  ///
+  /// In en, this message translates to:
+  /// **'Pause'**
+  String get openingReplayPause;
+
+  /// No description provided for @openingReplayMistake.
+  ///
+  /// In en, this message translates to:
+  /// **'Position to improve'**
+  String get openingReplayMistake;
 }
 
 class _AppLocalizationsDelegate
