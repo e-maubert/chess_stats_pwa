@@ -791,6 +791,51 @@ class AppLocalizationsFr extends AppLocalizations {
   }
 
   @override
+  String get playingDays => 'Jours de jeu';
+
+  @override
+  String get playingDaysHint =>
+      'Une case par jour (selon l’heure locale de début des parties), une colonne par semaine. La dernière colonne résume chaque jour de la semaine. Touchez une case pour voir le détail.';
+
+  @override
+  String get playingDaysAverageHeader => 'Moy.';
+
+  @override
+  String playingDaysWeekdayTitle(String weekday) {
+    return 'Tous les ${weekday}s';
+  }
+
+  @override
+  String playingDaysAverageDetail(String average, int games) {
+    return '$average parties par jour en moyenne · $games au total';
+  }
+
+  @override
+  String get playingDaysBest => 'Meilleur jour :';
+
+  @override
+  String get playingDaysWorst => 'Moins bon jour :';
+
+  @override
+  String playingDaysWeekendBetter(int weekend, int week) {
+    return 'Vous jouez mieux le week-end : $weekend % contre $week % en semaine.';
+  }
+
+  @override
+  String playingDaysWeekBetter(int weekend, int week) {
+    return 'Vous jouez mieux en semaine : $week % contre $weekend % le week-end.';
+  }
+
+  @override
+  String get playingDaysEven =>
+      'Vos résultats sont à peu près les mêmes quel que soit le jour de la semaine.';
+
+  @override
+  String playingDaysNoneJudged(int minGames) {
+    return 'Pas encore assez de parties par jour de la semaine pour les comparer ($minGames minimum par jour).';
+  }
+
+  @override
   String get gamePhases => 'Phases de la partie';
 
   @override

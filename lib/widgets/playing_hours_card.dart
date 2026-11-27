@@ -8,6 +8,7 @@ import '../services/playing_hours_service.dart';
 import '../theme/app_theme.dart';
 import '../viewmodels/playing_hours_viewmodel.dart';
 import '../viewmodels/stats_filter_viewmodel.dart';
+import 'playing_time_widgets.dart';
 
 /// Page principale : cadran de 24 h des parties de la période selon leur heure
 /// de début, en nombre de parties (activité) ou en performance, avec le
@@ -83,9 +84,9 @@ class PlayingHoursCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
                 if (viewModel.mode == PlayingHoursMode.activity)
-                  _activityLegend(context, PlayingHoursService.maxGames(hours), l10n)
+                  ActivityLegend(maxGames: PlayingHoursService.maxGames(hours))
                 else
-                  _performanceLegend(context, l10n),
+                  const PerformanceLegend(),
                 const SizedBox(height: 12),
                 _summary(context, hours, viewModel, l10n),
               ],
@@ -95,63 +96,6 @@ class PlayingHoursCard extends StatelessWidget {
       ),
     );
   }
-
-  Widget _activityLegend(BuildContext context, int maxGames, AppLocalizations l10n) {
-    final small = Theme.of(context).textTheme.bodySmall;
-    return Wrap(
-      spacing: 6,
-      runSpacing: 4,
-      crossAxisAlignment: WrapCrossAlignment.center,
-      children: [
-        Text(l10n.countryMapLegend, style: small),
-        const SizedBox(width: 4),
-        Text('1', style: small),
-        for (var i = 0; i <= 4; i++) _swatch(AppTheme.mapCountryColor(i / 4)),
-        Text('$maxGames', style: small),
-      ],
-    );
-  }
-
-  Widget _performanceLegend(BuildContext context, AppLocalizations l10n) {
-    final small = Theme.of(context).textTheme.bodySmall;
-    final labels = [
-      l10n.playingHoursBandVeryLow,
-      l10n.playingHoursBandLow,
-      l10n.playingHoursBandEven,
-      l10n.playingHoursBandHigh,
-      l10n.playingHoursBandVeryHigh,
-    ];
-    Widget item(Widget swatch, String label) => Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [swatch, const SizedBox(width: 6), Text(label, style: small)],
-        );
-    return Wrap(
-      spacing: 14,
-      runSpacing: 6,
-      children: [
-        for (var i = 0; i < labels.length; i++) item(_swatch(AppTheme.performanceBandColor(i)), labels[i]),
-        item(
-          SizedBox(
-            width: 14,
-            height: 10,
-            child: CustomPaint(
-              painter: _HatchPainter(
-                background: AppTheme.mapEmptyCountry(context),
-                line: AppTheme.mapNotEnoughGames(context),
-              ),
-            ),
-          ),
-          l10n.countryMapNotEnoughLegend(PlayingHoursService.minGames),
-        ),
-      ],
-    );
-  }
-
-  Widget _swatch(Color color) => Container(
-        width: 14,
-        height: 10,
-        decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(2)),
-      );
 
   /// Meilleur et moins bon créneau, parmi les heures d'au moins
   /// [PlayingHoursService.minGames] parties. Chaque créneau est un lien
@@ -186,7 +130,7 @@ class PlayingHoursCard extends StatelessWidget {
                       child: Text(
                         l10n.playingHoursSlot(
                           l10n.playingHoursRange(stats.hour, stats.hour + 1),
-                          _percent(stats.score),
+                          percentOf(stats.score),
                           stats.games,
                         ),
                         style: textTheme.bodyMedium?.copyWith(
@@ -216,9 +160,6 @@ class PlayingHoursCard extends StatelessWidget {
   }
 }
 
-/// Pourcentage arrondi d'un score entre 0 et 1.
-int _percent(double score) => (score * 100).round();
-
 /// Texte de la bulle d'une heure dans le mode affiché : la tranche, puis
 /// ses chiffres.
 (String, String) _bubbleText(HourStats stats, PlayingHoursMode mode, AppLocalizations l10n) {
@@ -229,7 +170,7 @@ int _percent(double score) => (score * 100).round();
   }
   return (
     title,
-    l10n.playingHoursPerformanceDetail(_percent(stats.score), stats.games, stats.wins, stats.draws, stats.losses),
+    l10n.playingHoursPerformanceDetail(percentOf(stats.score), stats.games, stats.wins, stats.draws, stats.losses),
   );
 }
 
@@ -289,7 +230,7 @@ class _Dial extends StatelessWidget {
             ),
           ),
           if (selected != null)
-            _HourBubble(
+            StatsBubble(
               anchor: _DialPainter.sliceCenter(selected, size),
               area: size,
               text: _bubbleText(hours[selected], viewModel.mode, l10n),
@@ -297,76 +238,6 @@ class _Dial extends StatelessWidget {
         ],
       );
     });
-  }
-}
-
-/// Bulle de détail d'une heure, au-dessus du milieu de sa tranche (en
-/// dessous s'il n'y a pas la place), gardée dans la largeur du cadran.
-/// Même aspect que la bulle de la carte des pays.
-class _HourBubble extends StatelessWidget {
-  final Offset anchor;
-  final Size area;
-  final (String, String) text;
-
-  const _HourBubble({required this.anchor, required this.area, required this.text});
-
-  /// [text] avec ses nombres en gras (« 54 parties · V 38 · N 6 · D 10 »).
-  static List<TextSpan> _boldNumbers(String text) {
-    final spans = <TextSpan>[];
-    var start = 0;
-    for (final match in RegExp(r'\d+').allMatches(text)) {
-      if (match.start > start) spans.add(TextSpan(text: text.substring(start, match.start)));
-      spans.add(TextSpan(text: match[0], style: const TextStyle(fontWeight: FontWeight.bold)));
-      start = match.end;
-    }
-    if (start < text.length) spans.add(TextSpan(text: text.substring(start)));
-    return spans;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final (title, detail) = text;
-    const maxWidth = 260.0;
-    const height = 52.0; // deux lignes
-    final width = math.min(maxWidth, area.width);
-    final left = (anchor.dx - width / 2).clamp(0.0, area.width - width);
-    final above = anchor.dy - height - 8;
-    final top = above >= 0 ? above : anchor.dy + 12;
-    return Positioned(
-      left: left,
-      top: top,
-      width: width,
-      child: IgnorePointer(
-        child: Center(
-          child: Material(
-            elevation: 3,
-            borderRadius: BorderRadius.circular(6),
-            color: theme.colorScheme.inverseSurface,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: theme.colorScheme.onInverseSurface,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text.rich(
-                    TextSpan(children: _boldNumbers(detail)),
-                    style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onInverseSurface),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }
 
@@ -454,7 +325,7 @@ class _DialPainter extends CustomPainter {
       } else {
         canvas.save();
         canvas.clipPath(path);
-        _HatchPainter.paintHatch(canvas, path.getBounds(), emptyColor, hatchColor);
+        HatchPainter.paintHatch(canvas, path.getBounds(), emptyColor, hatchColor);
         canvas.restore();
       }
       canvas.drawPath(path, gap);
@@ -496,35 +367,4 @@ class _DialPainter extends CustomPainter {
       old.centerText != centerText ||
       old.gapColor != gapColor ||
       old.labelStyle != labelStyle;
-}
-
-/// Hachures des heures qui n'ont pas assez de parties pour juger la
-/// performance (cadran et légende).
-class _HatchPainter extends CustomPainter {
-  final Color background;
-  final Color line;
-
-  _HatchPainter({required this.background, required this.line});
-
-  static void paintHatch(Canvas canvas, Rect bounds, Color background, Color line) {
-    canvas.drawRect(bounds, Paint()..color = background);
-    final paint = Paint()
-      ..color = line
-      ..strokeWidth = 1.2;
-    const spacing = 5.0;
-    for (var x = bounds.left - bounds.height; x < bounds.right; x += spacing) {
-      canvas.drawLine(Offset(x, bounds.bottom), Offset(x + bounds.height, bounds.top), paint);
-    }
-  }
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    canvas.save();
-    canvas.clipRRect(RRect.fromRectAndRadius(Offset.zero & size, const Radius.circular(2)));
-    paintHatch(canvas, Offset.zero & size, background, line);
-    canvas.restore();
-  }
-
-  @override
-  bool shouldRepaint(_HatchPainter old) => old.background != background || old.line != line;
 }

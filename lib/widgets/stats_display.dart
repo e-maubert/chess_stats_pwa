@@ -7,6 +7,7 @@ import 'color_stats_card.dart';
 import 'country_stats_card.dart';
 import 'game_phase_card.dart';
 import 'opening_stats_card.dart';
+import 'playing_days_card.dart';
 import 'playing_hours_card.dart';
 import 'rating_history_card.dart';
 import 'time_management_card.dart';
@@ -45,7 +46,7 @@ class _StatsDisplayState extends State<StatsDisplay> {
   // Une clé par carte : en passant d'une à deux colonnes (fenêtre
   // redimensionnée), chaque carte est déplacée sans être recréée et garde
   // ses filtres et son tri.
-  final List<GlobalKey> _cardKeys = List.generate(8, (_) => GlobalKey());
+  final List<GlobalKey> _cardKeys = List.generate(9, (_) => GlobalKey());
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +58,7 @@ class _StatsDisplayState extends State<StatsDisplay> {
       GamePhaseCard(key: _cardKeys[7], games: widget.phaseGames, progress: widget.phaseProgress),
       OpeningStatsCard(key: _cardKeys[5], games: games),
       PlayingHoursCard(key: _cardKeys[4], games: games),
+      PlayingDaysCard(key: _cardKeys[8], games: games),
       CountryStatsCard(key: _cardKeys[6], games: widget.countryGames),
     ];
 

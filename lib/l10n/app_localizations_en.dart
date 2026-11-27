@@ -796,6 +796,51 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get playingDays => 'Playing days';
+
+  @override
+  String get playingDaysHint =>
+      'One square per day (by the local start time of the games), one column per week. The last column sums up each day of the week. Tap a square to see the details.';
+
+  @override
+  String get playingDaysAverageHeader => 'Avg';
+
+  @override
+  String playingDaysWeekdayTitle(String weekday) {
+    return 'All ${weekday}s';
+  }
+
+  @override
+  String playingDaysAverageDetail(String average, int games) {
+    return '$average games per day on average · $games in total';
+  }
+
+  @override
+  String get playingDaysBest => 'Best day:';
+
+  @override
+  String get playingDaysWorst => 'Weakest day:';
+
+  @override
+  String playingDaysWeekendBetter(int weekend, int week) {
+    return 'You play better at the weekend: $weekend% vs $week% on weekdays.';
+  }
+
+  @override
+  String playingDaysWeekBetter(int weekend, int week) {
+    return 'You play better on weekdays: $week% vs $weekend% at the weekend.';
+  }
+
+  @override
+  String get playingDaysEven =>
+      'Your results are about the same whatever the day of the week.';
+
+  @override
+  String playingDaysNoneJudged(int minGames) {
+    return 'Not enough games yet on each day of the week to compare them ($minGames minimum per day).';
+  }
+
+  @override
   String get gamePhases => 'Game phases';
 
   @override
