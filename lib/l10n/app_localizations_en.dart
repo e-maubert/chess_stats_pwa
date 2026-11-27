@@ -1790,6 +1790,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'New “Improvement areas” tab, next to the stats\n“Improve your opening”: the move you keep repeating that costs you the advantage, and the better move to play\nA board in the app\'s colours to see the position at a glance\nNothing to fix? The app tells you your opening holds up';
 
   @override
+  String get changelogV1140 =>
+      'New “Playing days” card: your games day by day, calendar style\nFind out whether you play better at the weekend or on weekdays\n“Improve your opening”: replay the moves up to the position to fix\nMuch faster opening analysis from your second visit';
+
+  @override
   String get tabStats => 'Stats';
 
   @override
@@ -1896,4 +1900,22 @@ class AppLocalizationsEn extends AppLocalizations {
   String openingImprovementEval(String before, String after) {
     return 'Engine evaluation: $before before your move, $after after.';
   }
+
+  @override
+  String get openingReplayStart => 'Starting position';
+
+  @override
+  String get openingReplayPrevious => 'Previous move';
+
+  @override
+  String get openingReplayNext => 'Next move';
+
+  @override
+  String get openingReplayPlay => 'Replay the opening';
+
+  @override
+  String get openingReplayPause => 'Pause';
+
+  @override
+  String get openingReplayMistake => 'Position to improve';
 }

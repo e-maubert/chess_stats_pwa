@@ -12,6 +12,7 @@ import '../theme/app_theme.dart';
 import '../viewmodels/opening_improvement_viewmodel.dart';
 import 'app_footer.dart';
 import 'chess_board_view.dart';
+import 'opening_replay_board.dart';
 import 'stats_display.dart';
 import 'stats_filter_selectors.dart';
 
@@ -259,7 +260,8 @@ class _MistakeBoard extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
     final letters = l10n.sanPieceLetters;
     final candidate = mistake.candidate;
-    return ChessBoardView(
+    return OpeningReplayBoard(
+      line: candidate.line,
       fen: candidate.fen,
       flipped: !white,
       arrows: [

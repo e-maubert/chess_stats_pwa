@@ -1787,6 +1787,10 @@ class AppLocalizationsFr extends AppLocalizations {
       'Nouvel onglet « Axes d\'amélioration », à côté des stats\n« Améliorer son ouverture » : le coup que tu répètes et qui te coûte l\'avantage, avec le meilleur coup à jouer\nUn échiquier aux couleurs de l\'app pour voir la position en un coup d\'œil\nRien à corriger ? L\'app te dit que ton ouverture tient la route';
 
   @override
+  String get changelogV1140 =>
+      'Nouvelle carte « Jours de jeu » : tes parties jour par jour, façon calendrier\nDécouvre si tu joues mieux le week-end ou en semaine\n« Améliorer son ouverture » : rejoue les coups jusqu\'à la position à corriger\nAnalyse de tes ouvertures bien plus rapide dès la deuxième visite';
+
+  @override
   String get tabStats => 'Stats';
 
   @override
@@ -1894,4 +1898,22 @@ class AppLocalizationsFr extends AppLocalizations {
   String openingImprovementEval(String before, String after) {
     return 'Évaluation du moteur : $before avant ton coup, $after après.';
   }
+
+  @override
+  String get openingReplayStart => 'Position de départ';
+
+  @override
+  String get openingReplayPrevious => 'Coup précédent';
+
+  @override
+  String get openingReplayNext => 'Coup suivant';
+
+  @override
+  String get openingReplayPlay => 'Rejouer l\'ouverture';
+
+  @override
+  String get openingReplayPause => 'Pause';
+
+  @override
+  String get openingReplayMistake => 'Position à corriger';
 }

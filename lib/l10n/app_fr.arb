@@ -763,6 +763,7 @@
   "scoutCadenceSameChosen": "C'est sa cadence la moins réussie ({percent} de victoires).",
   "changelogV1120": "« Comment battre ce joueur » : choisis la cadence à analyser\nUn raccourci vers sa cadence la moins réussie\nUn lien à partager pour chaque cadence\nDiaporama plus court quand il y a trop peu de parties pour conclure",
   "changelogV1130": "Nouvel onglet « Axes d'amélioration », à côté des stats\n« Améliorer son ouverture » : le coup que tu répètes et qui te coûte l'avantage, avec le meilleur coup à jouer\nUn échiquier aux couleurs de l'app pour voir la position en un coup d'œil\nRien à corriger ? L'app te dit que ton ouverture tient la route",
+  "changelogV1140": "Nouvelle carte « Jours de jeu » : tes parties jour par jour, façon calendrier\nDécouvre si tu joues mieux le week-end ou en semaine\n« Améliorer son ouverture » : rejoue les coups jusqu'à la position à corriger\nAnalyse de tes ouvertures bien plus rapide dès la deuxième visite",
   "tabStats": "Stats",
   "tabImprovement": "Axes d'amélioration",
   "improvementFiltersNote": "Les filtres ne s'appliquent pas encore ici : l'analyse porte sur ta cadence la plus jouée, sur les 3 derniers mois (parties classées).",
@@ -785,5 +786,11 @@
   "openingImprovementYouPlay": "Tu joues souvent {move}",
   "openingImprovementRepeats": "{count} fois, {losses, plural, =0{aucune défaite} one{dont {losses} défaite} other{dont {losses} défaites}}",
   "openingImprovementBetter": "Mieux : {move}",
-  "openingImprovementEval": "Évaluation du moteur : {before} avant ton coup, {after} après."
+  "openingImprovementEval": "Évaluation du moteur : {before} avant ton coup, {after} après.",
+  "openingReplayStart": "Position de départ",
+  "openingReplayPrevious": "Coup précédent",
+  "openingReplayNext": "Coup suivant",
+  "openingReplayPlay": "Rejouer l'ouverture",
+  "openingReplayPause": "Pause",
+  "openingReplayMistake": "Position à corriger"
 }
