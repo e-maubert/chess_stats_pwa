@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import 'eval_store.dart';
+
 /// Évaluation d'une position par un moteur.
 class PositionEval {
   /// Avantage en centipions du point de vue des blancs (mat = ±[mateCp]).
@@ -31,17 +33,24 @@ abstract class PositionEvaluator {
 
 /// Évaluations déjà calculées par Lichess (base « cloud », gratuite, sans
 /// compte), une demande à la fois comme le demande leur API. Les réponses
-/// sont gardées pour la session.
+/// sont gardées pour la session et, avec [EvalStore], dans le stockage
+/// local (visites suivantes quasi instantanées).
 class CloudEvalService implements PositionEvaluator {
   final http.Client _client;
+  final EvalStore? _store;
   final Map<String, PositionEval?> _cache = {};
   Future<void> _queue = Future.value();
 
-  CloudEvalService({http.Client? client}) : _client = client ?? http.Client();
+  CloudEvalService({http.Client? client, EvalStore? store})
+      : _client = client ?? http.Client(),
+        _store = store;
 
   @override
-  Future<PositionEval?> evaluate(String fen) {
-    if (_cache.containsKey(fen)) return Future.value(_cache[fen]);
+  Future<PositionEval?> evaluate(String fen) async {
+    if (_cache.containsKey(fen)) return _cache[fen];
+    // Évaluation gardée : sans passer par la file d'attente des demandes.
+    final stored = await _store?.get(fen);
+    if (stored != null) return _cache[fen] = stored;
     // File d'attente : une seule demande en cours.
     final result = _queue.then((_) => _fetch(fen));
     _queue = result.then((_) {}, onError: (_) {});
@@ -54,6 +63,9 @@ class CloudEvalService implements PositionEvaluator {
     if (response.statusCode == 429) throw const EvaluationRateLimited();
     final eval = response.statusCode == 200 ? parse(response.body) : null;
     _cache[fen] = eval;
+    // Position inconnue de Lichess : pas gardée (elle pourra l'être plus
+    // tard).
+    if (eval != null) await _store?.put(fen, eval);
     return eval;
   }
 
